@@ -57,3 +57,7 @@ typings/
 # dotenv environment variables file
 .env
 
+# Output of 'npm run build'
+dist
+oo-elements.js
+.rpt2_cache

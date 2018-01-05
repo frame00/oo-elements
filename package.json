@@ -1,0 +1,34 @@
+{
+  "name": "oo-elements",
+  "version": "1.0.0",
+  "description": "Web Components for OO",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node rollup.js",
+    "prebuild": "npm run lint",
+    "lint": "tslint --fix --project ./",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frame00/oo-elements.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frame00/oo-elements/issues"
+  },
+  "homepage": "https://github.com/frame00/oo-elements#readme",
+  "dependencies": {
+    "typescript": "^2.6.2"
+  },
+  "devDependencies": {
+    "rollup": "^0.53.3",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-typescript2": "^0.9.0",
+    "tslint": "^5.8.0",
+    "tslint-config-xo": "^1.4.0"
+  }
+}
