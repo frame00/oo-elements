@@ -13,5 +13,7 @@ describe('<oo-button></oo-button>', () => {
 		insertElement(ELEMENT)
 		expect(getElement(ELEMENT)[0]).to.be.ok()
 	})
+	it('Mount with normal size')
+	it('Mount with small size')
 	it('Display modal by this element click')
 })
