@@ -2,6 +2,9 @@ const rollup = require('rollup')
 const resolve = require('rollup-plugin-node-resolve')
 const commonjs = require('rollup-plugin-commonjs')
 const typescript = require('rollup-plugin-typescript2')
+const multiEntry = require('rollup-plugin-multi-entry')
+
+const {BUILD_MODE} = process.env
 
 const entries = [
 	{
@@ -19,6 +22,22 @@ const entries = [
 const build = async (rollupOptions, writeOptions) => {
 	const bundle = await rollup.rollup(rollupOptions)
 	await bundle.write(writeOptions)
+}
+
+if (BUILD_MODE === 'TEST') {
+	return build({
+		input: 'src/**/*.test.ts',
+		plugins: [
+			multiEntry(),
+			typescript(),
+			resolve({jsnext: true}),
+			commonjs()
+		]
+	}, {
+		format: 'umd',
+		name: 'test',
+		file: 'dist/test.js'
+	})
 }
 
 Promise.all(entries.map(entry => {
