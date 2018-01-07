@@ -28,7 +28,6 @@
   "devDependencies": {
     "@types/expect.js": "^0.3.29",
     "@types/mocha": "^2.2.46",
-    "@webcomponents/custom-elements": "^1.0.6",
     "expect.js": "^0.3.1",
     "karma": "^2.0.0",
     "karma-chrome-launcher": "^2.2.0",
