@@ -8,7 +8,7 @@
     "pretest": "BUILD_MODE=TEST node rollup.js",
     "build": "node rollup.js",
     "prebuild": "npm run lint",
-    "lint": "tslint --fix --project ./",
+    "lint": "tslint --fix --project tsconfig.lint.json",
     "prepare": "npm run build"
   },
   "repository": {
