@@ -10,7 +10,6 @@ module.exports = function(config) {
 			'karma-chrome-launcher'
 		],
 		files: [
-			'node_modules/@webcomponents/custom-elements/src/native-shim.js',
 			'node_modules/expect.js/index.js',
 			'dist/test.js'
 		],
