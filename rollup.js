@@ -19,15 +19,14 @@ const entries = [
 	}
 ]
 const plugins = opt => {
-	let tsOpts = {}
+	let tsOpts = {tsconfigOverride: {}}
 	if (opt && opt.ts2es5) {
-		tsOpts = {
-			tsconfigOverride: {
-				compilerOptions: {
-					target: 'es5'
-				}
-			}
+		tsOpts.tsconfigOverride.compilerOptions = {
+			target: 'es5'
 		}
+	}
+	if (opt && opt.includeAll) {
+		tsOpts.tsconfigOverride.include = ['src/**/*.ts']
 	}
 	return [
 		typescript(tsOpts),
@@ -44,7 +43,7 @@ const build = async (rollupOptions, writeOptions) => {
 if (BUILD_MODE === 'TEST') {
 	return build({
 		input: 'src/**/*.test.ts',
-		plugins: [multiEntry()].concat(plugins())
+		plugins: [multiEntry()].concat(plugins({includeAll: true}))
 	}, {
 		format: 'umd',
 		name: 'test',
@@ -55,7 +54,7 @@ if (BUILD_MODE === 'TEST') {
 Promise.all(entries.map(entry => {
 	return build({
 		input: entry.file,
-		plugins: plugins()
+		plugins: plugins({includeAll: true})
 	}, {
 		format: 'umd',
 		name: entry.name,
@@ -65,7 +64,7 @@ Promise.all(entries.map(entry => {
 Promise.all(entries.map(entry => {
 	return build({
 		input: entry.file,
-		plugins: plugins({ts2es5: true})
+		plugins: plugins({ts2es5: true, includeAll: true})
 	}, {
 		format: 'umd',
 		name: entry.name,
