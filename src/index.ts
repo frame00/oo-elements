@@ -1,3 +1,4 @@
+import define from './lib/define'
 import ooButton from './elements/oo-button'
 
-window.customElements.define('oo-button', ooButton)
+define('oo-button', ooButton)

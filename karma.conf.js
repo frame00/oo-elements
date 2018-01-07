@@ -7,16 +7,12 @@ module.exports = function(config) {
 		plugins: [
 			'karma-mocha',
 			'karma-mocha-reporter',
-			'karma-chrome-launcher',
-			'karma-typescript-preprocessor'
+			'karma-chrome-launcher'
 		],
 		files: [
 			'node_modules/expect.js/index.js',
-			'src/**/*.test.ts'
+			'dist/test.js'
 		],
-		preprocessors: {
-			'**/*.ts': ['typescript']
-		},
 		reporters: ['mocha'],
 		singleRun: true,
 		customLaunchers: {

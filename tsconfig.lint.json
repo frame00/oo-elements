@@ -5,8 +5,5 @@
 			"es2017",
 			"dom"
 		]
-	},
-	"files": [
-		"node_modules/lit-html/lit-html.d.ts"
-	]
+	}
 }
