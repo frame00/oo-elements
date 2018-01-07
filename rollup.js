@@ -18,6 +18,11 @@ const entries = [
 		name: 'oo-button'
 	}
 ]
+const plugins = [
+	typescript(),
+	resolve({jsnext: true}),
+	commonjs()
+]
 
 const build = async (rollupOptions, writeOptions) => {
 	const bundle = await rollup.rollup(rollupOptions)
@@ -27,12 +32,7 @@ const build = async (rollupOptions, writeOptions) => {
 if (BUILD_MODE === 'TEST') {
 	return build({
 		input: 'src/**/*.test.ts',
-		plugins: [
-			multiEntry(),
-			typescript(),
-			resolve({jsnext: true}),
-			commonjs()
-		]
+		plugins: [multiEntry()].concat(plugins)
 	}, {
 		format: 'umd',
 		name: 'test',
@@ -43,11 +43,7 @@ if (BUILD_MODE === 'TEST') {
 Promise.all(entries.map(entry => {
 	return build({
 		input: entry.file,
-		plugins: [
-			typescript(),
-			resolve({jsnext: true}),
-			commonjs()
-		]
+		plugins
 	}, {
 		format: 'umd',
 		name: entry.name,
