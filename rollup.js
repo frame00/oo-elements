@@ -3,7 +3,8 @@ const resolve = require('rollup-plugin-node-resolve')
 const commonjs = require('rollup-plugin-commonjs')
 const typescript = require('rollup-plugin-typescript2')
 const multiEntry = require('rollup-plugin-multi-entry')
-const postcss = require('./rollup-transform-postcss')
+const postcss = require('rollup-plugin-transform-postcss')
+const cssnext = require('postcss-cssnext')
 
 const {BUILD_MODE} = process.env
 
@@ -30,7 +31,9 @@ const plugins = opt => {
 		tsOpts.tsconfigOverride.include = ['src/**/*.ts']
 	}
 	return [
-		postcss(),
+		postcss({
+			plugins: [cssnext]
+		}),
 		typescript(tsOpts),
 		resolve({jsnext: true}),
 		commonjs()
