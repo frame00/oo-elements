@@ -5,22 +5,22 @@
 		"name": "oo-elements"
 	},
 	{
-		"file": "src/elements/oo-button/index.ts",
+		"file": "src/elements/oo-button/define.ts",
 		"dest": "dist/oo-button.js",
 		"name": "oo-button"
 	},
 	{
-		"file": "src/elements/oo-modal/index.ts",
+		"file": "src/elements/oo-modal/define.ts",
 		"dest": "dist/oo-modal.js",
 		"name": "oo-modal"
 	},
 	{
-		"file": "src/elements/oo-offer/index.ts",
+		"file": "src/elements/oo-offer/define.ts",
 		"dest": "dist/oo-offer.js",
 		"name": "oo-offer"
 	},
 	{
-		"file": "src/elements/oo-sign-in/index.ts",
+		"file": "src/elements/oo-sign-in/define.ts",
 		"dest": "dist/oo-sign-in.js",
 		"name": "oo-sign-in"
 	}
