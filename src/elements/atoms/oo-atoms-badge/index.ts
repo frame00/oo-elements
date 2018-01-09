@@ -1,13 +1,21 @@
 import {html} from 'lit-html'
 import render from '../../../lib/render'
 
+type Size = 'small' | 'medium'
+
 const ATTR = {
 	DATA_SIZE: 'data-size'
+}
+const asValidString = (data: string): Size => {
+	if (data === 'small' || data === 'medium') {
+		return data
+	}
+	return 'medium'
 }
 
 export default class extends HTMLElement {
 	state: {
-		size: 'small' | 'medium' | string
+		size: Size
 	}
 
 	static get observedAttributes() {
@@ -16,18 +24,17 @@ export default class extends HTMLElement {
 
 	constructor() {
 		super()
-		const size = this.getAttribute(ATTR.DATA_SIZE)
+		const size = asValidString(this.getAttribute(ATTR.DATA_SIZE))
 		this.state = {size}
 		this.render()
 	}
 
 	attributeChangedCallback(attr, prev, next) {
-		this.state.size = next
+		this.state.size = asValidString(next)
 		this.render()
 	}
 
 	html(size) {
-		size = size || 'medium'
 		const prefix = 'oo-atoms-badge'
 		return html`
 		<style>

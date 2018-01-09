@@ -5,14 +5,22 @@ import define from '../../lib/define'
 
 define('oo-atoms-badge', oo)
 
+type Size = 'small' | 'medium'
+
 const ATTR = {
 	DATA_SIZE: 'data-size',
 	DATA_IAM: 'data-iam'
 }
+const asValidString = (data: string): Size => {
+	if (data === 'small' || data === 'medium') {
+		return data
+	}
+	return 'medium'
+}
 
 export default class extends HTMLElement {
 	state: {
-		size: 'small' | 'medium' | string,
+		size: Size,
 		iam: string
 	}
 
@@ -22,7 +30,7 @@ export default class extends HTMLElement {
 
 	constructor() {
 		super()
-		const size = this.getAttribute(ATTR.DATA_SIZE)
+		const size = asValidString(this.getAttribute(ATTR.DATA_SIZE))
 		const iam = this.getAttribute(ATTR.DATA_IAM)
 		this.state = {size, iam}
 		this.render()
@@ -31,7 +39,7 @@ export default class extends HTMLElement {
 	attributeChangedCallback(attr, prev, next) {
 		switch(attr) {
 			case ATTR.DATA_SIZE:
-				this.state.size = next
+				this.state.size = asValidString(next)
 				break
 			case ATTR.DATA_IAM:
 				this.state.iam = next
@@ -43,7 +51,6 @@ export default class extends HTMLElement {
 	}
 
 	html(size, iam) {
-		size = size || 'medium'
 		return html`
 		<style>
 			:host {
