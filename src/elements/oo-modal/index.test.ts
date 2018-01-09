@@ -11,10 +11,12 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	before(() => {
 		define(ELEMENT, el)
 	})
+
 	it('Mount on document', () => {
 		insertElement(ELEMENT)
 		expect(getElement(ELEMENT)[0]).to.be.ok()
 	})
+
 	it('"header" slot shows heading elements of modal', () => {
 		removeElement(ELEMENT)
 		document.body.insertAdjacentHTML('afterbegin', `
@@ -26,6 +28,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		const assigned = slotHeader.assignedNodes()
 		expect(assigned[0].textContent).to.be('Title')
 	})
+
 	it('"body" slot shows inner elements of modal', () => {
 		removeElement(ELEMENT)
 		document.body.insertAdjacentHTML('afterbegin', `
@@ -37,18 +40,21 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		const assigned = slotHeader.assignedNodes()
 		expect(assigned[0].textContent).to.be('The content')
 	})
+
 	it('Open this modal', () => {
 		const element = getElement(ELEMENT)[0]
 		element.setAttribute('data-open', 'enabled')
 		const modal = element.shadowRoot.querySelector('.modal')
 		expect(modal.clientHeight).to.be.above(0)
 	})
+
 	it('Close this modal', () => {
 		const element = getElement(ELEMENT)[0]
 		element.setAttribute('data-open', 'disabled')
 		const modal = element.shadowRoot.querySelector('.modal')
 		expect(modal.clientHeight).to.be(0)
 	})
+
 	after(() => {
 		removeElement(ELEMENT)
 	})
