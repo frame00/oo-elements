@@ -105,7 +105,7 @@ export default class extends HTMLElement {
 				}
 			}
 		</style>
-		<button title='Click to send me an offer' class$=${size} on-click=${() => this.onClickButton()}>
+		<button title='Click to send me an offer' class$=${size} onclick=${() => this.onClickButton()}>
 			<oo-atoms-badge data-size$=${size}></oo-atoms-badge>
 			<div class=text>Offer Me</div>
 		</button>

@@ -140,7 +140,7 @@ export default class extends HTMLElement {
 					<div class=content>
 						<div class=header>
 							<slot name=header></slot>
-							<button class=close-button on-click=${() => this.onClickClose()}>×</button>
+							<button class=close-button onclick=${() => this.onClickClose()}>×</button>
 						</div>
 						<div class=body>
 							<slot name=body></slot>
