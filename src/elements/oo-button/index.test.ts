@@ -34,7 +34,12 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(element.clientHeight).to.be(50)
 	})
 
-	it('Display modal by this element click')
+	it('Display modal by this element click', () => {
+		const element = getElement(ELEMENT)[0]
+		element.shadowRoot.querySelector('button').dispatchEvent(new Event('click'))
+		const modal = element.shadowRoot.querySelector('oo-organisms-offer-modal')
+		expect(modal.getAttribute('data-open')).to.be('enabled')
+	})
 
 	after(() => {
 		removeElement(ELEMENT)

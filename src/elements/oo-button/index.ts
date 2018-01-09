@@ -1,9 +1,11 @@
 import {html} from 'lit-html'
 import render from '../../lib/render'
-import oo from '../_atoms/oo-atoms-badge'
+import badge from '../_atoms/oo-atoms-badge'
+import offerModal from '../_organisms/oo-organisms-offer-modal'
 import define from '../../lib/define'
 
-define('oo-atoms-badge', oo)
+define('oo-atoms-badge', badge)
+define('oo-organisms-offer-modal', offerModal)
 
 type Size = 'small' | 'medium'
 
@@ -21,7 +23,8 @@ const asValidString = (data: string): Size => {
 export default class extends HTMLElement {
 	state: {
 		size: Size,
-		iam: string
+		iam: string,
+		open: boolean
 	}
 
 	static get observedAttributes() {
@@ -32,7 +35,8 @@ export default class extends HTMLElement {
 		super()
 		const size = asValidString(this.getAttribute(ATTR.DATA_SIZE))
 		const iam = this.getAttribute(ATTR.DATA_IAM)
-		this.state = {size, iam}
+		const open = false
+		this.state = {size, iam, open}
 		this.render()
 	}
 
@@ -50,7 +54,7 @@ export default class extends HTMLElement {
 		this.render()
 	}
 
-	html(size, iam) {
+	html(size, iam, open) {
 		return html`
 		<style>
 			:host {
@@ -101,14 +105,20 @@ export default class extends HTMLElement {
 				}
 			}
 		</style>
-		<button title='Click to send me an offer' class$=${size}>
+		<button title='Click to send me an offer' class$=${size} on-click=${() => this.onClickButton()}>
 			<oo-atoms-badge data-size$=${size}></oo-atoms-badge>
 			<div class=text>Offer Me</div>
 		</button>
+		<oo-organisms-offer-modal data-open$=${open ? 'enabled' : 'disabled'}></oo-organisms-offer-modal>
 		`
 	}
 
 	render() {
-		render(this.html(this.state.size, this.state.iam), this)
+		render(this.html(this.state.size, this.state.iam, this.state.open), this)
+	}
+
+	onClickButton() {
+		this.state.open = !this.state.open
+		this.render()
 	}
 }
