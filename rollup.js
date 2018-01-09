@@ -6,26 +6,10 @@ const multiEntry = require('rollup-plugin-multi-entry')
 const postcss = require('rollup-plugin-transform-postcss')
 const cssnext = require('postcss-cssnext')
 const precss = require('precss')
+const entries = require('./entries.json')
 
 const {BUILD_MODE} = process.env
 
-const entries = [
-	{
-		file: 'src/index.ts',
-		dest: 'oo-elements.js',
-		name: 'oo-elements'
-	},
-	{
-		file: 'src/elements/oo-button/index.ts',
-		dest: 'dist/oo-button.js',
-		name: 'oo-button'
-	},
-	{
-		file: 'src/elements/oo-modal/index.ts',
-		dest: 'dist/oo-modal.js',
-		name: 'oo-modal'
-	}
-]
 const plugins = opt => {
 	let tsOpts = {tsconfigOverride: {}}
 	if (opt && opt.ts2es5) {
