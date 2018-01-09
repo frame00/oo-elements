@@ -16,7 +16,7 @@ export default class extends HTMLElement {
 
 	constructor() {
 		super()
-		const size = this.getAttribute(ATTR.DATA_SIZE) || 'medium'
+		const size = this.getAttribute(ATTR.DATA_SIZE)
 		this.state = {size}
 		this.render()
 	}
@@ -27,9 +27,13 @@ export default class extends HTMLElement {
 	}
 
 	html(size) {
+		size = size || 'medium'
 		const prefix = 'oo-atoms-badge'
 		return html`
 		<style>
+			:host {
+				display: block;
+			}
 			.oo-atoms-badge {
 				&-container {
 					display: flex;
