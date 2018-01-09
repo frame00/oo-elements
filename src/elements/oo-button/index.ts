@@ -22,7 +22,7 @@ export default class extends HTMLElement {
 
 	constructor() {
 		super()
-		const size = this.getAttribute(ATTR.DATA_SIZE) || 'medium'
+		const size = this.getAttribute(ATTR.DATA_SIZE)
 		const iam = this.getAttribute(ATTR.DATA_IAM)
 		this.state = {size, iam}
 		this.render()
@@ -43,6 +43,7 @@ export default class extends HTMLElement {
 	}
 
 	html(size, iam) {
+		size = size || 'medium'
 		return html`
 		<style>
 			:host {

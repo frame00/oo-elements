@@ -5,7 +5,7 @@ import getElement from '../../lib/test/get-element'
 
 const ELEMENT = 'oo-button'
 
-describe('<oo-button></oo-button>', () => {
+describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	before(() => {
 		define(ELEMENT, el)
 	})
@@ -13,7 +13,20 @@ describe('<oo-button></oo-button>', () => {
 		insertElement(ELEMENT)
 		expect(getElement(ELEMENT)[0]).to.be.ok()
 	})
-	it('Mount with normal size')
-	it('Mount with small size')
+	it('Mount with medium size', () => {
+		const element = getElement(ELEMENT)[0]
+		element.setAttribute('data-size', 'medium')
+		expect(element.clientHeight).to.be(50)
+	})
+	it('Mount with small size', () => {
+		const element = getElement(ELEMENT)[0]
+		element.setAttribute('data-size', 'small')
+		expect(element.clientHeight).to.be(20)
+	})
+	it('Default mount size is medium', () => {
+		const element = getElement(ELEMENT)[0]
+		element.removeAttribute('data-size')
+		expect(element.clientHeight).to.be(50)
+	})
 	it('Display modal by this element click')
 })
