@@ -1,9 +1,5 @@
 import {html} from 'lit-html'
 import render from '../../lib/render'
-import signIn from '../oo-sign-in'
-import define from '../../lib/define'
-
-define('oo-sign-in', signIn)
 
 const ATTR = {
 	DATA_IAM: 'data-iam'
@@ -37,7 +33,6 @@ export default class extends HTMLElement {
 				display: block;
 			}
 		</style>
-		<oo-sign-in></oo-sign-in>
 		`
 	}
 
