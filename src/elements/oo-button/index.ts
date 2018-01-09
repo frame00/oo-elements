@@ -1,6 +1,6 @@
 import {html} from 'lit-html'
 import render from '../../lib/render'
-import oo from '../atoms/oo-atoms-badge'
+import oo from '../_atoms/oo-atoms-badge'
 import define from '../../lib/define'
 
 define('oo-atoms-badge', oo)
