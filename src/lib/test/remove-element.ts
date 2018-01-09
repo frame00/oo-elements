@@ -1,5 +1,4 @@
 import getElement from './get-element'
-const {document} = window
 
 export default (name: string): boolean => {
 	try {
