@@ -19,6 +19,11 @@ const entries = [
 		file: 'src/elements/oo-button/index.ts',
 		dest: 'dist/oo-button.js',
 		name: 'oo-button'
+	},
+	{
+		file: 'src/elements/oo-modal/index.ts',
+		dest: 'dist/oo-modal.js',
+		name: 'oo-modal'
 	}
 ]
 const plugins = opt => {
