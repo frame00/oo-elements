@@ -5,7 +5,7 @@ const {fetch} = window
 const ENDPOINT = 'https://api.ooapp.co'
 
 const endpoints = (resource: OOAPIResource, pathParameter?: string, version: OOAPIVersion = 'stable'): string => {
-	return `${ENDPOINT}/${version}/${resource}${pathParameter && `/${pathParameter}`}`
+	return `${ENDPOINT}/${version}/${resource}${pathParameter ? `/${pathParameter}` : ''}`
 }
 
 interface Options {
@@ -29,10 +29,13 @@ export default async (options: Options): Promise<{
 	} = options
 
 	const endpoint = endpoints(resource, pathParameter, version)
-	const init: RequestInit = {method}
+	const init: RequestInit = {
+		method,
+		mode: 'cors'
+	}
 
 	if (body !== undefined) {
-		init.body = body
+		init.body = JSON.stringify(body)
 	}
 
 	const result = await fetch(endpoint, init)

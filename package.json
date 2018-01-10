@@ -23,7 +23,6 @@
   },
   "homepage": "https://github.com/frame00/oo-elements#readme",
   "dependencies": {
-    "firebase": "4.8.0",
     "lit-html": "^0.7.1",
     "typescript": "^2.6.2"
   },
@@ -31,6 +30,7 @@
     "@types/expect.js": "^0.3.29",
     "@types/mocha": "^2.2.46",
     "expect.js": "^0.3.1",
+    "firebase": "^4.8.1",
     "http-server": "^0.10.0",
     "karma": "^2.0.0",
     "karma-chrome-launcher": "^2.2.0",
