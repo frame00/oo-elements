@@ -5,13 +5,25 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>oo-sign-in</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		oo-sign-in {
+			margin-bottom: 2rem;
+		}
+	</style>
 </head>
 <body>
 
 	<script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs/webcomponents-lite.min.js"></script>
 	<script async defer src="../dist/oo-sign-in.js"></script>
 
-	<oo-sign-in></oo-sign-in>
+	<!-- Sign in with Google -->
+	<oo-sign-in data-provider=google></oo-sign-in>
+
+	<!-- Sign in with Facebook -->
+	<oo-sign-in data-provider=facebook></oo-sign-in>
+
+	<!-- Sign in with GitHub -->
+	<oo-sign-in data-provider=github></oo-sign-in>
 
 </body>
 </html>
