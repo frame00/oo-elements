@@ -16,6 +16,12 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(getElement(ELEMENT)[0]).to.be.ok()
 	})
 
+	it('Specify authentication provider')
+
+	it('Run Firebase Authentication by this element click')
+
+	it('Sign-in to OO with the return value of Firebase Authentication')
+
 	after(() => {
 		removeElement(ELEMENT)
 	})
