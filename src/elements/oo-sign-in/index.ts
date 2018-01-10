@@ -56,20 +56,39 @@ export default class extends HTMLElement {
 			:host {
 				display: inline-block;
 			}
+			:root {
+				--google: #4283f4;
+				--facebook: #4267b2;
+				--github: #444;
+			}
 			button {
 				padding: 0.8rem 1rem;
 				border-radius: 5px;
 				color: white;
 				font-family: var(--font-family);
+				transition: background 0.2s, transform 0.2s;
+				&:active {
+					position: relative;
+					transform: translateY(2px);
+				}
 			}
 			.google {
-				background: #4283f4;
+				background: var(--google);
+				&:hover {
+					background: color(var(--google) blackness(+10%));
+				}
 			}
 			.facebook {
-				background: #4267b2;
+				background: var(--facebook);
+				&:hover {
+					background: color(var(--facebook) blackness(+10%));
+				}
 			}
 			.github {
-				background: #333;
+				background: var(--github);
+				&:hover {
+					background: color(var(--github) blackness(+15%));
+				}
 			}
 		</style>
 		<button class$=${provider}>
