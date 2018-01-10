@@ -58,6 +58,7 @@ export default class extends HTMLElement {
 		return html`
 		<style>
 			@import '../../style/_reset-button.css';
+			@import '../../style/_vars-font-family.css';
 			:host {
 				display: block;
 			}
@@ -86,11 +87,11 @@ export default class extends HTMLElement {
 				align-items: center;
 				justify-content: center;
 				color: black;
-				font-family: "Helvetica Neue", Roboto, Arial, sans-serif;
 				font-weight: 400;
 				font-size: 1.4rem;
 				letter-spacing: 0.05rem;
 				background: #ffd600;
+				font-family: var(--font-family);
 			}
 			.small {
 				.text {

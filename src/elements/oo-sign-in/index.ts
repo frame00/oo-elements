@@ -52,6 +52,7 @@ export default class extends HTMLElement {
 		return html`
 		<style>
 			@import '../../style/_reset-button.css';
+			@import '../../style/_vars-font-family.css';
 			:host {
 				display: inline-block;
 			}
@@ -59,6 +60,7 @@ export default class extends HTMLElement {
 				padding: 0.8rem 1rem;
 				border-radius: 5px;
 				color: white;
+				font-family: var(--font-family);
 			}
 			.google {
 				background: #4283f4;
