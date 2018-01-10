@@ -3,20 +3,13 @@ import {GoogleAuthProvider, FacebookAuthProvider, GithubAuthProvider} from '@fir
 import {AuthProvider} from '../d/auth-provider'
 import {AuthResult} from '../d/auth-result'
 import {Firebase} from '../d/firebase'
+import config from '../conf/firebase'
 
 const state = {
 	initialized: false
 }
 const initialize = (f: Firebase): Firebase => {
 	if (state.initialized === false) {
-		const config = {
-			apiKey: 'AIzaSyD_7hyu6yjfwy18RzJ1Msg6FS0QLBSzbq4',
-			authDomain: 'ooapp-6c046.firebaseapp.com',
-			databaseURL: 'https://ooapp-6c046.firebaseio.com',
-			projectId: 'ooapp-6c046',
-			storageBucket: 'ooapp-6c046.appspot.com',
-			messagingSenderId: '90122914908'
-		}
 		f.initializeApp(config)
 		state.initialized = true
 	}
