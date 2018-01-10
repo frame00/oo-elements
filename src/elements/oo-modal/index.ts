@@ -39,6 +39,7 @@ export default class extends HTMLElement {
 	html(open) {
 		return html`
 		<style>
+			@import '../../style/_reset-button.css';
 			.backdrop {
 				opacity: 0;
 				position: fixed;
@@ -80,11 +81,6 @@ export default class extends HTMLElement {
 					top: 0;
 					bottom: 0;
 					right: 0;
-					border: none;
-					outline: none;
-					cursor: pointer;
-					background-color: transparent;
-					appearance: none;
 					font-size: 1.4rem;
 				}
 			}

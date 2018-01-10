@@ -34,13 +34,45 @@ export default class extends HTMLElement {
 		this.render()
 	}
 
-	html(provider) {
+	html(provider: Provider) {
+		let label: string = provider
+		switch (provider) {
+			case 'google':
+				label = 'Google'
+				break
+			case 'facebook':
+				label = 'Facebook'
+				break
+			case 'github':
+				label = 'GitHub'
+				break
+			default:
+				break
+		}
 		return html`
 		<style>
+			@import '../../style/_reset-button.css';
 			:host {
-				display: block;
+				display: inline-block;
+			}
+			button {
+				padding: 0.8rem 1rem;
+				border-radius: 5px;
+				color: white;
+			}
+			.google {
+				background: #4283f4;
+			}
+			.facebook {
+				background: #4267b2;
+			}
+			.github {
+				background: #333;
 			}
 		</style>
+		<button class$=${provider}>
+			Sign in with ${label}
+		</button>
 		`
 	}
 

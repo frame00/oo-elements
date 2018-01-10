@@ -57,18 +57,13 @@ export default class extends HTMLElement {
 	html(size, iam, open) {
 		return html`
 		<style>
+			@import '../../style/_reset-button.css';
 			:host {
 				display: block;
 			}
 			button {
 				display: flex;
 				align-items: stretch;
-				padding: 0;
-				border: none;
-				outline: none;
-				cursor: pointer;
-				background-color: transparent;
-				appearance: none;
 				border-radius: 6px;
 				overflow: hidden;
 				transition-property: box-shadow;
