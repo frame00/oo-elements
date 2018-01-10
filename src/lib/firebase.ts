@@ -1,4 +1,5 @@
 import {Firebase} from '../d/firebase'
+import {cdnSource} from '../conf/firebase'
 const {document} = window
 
 declare global {
@@ -10,7 +11,7 @@ declare global {
 const load = (callback: (firebase: Firebase) => void): void => {
 	if (!('firebase' in window)) {
 		const script = document.createElement('script')
-		script.src = 'https://www.gstatic.com/firebasejs/4.8.1/firebase.js'
+		script.src = cdnSource
 		script.onload = () => {
 			callback(window.firebase)
 		}

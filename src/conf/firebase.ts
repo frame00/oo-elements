@@ -1,3 +1,5 @@
+export const cdnSource = 'https://www.gstatic.com/firebasejs/4.8.1/firebase.js'
+
 export default {
 	apiKey: 'AIzaSyD_7hyu6yjfwy18RzJ1Msg6FS0QLBSzbq4',
 	authDomain: 'ooapp-6c046.firebaseapp.com',
