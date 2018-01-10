@@ -1,32 +1,40 @@
 import {html} from 'lit-html'
 import render from '../../lib/render'
 
+type Provider = 'google' | 'facebook' | 'github'
+
 const ATTR = {
-	DATA_IAM: 'data-iam'
+	DATA_PROVIDER: 'data-provider'
+}
+const asValidString = (data: string): Provider => {
+	if (data === 'google' || data === 'facebook' || data === 'github') {
+		return data
+	}
+	return 'google'
 }
 
 export default class extends HTMLElement {
 	state: {
-		iam: string
+		provider: Provider
 	}
 
 	static get observedAttributes() {
-		return [ATTR.DATA_IAM]
+		return [ATTR.DATA_PROVIDER]
 	}
 
 	constructor() {
 		super()
-		const iam = this.getAttribute(ATTR.DATA_IAM)
-		this.state = {iam}
+		const provider = asValidString(this.getAttribute(ATTR.DATA_PROVIDER))
+		this.state = {provider}
 		this.render()
 	}
 
 	attributeChangedCallback(attr, prev, next) {
-		this.state.iam = next
+		this.state.provider = asValidString(next)
 		this.render()
 	}
 
-	html(iam) {
+	html(provider) {
 		return html`
 		<style>
 			:host {
@@ -37,6 +45,6 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(this.state.iam), this)
+		render(this.html(this.state.provider), this)
 	}
 }
