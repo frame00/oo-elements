@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/frame00/oo-elements#readme",
   "dependencies": {
+    "firebase": "4.8.0",
     "lit-html": "^0.7.1",
     "typescript": "^2.6.2"
   },

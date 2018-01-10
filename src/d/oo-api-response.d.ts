@@ -1,0 +1,8 @@
+import {OOUser} from './oo-user'
+import {OOExtension} from './oo-extension'
+
+export interface OOAPIResponseError {
+	message: string
+}
+
+export type OOAPIResponse = Array<OOUser | OOExtension> | OOAPIResponseError

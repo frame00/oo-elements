@@ -1,12 +1,12 @@
 import {html} from 'lit-html'
 import render from '../../lib/render'
-
-type Provider = 'google' | 'facebook' | 'github'
+import {AuthProvider} from '../../d/auth-provider.d'
+import signInWithFirebase from '../../lib/sign-in-with-firebase'
 
 const ATTR = {
 	DATA_PROVIDER: 'data-provider'
 }
-const asValidString = (data: string): Provider => {
+const asValidString = (data: string): AuthProvider => {
 	if (data === 'google' || data === 'facebook' || data === 'github') {
 		return data
 	}
@@ -15,7 +15,7 @@ const asValidString = (data: string): Provider => {
 
 export default class extends HTMLElement {
 	state: {
-		provider: Provider
+		provider: AuthProvider
 	}
 
 	static get observedAttributes() {
@@ -34,7 +34,7 @@ export default class extends HTMLElement {
 		this.render()
 	}
 
-	html(provider: Provider) {
+	html(provider: AuthProvider) {
 		let label: string = provider
 		switch (provider) {
 			case 'google':
@@ -91,7 +91,7 @@ export default class extends HTMLElement {
 				}
 			}
 		</style>
-		<button class$=${provider}>
+		<button class$=${provider} onclick=${() => this.onClickButton()}>
 			Sign in with ${label}
 		</button>
 		`
@@ -99,5 +99,10 @@ export default class extends HTMLElement {
 
 	render() {
 		render(this.html(this.state.provider), this)
+	}
+
+	async onClickButton() {
+		const res = await signInWithFirebase(this.state.provider)
+		console.log(res)
 	}
 }
