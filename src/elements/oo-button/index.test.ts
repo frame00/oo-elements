@@ -3,6 +3,7 @@ import define from '../../lib/define'
 import insertElement from '../../lib/test/insert-element'
 import getElement from '../../lib/test/get-element'
 import removeElement from '../../lib/test/remove-element'
+import event from '../../lib/test/event'
 
 const ELEMENT = 'oo-button'
 
@@ -36,7 +37,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	it('Display modal by this element click', () => {
 		const element = getElement(ELEMENT)[0]
-		element.shadowRoot.querySelector('button').dispatchEvent(new Event('click'))
+		event(element.shadowRoot.querySelector('button'), 'click')
 		const modal = element.shadowRoot.querySelector('oo-organisms-offer-modal')
 		expect(modal.getAttribute('data-open')).to.be('enabled')
 	})
