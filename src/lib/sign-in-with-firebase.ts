@@ -8,8 +8,12 @@ import isSuccess from './is-api-success'
 export default async (provider: AuthProvider, test?: string): Promise<OOToken | boolean> => {
 	let firebaseUid
 	if (test === undefined) {
-		const authRes = await auth(provider)
-		firebaseUid = authRes.user.uid
+		try {
+			const authRes = await auth(provider)
+			firebaseUid = authRes.user.uid
+		} catch(err) {
+			throw new Error(err)
+		}
 	} else if (test === 'error') {
 		throw new Error('This is a test')
 	} else {

@@ -50,3 +50,18 @@ export interface AuthResult {
 	},
 	operationType: string
 }
+
+export interface AuthResultError {
+	code: 'auth/account-exists-with-different-credential' |
+		  'auth/invalid-credential' |
+		  'auth/operation-not-allowed' |
+		  'auth/user-disabled' |
+		  'auth/user-not-found' |
+		  'auth/wrong-password' |
+		  'auth/invalid-verification-code' |
+		  'auth/invalid-verification-id',
+	message: string,
+	email: string,
+	providerId: string,
+	oauthAccessToken: string
+}
