@@ -1,23 +1,26 @@
-import firebaseImport from './firebase'
+import * as f from 'firebase'
 import {GoogleAuthProvider, FacebookAuthProvider, GithubAuthProvider} from '@firebase/auth-types'
 import {AuthProvider} from '../d/auth-provider'
 import {AuthResult} from '../d/auth-result'
-import {Firebase} from '../d/firebase'
 import config from '../conf/firebase'
+import {FirebaseNamespace} from '@firebase/app-types'
 
 const state = {
 	initialized: false
 }
-const initialize = (f: Firebase): Firebase => {
+const initialize = (fb: any): FirebaseNamespace => {
+	// It's hack!
+	// Because Firebase source for browser is CommonJS, default is exported after bundle.
+	const app: FirebaseNamespace = fb.default
 	if (state.initialized === false) {
-		f.initializeApp(config)
+		const {initializeApp} = app
+		initializeApp(config)
 		state.initialized = true
 	}
-	return f
+	return app
 }
 
 export default async (authProvider: AuthProvider): Promise<AuthResult> => {
-	const f = await firebaseImport()
 	const firebase = initialize(f)
 	const provider: GoogleAuthProvider | FacebookAuthProvider | GithubAuthProvider = (prov => {
 		switch(prov) {

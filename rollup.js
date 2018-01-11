@@ -24,9 +24,19 @@ const plugins = opt => {
 		postcss({
 			plugins: [precss, cssnext]
 		}),
-		typescript(tsOpts),
-		resolve({jsnext: true}),
-		commonjs()
+		resolve({
+			browser: true,
+			jsnext: true
+		}),
+		commonjs({
+			include: 'node_modules/**',
+			namedExports: {
+				'node_modules/@firebase/util/dist/cjs/index.js': [
+					'deepCopy', 'deepExtend', 'createSubscribe', 'ErrorFactory', 'patchProperty'
+				]
+			}
+		}),
+		typescript(tsOpts)
 	]
 }
 
