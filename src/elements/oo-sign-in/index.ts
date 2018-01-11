@@ -2,6 +2,7 @@ import {html} from 'lit-html'
 import render from '../../lib/render'
 import {AuthProvider} from '../../d/auth-provider.d'
 import signInWithFirebase from '../../lib/sign-in-with-firebase'
+import testMode from '../../lib/test/test-mode'
 
 const ATTR = {
 	DATA_PROVIDER: 'data-provider'
@@ -27,6 +28,13 @@ export default class extends HTMLElement {
 		const provider = asValidString(this.getAttribute(ATTR.DATA_PROVIDER))
 		this.state = {provider}
 		this.render()
+	}
+
+	connectedCallback() {
+		const t = testMode(this)
+		if(typeof t === 'string') {
+			this.signIn(t)
+		}
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -91,7 +99,7 @@ export default class extends HTMLElement {
 				}
 			}
 		</style>
-		<button class$=${provider} onclick=${() => this.onClickButton()}>
+		<button class$=${provider} onclick=${() => this.signIn()}>
 			Sign in with ${label}
 		</button>
 		`
@@ -101,9 +109,9 @@ export default class extends HTMLElement {
 		render(this.html(this.state.provider), this)
 	}
 
-	async onClickButton() {
+	async signIn(test?: string) {
 		try {
-			const token = await signInWithFirebase(this.state.provider)
+			const token = await signInWithFirebase(this.state.provider, test)
 			const signedin = new CustomEvent('signedin', {detail: {token}})
 			this.dispatchEvent(signedin)
 		} catch(err) {

@@ -5,14 +5,21 @@ import api from '../lib/oo-api'
 import createToken from './oo-api-create-token'
 import isSuccess from './is-api-success'
 
-export default async (provider: AuthProvider): Promise<OOToken | boolean> => {
-	const authRes = await auth(provider)
-	const fbUid = authRes.user.uid
+export default async (provider: AuthProvider, test?: string): Promise<OOToken | boolean> => {
+	let firebaseUid
+	if (test === undefined) {
+		const authRes = await auth(provider)
+		firebaseUid = authRes.user.uid
+	} else if (test === 'error') {
+		throw new Error('This is a test')
+	} else {
+		return test
+	}
 	const ooapiRes = await api({
 		resource: 'users',
 		method: 'POST',
 		body: {
-			firebase_uid: fbUid
+			firebase_uid: firebaseUid
 		}
 	})
 
@@ -20,7 +27,7 @@ export default async (provider: AuthProvider): Promise<OOToken | boolean> => {
 		return false
 	}
 
-	const tokenRes = await createToken(fbUid)
+	const tokenRes = await createToken(firebaseUid)
 
 	if (!isSuccess(tokenRes.status)) {
 		return false
