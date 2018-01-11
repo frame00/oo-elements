@@ -62,7 +62,6 @@ if (BUILD_MODE === 'TEST') {
 		file: 'dist/test.js'
 	})
 }
-console.log('XXXX', file)
 const filteredEntries = file ? entries.filter(entry => entry.file === file) : entries
 Promise.all(filteredEntries.map(entry => {
 	return build({
