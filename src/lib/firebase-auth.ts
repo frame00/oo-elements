@@ -8,10 +8,7 @@ import {FirebaseNamespace} from '@firebase/app-types'
 const state = {
 	initialized: false
 }
-const initialize = (fb: any): FirebaseNamespace => {
-	// It's hack!
-	// Because Firebase source for browser is CommonJS, default is exported after bundle.
-	const app: FirebaseNamespace = fb.default
+const initialize = (app: FirebaseNamespace): FirebaseNamespace => {
 	if (state.initialized === false) {
 		const {initializeApp} = app
 		initializeApp(config)
