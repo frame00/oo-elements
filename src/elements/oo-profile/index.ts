@@ -1,5 +1,6 @@
 import {html} from 'lit-html'
 import render from '../../lib/render'
+import getUser from '../../lib/oo-api-get-user'
 
 const ATTR = {
 	DATA_IAM: 'data-iam'
@@ -24,6 +25,11 @@ export default class extends HTMLElement {
 	attributeChangedCallback(attr, prev, next) {
 		this.state.iam = next
 		this.render()
+	}
+
+	async connectedCallback() {
+		const user = await getUser(this.state.iam)
+		console.log(user)
 	}
 
 	html(iam) {

@@ -9,6 +9,7 @@ const precss = require('precss')
 const entries = require('./entries.json')
 
 const {BUILD_MODE} = process.env
+const [_, __, file] = process.argv
 const postcssOptions = {
 	plugins: [precss, cssnext]
 }
@@ -61,8 +62,9 @@ if (BUILD_MODE === 'TEST') {
 		file: 'dist/test.js'
 	})
 }
-
-Promise.all(entries.map(entry => {
+console.log('XXXX', file)
+const filteredEntries = file ? entries.filter(entry => entry.file === file) : entries
+Promise.all(filteredEntries.map(entry => {
 	return build({
 		input: entry.file,
 		plugins: plugins({includeAll: true})
@@ -72,7 +74,7 @@ Promise.all(entries.map(entry => {
 		file: entry.dest
 	})
 }))
-Promise.all(entries.map(entry => {
+Promise.all(filteredEntries.map(entry => {
 	return build({
 		input: entry.file,
 		plugins: plugins({ts2es5: true, includeAll: true})
