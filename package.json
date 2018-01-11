@@ -2,7 +2,7 @@
   "name": "oo-elements",
   "version": "0.0.1-alpha.1",
   "description": "Web Components for OO",
-  "main": "index.js",
+  "main": "dist/oo-elements.js",
   "scripts": {
     "start": "http-server",
     "test": "karma start",
