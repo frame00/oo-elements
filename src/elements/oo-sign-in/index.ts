@@ -104,9 +104,11 @@ export default class extends HTMLElement {
 	async onClickButton() {
 		try {
 			const token = await signInWithFirebase(this.state.provider)
-			console.log(token)
+			const signedin = new CustomEvent('signedin', {detail: {token}})
+			this.dispatchEvent(signedin)
 		} catch(err) {
-			console.error(err)
+			const signedinerror = new CustomEvent('signedinerror', {detail: err})
+			this.dispatchEvent(signedinerror)
 		}
 	}
 }

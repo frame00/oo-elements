@@ -37,11 +37,15 @@ export default class extends HTMLElement {
 				display: block;
 			}
 		</style>
-		<oo-sign-in></oo-sign-in>
+		<oo-sign-in on-signedin=${e => this.onSignedIn(e)}></oo-sign-in>
 		`
 	}
 
 	render() {
 		render(this.html(this.state.iam), this)
+	}
+
+	onSignedIn(e: CustomEvent) {
+		console.log(e)
 	}
 }

@@ -20,7 +20,9 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	it('Run Firebase Authentication by this element click')
 
-	it('Sign-in to OO with the return value of Firebase Authentication')
+	it('Dispatch "signedin" event when sign-in to OO with the return value of Firebase Authentication')
+
+	it('Dispatch "signedinerror" event when error on sign-in')
 
 	after(() => {
 		removeElement(ELEMENT)
