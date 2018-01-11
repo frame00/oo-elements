@@ -1,6 +1,7 @@
 import {html} from 'lit-html'
 import render from '../../lib/render'
 import {AuthProvider} from '../../d/auth-provider.d'
+import firebase from '../../lib/firebase'
 import signInWithFirebase from '../../lib/sign-in-with-firebase'
 
 const ATTR = {
@@ -24,6 +25,7 @@ export default class extends HTMLElement {
 
 	constructor() {
 		super()
+		firebase()
 		const provider = asValidString(this.getAttribute(ATTR.DATA_PROVIDER))
 		this.state = {provider}
 		this.render()
