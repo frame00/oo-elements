@@ -23,5 +23,10 @@
 		"file": "src/elements/oo-sign-in/define.ts",
 		"dest": "dist/oo-sign-in.js",
 		"name": "oo-sign-in"
+	},
+	{
+		"file": "src/elements/oo-profile/define.ts",
+		"dest": "dist/oo-profile.js",
+		"name": "oo-profile"
 	}
 ]
