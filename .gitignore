@@ -59,5 +59,4 @@ typings/
 
 # Output of 'npm run build'
 dist
-oo-elements.*
 .rpt2_cache

@@ -7,6 +7,7 @@
     "start": "http-server",
     "test": "karma start",
     "pretest": "BUILD_MODE=TEST node rollup.js",
+    "posttest": "rm dist/test.js",
     "build": "node rollup.js",
     "prebuild": "npm run lint",
     "lint": "tslint --fix --project tsconfig.lint.json",
