@@ -9,6 +9,24 @@ const precss = require('precss')
 const entries = require('./entries.json')
 
 const {BUILD_MODE} = process.env
+const postcssOptions = {
+	plugins: [precss, cssnext]
+}
+const resolveOptions = {
+	browser: true,
+	jsnext: true
+}
+const commonjsOptions = {
+	include: 'node_modules/**',
+	namedExports: {
+		'node_modules/firebase/index.js': [
+			'app', 'apps', 'auth', 'database', 'initializeApp', 'messaging', 'storage'
+		],
+		'node_modules/@firebase/util/dist/cjs/index.js': [
+			'deepCopy', 'deepExtend', 'createSubscribe', 'ErrorFactory', 'patchProperty'
+		]
+	}
+}
 
 const plugins = opt => {
 	let tsOpts = {tsconfigOverride: {}}
@@ -21,24 +39,9 @@ const plugins = opt => {
 		tsOpts.tsconfigOverride.include = ['src/**/*.ts']
 	}
 	return [
-		postcss({
-			plugins: [precss, cssnext]
-		}),
-		resolve({
-			browser: true,
-			jsnext: true
-		}),
-		commonjs({
-			include: 'node_modules/**',
-			namedExports: {
-				'node_modules/firebase/index.js': [
-					'app', 'apps', 'auth', 'database', 'initializeApp', 'messaging', 'storage'
-				],
-				'node_modules/@firebase/util/dist/cjs/index.js': [
-					'deepCopy', 'deepExtend', 'createSubscribe', 'ErrorFactory', 'patchProperty'
-				]
-			}
-		}),
+		postcss(postcssOptions),
+		resolve(resolveOptions),
+		commonjs(commonjsOptions),
 		typescript(tsOpts)
 	]
 }
