@@ -1,6 +1,8 @@
 import {html} from 'lit-html'
 import render from '../../lib/render'
 import getUser from '../../lib/oo-api-get-user'
+import isSuccess from '../../lib/is-api-success'
+import toMap from '../../lib/extensions-to-map'
 
 const ATTR = {
 	DATA_IAM: 'data-iam'
@@ -8,7 +10,11 @@ const ATTR = {
 
 export default class extends HTMLElement {
 	state: {
-		iam: string
+		iam: string,
+		name?: string,
+		photo?: string,
+		skill?: string,
+		unitPrice?: number
 	}
 
 	static get observedAttributes() {
@@ -28,8 +34,17 @@ export default class extends HTMLElement {
 	}
 
 	async connectedCallback() {
-		const user = await getUser(this.state.iam)
-		console.log(user)
+		const res = await getUser(this.state.iam)
+		if (isSuccess(res.status) && Array.isArray(res.response)) {
+			const ext = toMap(res.response)
+			const name = ext.get('name')
+			const photo = ext.get('photo')
+			const skill = ext.get('skill')
+			const unitPrice = ext.get('unit_price')
+			const newState = {name, photo, skill, unitPrice}
+			this.state = {...this.state, ...newState}
+			console.log(this.state)
+		}
 	}
 
 	html(iam) {

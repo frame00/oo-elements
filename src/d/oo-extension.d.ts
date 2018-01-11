@@ -1,6 +1,7 @@
 export interface OOExtension {
 	key: string,
-	value: any
+	value: any,
+	Extensions?: any
 }
 
 export type OOExtensions = Array<OOExtension>
