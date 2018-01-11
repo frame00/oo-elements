@@ -31,6 +31,9 @@ const plugins = opt => {
 		commonjs({
 			include: 'node_modules/**',
 			namedExports: {
+				'node_modules/firebase/index.js': [
+					'app', 'apps', 'auth', 'database', 'initializeApp', 'messaging', 'storage'
+				],
 				'node_modules/@firebase/util/dist/cjs/index.js': [
 					'deepCopy', 'deepExtend', 'createSubscribe', 'ErrorFactory', 'patchProperty'
 				]
