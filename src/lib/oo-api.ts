@@ -1,5 +1,6 @@
 import {OOAPIResponse, OOAPIResponseError} from '../d/oo-api-response'
 import {OOAPIResource, OOAPIVersion, OOAPIRequestBody, OOAPIRequestBodyUsers, OOAPIRequestBodyPayments} from '../d/oo-apis'
+import {OOAPIResult} from '../d/oo-api'
 const {fetch} = window
 
 const ENDPOINT = 'https://api.ooapp.co'
@@ -16,10 +17,7 @@ interface Options {
 	version?: OOAPIVersion
 }
 
-export default async (options: Options): Promise<{
-	response: OOAPIResponse | OOAPIResponseError,
-	status: number
-}> => {
+export default async (options: Options): Promise<OOAPIResult> => {
 	const {
 		resource,
 		pathParameter,
