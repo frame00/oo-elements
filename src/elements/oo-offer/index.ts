@@ -37,7 +37,7 @@ export default class extends HTMLElement {
 				display: block;
 			}
 		</style>
-		<oo-sign-in on-signedin=${e => this.onSignedIn(e)}></oo-sign-in>
+		<oo-sign-in on-signedin=${e => this.onSignedIn(e)} on-signedinerror=${e => this.onSignedInError(e)}></oo-sign-in>
 		`
 	}
 
@@ -46,6 +46,10 @@ export default class extends HTMLElement {
 	}
 
 	onSignedIn(e: CustomEvent) {
+		console.log(e)
+	}
+
+	onSignedInError(e: CustomEvent) {
 		console.log(e)
 	}
 }
