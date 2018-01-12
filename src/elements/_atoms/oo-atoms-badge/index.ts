@@ -13,28 +13,25 @@ const asValidString = (data: string): Size => {
 	return 'medium'
 }
 
-export default class extends HTMLElement {
-	state: {
-		size: Size
-	}
+const size: WeakMap<object, Size> = new WeakMap()
 
+export default class extends HTMLElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_SIZE]
 	}
 
 	constructor() {
 		super()
-		const size = asValidString(this.getAttribute(ATTR.DATA_SIZE))
-		this.state = {size}
+		size.set(this, asValidString(this.getAttribute(ATTR.DATA_SIZE)))
 		this.render()
 	}
 
 	attributeChangedCallback(attr, prev, next) {
-		this.state.size = asValidString(next)
+		size.set(this, asValidString(next))
 		this.render()
 	}
 
-	html(size) {
+	html(s: Size) {
 		const prefix = 'oo-atoms-badge'
 		return html`
 		<style>
@@ -85,7 +82,7 @@ export default class extends HTMLElement {
 				}
 			}
 		</style>
-		<div class$='${prefix}-container ${prefix}-${size}'>
+		<div class$='${prefix}-container ${prefix}-${s}'>
 			<div class$='${prefix}-circle ${prefix}-left'></div>
 			<div class$='${prefix}-circle ${prefix}-right'></div>
 		</div>
@@ -93,6 +90,6 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(this.state.size), this)
+		render(this.html(size.get(this)), this)
 	}
 }

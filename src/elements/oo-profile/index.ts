@@ -8,46 +8,40 @@ const ATTR = {
 	DATA_IAM: 'data-iam'
 }
 
-export default class extends HTMLElement {
-	state: {
-		iam: string,
-		name?: string,
-		photo?: string,
-		skill?: string,
-		unitPrice?: number
-	}
+const iam: WeakMap<object, string> = new WeakMap()
+const name: WeakMap<object, string> = new WeakMap()
+const photo: WeakMap<object, string> = new WeakMap()
+const skill: WeakMap<object, string> = new WeakMap()
+const unitPrice: WeakMap<object, number> = new WeakMap()
 
+export default class extends HTMLElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_IAM]
 	}
 
 	constructor() {
 		super()
-		const iam = this.getAttribute(ATTR.DATA_IAM)
-		this.state = {iam}
+		iam.set(this, this.getAttribute(ATTR.DATA_IAM))
 		this.render()
 	}
 
 	attributeChangedCallback(attr, prev, next) {
-		this.state.iam = next
+		iam.set(this, next)
 		this.render()
 	}
 
 	async connectedCallback() {
-		const res = await getUser(this.state.iam)
+		const res = await getUser(iam.get(this))
 		if (isSuccess(res.status) && Array.isArray(res.response)) {
 			const ext = toMap(res.response)
-			const name = ext.get('name')
-			const photo = ext.get('photo')
-			const skill = ext.get('skill')
-			const unitPrice = ext.get('unit_price')
-			const newState = {name, photo, skill, unitPrice}
-			this.state = {...this.state, ...newState}
-			console.log(this.state)
+			name.set(this, ext.get('name'))
+			photo.set(this, ext.get('photo'))
+			skill.set(this, ext.get('skill'))
+			unitPrice.set(this, ext.get('unitPrice'))
 		}
 	}
 
-	html(iam) {
+	html(uid: string) {
 		return html`
 		<style>
 			:host {
@@ -59,6 +53,6 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(this.state.iam), this)
+		render(this.html(iam.get(this)), this)
 	}
 }

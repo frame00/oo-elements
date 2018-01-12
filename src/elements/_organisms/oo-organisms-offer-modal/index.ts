@@ -19,41 +19,38 @@ const asBoolean = (data: string): boolean => {
 	}
 }
 
-export default class extends HTMLElement {
-	state: {
-		open: boolean
-	}
+const open: WeakMap<object, boolean> = new WeakMap()
 
+export default class extends HTMLElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_OPEN]
 	}
 
 	constructor() {
 		super()
-		const open = asBoolean(this.getAttribute(ATTR.DATA_OPEN))
-		this.state = {open}
+		open.set(this, asBoolean(this.getAttribute(ATTR.DATA_OPEN)))
 		this.render()
 	}
 
 	attributeChangedCallback(attr, prev, next) {
-		this.state.open = asBoolean(next)
+		open.set(this, asBoolean(next))
 		this.render()
 	}
 
-	html(open) {
+	html(o: boolean) {
 		return html`
 		<style>
 			:host {
 				display: block;
 			}
 		</style>
-		<oo-modal data-open$=${open ? 'enabled' : 'disabled'}>
+		<oo-modal data-open$=${o ? 'enabled' : 'disabled'}>
 			<div slot=body>WIP</div>
 		</oo-modal>
 		`
 	}
 
 	render() {
-		render(this.html(this.state.open), this)
+		render(this.html(open.get(this)), this)
 	}
 }

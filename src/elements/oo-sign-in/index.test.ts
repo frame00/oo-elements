@@ -20,22 +20,22 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		it('Google', () => {
 			const element: any = getElement(ELEMENT)[0]
 			element.setAttribute('data-provider', 'google')
-			expect(element.state.provider).to.be('google')
+			expect(element.provider).to.be('google')
 		})
 		it('Facebook', () => {
 			const element: any = getElement(ELEMENT)[0]
 			element.setAttribute('data-provider', 'facebook')
-			expect(element.state.provider).to.be('facebook')
+			expect(element.provider).to.be('facebook')
 		})
 		it('GitHub', () => {
 			const element: any = getElement(ELEMENT)[0]
 			element.setAttribute('data-provider', 'github')
-			expect(element.state.provider).to.be('github')
+			expect(element.provider).to.be('github')
 		})
 		it('Others as Google', () => {
 			const element: any = getElement(ELEMENT)[0]
 			element.setAttribute('data-provider', 'xxx')
-			expect(element.state.provider).to.be('google')
+			expect(element.provider).to.be('google')
 		})
 	})
 

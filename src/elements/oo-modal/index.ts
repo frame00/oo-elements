@@ -15,28 +15,25 @@ const asBoolean = (data: string): boolean => {
 	}
 }
 
-export default class extends HTMLElement {
-	state: {
-		open: boolean
-	}
+const open: WeakMap<object, boolean> = new WeakMap()
 
+export default class extends HTMLElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_OPEN]
 	}
 
 	constructor() {
 		super()
-		const open = asBoolean(this.getAttribute(ATTR.DATA_OPEN))
-		this.state = {open}
+		open.set(this, asBoolean(this.getAttribute(ATTR.DATA_OPEN)))
 		this.render()
 	}
 
 	attributeChangedCallback(attr, prev, next) {
-		this.state.open = asBoolean(next)
+		open.set(this, asBoolean(next))
 		this.render()
 	}
 
-	html(open) {
+	html(state: boolean) {
 		return html`
 		<style>
 			@import '../../style/_reset-button.css';
@@ -129,7 +126,7 @@ export default class extends HTMLElement {
 				}
 			}
 		</style>
-		<div class$=${open ? 'open' : 'close'}>
+		<div class$=${state ? 'open' : 'close'}>
 			<div class=backdrop></div>
 			<div class=modal>
 				<div class=dialog>
@@ -149,7 +146,7 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(this.state.open), this)
+		render(this.html(open.get(this)), this)
 	}
 
 	onClickClose() {

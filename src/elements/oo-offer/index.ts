@@ -11,28 +11,25 @@ const ATTR = {
 	DATA_IAM: 'data-iam'
 }
 
-export default class extends HTMLElement {
-	state: {
-		iam: string
-	}
+const iam: WeakMap<object, string> = new WeakMap()
 
+export default class extends HTMLElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_IAM]
 	}
 
 	constructor() {
 		super()
-		const iam = this.getAttribute(ATTR.DATA_IAM)
-		this.state = {iam}
+		iam.set(this, this.getAttribute(ATTR.DATA_IAM))
 		this.render()
 	}
 
 	attributeChangedCallback(attr, prev, next) {
-		this.state.iam = next
+		iam.set(this, next)
 		this.render()
 	}
 
-	html(iam: string) {
+	html(uid: string) {
 		return html`
 		<style>
 			:host {
@@ -45,7 +42,7 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(this.state.iam), this)
+		render(this.html(iam.get(this)), this)
 	}
 
 	onSignedIn(e: CustomEvent) {

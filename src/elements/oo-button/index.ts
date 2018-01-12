@@ -20,12 +20,11 @@ const asValidString = (data: string): Size => {
 	return 'medium'
 }
 
+const iam: WeakMap<object, string> = new WeakMap()
+const size: WeakMap<object, Size> = new WeakMap()
+const open: WeakMap<object, boolean> = new WeakMap()
+
 export default class extends HTMLElement {
-	state: {
-		size: Size,
-		iam: string,
-		open: boolean
-	}
 
 	static get observedAttributes() {
 		return [ATTR.DATA_SIZE, ATTR.DATA_IAM]
@@ -33,20 +32,19 @@ export default class extends HTMLElement {
 
 	constructor() {
 		super()
-		const size = asValidString(this.getAttribute(ATTR.DATA_SIZE))
-		const iam = this.getAttribute(ATTR.DATA_IAM)
-		const open = false
-		this.state = {size, iam, open}
+		iam.set(this, this.getAttribute(ATTR.DATA_IAM))
+		size.set(this, asValidString(this.getAttribute(ATTR.DATA_SIZE)))
+		open.set(this, false)
 		this.render()
 	}
 
 	attributeChangedCallback(attr, prev, next) {
 		switch(attr) {
 			case ATTR.DATA_SIZE:
-				this.state.size = asValidString(next)
+				size.set(this, asValidString(next))
 				break
 			case ATTR.DATA_IAM:
-				this.state.iam = next
+				iam.set(this, next)
 				break
 			default:
 				break
@@ -54,7 +52,7 @@ export default class extends HTMLElement {
 		this.render()
 	}
 
-	html(size, iam, open) {
+	html(s: string, i: string, o: boolean) {
 		return html`
 		<style>
 			@import '../../style/_reset-button.css';
@@ -101,20 +99,20 @@ export default class extends HTMLElement {
 				}
 			}
 		</style>
-		<button title='Click to send me an offer' class$=${size} onclick=${() => this.onClickButton()}>
-			<oo-atoms-badge data-size$=${size}></oo-atoms-badge>
+		<button title='Click to send me an offer' class$=${s} onclick=${() => this.onClickButton()}>
+			<oo-atoms-badge data-size$=${s}></oo-atoms-badge>
 			<div class=text>Offer Me</div>
 		</button>
-		<oo-organisms-offer-modal data-open$=${open ? 'enabled' : 'disabled'}></oo-organisms-offer-modal>
+		<oo-organisms-offer-modal data-open$=${o ? 'enabled' : 'disabled'}></oo-organisms-offer-modal>
 		`
 	}
 
 	render() {
-		render(this.html(this.state.size, this.state.iam, this.state.open), this)
+		render(this.html(size.get(this), iam.get(this), open.get(this)), this)
 	}
 
 	onClickButton() {
-		this.state.open = !this.state.open
+		open.set(this, !open.get(this))
 		this.render()
 	}
 }

@@ -14,19 +14,20 @@ const asValidString = (data: string): AuthProvider => {
 	return 'google'
 }
 
-export default class extends HTMLElement {
-	state: {
-		provider: AuthProvider
-	}
+const provider: WeakMap<object, AuthProvider> = new WeakMap()
 
+export default class extends HTMLElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_PROVIDER]
 	}
 
+	get provider() {
+		return provider.get(this)
+	}
+
 	constructor() {
 		super()
-		const provider = asValidString(this.getAttribute(ATTR.DATA_PROVIDER))
-		this.state = {provider}
+		provider.set(this, asValidString(this.getAttribute(ATTR.DATA_PROVIDER)))
 		this.render()
 	}
 
@@ -38,13 +39,13 @@ export default class extends HTMLElement {
 	}
 
 	attributeChangedCallback(attr, prev, next) {
-		this.state.provider = asValidString(next)
+		provider.set(this, asValidString(next))
 		this.render()
 	}
 
-	html(provider: AuthProvider) {
-		let label: string = provider
-		switch (provider) {
+	html(prov: AuthProvider) {
+		let label: string = prov
+		switch (prov) {
 			case 'google':
 				label = 'Google'
 				break
@@ -99,19 +100,19 @@ export default class extends HTMLElement {
 				}
 			}
 		</style>
-		<button class$=${provider} onclick=${() => this.signIn()}>
+		<button class$=${prov} onclick=${() => this.signIn()}>
 			Sign in with ${label}
 		</button>
 		`
 	}
 
 	render() {
-		render(this.html(this.state.provider), this)
+		render(this.html(provider.get(this)), this)
 	}
 
 	async signIn(test?: string) {
 		try {
-			const token = await signInWithFirebase(this.state.provider, test)
+			const token = await signInWithFirebase(provider.get(this), test)
 			const signedin = new CustomEvent('signedin', {detail: {token}})
 			this.dispatchEvent(signedin)
 		} catch(err) {
