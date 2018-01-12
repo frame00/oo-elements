@@ -9,6 +9,9 @@ import lineBreak from '../../lib/line-break'
 const ATTR = {
 	DATA_IAM: 'data-iam'
 }
+const EVENT = {
+	USER_UPDATED: new Event('userupdated')
+}
 
 const iam: WeakMap<object, string> = new WeakMap()
 const name: WeakMap<object, string> = new WeakMap()
@@ -111,6 +114,6 @@ export default class extends HTMLElement {
 			skill.set(this, '')
 			this.render()
 		}
-		this.dispatchEvent(new Event('userupdated'))
+		this.dispatchEvent(EVENT.USER_UPDATED)
 	}
 }

@@ -7,6 +7,10 @@ import testMode from '../../lib/test/test-mode'
 const ATTR = {
 	DATA_PROVIDER: 'data-provider'
 }
+const EVENT = {
+	SIGNED_IN: detail => new CustomEvent('signedin', {detail}),
+	SIGNED_IN_ERROR: detail => new CustomEvent('signedinerror', {detail})
+}
 const asValidString = (data: string): AuthProvider => {
 	if (data === 'google' || data === 'facebook' || data === 'github') {
 		return data
@@ -113,11 +117,9 @@ export default class extends HTMLElement {
 	async signIn(test?: string) {
 		try {
 			const token = await signInWithFirebase(provider.get(this), test)
-			const signedin = new CustomEvent('signedin', {detail: {token}})
-			this.dispatchEvent(signedin)
+			this.dispatchEvent(EVENT.SIGNED_IN({token}))
 		} catch(err) {
-			const signedinerror = new CustomEvent('signedinerror', {detail: err})
-			this.dispatchEvent(signedinerror)
+			this.dispatchEvent(EVENT.SIGNED_IN_ERROR(err))
 		}
 	}
 }
