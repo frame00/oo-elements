@@ -11,6 +11,7 @@ const EVENT = {
 	SIGNED_IN: detail => new CustomEvent('signedin', {detail}),
 	SIGNED_IN_ERROR: detail => new CustomEvent('signedinerror', {detail})
 }
+
 const asValidString = (data: string): AuthProvider => {
 	if (data === 'google' || data === 'facebook' || data === 'github') {
 		return data
