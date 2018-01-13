@@ -36,7 +36,7 @@ export default class extends HTMLElement {
 				display: block;
 			}
 		</style>
-		<oo-profile data-iam$=${iam}></oo-profile>
+		<oo-profile data-iam$=${uid}></oo-profile>
 		<oo-sign-in on-signedin=${e => this.onSignedIn(e)} on-signedinerror=${e => this.onSignedInError(e)}></oo-sign-in>
 		`
 	}

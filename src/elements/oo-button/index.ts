@@ -103,7 +103,7 @@ export default class extends HTMLElement {
 			<oo-atoms-badge data-size$=${s}></oo-atoms-badge>
 			<div class=text>Offer Me</div>
 		</button>
-		<oo-organisms-offer-modal data-open$=${o ? 'enabled' : 'disabled'}></oo-organisms-offer-modal>
+		<oo-organisms-offer-modal data-iam$=${i} data-open$=${o ? 'enabled' : 'disabled'}></oo-organisms-offer-modal>
 		`
 	}
 
