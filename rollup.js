@@ -28,24 +28,18 @@ const commonjsOptions = {
 		]
 	}
 }
-
-const plugins = opt => {
-	let tsOpts = {tsconfigOverride: {}}
-	if (opt && opt.ts2es5) {
-		tsOpts.tsconfigOverride.compilerOptions = {
-			target: 'es5'
-		}
+const typescriptOptions = {
+	tsconfigOverride: {
+		include: ['src/**/*.ts']
 	}
-	if (opt && opt.includeAll) {
-		tsOpts.tsconfigOverride.include = ['src/**/*.ts']
-	}
-	return [
-		postcss(postcssOptions),
-		resolve(resolveOptions),
-		commonjs(commonjsOptions),
-		typescript(tsOpts)
-	]
 }
+
+const plugins = [
+	postcss(postcssOptions),
+	resolve(resolveOptions),
+	commonjs(commonjsOptions),
+	typescript(typescriptOptions)
+]
 
 const build = async (rollupOptions, writeOptions) => {
 	const bundle = await rollup.rollup(rollupOptions)
@@ -55,7 +49,7 @@ const build = async (rollupOptions, writeOptions) => {
 if (BUILD_MODE === 'TEST') {
 	return build({
 		input: 'src/**/*.test.ts',
-		plugins: [multiEntry()].concat(plugins({includeAll: true}))
+		plugins: plugins.push(multiEntry())
 	}, {
 		format: 'umd',
 		name: 'test',
@@ -66,20 +60,10 @@ const filteredEntries = file ? entries.filter(entry => entry.file === file) : en
 Promise.all(filteredEntries.map(entry => {
 	return build({
 		input: entry.file,
-		plugins: plugins({includeAll: true})
+		plugins
 	}, {
 		format: 'umd',
 		name: entry.name,
 		file: entry.dest
-	})
-}))
-Promise.all(filteredEntries.map(entry => {
-	return build({
-		input: entry.file,
-		plugins: plugins({ts2es5: true, includeAll: true})
-	}, {
-		format: 'umd',
-		name: entry.name,
-		file: entry.dest.replace(/\.js/, '.es5.js')
 	})
 }))
