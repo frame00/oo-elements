@@ -2,10 +2,12 @@ import {html} from 'lit-html'
 import render from '../../lib/render'
 import profile from '../oo-profile'
 import signIn from '../oo-sign-in'
+import ask from '../oo-ask'
 import define from '../../lib/define'
 
 define('oo-profile', profile)
 define('oo-sign-in', signIn)
+define('oo-ask', ask)
 
 const ATTR = {
 	DATA_IAM: 'data-iam'
@@ -35,9 +37,20 @@ export default class extends HTMLElement {
 			:host {
 				display: block;
 			}
+			.container {
+				display: flex;
+			}
+			oo-profile {
+				width: 50%;
+			}
 		</style>
-		<oo-profile data-iam$=${uid}></oo-profile>
-		<oo-sign-in on-signedin=${e => this.onSignedIn(e)} on-signedinerror=${e => this.onSignedInError(e)}></oo-sign-in>
+		<div class=container>
+			<oo-profile data-iam$=${uid}></oo-profile>
+			<div>
+				<oo-ask data-iam$=${uid}></oo-ask>
+				<oo-sign-in on-signedin=${e => this.onSignedIn(e)} on-signedinerror=${e => this.onSignedInError(e)}></oo-sign-in>
+			</div>
+		</div>
 		`
 	}
 
