@@ -24,7 +24,11 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	it('Select the currency according to the locale of the browser')
 
-	it('Dispatch the contents of the question are "asked" event')
+	it('Input message')
+
+	it('Calculate amount by hour and price per hour')
+
+	it('Dispatch the amount and message by "changed" event')
 
 	after(() => {
 		removeElement(ELEMENT)

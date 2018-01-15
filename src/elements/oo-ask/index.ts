@@ -10,17 +10,22 @@ import define from '../../lib/define'
 
 define('oo-atoms-select-hour', selectHour)
 
+interface HTMLElementEvent<T extends HTMLElement> extends Event {
+	target: T
+}
+
 const ATTR = {
 	DATA_IAM: 'data-iam'
 }
 const EVENT = {
 	USER_UPDATED: new Event('userupdated'),
-	ASKED: detail => new CustomEvent('asked', {detail})
+	CHANGED: detail => new CustomEvent('changed', {detail})
 }
 
 const iam: WeakMap<object, string> = new WeakMap()
 const pricePerHour: WeakMap<object, ExtensionPricePerHour> = new WeakMap()
 const hour: WeakMap<object, number> = new WeakMap()
+const message: WeakMap<object, string> = new WeakMap()
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
@@ -40,6 +45,10 @@ export default class extends HTMLElement {
 			return 0
 		}
 		return (price * h).toFixed(2)
+	}
+
+	get message() {
+		return message.get(this)
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -64,6 +73,9 @@ export default class extends HTMLElement {
 		</style>
 		<p class=amount>${currency} ${sign}${a}</p>
 		<oo-atoms-select-hour on-changehour='${e => this.onHourChange(e)}'></oo-atoms-select-hour>
+		<form on-change='${e => this.onMessageChange(e)}' on-submit='${e => this.onMessageChange(e)}'>
+			<textarea name=message></textarea>
+		</form>
 		`
 	}
 
@@ -77,6 +89,13 @@ export default class extends HTMLElement {
 		this.render()
 	}
 
+	onMessageChange(e: HTMLElementEvent<HTMLFormElement>) {
+		e.preventDefault()
+		const {target} = e
+		const {value} = target
+		message.set(this, value)
+	}
+
 	async fetchUserData() {
 		const res = await getUser(iam.get(this))
 		if (isSuccess(res.status) && Array.isArray(res.response)) {
@@ -87,5 +106,12 @@ export default class extends HTMLElement {
 			this.render()
 		}
 		this.dispatchEvent(EVENT.USER_UPDATED)
+	}
+
+	dispatchChanged() {
+		const detail = {
+			amount: this.amount,
+			message: this.message
+		}
 	}
 }
