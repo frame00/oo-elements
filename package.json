@@ -51,6 +51,7 @@
     "rollup-plugin-typescript2": "^0.9.0",
     "serve": "^6.4.4",
     "tslint": "^5.8.0",
-    "tslint-config-xo": "^1.4.0"
+    "tslint-config-xo": "^1.4.0",
+    "typescript-lit-html-plugin": "^0.2.0"
   }
 }
