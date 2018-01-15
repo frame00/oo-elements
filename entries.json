@@ -28,5 +28,10 @@
 		"file": "src/elements/oo-profile/define.ts",
 		"dest": "dist/oo-profile.js",
 		"name": "oo-profile"
+  },
+  {
+		"file": "src/elements/oo-ask/define.ts",
+		"dest": "dist/oo-ask.js",
+		"name": "oo-ask"
 	}
 ]
