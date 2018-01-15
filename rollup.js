@@ -49,7 +49,7 @@ const build = async (rollupOptions, writeOptions) => {
 if (BUILD_MODE === 'TEST') {
 	return build({
 		input: 'src/**/*.test.ts',
-		plugins: plugins.push(multiEntry())
+		plugins: [multiEntry()].concat(plugins)
 	}, {
 		format: 'umd',
 		name: 'test',

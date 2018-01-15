@@ -11,7 +11,8 @@ import define from '../../lib/define'
 define('oo-atoms-select-hour', selectHour)
 
 interface HTMLElementEvent<T extends HTMLElement> extends Event {
-	target: T
+	target: T,
+	currentTarget: T
 }
 
 const ATTR = {
@@ -36,14 +37,16 @@ export default class extends HTMLElement {
 		super()
 		iam.set(this, this.getAttribute(ATTR.DATA_IAM))
 		hour.set(this, 1)
+		message.set(this, '')
 	}
 
-	get amount() {
-		const {price} = getPricePerHour(pricePerHour.get(this))
-		const h = hour.get(this)
-		if (price === undefined) {
-			return 0
+	get amount(): string | void {
+		const pph = pricePerHour.get(this)
+		if (pph === undefined) {
+			return undefined
 		}
+		const {price} = getPricePerHour(pph)
+		const h = hour.get(this)
 		return (price * h).toFixed(2)
 	}
 
@@ -56,11 +59,10 @@ export default class extends HTMLElement {
 		this.fetchUserData()
 	}
 
-	connectedCallback() {
-		this.fetchUserData()
-	}
-
-	html(a: string | number, p: ExtensionPricePerHour, h: number) {
+	html(a: string | void, p: ExtensionPricePerHour, h: number) {
+		if (a === undefined) {
+			return html``
+		}
 		const {currency, sign} = getPricePerHour(p)
 		return html`
 		<style>
@@ -87,13 +89,16 @@ export default class extends HTMLElement {
 		const {detail} = e
 		hour.set(this, detail)
 		this.render()
+		this.dispatchChanged()
 	}
 
 	onMessageChange(e: HTMLElementEvent<HTMLFormElement>) {
-		e.preventDefault()
 		const {target} = e
 		const {value} = target
-		message.set(this, value)
+		if (value) {
+			message.set(this, value)
+			this.dispatchChanged()
+		}
 	}
 
 	async fetchUserData() {
@@ -101,8 +106,11 @@ export default class extends HTMLElement {
 		if (isSuccess(res.status) && Array.isArray(res.response)) {
 			const ext = toMap(res.response)
 			pricePerHour.set(this, ext.get('price_per_hour'))
+			message.set(this, '')
 			this.render()
 		} else {
+			pricePerHour.delete(this)
+			message.delete(this)
 			this.render()
 		}
 		this.dispatchEvent(EVENT.USER_UPDATED)
@@ -113,5 +121,6 @@ export default class extends HTMLElement {
 			amount: this.amount,
 			message: this.message
 		}
+		this.dispatchEvent(EVENT.CHANGED(detail))
 	}
 }
