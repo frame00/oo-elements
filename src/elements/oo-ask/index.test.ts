@@ -24,10 +24,6 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	it('Select the currency according to the locale of the browser')
 
-	it('Sign in by click button')
-
-	it('If signing in for the first time, register new profile')
-
 	it('Dispatch the contents of the question are "asked" event')
 
 	after(() => {
