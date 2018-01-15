@@ -1,9 +1,9 @@
 {
-    "defaultSeverity": "error",
-    "extends": [
-        "tslint-config-xo/esnext"
-    ],
-    "rules": {
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint-config-xo/esnext"
+  ],
+  "rules": {
 		"semicolon": [true, "never"]
 	}
 }
