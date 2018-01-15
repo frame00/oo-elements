@@ -22,6 +22,8 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	it('Update when "data-iam" attribute is changed')
 
+	it('Select the currency according to the locale of the browser')
+
 	it('Sign in by click button')
 
 	it('If signing in for the first time, register new profile')

@@ -20,6 +20,7 @@ export default class extends HTMLElement {
 	constructor() {
 		super()
 		hour.set(this, 1)
+		this.render()
 	}
 
 	html(h: number) {

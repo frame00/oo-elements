@@ -3,16 +3,24 @@ import render from '../../lib/render'
 import getUser from '../../lib/oo-api-get-user'
 import isSuccess from '../../lib/is-api-success'
 import toMap from '../../lib/extensions-to-map'
+import {ExtensionPricePerHour} from '../../d/extension-price-per-hour'
+import getPricePerHour from '../../lib/get-price-per-hour'
+import selectHour from '../_atoms/oo-atoms-select-hour'
+import define from '../../lib/define'
+
+define('oo-atoms-select-hour', selectHour)
 
 const ATTR = {
 	DATA_IAM: 'data-iam'
 }
 const EVENT = {
-	USER_UPDATED: new Event('userupdated')
+	USER_UPDATED: new Event('userupdated'),
+	ASKED: detail => new CustomEvent('asked', {detail})
 }
 
 const iam: WeakMap<object, string> = new WeakMap()
-const pricePerHour: WeakMap<object, number> = new WeakMap()
+const pricePerHour: WeakMap<object, ExtensionPricePerHour> = new WeakMap()
+const hour: WeakMap<object, number> = new WeakMap()
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
@@ -22,7 +30,16 @@ export default class extends HTMLElement {
 	constructor() {
 		super()
 		iam.set(this, this.getAttribute(ATTR.DATA_IAM))
-		this.render()
+		hour.set(this, 1)
+	}
+
+	get amount() {
+		const {price} = getPricePerHour(pricePerHour.get(this))
+		const h = hour.get(this)
+		if (price === undefined) {
+			return 0
+		}
+		return (price * h).toFixed(2)
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -34,15 +51,30 @@ export default class extends HTMLElement {
 		this.fetchUserData()
 	}
 
-	html(p: number) {
+	html(a: string | number, p: ExtensionPricePerHour, h: number) {
+		const {currency, sign} = getPricePerHour(p)
 		return html`
 		<style>
+			:host {
+				display: block;
+			}
+			.amount {
+				text-transform: uppercase;
+			}
 		</style>
+		<p class=amount>${currency} ${sign}${a}</p>
+		<oo-atoms-select-hour on-changehour='${e => this.onHourChange(e)}'></oo-atoms-select-hour>
 		`
 	}
 
 	render() {
-		render(this.html(pricePerHour.get(this)), this)
+		render(this.html(this.amount, pricePerHour.get(this), hour.get(this)), this)
+	}
+
+	onHourChange(e: CustomEvent) {
+		const {detail} = e
+		hour.set(this, detail)
+		this.render()
 	}
 
 	async fetchUserData() {
