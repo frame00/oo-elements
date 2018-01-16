@@ -32,6 +32,16 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		it('When change #hash to abnormal value, display <oo-organisms-offer-profile>')
 	})
 
+	describe('Manage step by local state', () => {
+		it('Enable "data-history" attribute with "disabled"')
+
+		it('Default value is "ask"')
+
+		it('When <oo-organisms-offer-profile> dispatches "next", display <oo-organisms-offer-sign-in>')
+
+		it('When <oo-organisms-offer-sign-in> dispatches "prev", display <oo-organisms-offer-profile>')
+	})
+
 	describe('Signing in', () => {
 		it('Sign in by <oo-organisms-offer-sign-in>')
 	})
