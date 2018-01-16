@@ -2,15 +2,13 @@ import {html} from 'lit-html'
 import {repeat} from 'lit-html/lib/repeat'
 import render from '../../../lib/render'
 
-interface HTMLElementEvent<T extends HTMLElement> extends Event {
-	target: T
-}
+type Hour = number | string
 
 const EVENT = {
 	CHANGE_HOUR: detail => new CustomEvent('changehour', {detail})
 }
 
-const hour: WeakMap<object, number> = new WeakMap()
+const hour: WeakMap<object, Hour> = new WeakMap()
 
 export default class extends HTMLElement {
 	get hour() {
@@ -23,7 +21,7 @@ export default class extends HTMLElement {
 		this.render()
 	}
 
-	html(h: number) {
+	html(h: Hour) {
 		return html`
 		<style>
 			@import '../../../style/_reset-button.css';
@@ -38,13 +36,10 @@ export default class extends HTMLElement {
 		</style>
 		<from>
 			<ul>
-				${repeat([1, 2, 3], item => html`
+				${repeat([1, 2, 3, 'pend'], item => html`
 				<li>
-					<button class$=${item === h ? 'active' : ''} on-click='${e => this.onButtonClick(e)}'>${item}</button>
+					<button class$=${item === h ? 'active' : ''} on-click='${() => this.onButtonClick(item)}'>${item}</button>
 				</li>`)}
-				<li>
-					<input type=number name=hour min=0 step=1 value$='${h}' on-focus='${e => this.onHourChange(e)}' on-change='${e => this.onHourChange(e)}'></input>
-				</li>
 			</ul>
 		</from>
 		`
@@ -54,19 +49,9 @@ export default class extends HTMLElement {
 		render(this.html(this.hour), this)
 	}
 
-	onButtonClick(e: HTMLElementEvent<HTMLButtonElement>) {
-		const {textContent} = e.target
-		const int = ~~textContent
-		hour.set(this, int)
-		this.render()
-		this.dispatch()
-	}
-
-	onHourChange(e: HTMLElementEvent<HTMLInputElement>) {
-		const {value} = e.target
-		const int = ~~value
-		e.target.value = `${int}`
-		hour.set(this, int)
+	onButtonClick(item: Hour) {
+		const h = item === 'pend' ? item : ~~item
+		hour.set(this, h)
 		this.render()
 		this.dispatch()
 	}
