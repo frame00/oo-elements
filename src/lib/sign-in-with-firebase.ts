@@ -1,11 +1,15 @@
 import auth from './firebase-auth'
 import {AuthProvider} from '../d/auth-provider'
 import {OOToken} from '../d/oo-token'
+import {OOUserUID} from '../d/oo-user'
 import api from '../lib/oo-api'
 import createToken from './oo-api-create-token'
 import isSuccess from './is-api-success'
 
-export default async (provider: AuthProvider, test?: string): Promise<OOToken | boolean> => {
+export default async (provider: AuthProvider, test?: string): Promise<{
+	token: OOToken,
+	uid: OOUserUID
+} | boolean> => {
 	let firebaseUid
 	if (test === undefined) {
 		try {
@@ -17,7 +21,7 @@ export default async (provider: AuthProvider, test?: string): Promise<OOToken | 
 	} else if (test === 'error') {
 		throw new Error('This is a test')
 	} else {
-		return test
+		return {token: test, uid: test}
 	}
 	const ooapiRes = await api({
 		resource: 'users',
@@ -47,5 +51,17 @@ export default async (provider: AuthProvider, test?: string): Promise<OOToken | 
 		return false
 	}
 
-	return token
+	const uid = (res => {
+		if (Array.isArray(res)) {
+			const [u] = res
+			return u.uid
+		}
+		const {user} = ooapiRes.response
+		return user.uid
+	})(ooapiRes.response)
+
+	return {
+		token,
+		uid
+	}
 }

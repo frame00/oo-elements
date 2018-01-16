@@ -1,5 +1,5 @@
 import getCurrency from './get-currency'
-import {Currency, CurrencySign} from '../d/currency'
+import {Currency, CurrencySign, LocaledCurrency} from '../d/currency'
 import {ExtensionPricePerHour} from '../d/extension-price-per-hour'
 
 export const currencyToSign = (cur: Currency): CurrencySign => {
@@ -13,11 +13,7 @@ export const currencyToSign = (cur: Currency): CurrencySign => {
 	}
 }
 
-export default (ext: ExtensionPricePerHour): {
-	currency: Currency,
-	price: number,
-	sign: CurrencySign
-} => {
+export default (ext: ExtensionPricePerHour): LocaledCurrency => {
 	const currency = getCurrency()
 	if (currency in ext) {
 		return {

@@ -64,6 +64,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			element.addEventListener('changed', (e: CustomEvent) => {
 				expect(e.detail.amount).to.be('30.00')
 				expect(e.detail.message).to.be('')
+				expect(e.detail.currency).to.be('usd')
 				done()
 			})
 			event(element.shadowRoot.querySelector('oo-atoms-select-hour'), 'changehour', 3)

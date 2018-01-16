@@ -3,11 +3,11 @@ import render from '../../lib/render'
 import getUser from '../../lib/oo-api-get-user'
 import isSuccess from '../../lib/is-api-success'
 import toMap from '../../lib/extensions-to-map'
-import {ExtensionPricePerHour} from '../../d/extension-price-per-hour'
 import getPricePerHour from '../../lib/get-price-per-hour'
 import selectHour from '../_atoms/oo-atoms-select-hour'
 import define from '../../lib/define'
 import {Hour} from '../../d/hour'
+import {LocaledCurrency} from '../../d/currency'
 
 define('oo-atoms-select-hour', selectHour)
 
@@ -25,7 +25,7 @@ const EVENT = {
 }
 
 const iam: WeakMap<object, string> = new WeakMap()
-const pricePerHour: WeakMap<object, ExtensionPricePerHour> = new WeakMap()
+const pricing: WeakMap<object, LocaledCurrency> = new WeakMap()
 const hour: WeakMap<object, Hour> = new WeakMap()
 const message: WeakMap<object, string> = new WeakMap()
 
@@ -42,15 +42,15 @@ export default class extends HTMLElement {
 	}
 
 	get amount(): string {
-		const pph = pricePerHour.get(this)
-		if (pph === undefined) {
+		const prc = pricing.get(this)
+		if (prc === undefined) {
 			return undefined
 		}
 		const h = hour.get(this)
 		if (h === 'pend') {
 			return h
 		}
-		const {price} = getPricePerHour(pph)
+		const {price} = prc
 		return (price * h).toFixed(2)
 	}
 
@@ -63,11 +63,11 @@ export default class extends HTMLElement {
 		this.fetchUserData()
 	}
 
-	html(a: string, p: ExtensionPricePerHour) {
+	html(a: string, p: LocaledCurrency) {
 		if (a === undefined) {
 			return html``
 		}
-		const {currency, sign} = getPricePerHour(p)
+		const {currency, sign} = p
 		const amountTag = () => {
 			if (a === 'pend') {
 				return html`<p class=amount>Pend</p>`
@@ -92,7 +92,7 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(this.amount, pricePerHour.get(this)), this)
+		render(this.html(this.amount, pricing.get(this)), this)
 	}
 
 	onHourChange(e: CustomEvent) {
@@ -115,11 +115,12 @@ export default class extends HTMLElement {
 		const res = await getUser(iam.get(this))
 		if (isSuccess(res.status) && Array.isArray(res.response)) {
 			const ext = toMap(res.response)
-			pricePerHour.set(this, ext.get('price_per_hour'))
+			const localed = getPricePerHour(ext.get('price_per_hour'))
+			pricing.set(this, localed)
 			message.set(this, '')
 			this.render()
 		} else {
-			pricePerHour.delete(this)
+			pricing.delete(this)
 			message.delete(this)
 			this.render()
 		}
@@ -127,8 +128,10 @@ export default class extends HTMLElement {
 	}
 
 	dispatchChanged() {
+		const {currency} = pricing.get(this)
 		const detail = {
 			amount: this.amount,
+			currency,
 			message: this.message
 		}
 		this.dispatchEvent(EVENT.CHANGED(detail))

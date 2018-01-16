@@ -1,6 +1,7 @@
 import {OOAPIResponse, OOAPIResponseError} from '../d/oo-api-response'
 import {OOAPIResource, OOAPIVersion, OOAPIRequestBody, OOAPIRequestBodyUsers, OOAPIRequestBodyPayments} from '../d/oo-apis'
 import {OOAPIResult} from '../d/oo-api'
+import state from './state'
 const {fetch} = window
 
 const ENDPOINT = 'https://api.ooapp.co'
@@ -34,6 +35,13 @@ export default async (options: Options): Promise<OOAPIResult> => {
 
 	if (body !== undefined) {
 		init.body = JSON.stringify(body)
+	}
+
+	const token = state.get('token')
+	if (typeof token === 'string' && token !== '') {
+		init.headers = {
+			Authorization: `Bearer ${token}`
+		}
 	}
 
 	const result = await fetch(endpoint, init)

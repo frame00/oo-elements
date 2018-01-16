@@ -118,9 +118,12 @@ export default class extends HTMLElement {
 
 	async signIn(test?: string) {
 		try {
-			const token = await signInWithFirebase(provider.get(this), test)
-			state.set('token', token)
-			this.dispatchEvent(EVENT.SIGNED_IN({token}))
+			const signedIn = await signInWithFirebase(provider.get(this), test)
+			if (typeof signedIn === 'boolean') {
+				throw new Error()
+			}
+			state.set('token', signedIn.token)
+			this.dispatchEvent(EVENT.SIGNED_IN(signedIn))
 		} catch(err) {
 			this.dispatchEvent(EVENT.SIGNED_IN_ERROR(err))
 		}
