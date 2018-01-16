@@ -8,6 +8,7 @@ import {add as hashListen, remove as hashRemoveListen, change as hashChange, get
 import {Currency} from '../../d/currency'
 import success from '../../lib/is-api-success'
 import testMode from '../../lib/test/test-mode'
+const {history} = window
 
 type Step = 'ask' | 'signin'
 
@@ -15,7 +16,8 @@ define('oo-organisms-offer-profile', offerProfile)
 define('oo-organisms-offer-sign-in', offerSignIn)
 
 const ATTR = {
-	DATA_IAM: 'data-iam'
+	DATA_IAM: 'data-iam',
+	DATA_HISTORY: 'data-history'
 }
 const EVENT = {
 	PROJECT_CREATED: detail => new CustomEvent('projectcreated', {detail}),
@@ -28,12 +30,23 @@ const amount: WeakMap<object, string> = new WeakMap()
 const message: WeakMap<object, string> = new WeakMap()
 const offerSender: WeakMap<object, string> = new WeakMap()
 const currency: WeakMap<object, Currency> = new WeakMap()
+const useHistory: WeakMap<object, boolean> = new WeakMap()
 
 const asValidString = (data: string): Step => {
 	if(data === 'ask' || data === 'signin') {
 		return data
 	}
 	return 'ask'
+}
+const asBoolean = (data: string): boolean => {
+	switch(data) {
+		case 'disabled':
+			return false
+		case 'enabled':
+			return true
+		default:
+			return true
+	}
 }
 
 export default class extends HTMLElement {
@@ -48,9 +61,14 @@ export default class extends HTMLElement {
 	constructor() {
 		super()
 		iam.set(this, this.getAttribute(ATTR.DATA_IAM))
-		step.set(this, asValidString(hashGet()))
+		useHistory.set(this, asBoolean(this.getAttribute(ATTR.DATA_HISTORY)))
+		if (useHistory.get(this)) {
+			step.set(this, asValidString(hashGet()))
+			hashListen(this, () => this.onStepChange())
+		} else {
+			step.set(this, 'ask')
+		}
 		this.render()
-		hashListen(this, () => this.onHashChange())
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -97,7 +115,7 @@ export default class extends HTMLElement {
 		<div class$='container ${s}'>
 			<div class=contents>
 				<oo-organisms-offer-profile data-iam$='${uid}' on-askchanged='${e => this.onAskChanged(e)}' on-next='${() => this.onAskNext()}'></oo-organisms-offer-profile>
-				<oo-organisms-offer-sign-in on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-organisms-offer-sign-in>
+				<oo-organisms-offer-sign-in on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}' on-prev='${() => this.onSignInPrev()}'></oo-organisms-offer-sign-in>
 			</div>
 		</div>
 		`
@@ -107,8 +125,12 @@ export default class extends HTMLElement {
 		render(this.html(iam.get(this), this.step), this)
 	}
 
-	onHashChange() {
-		step.set(this, asValidString(hashGet()))
+	onStepChange(s?: Step) {
+		if (useHistory.get(this)) {
+			step.set(this, asValidString(hashGet()))
+		} else {
+			step.set(this, s)
+		}
 		this.render()
 	}
 
@@ -121,7 +143,20 @@ export default class extends HTMLElement {
 	}
 
 	onAskNext() {
-		hashChange('signin')
+		const next = 'signin'
+		if (useHistory.get(this)) {
+			hashChange(next)
+		} else {
+			this.onStepChange(next)
+		}
+	}
+
+	onSignInPrev() {
+		if (useHistory.get(this)) {
+			history.back()
+		} else {
+			this.onStepChange('ask')
+		}
 	}
 
 	onSignedIn(e: CustomEvent) {
