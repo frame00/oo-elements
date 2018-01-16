@@ -40,13 +40,21 @@ export default class extends HTMLElement {
 			.container {
 				display: flex;
 			}
-			oo-profile {
+			.column {
+				display: flex;
 				width: 50%;
+				justify-content: flex-start;
+				align-items: center;
+				&.ask {
+					flex-direction: column;
+				}
 			}
 		</style>
 		<div class=container>
-			<oo-profile data-iam$='${uid}'></oo-profile>
-			<div>
+			<div class='column profile'>
+				<oo-profile data-iam$='${uid}'></oo-profile>
+			</div>
+			<div class='column ask'>
 				<oo-ask data-iam$='${uid}' on-changed='${e => this.onAskChanged(e)}'></oo-ask>
 				<oo-sign-in on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-sign-in>
 			</div>
