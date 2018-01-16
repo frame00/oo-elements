@@ -1,6 +1,6 @@
 import {html} from 'lit-html'
 import render from '../../lib/render'
-import offerProfile from '../_organisms/oo-organisms-offer-profile'
+import offerProfile from '../_organisms/oo-organisms-offer-step-ask'
 import offerSignIn from '../_organisms/oo-organisms-offer-sign-in'
 import define from '../../lib/define'
 import createProject from '../../lib/oo-api-create-project'
@@ -12,7 +12,7 @@ const {history} = window
 
 type Step = 'ask' | 'signin'
 
-define('oo-organisms-offer-profile', offerProfile)
+define('oo-organisms-offer-step-ask', offerProfile)
 define('oo-organisms-offer-sign-in', offerSignIn)
 
 const ATTR = {
@@ -114,7 +114,7 @@ export default class extends HTMLElement {
 		</style>
 		<div class$='container ${s}'>
 			<div class=contents>
-				<oo-organisms-offer-profile data-iam$='${uid}' on-askchanged='${e => this.onAskChanged(e)}' on-next='${() => this.onAskNext()}'></oo-organisms-offer-profile>
+				<oo-organisms-offer-step-ask data-iam$='${uid}' on-askchanged='${e => this.onAskChanged(e)}' on-next='${() => this.onAskNext()}'></oo-organisms-offer-step-ask>
 				<oo-organisms-offer-sign-in on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}' on-prev='${() => this.onSignInPrev()}'></oo-organisms-offer-sign-in>
 			</div>
 		</div>
