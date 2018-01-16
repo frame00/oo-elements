@@ -3,6 +3,7 @@ import render from '../../lib/render'
 import {AuthProvider} from '../../d/auth-provider.d'
 import signInWithFirebase from '../../lib/sign-in-with-firebase'
 import testMode from '../../lib/test/test-mode'
+import state from '../../lib/state'
 
 const ATTR = {
 	DATA_PROVIDER: 'data-provider'
@@ -118,6 +119,7 @@ export default class extends HTMLElement {
 	async signIn(test?: string) {
 		try {
 			const token = await signInWithFirebase(provider.get(this), test)
+			state.set('token', token)
 			this.dispatchEvent(EVENT.SIGNED_IN({token}))
 		} catch(err) {
 			this.dispatchEvent(EVENT.SIGNED_IN_ERROR(err))

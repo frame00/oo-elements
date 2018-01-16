@@ -3,6 +3,7 @@ import define from '../../lib/define'
 import insertElement from '../../lib/test/insert-element'
 import getElement from '../../lib/test/get-element'
 import removeElement from '../../lib/test/remove-element'
+import state from '../../lib/state'
 
 const ELEMENT = 'oo-sign-in'
 
@@ -41,10 +42,11 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	it('Run Firebase Authentication by this element click')
 
-	it('Dispatch "signedin" event when sign-in to OO with the return value of Firebase Authentication', done => {
+	it('Dispatch "signedin" event and set state in "token" when sign-in to OO with the return value of Firebase Authentication', done => {
 		removeElement(ELEMENT)
 		insertElement(ELEMENT, new Map([['data-test', 'xxx']])).addEventListener('signedin', (e: CustomEvent) => {
 			expect(e.detail.token).to.be('xxx')
+			expect(state.get('token')).to.be('xxx')
 			done()
 		})
 	})
