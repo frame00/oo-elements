@@ -69,7 +69,7 @@ export default class extends HTMLElement {
 				@mixin heading;
 			}
 		</style>
-		<div class=heading>How many hours?</div>
+		<div class=heading>Hours?</div>
 		<from>
 			<ul>
 				${repeat(values, item => html`
