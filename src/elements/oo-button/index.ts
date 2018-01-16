@@ -57,6 +57,7 @@ export default class extends HTMLElement {
 		<style>
 			@import '../../style/_reset-button.css';
 			@import '../../style/_vars-font-family.css';
+			@import '../../style/_vars-color-yellow.css';
 			:host {
 				display: block;
 			}
@@ -88,7 +89,7 @@ export default class extends HTMLElement {
 				font-weight: 400;
 				font-size: 1.4rem;
 				letter-spacing: 0.05rem;
-				background: #ffd600;
+				background: var(--yellow);
 				font-family: var(--font-family);
 			}
 			.small {

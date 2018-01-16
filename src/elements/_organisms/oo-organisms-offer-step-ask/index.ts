@@ -38,15 +38,26 @@ export default class extends HTMLElement {
 			}
 			.container {
 				display: flex;
+				flex-wrap: wrap;
 			}
 			.column {
 				display: flex;
-				width: 50%;
+				width: 100%;
 				justify-content: flex-start;
 				align-items: center;
 				&.ask {
 					flex-direction: column;
 				}
+			}
+			oo-ask {
+				width: 100%;
+			}
+			@media (min-width: 768px) {
+				.column {
+					width: 50%;
+				}
+			}
+			@media (min-width: 1024px) {
 			}
 		</style>
 		<div class=container>

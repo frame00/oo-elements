@@ -44,6 +44,7 @@ export default class extends HTMLElement {
 		return html`
 		<style>
 			@import '../../style/_vars-font-family.css';
+			@import '../../style/_mixin-heading.css';
 			:host {
 				display: block;
 			}
@@ -60,6 +61,8 @@ export default class extends HTMLElement {
 			.name {
 				font-weight: 700;
 				font-size: 1.8rem;
+				word-break: break-all;
+				line-height: 1.8rem;
 				&.empty {
 					&::after {
 						content: '.';
@@ -70,12 +73,11 @@ export default class extends HTMLElement {
 			.skills {
 				p {
 					margin-bottom: 1rem;
-					font-size: 0.9rem;
-					line-height: 1.2rem;
+					font-size: 1rem;
+					line-height: 1.4rem;
 				}
 			}
 			.photo {
-				margin: 1rem 0;
 				background-size: cover;
 				background-color: whitesmoke;
 				border-radius: 10px;
@@ -85,11 +87,29 @@ export default class extends HTMLElement {
 					padding-top: 100%;
 				}
 			}
+			.heading {
+				@mixin heading;
+			}
+			header {
+				display: flex;
+				align-items: center;
+				margin-bottom: 1rem;
+				.photo {
+					width: 20%;
+				}
+				.name {
+					width: 80%;
+					margin-left: 1rem;
+				}
+			}
 		</style>
 		<div class=container>
-			<p class$='name ${n ? '' : 'empty'}'>${n}</p>
-			<div class=photo style$='background-image: url(${img})'></div>
+			<header>
+				<div class=photo style$='background-image: url(${img})'></div>
+				<p class$='name ${n ? '' : 'empty'}'>${n}</p>
+			</header>
 			<div class=skills>
+				<div class=heading>What I can do</div>
 				${repeat(skills, sk => html`<p>${sk}</p>`)}
 			</div>
 		</div>

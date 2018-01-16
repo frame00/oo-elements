@@ -70,23 +70,40 @@ export default class extends HTMLElement {
 		const {currency, sign} = p
 		const amountTag = () => {
 			if (a === 'pend') {
-				return html`<p class=amount>Pend</p>`
+				return html`<p class=amount>to be determined</p>`
 			}
-			return html`<p class=amount>${currency} ${sign}${a}</p>`
+			return html`<p class=amount><span class=currency>${currency}</span> ${sign}${a}</p>`
 		}
 		return html`
 		<style>
+			@import '../../style/_reset-textare.css';
 			:host {
 				display: block;
 			}
 			.amount {
+				margin: 1rem 0;
 				text-transform: uppercase;
+				font-size: 1.6rem;
+				font-weight: 300;
+				text-align: center;
+			}
+			.currency {
+				font-weight: 100;
+			}
+			textarea {
+				width: 100%;
+				padding: 0.5rem;
+				border: 0.5px solid #ccc;
+				border-radius: 5px;
+				box-sizing: border-box;
+				height: 6rem;
+				font-size: 1rem;
 			}
 		</style>
-		${amountTag()}
 		<oo-atoms-select-hour on-changehour='${e => this.onHourChange(e)}'></oo-atoms-select-hour>
+		${amountTag()}
 		<form on-change='${e => this.onMessageChange(e)}' on-submit='${e => this.onMessageChange(e)}'>
-			<textarea name=message></textarea>
+			<textarea name=message placeholder='What do you offer?'></textarea>
 		</form>
 		`
 	}
