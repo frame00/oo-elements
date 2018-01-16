@@ -45,10 +45,10 @@ export default class extends HTMLElement {
 			}
 		</style>
 		<div class=container>
-			<oo-profile data-iam$=${uid}></oo-profile>
+			<oo-profile data-iam$='${uid}'></oo-profile>
 			<div>
-				<oo-ask data-iam$=${uid}></oo-ask>
-				<oo-sign-in on-signedin=${e => this.onSignedIn(e)} on-signedinerror=${e => this.onSignedInError(e)}></oo-sign-in>
+				<oo-ask data-iam$='${uid}' on-changed='${e => this.onAskChanged(e)}'></oo-ask>
+				<oo-sign-in on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-sign-in>
 			</div>
 		</div>
 		`
@@ -64,5 +64,11 @@ export default class extends HTMLElement {
 
 	onSignedInError(e: CustomEvent) {
 		console.log(e)
+	}
+
+	onAskChanged(e: CustomEvent) {
+		const {detail} = e
+		const {amount, message} = detail
+		console.log(amount, message)
 	}
 }
