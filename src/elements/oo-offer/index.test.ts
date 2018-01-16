@@ -16,7 +16,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(getElement(ELEMENT)[0]).to.be.ok()
 	})
 
-	it('Pass "data-iam" attribute to <oo-organisms-offer-step-ask> and <oo-organisms-offer-sign-in>')
+	it('Pass "data-iam" attribute to <oo-organisms-offer-step-ask> and <oo-organisms-offer-step-sign-in>')
 
 	describe('Manage step by #hash', () => {
 		it('Store #hash as "step"')
@@ -25,7 +25,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 		it('When <oo-organisms-offer-step-ask> dispatches "next", change #hash to "signin"')
 
-		it('When change #hash to "signin", display <oo-organisms-offer-sign-in>')
+		it('When change #hash to "signin", display <oo-organisms-offer-step-sign-in>')
 
 		it('When remove #hash, display <oo-organisms-offer-step-ask>')
 
@@ -37,13 +37,13 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 		it('Default value is "ask"')
 
-		it('When <oo-organisms-offer-step-ask> dispatches "next", display <oo-organisms-offer-sign-in>')
+		it('When <oo-organisms-offer-step-ask> dispatches "next", display <oo-organisms-offer-step-sign-in>')
 
-		it('When <oo-organisms-offer-sign-in> dispatches "prev", display <oo-organisms-offer-step-ask>')
+		it('When <oo-organisms-offer-step-sign-in> dispatches "prev", display <oo-organisms-offer-step-ask>')
 	})
 
 	describe('Signing in', () => {
-		it('Sign in by <oo-organisms-offer-sign-in>')
+		it('Sign in by <oo-organisms-offer-step-sign-in>')
 	})
 
 	it('Create a project')

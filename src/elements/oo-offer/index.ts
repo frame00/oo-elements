@@ -1,7 +1,7 @@
 import {html} from 'lit-html'
 import render from '../../lib/render'
 import offerProfile from '../_organisms/oo-organisms-offer-step-ask'
-import offerSignIn from '../_organisms/oo-organisms-offer-sign-in'
+import offerSignIn from '../_organisms/oo-organisms-offer-step-sign-in'
 import define from '../../lib/define'
 import createProject from '../../lib/oo-api-create-project'
 import {add as hashListen, remove as hashRemoveListen, change as hashChange, get as hashGet} from '../../lib/hash'
@@ -13,7 +13,7 @@ const {history} = window
 type Step = 'ask' | 'signin'
 
 define('oo-organisms-offer-step-ask', offerProfile)
-define('oo-organisms-offer-sign-in', offerSignIn)
+define('oo-organisms-offer-step-sign-in', offerSignIn)
 
 const ATTR = {
 	DATA_IAM: 'data-iam',
@@ -115,7 +115,7 @@ export default class extends HTMLElement {
 		<div class$='container ${s}'>
 			<div class=contents>
 				<oo-organisms-offer-step-ask data-iam$='${uid}' on-askchanged='${e => this.onAskChanged(e)}' on-next='${() => this.onAskNext()}'></oo-organisms-offer-step-ask>
-				<oo-organisms-offer-sign-in on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}' on-prev='${() => this.onSignInPrev()}'></oo-organisms-offer-sign-in>
+				<oo-organisms-offer-step-sign-in on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}' on-prev='${() => this.onSignInPrev()}'></oo-organisms-offer-step-sign-in>
 			</div>
 		</div>
 		`
