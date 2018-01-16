@@ -38,7 +38,7 @@ export default class extends HTMLElement {
 			<ul>
 				${repeat([1, 2, 3, 'pend'], item => html`
 				<li>
-					<button class$=${item === h ? 'active' : ''} on-click='${() => this.onButtonClick(item)}'>${item}</button>
+					<button class$=${item === h ? 'active' : ''} data-hour$=${item} on-click='${() => this.onButtonClick(item)}'>${item}</button>
 				</li>`)}
 			</ul>
 		</from>

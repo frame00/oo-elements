@@ -18,34 +18,52 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	})
 
 	describe('Select hour', () => {
-		it('1 hour', () => {
-			const element: any = getElement(ELEMENT)[0]
-			event(element.shadowRoot.querySelectorAll('button')[0], 'click')
-			expect(element.hour).to.be(1)
+		beforeEach(() => {
+			removeElement(ELEMENT)
+			insertElement(ELEMENT)
 		})
 
-		it('2 hours', () => {
+		it('1 hour', done => {
 			const element: any = getElement(ELEMENT)[0]
-			event(element.shadowRoot.querySelectorAll('button')[1], 'click')
-			expect(element.hour).to.be(2)
+			element.addEventListener('changehour', () => {
+				expect(element.hour).to.be(1)
+				done()
+			})
+			event(element.shadowRoot.querySelector('button[data-hour="1"]'), 'click')
 		})
 
-		it('3 hours', () => {
+		it('2 hours', done => {
 			const element: any = getElement(ELEMENT)[0]
-			event(element.shadowRoot.querySelectorAll('button')[2], 'click')
-			expect(element.hour).to.be(3)
+			element.addEventListener('changehour', () => {
+				expect(element.hour).to.be(2)
+				done()
+			})
+			event(element.shadowRoot.querySelector('button[data-hour="2"]'), 'click')
 		})
 
-		it('Pend', () => {
+		it('3 hours', done => {
 			const element: any = getElement(ELEMENT)[0]
-			event(element.shadowRoot.querySelectorAll('button')[3], 'click')
-			expect(element.hour).to.be('pend')
+			element.addEventListener('changehour', () => {
+				expect(element.hour).to.be(3)
+				done()
+			})
+			event(element.shadowRoot.querySelector('button[data-hour="3"]'), 'click')
+		})
+
+		it('Pend', done => {
+			const element: any = getElement(ELEMENT)[0]
+			element.addEventListener('changehour', () => {
+				expect(element.hour).to.be('pend')
+				done()
+			})
+			event(element.shadowRoot.querySelector('button[data-hour="pend"]'), 'click')
 		})
 	})
 
 	it('Dispatch "changehour" event when changing hour', done => {
 		const element = getElement(ELEMENT)[0]
-		const callback = () => {
+		const callback = (e: CustomEvent) => {
+			expect(e.detail).to.be(1)
 			done()
 		}
 		element.addEventListener('changehour', callback)

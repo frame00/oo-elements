@@ -21,6 +21,10 @@ module.exports = function(config) {
 				flags: ['--no-sandbox', '--disable-setuid-sandbox']
 			}
 		},
-		browsers: ['ChromiumHeadlessConfigured']
+		browsers: ['ChromiumHeadlessConfigured'],
+		browserConsoleLogOptions: {
+			level: 'log',
+			terminal: true
+		}
 	})
 }
