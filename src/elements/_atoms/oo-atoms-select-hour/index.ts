@@ -1,8 +1,7 @@
 import {html} from 'lit-html'
 import {repeat} from 'lit-html/lib/repeat'
 import render from '../../../lib/render'
-
-type Hour = number | string
+import {Hour} from '../../../d/hour'
 
 const EVENT = {
 	CHANGE_HOUR: detail => new CustomEvent('changehour', {detail})
@@ -22,6 +21,7 @@ export default class extends HTMLElement {
 	}
 
 	html(h: Hour) {
+		const values: Array<Hour> = [1, 2, 3, 'pend']
 		return html`
 		<style>
 			@import '../../../style/_reset-button.css';
@@ -36,7 +36,7 @@ export default class extends HTMLElement {
 		</style>
 		<from>
 			<ul>
-				${repeat([1, 2, 3, 'pend'], item => html`
+				${repeat(values, item => html`
 				<li>
 					<button class$=${item === h ? 'active' : ''} data-hour$=${item} on-click='${() => this.onButtonClick(item)}'>${item}</button>
 				</li>`)}

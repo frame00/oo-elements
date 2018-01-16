@@ -7,6 +7,7 @@ import {ExtensionPricePerHour} from '../../d/extension-price-per-hour'
 import getPricePerHour from '../../lib/get-price-per-hour'
 import selectHour from '../_atoms/oo-atoms-select-hour'
 import define from '../../lib/define'
+import {Hour} from '../../d/hour'
 
 define('oo-atoms-select-hour', selectHour)
 
@@ -25,7 +26,7 @@ const EVENT = {
 
 const iam: WeakMap<object, string> = new WeakMap()
 const pricePerHour: WeakMap<object, ExtensionPricePerHour> = new WeakMap()
-const hour: WeakMap<object, number> = new WeakMap()
+const hour: WeakMap<object, Hour> = new WeakMap()
 const message: WeakMap<object, string> = new WeakMap()
 
 export default class extends HTMLElement {
@@ -40,13 +41,16 @@ export default class extends HTMLElement {
 		message.set(this, '')
 	}
 
-	get amount(): string | void {
+	get amount(): string {
 		const pph = pricePerHour.get(this)
 		if (pph === undefined) {
 			return undefined
 		}
-		const {price} = getPricePerHour(pph)
 		const h = hour.get(this)
+		if (h === 'pend') {
+			return h
+		}
+		const {price} = getPricePerHour(pph)
 		return (price * h).toFixed(2)
 	}
 
@@ -59,11 +63,17 @@ export default class extends HTMLElement {
 		this.fetchUserData()
 	}
 
-	html(a: string | void, p: ExtensionPricePerHour, h: number) {
+	html(a: string, p: ExtensionPricePerHour) {
 		if (a === undefined) {
 			return html``
 		}
 		const {currency, sign} = getPricePerHour(p)
+		const amountTag = () => {
+			if (a === 'pend') {
+				return html`<p class=amount>Pend</p>`
+			}
+			return html`<p class=amount>${currency} ${sign}${a}</p>`
+		}
 		return html`
 		<style>
 			:host {
@@ -73,7 +83,7 @@ export default class extends HTMLElement {
 				text-transform: uppercase;
 			}
 		</style>
-		<p class=amount>${currency} ${sign}${a}</p>
+		${amountTag()}
 		<oo-atoms-select-hour on-changehour='${e => this.onHourChange(e)}'></oo-atoms-select-hour>
 		<form on-change='${e => this.onMessageChange(e)}' on-submit='${e => this.onMessageChange(e)}'>
 			<textarea name=message></textarea>
@@ -82,7 +92,7 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(this.amount, pricePerHour.get(this), hour.get(this)), this)
+		render(this.html(this.amount, pricePerHour.get(this)), this)
 	}
 
 	onHourChange(e: CustomEvent) {
