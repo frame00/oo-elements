@@ -26,7 +26,7 @@ const ATTR = {
 }
 const EVENT = {
 	PROJECT_CREATED: detail => new CustomEvent('projectcreated', {detail}),
-	PROJECT_CREATION_FAIL: detail => new CustomEvent('projectcreationfail', {detail})
+	PROJECT_CREATION_FAILED: detail => new CustomEvent('projectcreationfailed', {detail})
 }
 
 const iam: WeakMap<object, string> = new WeakMap()
@@ -277,7 +277,7 @@ export default class extends HTMLElement {
 		if (success(project.status)) {
 			this.dispatchEvent(EVENT.PROJECT_CREATED(project))
 		} else {
-			this.dispatchEvent(EVENT.PROJECT_CREATION_FAIL(project))
+			this.dispatchEvent(EVENT.PROJECT_CREATION_FAILED(project))
 		}
 	}
 }

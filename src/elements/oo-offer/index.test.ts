@@ -38,9 +38,9 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 	})
 
-	it('Dispatch "projectcreationfail" event when failed to project create', done => {
+	it('Dispatch "projectcreationfailed" event when failed to project create', done => {
 		insertElement(ELEMENT, new Map([['data-test', 'fail']]))
-		.addEventListener('projectcreationfail', (e: CustomEvent) => {
+		.addEventListener('projectcreationfailed', (e: CustomEvent) => {
 			expect(e.detail.response[0].uid).to.be('test')
 			done()
 		})
