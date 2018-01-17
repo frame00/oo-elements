@@ -68,7 +68,7 @@ export default class extends HTMLElement {
 	connectedCallback() {
 		const test = testMode(this)
 		if(typeof test === 'string') {
-			this.createProject(test)
+			this.createProject(test === 'success')
 		}
 	}
 
@@ -226,15 +226,15 @@ export default class extends HTMLElement {
 		console.log(e)
 	}
 
-	async createProject(test?: string) {
-		if (validation(this) === false) {
+	async createProject(test?: boolean) {
+		if (validation(this) === false && test === undefined) {
 			return
 		}
 		const users = [iam.get(this), offerer.get(this)]
 		const body = message.get(this)
 		const author = offerer.get(this)
 		const pend = amount.get(this) === 'pend'
-		const project = test === undefined && await createProject({
+		const project = await createProject({
 			users,
 			body,
 			author,
@@ -242,8 +242,8 @@ export default class extends HTMLElement {
 			offer_amount: amount.get(this),
 			offer_currency: currency.get(this),
 			offer_taker: iam.get(this)
-		})
-		if (success(project.status) || test === 'success') {
+		}, test)
+		if (success(project.status)) {
 			this.dispatchEvent(EVENT.PROJECT_CREATED(project))
 		} else {
 			this.dispatchEvent(EVENT.PROJECT_CREATION_FAIL(project))
