@@ -210,7 +210,18 @@ export default class extends HTMLElement {
 	}
 
 	htmlForProjectCreated(uid: string) {
-		return html`<oo-organisms-offer-created data-project-uid$='${uid}'></oo-organisms-offer-created>`
+		return html`
+		<style>
+			:host {
+				display: block;
+				height: 100%;
+			}
+			oo-organisms-offer-created {
+				height: 100%;
+			}
+		</style>
+		<oo-organisms-offer-created data-project-uid$='${uid}'></oo-organisms-offer-created>
+		`
 	}
 
 	render() {

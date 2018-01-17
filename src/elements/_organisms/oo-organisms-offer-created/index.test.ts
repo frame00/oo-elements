@@ -16,7 +16,13 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(getElement(ELEMENT)[0]).to.be.ok()
 	})
 
-	it('Create a link to the project from the value of "data-project-uid" attribute')
+	it('Create a link to the project from the value of "data-project-uid" attribute', () => {
+		removeElement(ELEMENT)
+		const element = insertElement(ELEMENT, new Map([['data-project-uid', 'test']]))
+		const project = element.shadowRoot.querySelector('.project')
+		const a = project.querySelector('a')
+		expect(a.getAttribute('href')).to.be('https://ooapp.co/project/test')
+	})
 
 	after(() => {
 		removeElement(ELEMENT)
