@@ -59,6 +59,9 @@ export default class extends HTMLElement {
 	}
 
 	attributeChangedCallback(attr, prev, next) {
+		if (prev === next) {
+			return
+		}
 		iam.set(this, next)
 		this.fetchUserData()
 	}

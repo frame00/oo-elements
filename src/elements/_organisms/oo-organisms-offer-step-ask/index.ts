@@ -11,11 +11,13 @@ const ATTR = {
 	DATA_IAM: 'data-iam'
 }
 const EVENT = {
+	READY: new Event('ready'),
 	ASK_CHANGED: detail => new CustomEvent('askchanged', {detail}),
 	NEXT: new Event('next')
 }
 
 const iam: WeakMap<object, string> = new WeakMap()
+const updated: WeakMap<object, Array<string>> = new WeakMap()
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
@@ -23,7 +25,11 @@ export default class extends HTMLElement {
 	}
 
 	attributeChangedCallback(attr, prev, next) {
+		if (prev === next) {
+			return
+		}
 		iam.set(this, next)
+		updated.delete(this)
 		this.render()
 	}
 
@@ -62,10 +68,10 @@ export default class extends HTMLElement {
 		</style>
 		<div class=container>
 			<div class='column profile'>
-				<oo-profile data-iam$='${uid}'></oo-profile>
+				<oo-profile data-iam$='${uid}' on-userupdated='${() => this.onUserUpdated('oo-profile')}'></oo-profile>
 			</div>
 			<div class='column ask'>
-				<oo-ask data-iam$='${uid}' on-changed='${e => this.onAskChanged(e)}'></oo-ask>
+				<oo-ask data-iam$='${uid}' on-changed='${e => this.onAskChanged(e)}' on-userupdated='${() => this.onUserUpdated('oo-ask')}'></oo-ask>
 				<button on-click='${() => this.onNextClick()}'>Next</button>
 			</div>
 		</div>
@@ -76,6 +82,17 @@ export default class extends HTMLElement {
 		render(this.html(iam.get(this)), this)
 	}
 
+	onUserUpdated(name: string) {
+		const state = updated.get(this) || []
+		if (state.indexOf(name) === -1) {
+			state.push(name)
+		}
+		updated.set(this, state)
+		if (state.length > 1) {
+			this.dispatchEvent(EVENT.READY)
+		}
+	}
+
 	onAskChanged(e: CustomEvent) {
 		this.dispatchEvent(EVENT.ASK_CHANGED(e.detail))
 	}
@@ -83,4 +100,5 @@ export default class extends HTMLElement {
 	onNextClick() {
 		this.dispatchEvent(EVENT.NEXT)
 	}
+
 }

@@ -45,6 +45,9 @@ export default class extends HTMLElement {
 	}
 
 	attributeChangedCallback(attr, prev, next) {
+		if (prev === next) {
+			return
+		}
 		provider.set(this, asValidString(next))
 		this.render()
 	}
@@ -77,6 +80,8 @@ export default class extends HTMLElement {
 				--github: #444;
 			}
 			button {
+				width: inherit;
+				height: inherit;
 				padding: 0.8rem 1rem;
 				border-radius: 5px;
 				color: white;
@@ -106,7 +111,7 @@ export default class extends HTMLElement {
 				}
 			}
 		</style>
-		<button class$=${prov} onclick=${() => this.signIn()}>
+		<button class$='${prov}' on-click='${() => this.signIn()}'>
 			Sign in with ${label}
 		</button>
 		`

@@ -10,7 +10,7 @@ import success from '../../lib/is-api-success'
 import testMode from '../../lib/test/test-mode'
 const {history} = window
 
-type Step = 'ask' | 'signin'
+type Step = 'ask' | 'send'
 
 define('oo-organisms-offer-step-ask', offerProfile)
 define('oo-organisms-offer-step-sign-in', offerSignIn)
@@ -31,9 +31,10 @@ const message: WeakMap<object, string> = new WeakMap()
 const offerSender: WeakMap<object, string> = new WeakMap()
 const currency: WeakMap<object, Currency> = new WeakMap()
 const useHistory: WeakMap<object, boolean> = new WeakMap()
+const ready: WeakMap<object, boolean> = new WeakMap()
 
 const asValidString = (data: string): Step => {
-	if(data === 'ask' || data === 'signin') {
+	if(data === 'ask' || data === 'send') {
 		return data
 	}
 	return 'ask'
@@ -47,6 +48,21 @@ const asBoolean = (data: string): boolean => {
 		default:
 			return true
 	}
+}
+const validation = (el: HTMLElement): boolean => {
+	const users = [iam.get(el), offerSender.get(el)]
+	if (users.some(i => i === undefined)) {
+		return false
+	}
+	const body = message.get(el)
+	if (body === undefined || body.match(/./) === null) {
+		return false
+	}
+	const author = offerSender.get(el)
+	if (author === undefined) {
+		return false
+	}
+	return true
 }
 
 export default class extends HTMLElement {
@@ -62,6 +78,7 @@ export default class extends HTMLElement {
 		super()
 		iam.set(this, this.getAttribute(ATTR.DATA_IAM))
 		useHistory.set(this, asBoolean(this.getAttribute(ATTR.DATA_HISTORY)))
+		ready.set(this, false)
 		if (useHistory.get(this)) {
 			step.set(this, asValidString(hashGet()))
 			hashListen(this, () => this.onStepChange())
@@ -72,6 +89,9 @@ export default class extends HTMLElement {
 	}
 
 	attributeChangedCallback(attr, prev, next) {
+		if (prev === next) {
+			return
+		}
 		iam.set(this, next)
 		this.render()
 	}
@@ -87,7 +107,7 @@ export default class extends HTMLElement {
 		hashRemoveListen(this)
 	}
 
-	html(uid: string, s: Step) {
+	html(uid: string, s: Step, read: boolean, offerer: string) {
 		return html`
 		<style>
 			:host {
@@ -96,7 +116,7 @@ export default class extends HTMLElement {
 			.container {
 				width: 100%;
 				overflow: hidden;
-				&.signin {
+				&.send {
 					.contents {
 						transform: translateX(-50%);
 					}
@@ -109,20 +129,31 @@ export default class extends HTMLElement {
 				transform: translateX(0);
 				> * {
 					width: 100%;
+					opacity: 0;
+					transition: opacity 0.2s;
+
+					&.ready {
+						opacity: 1;
+					}
 				}
 			}
 		</style>
 		<div class$='container ${s}'>
 			<div class=contents>
-				<oo-organisms-offer-step-ask data-iam$='${uid}' on-askchanged='${e => this.onAskChanged(e)}' on-next='${() => this.onAskNext()}'></oo-organisms-offer-step-ask>
-				<oo-organisms-offer-step-sign-in on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}' on-prev='${() => this.onSignInPrev()}'></oo-organisms-offer-step-sign-in>
+				<oo-organisms-offer-step-ask class$='${read && 'ready'}' on-ready='${() => this.onReady()}' data-iam$='${uid}' on-askchanged='${e => this.onAskChanged(e)}' on-next='${() => this.onAskNext()}'></oo-organisms-offer-step-ask>
+				<oo-organisms-offer-step-sign-in class$='${read && 'ready'}' on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}' on-prev='${() => this.onSignInPrev()}'></oo-organisms-offer-step-sign-in>
 			</div>
 		</div>
 		`
 	}
 
 	render() {
-		render(this.html(iam.get(this), this.step), this)
+		render(this.html(iam.get(this), this.step, ready.get(this), offerSender.get(this)), this)
+	}
+
+	onReady() {
+		ready.set(this, true)
+		this.render()
 	}
 
 	onStepChange(s?: Step) {
@@ -143,7 +174,7 @@ export default class extends HTMLElement {
 	}
 
 	onAskNext() {
-		const next = 'signin'
+		const next = 'send'
 		if (useHistory.get(this)) {
 			hashChange(next)
 		} else {
@@ -171,6 +202,9 @@ export default class extends HTMLElement {
 	}
 
 	async createProject(test?: string) {
+		if (validation(this) === false) {
+			this.onSignInPrev()
+		}
 		const users = [iam.get(this), offerSender.get(this)]
 		const body = message.get(this)
 		const author = offerSender.get(this)

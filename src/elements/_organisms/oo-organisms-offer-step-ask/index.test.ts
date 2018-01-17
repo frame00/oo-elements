@@ -20,6 +20,8 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	it('Forward "changed" event of <oo-ask> as "askchanged"')
 
+	it('Dispatch "ready" event when "userupdated" event diapatched on <oo-profile> and <oo-ask>')
+
 	it('Dispatch "next" event when button clicked')
 
 	after(() => {

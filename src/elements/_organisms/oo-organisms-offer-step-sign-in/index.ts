@@ -23,11 +23,27 @@ export default class extends HTMLElement {
 			:host {
 				display: block;
 			}
+			div {
+				min-height: 100%;
+				padding: 1rem;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+			}
+			.button {
+				margin: 1rem 0;
+				width: 100%;
+				max-width: 300px;
+				height: 5rem;
+			}
 		</style>
-		<oo-sign-in data-provider='google' on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-sign-in>
-		<oo-sign-in data-provider='facebook' on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-sign-in>
-		<oo-sign-in data-provider='github' on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-sign-in>
-		<button on-click='${() => this.onPrevClick()}'>Prev</button>
+		<div>
+			<oo-sign-in class=button data-provider='google' on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-sign-in>
+			<oo-sign-in class=button data-provider='facebook' on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-sign-in>
+			<oo-sign-in class=button data-provider='github' on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-sign-in>
+			<button on-click='${() => this.onPrevClick()}'>Prev</button>
+		</div>
 		`
 	}
 

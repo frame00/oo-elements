@@ -48,6 +48,8 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	it('Create a project')
 
+	it('If necessary items are missing, return the step to "ask"')
+
 	it('Dispatch "projectcreated" event when project created')
 
 	it('Dispatch "projectcreationfail" event when failed to project create')
