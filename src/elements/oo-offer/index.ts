@@ -1,6 +1,7 @@
 import {html} from 'lit-html'
 import render from '../../lib/render'
 import offerSignIn from '../_organisms/oo-organisms-offer-step-sign-in'
+import created from '../_organisms/oo-organisms-offer-created'
 import profile from '../oo-profile'
 import ask from '../oo-ask'
 import define from '../../lib/define'
@@ -8,10 +9,17 @@ import createProject from '../../lib/oo-api-create-project'
 import {Currency} from '../../d/currency'
 import success from '../../lib/is-api-success'
 import testMode from '../../lib/test/test-mode'
+import {OOAPIResult} from '../../d/oo-api'
+import {OOProject} from '../../d/oo-project'
+
+interface ProjectCreatedEvent extends CustomEvent {
+	detail: OOAPIResult<OOProject>
+}
 
 define('oo-organisms-offer-step-sign-in', offerSignIn)
 define('oo-profile', profile)
 define('oo-ask', ask)
+define('oo-organisms-offer-created', created)
 
 const ATTR = {
 	DATA_IAM: 'data-iam'
@@ -70,6 +78,14 @@ export default class extends HTMLElement {
 		if(typeof test === 'string') {
 			this.createProject(test === 'success')
 		}
+		this.addEventListener('projectcreated', (e: ProjectCreatedEvent) => {
+			const {detail} = e
+			const {response} = detail
+			if (Array.isArray(response)) {
+				const [project] = response
+				render(this.htmlForProjectCreated(project.uid), this)
+			}
+		})
 	}
 
 	html(uid: string, rd: boolean, auth: boolean, sender: string) {
@@ -191,6 +207,10 @@ export default class extends HTMLElement {
 			</div>
 		</div>
 		`
+	}
+
+	htmlForProjectCreated(uid: string) {
+		return html`<oo-organisms-offer-created data-project-uid$='${uid}'></oo-organisms-offer-created>`
 	}
 
 	render() {
