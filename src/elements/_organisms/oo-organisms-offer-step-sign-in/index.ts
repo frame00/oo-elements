@@ -23,8 +23,6 @@ export default class extends HTMLElement {
 				display: block;
 			}
 			div {
-				min-height: 100%;
-				padding: 1rem;
 				display: flex;
 				flex-direction: column;
 				align-items: center;
@@ -33,8 +31,13 @@ export default class extends HTMLElement {
 			.button {
 				margin: 1rem 0;
 				width: 100%;
-				max-width: 300px;
 				height: 5rem;
+				&:first-child {
+					margin-top: 0;
+				}
+				&:last-child {
+					margin-bottom: 0;
+				}
 			}
 		</style>
 		<div>

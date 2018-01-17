@@ -16,7 +16,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(getElement(ELEMENT)[0]).to.be.ok()
 	})
 
-	it('Pass "data-iam" attribute to <oo-organisms-offer-step-ask> and <oo-organisms-offer-step-sign-in>')
+	it('Pass "data-iam" attribute to <oo-profile> and <oo-ask>')
 
 	describe('Signing in', () => {
 		it('Sign in by <oo-organisms-offer-step-sign-in>')
