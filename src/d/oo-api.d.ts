@@ -1,6 +1,6 @@
 import {OOAPIResponse} from './oo-api-response'
 
-export interface OOAPIResult {
-	response: OOAPIResponse,
+export interface OOAPIResult<T> {
+	response: OOAPIResponse<T>,
 	status: number
 }

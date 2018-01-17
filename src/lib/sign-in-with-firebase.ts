@@ -1,7 +1,7 @@
 import auth from './firebase-auth'
 import {AuthProvider} from '../d/auth-provider'
 import {OOToken} from '../d/oo-token'
-import {OOUserUID} from '../d/oo-user'
+import {OOUserUID, OOUser} from '../d/oo-user'
 import api from '../lib/oo-api'
 import createToken from './oo-api-create-token'
 import isSuccess from './is-api-success'
@@ -23,7 +23,7 @@ export default async (provider: AuthProvider, test?: string): Promise<{
 	} else {
 		return {token: test, uid: test}
 	}
-	const ooapiRes = await api({
+	const ooapiRes = await api<OOUser>({
 		resource: 'users',
 		method: 'POST',
 		body: {

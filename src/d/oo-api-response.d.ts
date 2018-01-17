@@ -7,4 +7,4 @@ export interface OOAPIResponseError {
 	[key: string]: any
 }
 
-export type OOAPIResponse = Array<OOUser | OOExtension | OOToken> | OOAPIResponseError
+export type OOAPIResponse<T> = Array<T> | OOAPIResponseError

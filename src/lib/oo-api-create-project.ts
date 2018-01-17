@@ -3,6 +3,7 @@ import {OOAPIResult} from '../d/oo-api'
 import {OOUserUID} from '../d/oo-user'
 import {Currency} from '../d/currency'
 import {OOExtension} from '../d/oo-extension'
+import {OOProject} from '../d/oo-project'
 
 interface ProjectOptionsPost {
 	users: Array<OOUserUID>,
@@ -21,16 +22,16 @@ const kv = <T>(obj: ProjectOptionsPost, key: string): {key: string, value: T} =>
 	}
 }
 
-export default async (options: ProjectOptionsPost, test?: boolean): Promise<OOAPIResult> => {
+export default async (options: ProjectOptionsPost, test?: boolean): Promise<OOAPIResult<OOProject>> => {
 	if (typeof test === 'boolean') {
 		if (test) {
 			return {
-				response: ['test'],
+				response: [{uid: 'test', created: 1}],
 				status: 200
 			}
 		}
 		return {
-			response: ['test'],
+			response: [{uid: 'test', created: 1}],
 			status: 400
 		}
 	}
@@ -45,7 +46,7 @@ export default async (options: ProjectOptionsPost, test?: boolean): Promise<OOAP
 		return exts
 	})(options)
 
-	const ooapiRes = await api({
+	const ooapiRes = await api<OOProject>({
 		resource: 'projects',
 		method: 'POST',
 		body: {

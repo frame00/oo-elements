@@ -18,7 +18,7 @@ interface Options {
 	version?: OOAPIVersion
 }
 
-export default async (options: Options): Promise<OOAPIResult> => {
+export default async <T>(options: Options): Promise<OOAPIResult<T>> => {
 	const {
 		resource,
 		pathParameter,
@@ -46,7 +46,7 @@ export default async (options: Options): Promise<OOAPIResult> => {
 
 	const result = await fetch(endpoint, init)
 	const {status} = result
-	const response: OOAPIResponse | OOAPIResponseError = await result.json()
+	const response: OOAPIResponse<T> | OOAPIResponseError = await result.json()
 	return {
 		response,
 		status

@@ -1,7 +1,9 @@
 import {OOAPIResponse} from '../d/oo-api-response'
 import {OOExtension} from '../d/oo-extension'
+import {OOUser} from '../d/oo-user'
+import {OOProject} from '../d/oo-project'
 
-export default (response: OOAPIResponse): Map<string, any> => {
+export default (response: OOAPIResponse<OOUser | OOProject>): Map<string, any> => {
 	if (Array.isArray(response)) {
 		const [item] = response
 		if (typeof item !== 'string') {
