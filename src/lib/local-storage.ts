@@ -26,6 +26,9 @@ export default class {
 		set('oo.uid', v)
 	}
 
+	static remove(key: Key) {
+		remove(key)
+	}
 	static clear() {
 		localStorage.clear()
 	}
