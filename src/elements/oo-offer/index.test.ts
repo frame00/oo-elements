@@ -33,7 +33,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	it('Dispatch "projectcreated" event when project created', done => {
 		insertElement(ELEMENT, new Map([['data-test', 'success']]))
 		.addEventListener('projectcreated', (e: CustomEvent) => {
-			expect(e.detail.response).to.eql(['test'])
+			expect(e.detail.response[0].uid).to.be('test')
 			done()
 		})
 	})
@@ -41,7 +41,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	it('Dispatch "projectcreationfail" event when failed to project create', done => {
 		insertElement(ELEMENT, new Map([['data-test', 'fail']]))
 		.addEventListener('projectcreationfail', (e: CustomEvent) => {
-			expect(e.detail.response).to.eql(['test'])
+			expect(e.detail.response[0].uid).to.be('test')
 			done()
 		})
 	})
