@@ -16,8 +16,7 @@ define('oo-organisms-offer-step-ask', offerProfile)
 define('oo-organisms-offer-step-sign-in', offerSignIn)
 
 const ATTR = {
-	DATA_IAM: 'data-iam',
-	DATA_HISTORY: 'data-history'
+	DATA_IAM: 'data-iam'
 }
 const EVENT = {
 	PROJECT_CREATED: detail => new CustomEvent('projectcreated', {detail}),
@@ -30,7 +29,6 @@ const amount: WeakMap<object, string> = new WeakMap()
 const message: WeakMap<object, string> = new WeakMap()
 const offerSender: WeakMap<object, string> = new WeakMap()
 const currency: WeakMap<object, Currency> = new WeakMap()
-const useHistory: WeakMap<object, boolean> = new WeakMap()
 const ready: WeakMap<object, boolean> = new WeakMap()
 
 const asValidString = (data: string): Step => {
@@ -77,14 +75,7 @@ export default class extends HTMLElement {
 	constructor() {
 		super()
 		iam.set(this, this.getAttribute(ATTR.DATA_IAM))
-		useHistory.set(this, asBoolean(this.getAttribute(ATTR.DATA_HISTORY)))
 		ready.set(this, false)
-		if (useHistory.get(this)) {
-			step.set(this, asValidString(hashGet()))
-			hashListen(this, () => this.onStepChange())
-		} else {
-			step.set(this, 'ask')
-		}
 		this.render()
 	}
 
@@ -140,8 +131,8 @@ export default class extends HTMLElement {
 		</style>
 		<div class$='container ${s}'>
 			<div class=contents>
-				<oo-organisms-offer-step-ask class$='${read && 'ready'}' on-ready='${() => this.onReady()}' data-iam$='${uid}' on-askchanged='${e => this.onAskChanged(e)}' on-next='${() => this.onAskNext()}'></oo-organisms-offer-step-ask>
-				<oo-organisms-offer-step-sign-in class$='${read && 'ready'}' on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}' on-prev='${() => this.onSignInPrev()}'></oo-organisms-offer-step-sign-in>
+				<oo-organisms-offer-step-ask class$='${read && 'ready'}' on-ready='${() => this.onReady()}' data-iam$='${uid}' on-askchanged='${e => this.onAskChanged(e)}'></oo-organisms-offer-step-ask>
+				<oo-organisms-offer-step-sign-in class$='${read && 'ready'}' on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-organisms-offer-step-sign-in>
 			</div>
 		</div>
 		`
@@ -156,38 +147,12 @@ export default class extends HTMLElement {
 		this.render()
 	}
 
-	onStepChange(s?: Step) {
-		if (useHistory.get(this)) {
-			step.set(this, asValidString(hashGet()))
-		} else {
-			step.set(this, s)
-		}
-		this.render()
-	}
-
 	onAskChanged(e: CustomEvent) {
 		const {detail} = e
 		const {amount: a, message: m, currency: c} = detail
 		amount.set(this, a)
 		message.set(this, m)
 		currency.set(this, c)
-	}
-
-	onAskNext() {
-		const next = 'send'
-		if (useHistory.get(this)) {
-			hashChange(next)
-		} else {
-			this.onStepChange(next)
-		}
-	}
-
-	onSignInPrev() {
-		if (useHistory.get(this)) {
-			history.back()
-		} else {
-			this.onStepChange('ask')
-		}
 	}
 
 	onSignedIn(e: CustomEvent) {
@@ -203,7 +168,7 @@ export default class extends HTMLElement {
 
 	async createProject(test?: string) {
 		if (validation(this) === false) {
-			this.onSignInPrev()
+			return
 		}
 		const users = [iam.get(this), offerSender.get(this)]
 		const body = message.get(this)

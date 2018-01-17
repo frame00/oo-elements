@@ -12,8 +12,7 @@ const ATTR = {
 }
 const EVENT = {
 	READY: new Event('ready'),
-	ASK_CHANGED: detail => new CustomEvent('askchanged', {detail}),
-	NEXT: new Event('next')
+	ASK_CHANGED: detail => new CustomEvent('askchanged', {detail})
 }
 
 const iam: WeakMap<object, string> = new WeakMap()
@@ -72,7 +71,6 @@ export default class extends HTMLElement {
 			</div>
 			<div class='column ask'>
 				<oo-ask data-iam$='${uid}' on-changed='${e => this.onAskChanged(e)}' on-userupdated='${() => this.onUserUpdated('oo-ask')}'></oo-ask>
-				<button on-click='${() => this.onNextClick()}'>Next</button>
 			</div>
 		</div>
 		`
@@ -96,9 +94,4 @@ export default class extends HTMLElement {
 	onAskChanged(e: CustomEvent) {
 		this.dispatchEvent(EVENT.ASK_CHANGED(e.detail))
 	}
-
-	onNextClick() {
-		this.dispatchEvent(EVENT.NEXT)
-	}
-
 }

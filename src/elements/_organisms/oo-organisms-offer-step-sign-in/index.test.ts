@@ -20,8 +20,6 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	it('Forward "signedinerror" event of <oo-sign-in>')
 
-	it('Dispatch "prev" event when click button')
-
 	after(() => {
 		removeElement(ELEMENT)
 	})

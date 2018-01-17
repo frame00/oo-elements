@@ -7,8 +7,7 @@ define('oo-sign-in', signIn)
 
 const EVENT = {
 	SIGNED_IN: detail => new CustomEvent('signedin', {detail}),
-	SIGNED_IN_ERROR: detail => new CustomEvent('signedinerror', {detail}),
-	PREV: new Event('prev')
+	SIGNED_IN_ERROR: detail => new CustomEvent('signedinerror', {detail})
 }
 
 export default class extends HTMLElement {
@@ -42,7 +41,6 @@ export default class extends HTMLElement {
 			<oo-sign-in class=button data-provider='google' on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-sign-in>
 			<oo-sign-in class=button data-provider='facebook' on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-sign-in>
 			<oo-sign-in class=button data-provider='github' on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-sign-in>
-			<button on-click='${() => this.onPrevClick()}'>Prev</button>
 		</div>
 		`
 	}
@@ -57,9 +55,5 @@ export default class extends HTMLElement {
 
 	onSignedInError(e: CustomEvent) {
 		this.dispatchEvent(EVENT.SIGNED_IN_ERROR(e.detail))
-	}
-
-	onPrevClick() {
-		this.dispatchEvent(EVENT.PREV)
 	}
 }

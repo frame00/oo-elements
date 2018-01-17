@@ -22,8 +22,6 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	it('Dispatch "ready" event when "userupdated" event diapatched on <oo-profile> and <oo-ask>')
 
-	it('Dispatch "next" event when button clicked')
-
 	after(() => {
 		removeElement(ELEMENT)
 	})
