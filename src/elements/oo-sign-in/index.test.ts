@@ -4,6 +4,8 @@ import insertElement from '../../lib/test/insert-element'
 import getElement from '../../lib/test/get-element'
 import removeElement from '../../lib/test/remove-element'
 import state from '../../lib/state'
+import store from '../../lib/local-storage'
+import event from '../../lib/test/event'
 
 const ELEMENT = 'oo-sign-in'
 
@@ -58,7 +60,35 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 	})
 
+	describe('If "uid" and "token" exist in localStorage, dispatch "signedin" event when mount', () => {
+		it('exist in localStorage', done => {
+			removeElement(ELEMENT)
+			store.token = 'xxx'
+			store.uid = 'yyy'
+			const element: any = insertElement(ELEMENT)
+			element.addEventListener('signedin', (e: CustomEvent) => {
+				expect(e.detail.token).to.be('xxx')
+				expect(e.detail.uid).to.be('yyy')
+				done()
+			})
+			element.checkSignInStatus()
+		})
+
+		it('not exist in localStorage', done => {
+			removeElement(ELEMENT)
+			store.clear()
+			const element: any = insertElement(ELEMENT)
+			element.addEventListener('signedin', (e: CustomEvent) => {
+				expect(e.detail).to.be('test')
+				done()
+			})
+			element.checkSignInStatus()
+			event(element, 'signedin', 'test')
+		})
+	})
+
 	after(() => {
 		removeElement(ELEMENT)
+		store.clear()
 	})
 })

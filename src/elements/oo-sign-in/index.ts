@@ -4,6 +4,7 @@ import {AuthProvider} from '../../d/auth-provider.d'
 import signInWithFirebase from '../../lib/sign-in-with-firebase'
 import testMode from '../../lib/test/test-mode'
 import state from '../../lib/state'
+import store from '../../lib/local-storage'
 
 const ATTR = {
 	DATA_PROVIDER: 'data-provider'
@@ -42,6 +43,7 @@ export default class extends HTMLElement {
 		if(typeof t === 'string') {
 			this.signIn(t)
 		}
+		this.checkSignInStatus()
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -128,9 +130,20 @@ export default class extends HTMLElement {
 				throw new Error()
 			}
 			state.set('token', signedIn.token)
+			store.token = signedIn.token
+			store.uid = signedIn.uid
 			this.dispatchEvent(EVENT.SIGNED_IN(signedIn))
 		} catch(err) {
 			this.dispatchEvent(EVENT.SIGNED_IN_ERROR(err))
+		}
+	}
+
+	checkSignInStatus() {
+		if (typeof store.uid === 'string' && typeof store.token === 'string') {
+			this.dispatchEvent(EVENT.SIGNED_IN({
+				token: store.token,
+				uid: store.uid
+			}))
 		}
 	}
 }
