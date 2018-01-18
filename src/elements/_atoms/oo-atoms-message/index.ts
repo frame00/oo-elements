@@ -34,9 +34,46 @@ export default class extends HTMLElement {
 	html(position: Position) {
 		return html`
 		<style>
+			@import '../../../style/_vars-font-family.css';
+			:host {
+				display: block;
+			}
+			main {
+				&.left {
+					section {
+						border-bottom-left-radius: 0;
+					}
+				}
+				&.right {
+					section {
+						border-bottom-right-radius: 0;
+					}
+				}
+				> * {
+					margin-bottom: 1rem;
+				}
+			}
+			section,
+			footer {
+				font-family: var(--font-family);
+				overflow: hidden;
+			}
+			section {
+				border: 0.5px solid #ccc;
+				border-radius: 18px;
+				word-break: break-all;
+			}
+			footer {
+			}
 		</style>
-		<slot name=body></slot>
-		<slot name=footer></slot>
+		<main class$='${position}'>
+			<section>
+				<slot name=body></slot>
+			</section>
+			<footer>
+				<slot name=footer></slot>
+			</footer>
+		</main>
 		`
 	}
 

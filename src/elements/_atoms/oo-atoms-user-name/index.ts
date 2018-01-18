@@ -3,25 +3,53 @@ import render from '../../../lib/render'
 import getUser from '../../../lib/oo-api-get-user'
 import toMap from '../../../lib/extensions-to-map'
 
+type Size = 'small' | 'medium'
+
 const ATTR = {
-	DATA_IAM: 'data-iam'
+	DATA_IAM: 'data-iam',
+	DATA_SIZE: 'data-size'
 }
 
 const iam: WeakMap<object, string> = new WeakMap()
 const name: WeakMap<object, string> = new WeakMap()
 const photo: WeakMap<object, string> = new WeakMap()
+const size: WeakMap<object, Size> = new WeakMap()
+
+const asValidSize = (data: string): Size => {
+	if(data === 'small' || data === 'medium') {
+		return data
+	}
+	return 'medium'
+}
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
-		return [ATTR.DATA_IAM]
+		return [ATTR.DATA_IAM, ATTR.DATA_SIZE]
+	}
+
+	constructor() {
+		super()
+		this.render()
 	}
 
 	attributeChangedCallback(attr, prev, next) {
-		iam.set(this, next)
+		if (prev === next) {
+			return
+		}
+		switch(attr) {
+			case ATTR.DATA_IAM:
+				iam.set(this, next)
+				break
+			case ATTR.DATA_SIZE:
+				size.set(this, asValidSize(next))
+				break
+			default:
+				break
+		}
 		this.fetchUserData()
 	}
 
-	html(n: string, img: string) {
+	html(uid: string, n: string, img: string, s: Size) {
 		return html`
 		<style>
 			@import '../../../style/_vars-font-family.css';
@@ -32,10 +60,7 @@ export default class extends HTMLElement {
 				margin: 0;
 			}
 			.name {
-				font-weight: 700;
-				font-size: 1.8rem;
 				word-break: break-all;
-				line-height: 1.8rem;
 				font-family: var(--font-family);
 				&.empty {
 					&::after {
@@ -47,7 +72,6 @@ export default class extends HTMLElement {
 			.photo {
 				background-size: cover;
 				background-color: whitesmoke;
-				border-radius: 10px;
 				&::after {
 					content: '';
 					display: block;
@@ -55,27 +79,52 @@ export default class extends HTMLElement {
 				}
 			}
 			header {
-				display: flex;
-				align-items: center;
 				margin-bottom: 1rem;
-				.photo {
-					width: 20%;
+				a {
+					display: flex;
+					align-items: center;
+					text-decoration: none;
+					color: inherit;
 				}
-				.name {
-					width: 80%;
-					margin-left: 1rem;
+				&.small {
+					.name {
+						width: 90%;
+						font-size: 1.2rem;
+						line-height: 1.2rem;
+						margin-left: 0.5rem;
+						font-weight: 300;
+					}
+					.photo {
+						width: 10%;
+						border-radius: 5px;
+					}
+				}
+				&.medium {
+					.name {
+						width: 80%;
+						font-size: 1.8rem;
+						line-height: 1.8rem;
+						margin-left: 1rem;
+						font-weight: 700;
+					}
+					.photo {
+						width: 20%;
+						border-radius: 10px;
+					}
 				}
 			}
 		</style>
-		<header>
-			<div class=photo style$='background-image: url(${img})'></div>
-			<p class$='name ${n ? '' : 'empty'}'>${n}</p>
+		<header class$='${s}'>
+			<a href$='https://ooapp.co/${uid}'>
+				<div class=photo style$='background-image: url(${img})'></div>
+				<p class$='name ${n ? '' : 'empty'}'>${n}</p>
+			</a>
 		</header>
 		`
 	}
 
 	render() {
-		render(this.html(name.get(this), photo.get(this)), this)
+		render(this.html(iam.get(this), name.get(this), photo.get(this), size.get(this)), this)
 	}
 
 	async fetchUserData() {

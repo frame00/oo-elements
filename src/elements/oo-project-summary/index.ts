@@ -1,4 +1,5 @@
 import {html} from 'lit-html'
+import {repeat} from 'lit-html/lib/repeat'
 import render from '../../lib/render'
 import getProject from '../../lib/oo-api-get-project'
 import toMap from '../../lib/extensions-to-map'
@@ -6,6 +7,7 @@ import {Currency} from '../../d/currency'
 import define from '../../lib/define'
 import message from '../_atoms/oo-atoms-message'
 import userName from '../_atoms/oo-atoms-user-name'
+import lineBreak from '../../lib/line-break'
 
 define('oo-atoms-message', message)
 define('oo-atoms-user-name', userName)
@@ -45,14 +47,29 @@ export default class extends HTMLElement {
 
 	html(opts: HTMLOptions) {
 		const {body, offerer} = opts
+		const lines = lineBreak(body)
 		return html`
 		<style>
+			:host {
+				display: block;
+			}
+			section {
+				padding: 1.5rem;
+				p {
+					margin: 0;
+					&:not(:last-child) {
+						margin-bottom: 1rem;
+					}
+				}
+			}
 		</style>
 		<main>
 			<oo-atoms-message data-tooltip-position=left>
-				<section slot=body>${body}</section>
+				<section slot=body>
+					${repeat(lines, line => html`<p>${line}</p>`)}
+				</section>
 				<footer slot=footer>
-					<oo-atoms-user-name data-iam$='${offerer}'></oo-atoms-user-name>
+					<oo-atoms-user-name data-iam$='${offerer}' data-size=small></oo-atoms-user-name>
 				</footer>
 			</oo-atoms-message>
 		</main>
