@@ -30,6 +30,11 @@ export default class extends HTMLElement {
 
 	html(uid: string) {
 		return html`
+		<style>
+			oo-project-summary {
+				border-bottom: 0.5px solid #ccc;
+			}
+		</style>
 		<oo-project-summary data-uid$='${uid}'></oo-project-summary>
 		`
 	}

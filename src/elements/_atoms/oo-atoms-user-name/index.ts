@@ -96,6 +96,7 @@ export default class extends HTMLElement {
 					}
 					.photo {
 						width: 10%;
+						max-width: 45px;
 						border-radius: 5px;
 					}
 				}

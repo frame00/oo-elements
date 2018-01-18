@@ -57,6 +57,7 @@ export default class extends HTMLElement {
 		return html`
 		<style>
 			@import '../../style/_vars-font-family.css';
+			@import '../../style/_mixin-heading.css';
 			:host {
 				display: block;
 			}
@@ -68,6 +69,10 @@ export default class extends HTMLElement {
 						margin-bottom: 1rem;
 					}
 				}
+			}
+			h2 {
+				@mixin heading;
+				font-family: var(--font-family);
 			}
 			dl {
 				margin: 0 0 1rem;
@@ -98,6 +103,7 @@ export default class extends HTMLElement {
 					<oo-atoms-user-name data-iam$='${offerer}' data-size=small></oo-atoms-user-name>
 				</footer>
 			</oo-atoms-message>
+			<h2>About this offer</h2>
 			<dl>
 				<dt>Offer date</dt>
 				<dd class=date><oo-atoms-datetime data-unixtime$='${created}'></oo-atoms-datetime></dd>
