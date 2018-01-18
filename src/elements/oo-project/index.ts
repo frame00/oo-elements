@@ -3,6 +3,7 @@ import render from '../../lib/render'
 import define from '../../lib/define'
 import summary from '../oo-project-summary'
 import messages from '../oo-project-messages'
+import store from '../../lib/local-storage'
 
 define('oo-project-summary', summary)
 define('oo-project-messages', messages)
@@ -30,19 +31,21 @@ export default class extends HTMLElement {
 		this.render()
 	}
 
-	html(uid: string) {
+	html(user: string, uid: string) {
 		return html`
 		<style>
 			oo-project-summary {
+				margin-bottom: 2rem;
 				border-bottom: 0.5px solid #ccc;
 			}
 		</style>
 		<oo-project-summary data-uid$='${uid}'></oo-project-summary>
-		<oo-project-messages data-uid$='${uid}'></oo-project-messages>
+		<oo-project-messages data-iam$='${user ? user : ''}' data-uid$='${uid}'></oo-project-messages>
 		`
 	}
 
 	render() {
-		render(this.html(projectUid.get(this)), this)
+		const user = store.uid
+		render(this.html(user, projectUid.get(this)), this)
 	}
 }

@@ -19,27 +19,42 @@ interface MapedOOMessage extends OOMessage {
 type MapedOOMessages = Array<MapedOOMessage>
 
 const ATTR = {
+	DATA_IAM: 'data-iam',
 	DATA_UID: 'data-uid'
 }
 
+const iam: WeakMap<object, string> = new WeakMap()
 const projectUid: WeakMap<object, string> = new WeakMap()
 const messages: WeakMap<object, MapedOOMessages> = new WeakMap()
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
-		return [ATTR.DATA_UID]
+		return [ATTR.DATA_UID, ATTR.DATA_IAM]
+	}
+
+	constructor() {
+		super()
+		messages.set(this, [])
 	}
 
 	attributeChangedCallback(attr, prev, next) {
 		if (prev === next) {
 			return
 		}
-		projectUid.set(this, next)
-		messages.set(this, [])
+		switch(attr) {
+			case ATTR.DATA_UID:
+				projectUid.set(this, next)
+				break
+			case ATTR.DATA_IAM:
+				iam.set(this, next)
+				break
+			default:
+				break
+		}
 		this.fetchMessages(projectUid.get(this))
 	}
 
-	html(mess: MapedOOMessages) {
+	html(user: string, mess: MapedOOMessages) {
 		return html`
 		<style>
 			@import '../../style/_vars-font-family.css';
@@ -54,9 +69,10 @@ export default class extends HTMLElement {
 		</style>
 		${repeat(mess, mes => {
 			const lines = lineBreak(mes.ext.get('body'))
-			const author = lineBreak(mes.ext.get('author'))
+			const author = mes.ext.get('author')
+			const position = author === user ? 'right' : 'left'
 			return html`
-			<oo-atoms-message data-tooltip-position=left>
+			<oo-atoms-message data-tooltip-position$='${position}'>
 				<section slot=body>
 					${repeat(lines, line => html`<p>${line}</p>`)}
 				</section>
@@ -70,7 +86,7 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(messages.get(this)), this)
+		render(this.html(iam.get(this), messages.get(this)), this)
 	}
 
 	async fetchMessages(uid: string, time?: number) {
