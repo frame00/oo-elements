@@ -80,6 +80,7 @@ export default class extends HTMLElement {
 		return html`
 		<style>
 			@import '../../style/_reset-textare.css';
+			@import '../../style/_vars-focused-input.css';
 			:host {
 				display: block;
 			}
@@ -101,6 +102,10 @@ export default class extends HTMLElement {
 				box-sizing: border-box;
 				height: 6rem;
 				font-size: 1rem;
+				&:focus {
+					border: var(--focused-border);
+					box-shadow: var(--focused-shadow);
+				}
 			}
 		</style>
 		<oo-atoms-select-hour on-changehour='${e => this.onHourChange(e)}'></oo-atoms-select-hour>
