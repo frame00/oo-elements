@@ -20,6 +20,12 @@ export default class extends HTMLElement {
 		return [ATTR.DATA_TOOLTIP_POSITION]
 	}
 
+	constructor() {
+		super()
+		tooltipPosition.set(this, asValidString(this.getAttribute(ATTR.DATA_TOOLTIP_POSITION)))
+		this.render()
+	}
+
 	attributeChangedCallback(attr, prev, next) {
 		tooltipPosition.set(this, asValidString(next))
 		this.render()
@@ -30,6 +36,7 @@ export default class extends HTMLElement {
 		<style>
 		</style>
 		<slot name=body></slot>
+		<slot name=footer></slot>
 		`
 	}
 
