@@ -4,16 +4,26 @@ import getUser from '../../../lib/oo-api-get-user'
 import toMap from '../../../lib/extensions-to-map'
 
 type Size = 'small' | 'medium'
+type Position = 'left' | 'right'
+interface HTMLOptions {
+	iam: string,
+	name: string,
+	photo: string,
+	size: Size,
+	position: Position
+}
 
 const ATTR = {
 	DATA_IAM: 'data-iam',
-	DATA_SIZE: 'data-size'
+	DATA_SIZE: 'data-size',
+	DATA_POSITION: 'data-position'
 }
 
 const iam: WeakMap<object, string> = new WeakMap()
 const name: WeakMap<object, string> = new WeakMap()
 const photo: WeakMap<object, string> = new WeakMap()
 const size: WeakMap<object, Size> = new WeakMap()
+const position: WeakMap<object, Position> = new WeakMap()
 
 const asValidSize = (data: string): Size => {
 	if(data === 'small' || data === 'medium') {
@@ -21,10 +31,16 @@ const asValidSize = (data: string): Size => {
 	}
 	return 'medium'
 }
+const asValidPosition = (data: string): Position => {
+	if (data === 'left' || data === 'right') {
+		return data
+	}
+	return 'left'
+}
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
-		return [ATTR.DATA_IAM, ATTR.DATA_SIZE]
+		return [ATTR.DATA_IAM, ATTR.DATA_SIZE, ATTR.DATA_POSITION]
 	}
 
 	constructor() {
@@ -43,13 +59,17 @@ export default class extends HTMLElement {
 			case ATTR.DATA_SIZE:
 				size.set(this, asValidSize(next))
 				break
+			case ATTR.DATA_POSITION:
+				position.set(this, asValidPosition(next))
+				break
 			default:
 				break
 		}
 		this.fetchUserData()
 	}
 
-	html(uid: string, n: string, img: string, s: Size) {
+	html(options: HTMLOptions) {
+		const {iam: uid, name: n, photo: img, size: s, position: posi} = options
 		return html`
 		<style>
 			@import '../../../style/_vars-font-family.css';
@@ -113,9 +133,30 @@ export default class extends HTMLElement {
 						border-radius: 10px;
 					}
 				}
+				&.right {
+					a {
+						display: flex;
+						flex-direction: row-reverse;
+					}
+					.name {
+						text-align: right;
+					}
+					&.small {
+						.name {
+							margin-left: 0;
+							margin-right: 0.5rem;
+						}
+					}
+					&.medium {
+						.name {
+							margin-left: 0;
+							margin-right: 1rem;
+						}
+					}
+				}
 			}
 		</style>
-		<header class$='${s}'>
+		<header class$='${s} ${posi}'>
 			<a href$='https://ooapp.co/${uid}'>
 				<div class=photo style$='background-image: url(${img})'></div>
 				<p class$='name ${n ? '' : 'empty'}'>${n}</p>
@@ -125,7 +166,14 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(iam.get(this), name.get(this), photo.get(this), size.get(this)), this)
+		const opts = {
+			iam: iam.get(this),
+			name: name.get(this),
+			photo: photo.get(this),
+			size: size.get(this),
+			position: position.get(this)
+		}
+		render(this.html(opts), this)
 	}
 
 	async fetchUserData() {

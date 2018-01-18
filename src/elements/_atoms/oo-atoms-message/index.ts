@@ -45,6 +45,9 @@ export default class extends HTMLElement {
 					}
 				}
 				&.right {
+					display: flex;
+					flex-direction: column;
+					align-items: flex-end;
 					section {
 						border-bottom-right-radius: 0;
 					}
@@ -55,6 +58,7 @@ export default class extends HTMLElement {
 			}
 			section,
 			footer {
+				width: 80%;
 				font-family: var(--font-family);
 				overflow: hidden;
 			}
@@ -63,8 +67,7 @@ export default class extends HTMLElement {
 				border-radius: 18px;
 				word-break: break-all;
 			}
-			footer {
-			}
+			footer {}
 		</style>
 		<main class$='${position}'>
 			<section>

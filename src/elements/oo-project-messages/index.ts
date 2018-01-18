@@ -77,7 +77,7 @@ export default class extends HTMLElement {
 					${repeat(lines, line => html`<p>${line}</p>`)}
 				</section>
 				<footer slot=footer>
-					<oo-atoms-user-name data-iam$='${author}' data-size=small></oo-atoms-user-name>
+					<oo-atoms-user-name data-iam$='${author}' data-position$='${position}' data-size=small></oo-atoms-user-name>
 				</footer>
 			</oo-atoms-message>
 			`
