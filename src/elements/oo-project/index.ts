@@ -1,9 +1,11 @@
 import {html} from 'lit-html'
 import render from '../../lib/render'
-import summary from '../oo-project-summary'
 import define from '../../lib/define'
+import summary from '../oo-project-summary'
+import messages from '../oo-project-messages'
 
 define('oo-project-summary', summary)
+define('oo-project-messages', messages)
 
 const ATTR = {
 	DATA_UID: 'data-uid'
@@ -36,6 +38,7 @@ export default class extends HTMLElement {
 			}
 		</style>
 		<oo-project-summary data-uid$='${uid}'></oo-project-summary>
+		<oo-project-messages data-uid$='${uid}'></oo-project-messages>
 		`
 	}
 

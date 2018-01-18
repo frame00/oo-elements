@@ -18,6 +18,8 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	it('Forward "data-uid" attribute to <oo-project-summary>')
 
+	it('Forward "data-uid" attribute to <oo-project-messages>')
+
 	after(() => {
 		removeElement(ELEMENT)
 	})
