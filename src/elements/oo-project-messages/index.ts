@@ -100,7 +100,7 @@ export default class extends HTMLElement {
 				}
 				items.push({...i, ...item})
 			}
-			messages.set(this, [...messages.get(this), ...items])
+			messages.set(this, [...items.reverse(), ...messages.get(this)])
 		}
 		this.render()
 	}
