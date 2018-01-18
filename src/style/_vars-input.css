@@ -1,4 +1,6 @@
 :root {
+	--default-background: whitesmoke;
 	--focused-shadow: 0 0 0 3px #0000ff4d;
 	--focused-border: 0.5px solid blue;
+	--focused-background: white;
 }
