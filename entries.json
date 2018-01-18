@@ -43,5 +43,10 @@
 		"file": "src/elements/oo-project-summary/define.ts",
 		"dest": "dist/oo-project-summary.js",
 		"name": "oo-project-summary"
+  },
+  {
+		"file": "src/elements/oo-project-messages/define.ts",
+		"dest": "dist/oo-project-messages.js",
+		"name": "oo-project-messages"
 	}
 ]
