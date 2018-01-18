@@ -220,7 +220,7 @@ export default class extends HTMLElement {
 				height: 100%;
 			}
 		</style>
-		<oo-organisms-offer-created data-project-uid$='${uid}'></oo-organisms-offer-created>
+		<oo-organisms-offer-created data-uid$='${uid}'></oo-organisms-offer-created>
 		`
 	}
 

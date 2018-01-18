@@ -6,14 +6,14 @@ import define from '../../lib/define'
 define('oo-project-summary', summary)
 
 const ATTR = {
-	DATA_PROJECT_UID: 'data-project-uid'
+	DATA_UID: 'data-uid'
 }
 
 const projectUid: WeakMap<object, string> = new WeakMap()
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
-		return [ATTR.DATA_PROJECT_UID]
+		return [ATTR.DATA_UID]
 	}
 
 	constructor() {
@@ -30,7 +30,7 @@ export default class extends HTMLElement {
 
 	html(uid: string) {
 		return html`
-		<oo-project-summary data-project-uid$='${uid}'></oo-project-summary>
+		<oo-project-summary data-uid$='${uid}'></oo-project-summary>
 		`
 	}
 

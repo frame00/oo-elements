@@ -16,7 +16,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(getElement(ELEMENT)[0]).to.be.ok()
 	})
 
-	it('Display project data of UID specified by "data-project-uid" attribute')
+	it('Display project data of UID specified by "data-uid" attribute')
 
 	after(() => {
 		removeElement(ELEMENT)

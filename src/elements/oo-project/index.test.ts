@@ -16,7 +16,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(getElement(ELEMENT)[0]).to.be.ok()
 	})
 
-	it('Forward "data-project-uid" attribute to <oo-project-summary>')
+	it('Forward "data-uid" attribute to <oo-project-summary>')
 
 	after(() => {
 		removeElement(ELEMENT)
