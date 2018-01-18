@@ -1,4 +1,3 @@
-import {OOAPIResponse} from '../d/oo-api-response'
 import {OOExtension} from '../d/oo-extension'
 import {OOUser} from '../d/oo-user'
 import {OOProject} from '../d/oo-project'
