@@ -3,9 +3,6 @@ import define from '../../lib/define'
 import insertElement from '../../lib/test/insert-element'
 import getElement from '../../lib/test/get-element'
 import removeElement from '../../lib/test/remove-element'
-import state from '../../lib/state'
-import store from '../../lib/local-storage'
-import event from '../../lib/test/event'
 
 const ELEMENT = 'oo-project'
 
@@ -18,6 +15,8 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		insertElement(ELEMENT)
 		expect(getElement(ELEMENT)[0]).to.be.ok()
 	})
+
+	it('Display project of UID specified by "data-project-uid" attribute')
 
 	after(() => {
 		removeElement(ELEMENT)
