@@ -122,7 +122,8 @@ export default class extends HTMLElement {
 	async fetchUserData() {
 		const res = await getUser(iam.get(this))
 		if (isSuccess(res.status) && Array.isArray(res.response)) {
-			const ext = toMap(res.response)
+			const [item] = res.response
+			const ext = toMap(item)
 			name.set(this, ext.get('name'))
 			photo.set(this, ext.get('photo'))
 			skill.set(this, ext.get('skill'))

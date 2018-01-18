@@ -128,9 +128,9 @@ export default class extends HTMLElement {
 		const api = await getProject(uid)
 		const {response} = api
 		if (Array.isArray(response)) {
-			const exts = toMap(response)
-			const [project] = response
-			projectCreated.set(this, project.created)
+			const [item] = response
+			const exts = toMap(item)
+			projectCreated.set(this, item.created)
 			projectBody.set(this, exts.get('body'))
 			projectOfferer.set(this, exts.get('author'))
 			projectOfferAmount.set(this, exts.get('offer_amount'))

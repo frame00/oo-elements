@@ -134,7 +134,8 @@ export default class extends HTMLElement {
 		}
 		const res = await getUser(iam.get(this))
 		if (Array.isArray(res.response)) {
-			const ext = toMap(res.response)
+			const [item] = res.response
+			const ext = toMap(item)
 			name.set(this, ext.get('name'))
 			photo.set(this, ext.get('photo'))
 		} else {

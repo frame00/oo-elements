@@ -134,7 +134,8 @@ export default class extends HTMLElement {
 	async fetchUserData() {
 		const res = await getUser(iam.get(this))
 		if (isSuccess(res.status) && Array.isArray(res.response)) {
-			const ext = toMap(res.response)
+			const [item] = res.response
+			const ext = toMap(item)
 			const localed = getPricePerHour(ext.get('price_per_hour'))
 			pricing.set(this, localed)
 			message.set(this, '')
