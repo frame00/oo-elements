@@ -21,15 +21,61 @@ export default class extends HTMLElement {
 		this.fetchUserData()
 	}
 
-	html(uid: string) {
+	html(n: string, img: string) {
 		return html`
 		<style>
+			@import '../../../style/_vars-font-family.css';
+			:host {
+				display: block;
+			}
+			p {
+				margin: 0;
+			}
+			.name {
+				font-weight: 700;
+				font-size: 1.8rem;
+				word-break: break-all;
+				line-height: 1.8rem;
+				font-family: var(--font-family);
+				&.empty {
+					&::after {
+						content: '.';
+						visibility: hidden;
+					}
+				}
+			}
+			.photo {
+				background-size: cover;
+				background-color: whitesmoke;
+				border-radius: 10px;
+				&::after {
+					content: '';
+					display: block;
+					padding-top: 100%;
+				}
+			}
+			header {
+				display: flex;
+				align-items: center;
+				margin-bottom: 1rem;
+				.photo {
+					width: 20%;
+				}
+				.name {
+					width: 80%;
+					margin-left: 1rem;
+				}
+			}
 		</style>
+		<header>
+			<div class=photo style$='background-image: url(${img})'></div>
+			<p class$='name ${n ? '' : 'empty'}'>${n}</p>
+		</header>
 		`
 	}
 
 	render() {
-		render(this.html(iam.get(this)), this)
+		render(this.html(name.get(this), photo.get(this)), this)
 	}
 
 	async fetchUserData() {
