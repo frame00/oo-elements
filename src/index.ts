@@ -6,6 +6,7 @@ import ooSignIn from './elements/oo-sign-in'
 import ooProfile from './elements/oo-profile'
 import ooAsk from './elements/oo-ask'
 import ooProject from './elements/oo-project'
+import ooProjectSummary from './elements/oo-project-summary'
 
 define('oo-button', ooButton)
 define('oo-modal', ooModal)
@@ -14,3 +15,4 @@ define('oo-sign-in', ooSignIn)
 define('oo-profile', ooProfile)
 define('oo-ask', ooAsk)
 define('oo-project', ooProject)
+define('oo-project-summary', ooProjectSummary)
