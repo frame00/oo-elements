@@ -128,6 +128,9 @@ export default class extends HTMLElement {
 	}
 
 	async fetchUserData() {
+		if (!iam.get(this)) {
+			return
+		}
 		const res = await getUser(iam.get(this))
 		if (Array.isArray(res.response)) {
 			const ext = toMap(res.response)
