@@ -33,5 +33,10 @@
 		"file": "src/elements/oo-ask/define.ts",
 		"dest": "dist/oo-ask.js",
 		"name": "oo-ask"
+  },
+  {
+		"file": "src/elements/oo-project/define.ts",
+		"dest": "dist/oo-project.js",
+		"name": "oo-project"
 	}
 ]
