@@ -6,6 +6,7 @@ import datetime from '../_atoms/oo-atoms-datetime'
 import button from '../_atoms/oo-atoms-button'
 import {OOExtensionsLikeObject} from '../../d/oo-extension'
 import createMessage from '../../lib/oo-api-create-message'
+import {MessageVariationError, MessageVariationErrorDetail} from '../../d/event'
 
 define('oo-atoms-button', button)
 define('oo-atoms-user-name', userName)
@@ -20,6 +21,7 @@ const ATTR = {
 	DATA_EXTENSIONS: 'data-extensions'
 }
 const EVENT = {
+	MESSAGE_VARIATION_ERROR: (detail: MessageVariationErrorDetail): MessageVariationError => new CustomEvent('messagevariationerror', {detail}),
 	MESSAGE_SENT: detail => new CustomEvent('messagesent', {detail}),
 	MESSAGE_CREATION_FAILED: detail => new CustomEvent('messagecreationfailed', {detail})
 }
@@ -29,6 +31,7 @@ const messageExtensions: WeakMap<object, OOExtensionsLikeObject> = new WeakMap()
 const messageBody: WeakMap<object, string> = new WeakMap()
 const fetching: WeakMap<object, boolean> = new WeakMap()
 const success: WeakMap<object, boolean> = new WeakMap()
+const validationError: WeakMap<object, string> = new WeakMap()
 
 const asExtensions = (data: string): OOExtensionsLikeObject => {
 	try {
@@ -62,7 +65,7 @@ export default class extends HTMLElement {
 		this.render()
 	}
 
-	html(isFetching: boolean, isSuccess: boolean) {
+	html(isFetching: boolean, isSuccess: boolean, vldErr: string) {
 		const state = ((): string => {
 			if (isFetching === false && isSuccess !== undefined) {
 				return isSuccess ? 'resolved' : 'rejected'
@@ -72,11 +75,15 @@ export default class extends HTMLElement {
 			}
 			return ''
 		})()
+		const error = vldErr ? html`
+		<div class=error>${vldErr}</div>
+		` : html``
 
 		return html`
 		<style>
 			@import '../../style/_vars-font-family.css';
 			@import '../../style/_mixin-textarea.css';
+			@import '../../style/_vars-input.css';
 			:host {
 				display: block;
 			}
@@ -90,20 +97,27 @@ export default class extends HTMLElement {
 				margin-bottom: 1rem;
 			}
 			oo-atoms-button {}
-			.notification {
-				&.success {}
-				&.error {}
+			.error {
+				width: 100%;
+				padding: 1rem;
+				margin-bottom: 1rem;
+				border-radius: 5px;
+				background: var(--rejected-background);
+				border: var(--rejected-border);
+				color: white;
+				box-sizing: border-box;
 			}
 		</style>
 		<form on-submit='${() => this.sendMessage()}'>
 			<textarea on-change='${e => this.onMessageChange(e)}'></textarea>
+			${error}
 			<oo-atoms-button on-clicked='${() => this.sendMessage()}' data-state$='${state}'>Send a message</oo-atoms-button>
 		</form>
 		`
 	}
 
 	render() {
-		render(this.html(fetching.get(this), success.get(this)), this)
+		render(this.html(fetching.get(this), success.get(this), validationError.get(this)), this)
 	}
 
 	onMessageChange(e: HTMLElementEvent<HTMLTextAreaElement>) {
@@ -115,8 +129,10 @@ export default class extends HTMLElement {
 	}
 
 	sendMessage() {
-		if (!messageBody.get(this) && messageBody.get(this).length === 0) {
-			return
+		if (!messageBody.get(this) || messageBody.get(this).length === 0) {
+			validationError.set(this, 'Empty text can not be sent.')
+			this.render()
+			return this.dispatchEvent(EVENT.MESSAGE_VARIATION_ERROR({message: 'body required'}))
 		}
 		fetching.set(this, true)
 		success.delete(this)
