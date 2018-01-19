@@ -27,11 +27,13 @@ export default async (options: ProjectOptionsPost, test?: boolean): Promise<OOAP
 		if (test) {
 			return {
 				response: [{uid: 'test', created: 1}],
+				headers: new Headers(),
 				status: 200
 			}
 		}
 		return {
 			response: [{uid: 'test', created: 1}],
+			headers: new Headers(),
 			status: 400
 		}
 	}
