@@ -1,0 +1,20 @@
+[
+  {
+    "uid": "test",
+    "created": 1516380671346,
+    "Extensions": [
+      {
+        "key": "author",
+        "value": "test"
+      },
+      {
+        "key": "users",
+        "value": ["test"]
+      },
+      {
+        "key": "body",
+        "value": "test"
+      }
+    ]
+  }
+]

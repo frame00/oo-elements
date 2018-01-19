@@ -8,7 +8,6 @@ import define from '../../lib/define'
 import createProject from '../../lib/oo-api-create-project'
 import {Currency} from '../../d/currency'
 import success from '../../lib/is-api-success'
-import testMode from '../../lib/test/test-mode'
 import {OOAPIResult} from '../../d/oo-api'
 import {OOProject} from '../../d/oo-project'
 
@@ -74,10 +73,6 @@ export default class extends HTMLElement {
 	}
 
 	connectedCallback() {
-		const test = testMode(this)
-		if(typeof test === 'string') {
-			this.createProject(test === 'success')
-		}
 		this.addEventListener('projectcreated', (e: ProjectCreatedEvent) => {
 			const {detail} = e
 			const {response} = detail
@@ -257,8 +252,8 @@ export default class extends HTMLElement {
 		console.log(e)
 	}
 
-	async createProject(test?: boolean) {
-		if (validation(this) === false && test === undefined) {
+	async createProject() {
+		if (validation(this) === false) {
 			return
 		}
 		const users = [iam.get(this), offerer.get(this)]
@@ -273,7 +268,7 @@ export default class extends HTMLElement {
 			offer_amount: amount.get(this),
 			offer_currency: currency.get(this),
 			offer_taker: iam.get(this)
-		}, test)
+		})
 		if (success(project.status)) {
 			this.dispatchEvent(EVENT.PROJECT_CREATED(project))
 		} else {

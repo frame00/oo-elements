@@ -2,7 +2,6 @@ import {html} from 'lit-html'
 import render from '../../lib/render'
 import {AuthProvider} from '../../d/auth-provider.d'
 import signInWithFirebase from '../../lib/sign-in-with-firebase'
-import testMode from '../../lib/test/test-mode'
 import state from '../../lib/state'
 import store from '../../lib/local-storage'
 
@@ -39,10 +38,6 @@ export default class extends HTMLElement {
 	}
 
 	connectedCallback() {
-		const t = testMode(this)
-		if(typeof t === 'string') {
-			this.signIn(t)
-		}
 		this.checkSignInStatus()
 	}
 

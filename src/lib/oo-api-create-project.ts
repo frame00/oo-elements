@@ -22,21 +22,7 @@ const kv = <T>(obj: ProjectOptionsPost, key: string): {key: string, value: T} =>
 	}
 }
 
-export default async (options: ProjectOptionsPost, test?: boolean): Promise<OOAPIResult<OOProject>> => {
-	if (typeof test === 'boolean') {
-		if (test) {
-			return {
-				response: [{uid: 'test', created: 1}],
-				headers: new Headers(),
-				status: 200
-			}
-		}
-		return {
-			response: [{uid: 'test', created: 1}],
-			headers: new Headers(),
-			status: 400
-		}
-	}
+export default async (options: ProjectOptionsPost): Promise<OOAPIResult<OOProject>> => {
 	const extensions: Array<OOExtension> = (opts => {
 		const exts: Array<OOExtension> = []
 		exts.push(kv(opts, 'users'))

@@ -31,20 +31,17 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	})
 
 	it('Dispatch "projectcreated" event when project created', done => {
-		insertElement(ELEMENT, new Map([['data-test', 'success']]))
-		.addEventListener('projectcreated', (e: CustomEvent) => {
+		const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+		element.onAskChanged(new CustomEvent('test', {detail: {amount: '1.00', message: 'test', currency: 'usd'}}))
+		element.onSignedIn(new CustomEvent('test', {detail: {uid: 'test'}}))
+		element.addEventListener('projectcreated', (e: CustomEvent) => {
 			expect(e.detail.response[0].uid).to.be('test')
 			done()
 		})
+		element.createProject()
 	})
 
-	it('Dispatch "projectcreationfailed" event when failed to project create', done => {
-		insertElement(ELEMENT, new Map([['data-test', 'fail']]))
-		.addEventListener('projectcreationfailed', (e: CustomEvent) => {
-			expect(e.detail.response[0].uid).to.be('test')
-			done()
-		})
-	})
+	it('Dispatch "projectcreationfailed" event when failed to project create')
 
 	after(() => {
 		removeElement(ELEMENT)

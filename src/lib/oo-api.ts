@@ -3,12 +3,11 @@ import {OOAPIResource, OOAPIVersion, OOAPIRequestBody, OOAPIRequestBodyUsers, OO
 import {OOAPIResult} from '../d/oo-api'
 import state from './state'
 import store from './local-storage'
+import {url, ext} from '../conf/api'
 const {fetch} = window
 
-const ENDPOINT = 'https://api.ooapp.co'
-
 const endpoints = (resource: OOAPIResource, pathParameter?: string, version: OOAPIVersion = 'stable'): string => {
-	return `${ENDPOINT}/${version}/${resource}${pathParameter ? `/${pathParameter}` : ''}`
+	return `${url}/${version}/${resource}${pathParameter ? `/${pathParameter}` : ''}${ext}`
 }
 
 interface Options {
@@ -45,12 +44,24 @@ export default async <T>(options: Options): Promise<OOAPIResult<T>> => {
 		}
 	}
 
-	const result = await fetch(endpoint, init)
-	const {status, headers} = result
-	const response: OOAPIResponse<T> | OOAPIResponseError = await result.json()
+	try {
+		const result = await fetch(endpoint, init)
+		const {ok, status, headers} = result
+		if (ok === false) {
+			throw new Error()
+		}
+		const response: OOAPIResponse<T> | OOAPIResponseError = await result.json()
+		return {
+			response,
+			headers,
+			status
+		}
+	} catch(err) {
+		console.error(err)
+	}
 	return {
-		response,
-		headers,
-		status
+		response: {message: ''},
+		headers: new Headers(),
+		status: 400
 	}
 }
