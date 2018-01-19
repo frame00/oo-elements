@@ -6,7 +6,7 @@ import datetime from '../_atoms/oo-atoms-datetime'
 import button from '../_atoms/oo-atoms-button'
 import {OOExtensionsLikeObject} from '../../d/oo-extension'
 import createMessage from '../../lib/oo-api-create-message'
-import {MessageVariationError, MessageVariationErrorDetail} from '../../d/event'
+import {MessageVariationError, MessageVariationErrorDetail, MessageSentDetail, MessageSent} from '../../d/event'
 
 define('oo-atoms-button', button)
 define('oo-atoms-user-name', userName)
@@ -22,7 +22,7 @@ const ATTR = {
 }
 const EVENT = {
 	MESSAGE_VARIATION_ERROR: (detail: MessageVariationErrorDetail): MessageVariationError => new CustomEvent('messagevariationerror', {detail}),
-	MESSAGE_SENT: detail => new CustomEvent('messagesent', {detail}),
+	MESSAGE_SENT: (detail: MessageSentDetail): MessageSent => new CustomEvent('messagesent', {detail}),
 	MESSAGE_CREATION_FAILED: detail => new CustomEvent('messagecreationfailed', {detail})
 }
 

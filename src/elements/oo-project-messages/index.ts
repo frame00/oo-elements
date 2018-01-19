@@ -1,7 +1,8 @@
 import {html} from 'lit-html'
 import {repeat} from 'lit-html/lib/repeat'
 import render from '../../lib/render'
-import getMessages from '../../lib/oo-api-get-project-messages'
+import getProjectMessages from '../../lib/oo-api-get-project-messages'
+import getMessage from '../../lib/oo-api-get-message'
 import toMap from '../../lib/extensions-to-map'
 import {OOExtensionMap} from '../../d/oo-extension'
 import {OOMessage} from '../../d/oo-message'
@@ -44,6 +45,10 @@ export default class extends HTMLElement {
 	constructor() {
 		super()
 		messages.set(this, [])
+	}
+
+	get messages() {
+		return messages.get(this)
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -124,19 +129,48 @@ export default class extends HTMLElement {
 		if (typeof uid !== 'string') {
 			return
 		}
-		const api = await getMessages(uid, time)
+		const api = await getProjectMessages(uid, time)
 		const {response, headers} = api
 		itemCount.set(this, Number(headers.get('x-oo-item-count')))
 		if (Array.isArray(response)) {
-			const items: MapedOOMessages = []
-			for(const i of response) {
-				const item = {
-					ext: toMap(i)
-				}
-				items.push({...i, ...item})
-			}
-			messages.set(this, [...items.reverse(), ...messages.get(this)])
+			const items = this.mapMessages(response)
+			messages.set(this, this.mergeMessages(items.reverse()))
 		}
 		this.render()
+	}
+
+	mapMessages(mess: Array<OOMessage>): MapedOOMessages {
+		const items: MapedOOMessages = []
+		for(const i of mess) {
+			const item = {
+				ext: toMap(i)
+			}
+			items.push({...i, ...item})
+		}
+		return items
+	}
+
+	mergeMessages(mess: MapedOOMessages, direction: 'before' | 'after' = 'before'): MapedOOMessages {
+		const origin = messages.get(this)
+		if (direction === 'before') {
+			return [...mess, ...origin]
+		}
+		return [...origin, ...mess]
+	}
+
+	public async injectMessages(ids: Array<string>) {
+		const mess = await Promise.all(ids.map(id => getMessage(id)))
+		let items: MapedOOMessages = []
+		for(const mes of mess) {
+			const {response} = mes
+			if (Array.isArray(response)) {
+				const item = this.mapMessages(response)
+				items = [...items, ...item]
+			}
+		}
+		if (items.length > 0) {
+			messages.set(this, this.mergeMessages(items, 'after'))
+			this.render()
+		}
 	}
 }
