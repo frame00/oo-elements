@@ -4,5 +4,8 @@ export interface OOExtension {
 }
 
 export type OOExtensions = Array<OOExtension>
+export type OOExtensionsLikeObject = {
+	[key: string]: any
+}
 
 export type OOExtensionMap = Map<string, any>

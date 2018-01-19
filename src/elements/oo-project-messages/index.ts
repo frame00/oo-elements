@@ -68,7 +68,7 @@ export default class extends HTMLElement {
 		const paging = mess[0].created - 1
 		const more = count > mess.length ? html`
 		<div class=paging>
-			<oo-atoms-button on-click='${() => this.fetchMessages(project, paging)}'>More</oo-atoms-button>
+			<oo-atoms-button on-clicked='${() => this.fetchMessages(project, paging)}'>More</oo-atoms-button>
 		</div>
 		` : html``
 

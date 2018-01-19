@@ -5,7 +5,7 @@ import summary from '../oo-project-summary'
 import messages from '../oo-project-messages'
 import form from '../oo-message-form'
 import store from '../../lib/local-storage'
-import {OOExtensions, OOExtensionMap} from '../../d/oo-extension'
+import {OOExtensionMap, OOExtensionsLikeObject} from '../../d/oo-extension'
 
 define('oo-project-summary', summary)
 define('oo-project-messages', messages)
@@ -35,7 +35,7 @@ export default class extends HTMLElement {
 		this.render()
 	}
 
-	html(user: string, uid: string, extensions: OOExtensions) {
+	html(user: string, uid: string, extensions: OOExtensionsLikeObject) {
 		const strExts = JSON.stringify(extensions)
 		return html`
 		<style>
@@ -46,22 +46,17 @@ export default class extends HTMLElement {
 		</style>
 		<oo-project-summary data-uid$='${uid}' on-projectupdated='${e => this.onProjectFetched(e)}'></oo-project-summary>
 		<oo-project-messages data-iam$='${user ? user : ''}' data-uid$='${uid}'></oo-project-messages>
-		<oo-message-form data-iam$='${uid}' data-extensions$='${strExts}'></oo-message-form>
+		<oo-message-form data-iam$='${user}' data-extensions$='${strExts}'></oo-message-form>
 		`
 	}
 
 	render() {
 		const user = store.uid
-		const extensions = [{
-			key: 'project',
-			value: projectUid.get(this)
-		}, {
-			key: 'author',
-			value: user
-		}, {
-			key: 'users',
-			value: [user, projectOfferer.get(this)]
-		}]
+		const extensions = {
+			project: projectUid.get(this),
+			author: user,
+			users: [user, projectOfferer.get(this)]
+		}
 		render(this.html(user, projectUid.get(this), extensions), this)
 	}
 

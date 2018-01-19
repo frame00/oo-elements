@@ -4,7 +4,8 @@ import define from '../../lib/define'
 import userName from '../_atoms/oo-atoms-user-name'
 import datetime from '../_atoms/oo-atoms-datetime'
 import button from '../_atoms/oo-atoms-button'
-import {OOExtensions} from '../../d/oo-extension'
+import {OOExtensionsLikeObject} from '../../d/oo-extension'
+import createMessage from '../../lib/oo-api-create-message'
 
 define('oo-atoms-button', button)
 define('oo-atoms-user-name', userName)
@@ -19,16 +20,19 @@ const ATTR = {
 	DATA_EXTENSIONS: 'data-extensions'
 }
 const EVENT = {
-	MESSAGE_SENT: new Event('messagesent')
+	MESSAGE_SENT: detail => new CustomEvent('messagesent', {detail}),
+	MESSAGE_CREATION_FAILED: detail => new CustomEvent('messagecreationfailed', {detail})
 }
 
 const messageAuthor: WeakMap<object, string> = new WeakMap()
-const messageExtensions: WeakMap<object, OOExtensions> = new WeakMap()
+const messageExtensions: WeakMap<object, OOExtensionsLikeObject> = new WeakMap()
 const messageBody: WeakMap<object, string> = new WeakMap()
+const fetching: WeakMap<object, boolean> = new WeakMap()
+const success: WeakMap<object, boolean> = new WeakMap()
 
-const asExtensions = (data: string): OOExtensions => {
+const asExtensions = (data: string): OOExtensionsLikeObject => {
 	try {
-		const json: OOExtensions = JSON.parse(data)
+		const json: OOExtensionsLikeObject = JSON.parse(data)
 		return json
 	} catch(err) {
 		console.log(err)
@@ -58,7 +62,17 @@ export default class extends HTMLElement {
 		this.render()
 	}
 
-	html() {
+	html(isFetching: boolean, isSuccess: boolean) {
+		const state = ((): string => {
+			if (isFetching === false && isSuccess !== undefined) {
+				return isSuccess ? 'resolved' : 'rejected'
+			}
+			if (isFetching === true) {
+				return 'progress'
+			}
+			return ''
+		})()
+
 		return html`
 		<style>
 			@import '../../style/_vars-font-family.css';
@@ -76,16 +90,20 @@ export default class extends HTMLElement {
 				margin-bottom: 1rem;
 			}
 			oo-atoms-button {}
+			.notification {
+				&.success {}
+				&.error {}
+			}
 		</style>
-		<form on-submit='${e => this.messageSend(e)}'>
+		<form on-submit='${() => this.sendMessage()}'>
 			<textarea on-change='${e => this.onMessageChange(e)}'></textarea>
-			<oo-atoms-button on-click='${e => this.messageSend(e)}'>Send a message</oo-atoms-button>
+			<oo-atoms-button on-clicked='${() => this.sendMessage()}' data-state$='${state}'>Send a message</oo-atoms-button>
 		</form>
 		`
 	}
 
 	render() {
-		render(this.html(), this)
+		render(this.html(fetching.get(this), success.get(this)), this)
 	}
 
 	onMessageChange(e: HTMLElementEvent<HTMLTextAreaElement>) {
@@ -96,8 +114,35 @@ export default class extends HTMLElement {
 		}
 	}
 
-	async messageSend(e: HTMLElementEvent<HTMLFormElement>) {
-		console.log(e)
-		this.dispatchEvent(EVENT.MESSAGE_SENT)
+	sendMessage() {
+		if (!messageBody.get(this) && messageBody.get(this).length === 0) {
+			return
+		}
+		fetching.set(this, true)
+		success.delete(this)
+		this.render()
+		this.messageSend()
+	}
+
+	async messageSend() {
+		const extensions: OOExtensionsLikeObject = messageExtensions.get(this)
+		const data = {
+			author: messageAuthor.get(this),
+			body: messageBody.get(this),
+			users: extensions.users,
+			project: extensions.project
+		}
+		const api = await createMessage(data)
+		const {response} = api
+		if (Array.isArray(response)) {
+			const [item] = response
+			success.set(this, true)
+			this.dispatchEvent(EVENT.MESSAGE_SENT(item))
+		} else {
+			success.set(this, false)
+			this.dispatchEvent(EVENT.MESSAGE_CREATION_FAILED(response))
+		}
+		fetching.set(this, false)
+		this.render()
 	}
 }
