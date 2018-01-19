@@ -48,5 +48,10 @@
 		"file": "src/elements/oo-project-messages/define.ts",
 		"dest": "dist/oo-project-messages.js",
 		"name": "oo-project-messages"
+	},
+  {
+		"file": "src/elements/oo-message-form/define.ts",
+		"dest": "dist/oo-message-form.js",
+		"name": "oo-message-form"
 	}
 ]
