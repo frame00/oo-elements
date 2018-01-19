@@ -11,6 +11,7 @@ export default class extends HTMLElement {
 		return html`
 		<style>
 			@import '../../../style/_reset-button.css';
+			@import '../../../style/_vars-input.css';
 			:host {
 				display: inline-block;
 			}
@@ -22,6 +23,11 @@ export default class extends HTMLElement {
 				background: white;
 				&:hover {
 					background: whitesmoke;
+				}
+				&:focus {
+					box-shadow: var(--focused-shadow);
+					border: var(--focused-border);
+					background: white;
 				}
 			}
 		</style>

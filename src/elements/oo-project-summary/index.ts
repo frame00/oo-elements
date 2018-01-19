@@ -27,7 +27,7 @@ const ATTR = {
 	DATA_UID: 'data-uid'
 }
 const EVENT = {
-	PROJECT_UPDATED: new Event('projectupdated')
+	PROJECT_UPDATED: detail => new CustomEvent('projectupdated', {detail})
 }
 
 const projectUid: WeakMap<object, string> = new WeakMap()
@@ -129,12 +129,13 @@ export default class extends HTMLElement {
 		const {response} = api
 		if (Array.isArray(response)) {
 			const [item] = response
-			const exts = toMap(item)
+			const mapedExtensions = toMap(item)
 			projectCreated.set(this, item.created)
-			projectBody.set(this, exts.get('body'))
-			projectOfferer.set(this, exts.get('author'))
-			projectOfferAmount.set(this, exts.get('offer_amount'))
-			projectOfferCurrency.set(this, exts.get('offer_currency'))
+			projectBody.set(this, mapedExtensions.get('body'))
+			projectOfferer.set(this, mapedExtensions.get('author'))
+			projectOfferAmount.set(this, mapedExtensions.get('offer_amount'))
+			projectOfferCurrency.set(this, mapedExtensions.get('offer_currency'))
+			this.dispatchEvent(EVENT.PROJECT_UPDATED({mapedExtensions}))
 		} else {
 			projectBody.delete(this)
 			projectOfferer.delete(this)
@@ -142,6 +143,5 @@ export default class extends HTMLElement {
 			projectOfferCurrency.delete(this)
 		}
 		this.render()
-		this.dispatchEvent(EVENT.PROJECT_UPDATED)
 	}
 }

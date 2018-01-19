@@ -80,7 +80,7 @@ export default class extends HTMLElement {
 		return html`
 		<style>
 			@import '../../style/_reset-textare.css';
-			@import '../../style/_vars-input.css';
+			@import '../../style/_mixin-textarea.css';
 			:host {
 				display: block;
 			}
@@ -95,19 +95,7 @@ export default class extends HTMLElement {
 				font-weight: 100;
 			}
 			textarea {
-				width: 100%;
-				padding: 0.5rem;
-				border: 0.5px solid #ccc;
-				border-radius: 5px;
-				box-sizing: border-box;
-				height: 6rem;
-				font-size: 1rem;
-				background: var(--default-background);
-				&:focus {
-					border: var(--focused-border);
-					box-shadow: var(--focused-shadow);
-					background: var(--focused-background);
-				}
+				@mixin textarea;
 			}
 		</style>
 		<oo-atoms-select-hour on-changehour='${e => this.onHourChange(e)}'></oo-atoms-select-hour>
