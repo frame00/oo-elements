@@ -10,15 +10,9 @@ module.exports = function(config) {
 			'karma-chrome-launcher'
 		],
 		files: [
-			{
-				pattern: 'mock/**/*.json', served: true, included: false
-			},
 			'node_modules/expect.js/index.js',
 			'dist/test.js'
 		],
-		proxies: {
-			'/mock/': '/base/mock/'
-		},
 		reporters: ['mocha'],
 		singleRun: true,
 		customLaunchers: {
