@@ -4,6 +4,7 @@ const commonjs = require('rollup-plugin-commonjs')
 const typescript = require('rollup-plugin-typescript2')
 const multiEntry = require('rollup-plugin-multi-entry')
 const postcss = require('rollup-plugin-transform-postcss')
+const replace = require('rollup-plugin-replace')
 const cssnext = require('postcss-cssnext')
 const precss = require('precss')
 const entries = require('./entries.json')
@@ -33,12 +34,16 @@ const typescriptOptions = {
 		include: ['src/**/*.ts']
 	}
 }
+const replaceOptions = {
+	'process.env': JSON.stringify({BUILD_MODE})
+}
 
 const plugins = [
 	postcss(postcssOptions),
 	resolve(resolveOptions),
 	commonjs(commonjsOptions),
-	typescript(typescriptOptions)
+	typescript(typescriptOptions),
+	replace(replaceOptions)
 ]
 
 const build = async (rollupOptions, writeOptions) => {

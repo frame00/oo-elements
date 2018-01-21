@@ -60,6 +60,3 @@ typings/
 # Output of 'npm run build'
 dist
 .rpt2_cache
-
-# Output of 'npm test'
-env.js
