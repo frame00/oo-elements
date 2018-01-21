@@ -10,7 +10,7 @@ const precss = require('precss')
 const entries = require('./entries.json')
 
 const {BUILD_MODE} = process.env
-const [_, __, file] = process.argv
+const [,,file] = process.argv
 const postcssOptions = {
 	plugins: [precss, cssnext]
 }
