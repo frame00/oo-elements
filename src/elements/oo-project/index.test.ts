@@ -39,8 +39,8 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Fetch project', () => {
 		it('Fetch the project, create a value that passes the "data-extensions" attribute of <oo-message-form>', done => {
-			const element = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
 			store.uid = 'test-user'
+			const element = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
 			setTimeout(() => {
 				const attr = element.shadowRoot.querySelector('oo-message-form').getAttribute('data-extensions')
 				expect(attr).to.be(JSON.stringify({project: '79zGMA1b6q', author: 'test-user', users: ['test-user', 'test']}))
