@@ -44,6 +44,9 @@ export default class extends HTMLElement {
 		}
 		switch(attr) {
 			case ATTR.DATA_IAM:
+				if (!next) {
+					return
+				}
 				iam.set(this, next)
 				this.fetchUserData()
 				break

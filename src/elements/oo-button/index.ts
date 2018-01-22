@@ -39,11 +39,17 @@ export default class extends HTMLElement {
 	}
 
 	attributeChangedCallback(attr, prev, next) {
+		if (prev === next) {
+			return
+		}
 		switch(attr) {
 			case ATTR.DATA_SIZE:
 				size.set(this, asValidString(next))
 				break
 			case ATTR.DATA_IAM:
+				if (!next) {
+					return
+				}
 				iam.set(this, next)
 				break
 			default:

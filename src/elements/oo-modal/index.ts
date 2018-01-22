@@ -29,6 +29,9 @@ export default class extends HTMLElement {
 	}
 
 	attributeChangedCallback(attr, prev, next) {
+		if (prev === next) {
+			return
+		}
 		open.set(this, asBoolean(next))
 		this.render()
 	}

@@ -27,6 +27,9 @@ export default class extends HTMLElement {
 	}
 
 	attributeChangedCallback(attr, prev, next) {
+		if (prev === next) {
+			return
+		}
 		tooltipPosition.set(this, asValidString(next))
 		this.render()
 	}
