@@ -5,7 +5,7 @@
   "main": "dist/oo-elements.js",
   "scripts": {
     "start": "serve example",
-    "test": "karma start",
+    "test": "node test.js",
     "mock": "micro mock.js",
     "pretest": "BUILD_MODE=TEST node rollup.js",
     "posttest": "rm dist/test.js",
