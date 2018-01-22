@@ -8,7 +8,7 @@ const EXT = '.md'
 module.exports = (req, res) => {
 	try {
 		const {url} = req
-		const doc = fs.readFileSync(`${DIR}${url}${EXT}`, 'utf-8')
+		const doc = fs.readFileSync(`${DIR}${url.replace(/\/$/, '')}${EXT}`, 'utf-8')
 		const [,tml = ''] = /^\+\+\+([\W\w]*)\+\+\+/.exec(doc) || []
 		const [,json = {}] = /```json([\W\w]*)```/.exec(doc) || []
 		const conf = toml.parse(tml)

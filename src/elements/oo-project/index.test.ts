@@ -55,13 +55,13 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const element: any = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
 			setTimeout(() => {
 				element.onMessagesent({detail: {uid: '0mZD241zKT'}})
-			}, 50)
+			}, 100)
 			setTimeout(() => {
 				const messages = element.shadowRoot.querySelector('oo-project-messages').messages
 				const last = messages[messages.length - 1]
 				expect(last.uid).to.be('0mZD241zKT')
 				done()
-			}, 100)
+			}, 200)
 		})
 	})
 
