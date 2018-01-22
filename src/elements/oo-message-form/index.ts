@@ -7,6 +7,7 @@ import button from '../_atoms/oo-atoms-button'
 import {OOExtensionsLikeObject} from '../../d/oo-extension'
 import createMessage from '../../lib/oo-api-create-message'
 import {MessageVariationError, MessageVariationErrorDetail, MessageSentDetail, MessageSent} from '../../d/event'
+import {MessageOptionsPost} from '../../d/oo-options-message'
 
 define('oo-atoms-button', button)
 define('oo-atoms-user-name', userName)
@@ -32,6 +33,7 @@ const messageBody: WeakMap<object, string> = new WeakMap()
 const fetching: WeakMap<object, boolean> = new WeakMap()
 const success: WeakMap<object, boolean> = new WeakMap()
 const validationError: WeakMap<object, string> = new WeakMap()
+const message: WeakMap<object, MessageOptionsPost> = new WeakMap()
 
 const asExtensions = (data: string): OOExtensionsLikeObject => {
 	try {
@@ -48,6 +50,10 @@ export default class extends HTMLElement {
 		return [ATTR.DATA_IAM, ATTR.DATA_EXTENSIONS]
 	}
 
+	get message() {
+		return message.get(this)
+	}
+
 	attributeChangedCallback(attr, prev, next) {
 		if (prev === next) {
 			return
@@ -62,6 +68,7 @@ export default class extends HTMLElement {
 			default:
 				break
 		}
+		this.setMessage()
 		this.render()
 	}
 
@@ -120,16 +127,26 @@ export default class extends HTMLElement {
 		render(this.html(fetching.get(this), success.get(this), validationError.get(this)), this)
 	}
 
+	setMessage() {
+		const extensions: OOExtensionsLikeObject = messageExtensions.get(this)
+		const data = {
+			author: messageAuthor.get(this),
+			body: messageBody.get(this)
+		}
+		message.set(this, {...extensions, ...data})
+	}
+
 	onMessageChange(e: HTMLElementEvent<HTMLTextAreaElement>) {
 		const {target} = e
 		const {value} = target
 		if (value) {
 			messageBody.set(this, value)
+			this.setMessage()
 		}
 	}
 
 	sendMessage() {
-		if (!messageBody.get(this) || messageBody.get(this).length === 0) {
+		if (!this.message.body || this.message.body.length === 0) {
 			validationError.set(this, 'Empty text can not be sent.')
 			this.render()
 			return this.dispatchEvent(EVENT.MESSAGE_VARIATION_ERROR({message: 'body required'}))
@@ -140,15 +157,8 @@ export default class extends HTMLElement {
 		this.messageSend()
 	}
 
-	async messageSend() {
-		const extensions: OOExtensionsLikeObject = messageExtensions.get(this)
-		const data = {
-			author: messageAuthor.get(this),
-			body: messageBody.get(this),
-			users: extensions.users,
-			project: extensions.project
-		}
-		const api = await createMessage(data)
+	async messageSend(test?: boolean) {
+		const api = await createMessage(this.message, test)
 		const {response} = api
 		if (Array.isArray(response)) {
 			const [item] = response

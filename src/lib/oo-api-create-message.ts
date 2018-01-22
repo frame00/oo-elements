@@ -1,17 +1,13 @@
 import api from '../lib/oo-api'
 import {OOAPIResult} from '../d/oo-api'
-import {OOUserUID} from '../d/oo-user'
 import {OOExtension} from '../d/oo-extension'
 import {OOMessage} from '../d/oo-message'
+import {MessageOptionsPost} from '../d/oo-options-message'
 
-interface MessageOptionsPost {
-	users: Array<OOUserUID>,
-	body: string,
-	author: OOUserUID,
-	project?: string
-}
-
-const kv = <T>(obj: MessageOptionsPost, key: string): {key: string, value: T} => {
+const kv = <T>(obj: MessageOptionsPost, key: string): {key: string, value: T} | false => {
+	if (obj === undefined || obj[key] === undefined) {
+		return false
+	}
 	return {
 		key,
 		value: obj[key]
@@ -20,25 +16,32 @@ const kv = <T>(obj: MessageOptionsPost, key: string): {key: string, value: T} =>
 
 export default async (options: MessageOptionsPost, test?: boolean): Promise<OOAPIResult<OOMessage>> => {
 	if (typeof test === 'boolean') {
-		if (test) {
+		if (test === false) {
 			return {
-				response: [{uid: 'test', created: 1}],
+				response: {message: 'error'},
 				headers: new Headers(),
-				status: 200
+				status: 500
 			}
-		}
-		return {
-			response: [{uid: 'test', created: 1}],
-			headers: new Headers(),
-			status: 400
 		}
 	}
 	const extensions: Array<OOExtension> = (opts => {
 		const exts: Array<OOExtension> = []
-		exts.push(kv(opts, 'users'))
-		exts.push(kv(opts, 'body'))
-		exts.push(kv(opts, 'author'))
-		exts.push(kv(opts, 'project'))
+		const users = kv(opts, 'users')
+		if (users) {
+			exts.push(users)
+		}
+		const body = kv(opts, 'body')
+		if (body) {
+			exts.push(body)
+		}
+		const author = kv(opts, 'author')
+		if (author) {
+			exts.push(author)
+		}
+		const project = kv(opts, 'project')
+		if (project) {
+			exts.push(project)
+		}
 		return exts
 	})(options)
 

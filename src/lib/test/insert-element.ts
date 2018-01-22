@@ -1,6 +1,6 @@
 const {document} = window
 
-export default (name: string, attrs?: Map<string, string>): HTMLElement => {
+export default (name: string, attrs?: Map<string, any>): HTMLElement => {
 	const el = document.createElement(name)
 
 	if(attrs !== undefined) {

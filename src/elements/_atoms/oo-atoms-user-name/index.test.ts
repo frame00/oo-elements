@@ -19,7 +19,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	describe('Fetch and display user information of "data-iam" attribute', () => {
 		before(done => {
 			removeElement(ELEMENT)
-			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+			insertElement(ELEMENT, new Map([['data-iam', 'test']]))
 			setTimeout(() => {
 				done()
 			}, 1000)
