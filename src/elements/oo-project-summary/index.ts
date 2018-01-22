@@ -26,9 +26,6 @@ interface HTMLOptions {
 const ATTR = {
 	DATA_UID: 'data-uid'
 }
-const EVENT = {
-	PROJECT_UPDATED: detail => new CustomEvent('projectupdated', {detail})
-}
 
 const projectUid: WeakMap<object, string> = new WeakMap()
 const projectBody: WeakMap<object, string> = new WeakMap()
@@ -135,7 +132,6 @@ export default class extends HTMLElement {
 			projectOfferer.set(this, mapedExtensions.get('author'))
 			projectOfferAmount.set(this, mapedExtensions.get('offer_amount'))
 			projectOfferCurrency.set(this, mapedExtensions.get('offer_currency'))
-			this.dispatchEvent(EVENT.PROJECT_UPDATED({mapedExtensions}))
 		} else {
 			projectBody.delete(this)
 			projectOfferer.delete(this)

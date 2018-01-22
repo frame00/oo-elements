@@ -7,6 +7,8 @@ import form from '../oo-message-form'
 import store from '../../lib/local-storage'
 import {OOExtensionMap, OOExtensionsLikeObject} from '../../d/oo-extension'
 import {HTMLElementEventMessageSent} from '../../d/event'
+import getProject from '../../lib/oo-api-get-project'
+import toMap from '../../lib/extensions-to-map'
 
 define('oo-project-summary', summary)
 define('oo-project-messages', messages)
@@ -25,16 +27,12 @@ export default class extends HTMLElement {
 		return [ATTR.DATA_UID]
 	}
 
-	constructor() {
-		super()
-	}
-
 	attributeChangedCallback(attr, prev, next) {
-		if (prev === next) {
+		if (prev === next || !next) {
 			return
 		}
 		projectUid.set(this, next)
-		this.render()
+		this.fetchProject(projectUid.get(this))
 	}
 
 	html(user: string, uid: string, extensions: OOExtensionsLikeObject) {
@@ -46,7 +44,7 @@ export default class extends HTMLElement {
 				border-bottom: 0.5px solid #ccc;
 			}
 		</style>
-		<oo-project-summary data-uid$='${uid}' on-projectupdated='${e => this.onProjectFetched(e)}'></oo-project-summary>
+		<oo-project-summary data-uid$='${uid}'></oo-project-summary>
 		<oo-project-messages data-iam$='${user ? user : ''}' data-uid$='${uid}'></oo-project-messages>
 		<oo-message-form data-iam$='${user}' data-extensions$='${strExts}' on-messagesent='${e => this.onMessagesent(e)}'></oo-message-form>
 		`
@@ -65,20 +63,24 @@ export default class extends HTMLElement {
 		}
 	}
 
-	onProjectFetched(e: CustomEvent) {
-		const {detail} = e
-		const maped: OOExtensionMap = detail.mapedExtensions
-		if (maped.has('author')) {
-			projectOfferer.set(this, maped.get('author'))
-			this.render()
-		}
-	}
-
 	onMessagesent(e: HTMLElementEventMessageSent<form>) {
 		const {detail} = e
 		const {uid} = detail
 		if (messageForm.has(this) !== false) {
 			messageForm.get(this).injectMessages([uid])
 		}
+	}
+
+	async fetchProject(uid: string) {
+		const api = await getProject(uid)
+		const {response} = api
+		if (Array.isArray(response)) {
+			const [item] = response
+			const mapedExtensions = toMap(item)
+			projectOfferer.set(this, mapedExtensions.get('author'))
+		} else {
+			projectOfferer.delete(this)
+		}
+		this.render()
 	}
 }
