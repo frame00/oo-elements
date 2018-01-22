@@ -13,7 +13,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	})
 
 	it('Mount on document', () => {
-		insertElement(ELEMENT)
+		insertElement(ELEMENT, new Map([['data-iam', 'test']]))
 		expect(getElement(ELEMENT)[0]).to.be.ok()
 	})
 
