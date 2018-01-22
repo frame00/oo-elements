@@ -40,7 +40,7 @@ export default class extends HTMLElement {
 	}
 
 	attributeChangedCallback(attr, prev, next) {
-		if (prev === next) {
+		if (prev === next || !next) {
 			return
 		}
 		projectUid.set(this, next)

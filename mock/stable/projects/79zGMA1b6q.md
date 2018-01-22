@@ -20,7 +20,15 @@ access-control-allow-origin = "http://localhost:9876"
       {
         "key": "body",
         "value": "test"
-      }
+			},
+			{
+				"key": "offer_amount",
+				"value": "10.00"
+			},
+			{
+				"key": "offer_currency",
+				"value": "usd"
+			}
     ]
   }
 ]
