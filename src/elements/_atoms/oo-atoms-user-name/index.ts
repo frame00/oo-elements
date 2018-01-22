@@ -45,6 +45,7 @@ export default class extends HTMLElement {
 		switch(attr) {
 			case ATTR.DATA_IAM:
 				iam.set(this, next)
+				this.fetchUserData()
 				break
 			case ATTR.DATA_SIZE:
 				size.set(this, asValidSize(next))
@@ -52,7 +53,7 @@ export default class extends HTMLElement {
 			default:
 				break
 		}
-		this.fetchUserData()
+		this.render()
 	}
 
 	html(options: HTMLOptions) {
