@@ -32,10 +32,7 @@ export default class extends HTMLElement {
 
 	constructor() {
 		super()
-		iam.set(this, this.getAttribute(ATTR.DATA_IAM))
-		size.set(this, asValidString(this.getAttribute(ATTR.DATA_SIZE)))
 		open.set(this, false)
-		this.render()
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -115,6 +112,9 @@ export default class extends HTMLElement {
 	}
 
 	render() {
+		if (!iam.get(this)) {
+			return
+		}
 		render(this.html(size.get(this), iam.get(this), open.get(this)), this)
 	}
 

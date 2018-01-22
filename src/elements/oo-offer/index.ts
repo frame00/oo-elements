@@ -59,7 +59,6 @@ export default class extends HTMLElement {
 
 	constructor() {
 		super()
-		iam.set(this, this.getAttribute(ATTR.DATA_IAM))
 		ready.set(this, false)
 		authorization.set(this, false)
 	}

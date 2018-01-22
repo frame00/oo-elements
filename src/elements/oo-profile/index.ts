@@ -23,12 +23,6 @@ export default class extends HTMLElement {
 		return [ATTR.DATA_IAM]
 	}
 
-	constructor() {
-		super()
-		iam.set(this, this.getAttribute(ATTR.DATA_IAM))
-		this.render()
-	}
-
 	attributeChangedCallback(attr, prev, next) {
 		if (prev === next || !next) {
 			return

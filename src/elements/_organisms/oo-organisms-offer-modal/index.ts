@@ -32,9 +32,7 @@ export default class extends HTMLElement {
 
 	constructor() {
 		super()
-		iam.set(this, this.getAttribute(ATTR.DATA_IAM))
 		open.set(this, asBoolean(this.getAttribute(ATTR.DATA_OPEN)))
-		this.render()
 	}
 
 	attributeChangedCallback(attr, prev, next) {

@@ -33,11 +33,6 @@ export default class extends HTMLElement {
 		return [ATTR.DATA_IAM, ATTR.DATA_SIZE]
 	}
 
-	constructor() {
-		super()
-		this.render()
-	}
-
 	attributeChangedCallback(attr, prev, next) {
 		if (prev === next) {
 			return

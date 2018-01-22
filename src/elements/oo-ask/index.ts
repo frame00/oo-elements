@@ -36,7 +36,6 @@ export default class extends HTMLElement {
 
 	constructor() {
 		super()
-		iam.set(this, this.getAttribute(ATTR.DATA_IAM))
 		hour.set(this, 1)
 		message.set(this, '')
 	}
