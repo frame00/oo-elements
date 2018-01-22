@@ -1,5 +1,6 @@
 import {html} from 'lit-html'
 import render from '../../../lib/render'
+import getLangs from '../../../lib/get-langs'
 
 const ATTR = {
 	DATA_UNIXTIME: 'data-unixtime'
@@ -30,9 +31,23 @@ export default class extends HTMLElement {
 	}
 
 	render() {
+		const UTC = 'UTC'
+		let tz
+		try {
+			tz = new Intl.DateTimeFormat('en-US', {timeZoneName: 'long'}).resolvedOptions().timeZone
+		} catch(err) {
+			tz = UTC
+		}
 		const unix = unixtime.get(this)
 		const date = new Date(unix)
-		const localDateTime = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
+		const options = {
+			year: 'numeric', month: 'numeric', day: 'numeric',
+			hour: 'numeric', minute: 'numeric', second: 'numeric',
+			hour12: false,
+			timeZone: tz
+		}
+		const [lang = 'en-US'] = getLangs()
+		const localDateTime = new Intl.DateTimeFormat(lang, options).format(date)
 		render(this.html(localDateTime), this)
 	}
 }

@@ -16,7 +16,12 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(getElement(ELEMENT)[0]).to.be.ok()
 	})
 
-	it('Display the value of "data-unixtime" attribute converted to local time')
+	it('Display the value of "data-unixtime" attribute converted to local time', () => {
+		removeElement(ELEMENT)
+		const element = insertElement(ELEMENT, new Map([['data-unixtime', '1516585786000']]))
+		const time = element.shadowRoot.querySelector('span').textContent
+		expect(time).to.be('1/22/2018, 01:49:46')
+	})
 
 	after(() => {
 		removeElement(ELEMENT)

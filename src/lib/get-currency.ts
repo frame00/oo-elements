@@ -1,9 +1,9 @@
 import currency from '../conf/currency'
 import {Currency} from '../d/currency'
-const {navigator} = window
+import getLangs from './get-langs'
 
 export default (): Currency => {
-	const {languages} = navigator
+	const languages = getLangs()
 	const valid = languages.find(lang => Boolean(currency.get(lang)))
 	if (valid) {
 		return currency.get(valid)
