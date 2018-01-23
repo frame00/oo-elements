@@ -55,6 +55,13 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			expect(classList.contains('right')).to.be.ok()
 		})
 
+		it('center', () => {
+			const element = getElement(ELEMENT)[0]
+			element.setAttribute('data-tooltip-position', 'center')
+			const {classList} = element.shadowRoot.querySelector('main')
+			expect(classList.contains('center')).to.be.ok()
+		})
+
 		it('Other as left', () => {
 			const element = getElement(ELEMENT)[0]
 			element.setAttribute('data-tooltip-position', 'xxx')

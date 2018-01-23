@@ -1,13 +1,13 @@
 import {html} from 'lit-html'
 import render from '../../../lib/render'
 
-type Position = 'left' | 'right'
+type Position = 'left' | 'right' | 'center'
 
 const ATTR = {
 	DATA_TOOLTIP_POSITION: 'data-tooltip-position'
 }
 const asValidString = (data: string): Position => {
-	if (data === 'left' || data === 'right') {
+	if (data === 'left' || data === 'right' || data === 'center') {
 		return data
 	}
 	return 'left'
@@ -53,6 +53,11 @@ export default class extends HTMLElement {
 					align-items: flex-end;
 					section {
 						border-bottom-right-radius: 0;
+					}
+				}
+				&.center {
+					section {
+						margin: auto;
 					}
 				}
 				> * {
