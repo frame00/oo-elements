@@ -7,6 +7,8 @@ import ooUserName from '../../_atoms/oo-atoms-user-name'
 import button from '../../_atoms/oo-atoms-button'
 import define from '../../../lib/define'
 import {currencyToSign} from '../../../lib/get-price-per-hour'
+import stripeCheckout from '../../../lib/payment-handler-by-stripe'
+import {StripeCheckoutToken} from '../../../d/stripe'
 
 define('oo-atoms-message', ooMessage)
 define('oo-atoms-user-name', ooUserName)
@@ -76,45 +78,45 @@ export default class extends HTMLElement {
 		const {iam, currency, amount, paymentUid} = opts
 		const sign = currencyToSign(currency)
 		const done = typeof paymentUid === 'string'
-		const paymentButton = done ? html`` : html`<oo-atoms-button data-block=enabled>Pay</oo-atoms-button>`
+		const paymentButton = done ? html`` : html`<oo-atoms-button on-clicked='${() => this.stripeCheckout()}' data-block=enabled>Pay</oo-atoms-button>`
 		return html`
 		<style>
-			@import '../../../style/_vars-font-family.css';
-			:host {
-				diaplay: block;
+		@import '../../../style/_vars-font-family.css';
+		:host {
+			diaplay: block;
+		}
+		oo-atoms-message {
+			font-family: var(--font-family);
+		}
+		header {
+			padding: 1rem;
+			text-transform: uppercase;
+			font-size: 2rem;
+			font-weight: 300;
+			border-bottom: 0.5px solid #00000036;
+		}
+		.pay {
+			display: flex;
+			align-items: center;
+		}
+		oo-atoms-button,
+		oo-atoms-user-name {
+			padding: 1rem;
+			width: 50%;
+		}
+		oo-atoms-user-name {
+			display: flex;
+			align-items: center;
+		}
+		article {
+			&.wait {
+				background: #4caf50;
+				color: white;
 			}
-			oo-atoms-message {
-				font-family: var(--font-family);
+			&.done {
+				background: #cfd8dc;
 			}
-			header {
-				padding: 1rem;
-				text-transform: uppercase;
-				font-size: 2rem;
-				font-weight: 300;
-				border-bottom: 0.5px solid #00000036;
-			}
-			.pay {
-				display: flex;
-				align-items: center;
-			}
-			oo-atoms-button,
-			oo-atoms-user-name {
-				padding: 1rem;
-				width: 50%;
-			}
-			oo-atoms-user-name {
-				display: flex;
-				align-items: center;
-			}
-			article {
-				&.wait {
-					background: #4caf50;
-					color: white;
-				}
-				&.done {
-					background: #cfd8dc;
-				}
-			}
+		}
 		</style>
 		<oo-atoms-message data-tooltip-position=center>
 			<section slot=body>
@@ -139,5 +141,18 @@ export default class extends HTMLElement {
 			paymentUid: statePaymentUid.get(this)
 		}
 		render(this.html(opts), this)
+	}
+
+	async stripeCheckout() {
+		const callback = (token: StripeCheckoutToken): void => {
+			console.log(token)
+		}
+		const handler = await stripeCheckout(callback)
+		const amount = parseFloat(stateAmount.get(this)) * 100
+		handler.open({
+			name: 'Stripe.com',
+			description: '2 widgets',
+			amount
+		})
 	}
 }
