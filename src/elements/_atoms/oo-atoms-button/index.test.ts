@@ -52,6 +52,19 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 	})
 
+	describe('Attributes', () => {
+		it('"data-block" attribute is "enabled", treat the button like a block element', () => {
+			const enabled = insertElement(ELEMENT, new Map([['data-block', 'enabled']]))
+			expect(enabled.shadowRoot.querySelector('button').classList.contains('block')).to.be.ok()
+
+			const disabled = insertElement(ELEMENT, new Map([['data-block', 'disabled']]))
+			expect(disabled.shadowRoot.querySelector('button').classList.contains('block')).to.not.be.ok()
+
+			const other = insertElement(ELEMENT, new Map([['data-block', 'xxx']]))
+			expect(other.shadowRoot.querySelector('button').classList.contains('block')).to.not.be.ok()
+		})
+	})
+
 	it('Dispatch "clicked" event when button clicked', done => {
 		const element = insertElement(ELEMENT)
 		element.addEventListener('clicked', () => {
