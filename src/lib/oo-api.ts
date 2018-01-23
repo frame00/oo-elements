@@ -47,10 +47,10 @@ export default async <T>(options: Options): Promise<OOAPIResult<T>> => {
 	try {
 		const result = await fetch(endpoint, init)
 		const {ok, status, headers} = result
-		if (ok === false) {
+		const response: OOAPIResponse<T> | OOAPIResponseError = await result.json()
+		if (ok === false && !response) {
 			throw new Error()
 		}
-		const response: OOAPIResponse<T> | OOAPIResponseError = await result.json()
 		return {
 			response,
 			headers,
