@@ -65,7 +65,7 @@ export default class extends HTMLElement {
 		<style>
 			@import '../../../style/_vars-font-family.css';
 			:host {
-				display: block;
+				display: flex;
 			}
 			p {
 				margin: 0;
