@@ -11,10 +11,12 @@ import ooMessage from '../_atoms/oo-atoms-message'
 import ooUserName from '../_atoms/oo-atoms-user-name'
 import ooButton from '../_atoms/oo-atoms-button'
 import lineBreak from '../../lib/line-break'
+import messagePayment from '../_molecules/oo-molecules-message-payment'
 
 define('oo-atoms-message', ooMessage)
 define('oo-atoms-user-name', ooUserName)
 define('oo-atoms-button', ooButton)
+define('oo-molecules-message-payment', messagePayment)
 
 interface MapedOOMessage extends OOMessage {
 	ext: OOExtensionMap
