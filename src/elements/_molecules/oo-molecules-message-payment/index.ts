@@ -2,6 +2,15 @@ import {html} from 'lit-html'
 import render from '../../../lib/render'
 import weakMap from '../../../lib/weak-map'
 import {Currency} from '../../../d/currency'
+import ooMessage from '../../_atoms/oo-atoms-message'
+import ooUserName from '../../_atoms/oo-atoms-user-name'
+import button from '../../_atoms/oo-atoms-button'
+import define from '../../../lib/define'
+import {currencyToSign} from '../../../lib/get-price-per-hour'
+
+define('oo-atoms-message', ooMessage)
+define('oo-atoms-user-name', ooUserName)
+define('oo-atoms-button', button)
 
 interface Options {
 	iam: string,
@@ -64,9 +73,60 @@ export default class extends HTMLElement {
 	}
 
 	html(opts: Options) {
+		const {iam, currency, amount, paymentUid} = opts
+		const sign = currencyToSign(currency)
+		const done = typeof paymentUid === 'string'
+		const paymentButton = done ? html`` : html`<oo-atoms-button data-block=enabled>Pay</oo-atoms-button>`
 		return html`
 		<style>
+			@import '../../../style/_vars-font-family.css';
+			:host {
+				diaplay: block;
+			}
+			oo-atoms-message {
+				font-family: var(--font-family);
+			}
+			header {
+				padding: 1rem;
+				text-transform: uppercase;
+				font-size: 2rem;
+				font-weight: 300;
+				border-bottom: 0.5px solid #00000036;
+			}
+			.pay {
+				display: flex;
+				align-items: center;
+			}
+			oo-atoms-button,
+			oo-atoms-user-name {
+				padding: 1rem;
+				width: 50%;
+			}
+			oo-atoms-user-name {
+				display: flex;
+				align-items: center;
+			}
+			article {
+				&.wait {
+					background: #4caf50;
+					color: white;
+				}
+				&.done {
+					background: #cfd8dc;
+				}
+			}
 		</style>
+		<oo-atoms-message data-tooltip-position=center>
+			<section slot=body>
+				<article class$='${paymentUid ? 'done' : 'wait'}'>
+					<header>${currency} ${sign}${amount}</header>
+					<div class=pay>
+						${paymentButton}
+						<oo-atoms-user-name data-iam$=${iam} data-size=small></oo-atoms-user-name>
+					</div>
+				</article>
+			</section>
+		</oo-atoms-message>
 		`
 	}
 

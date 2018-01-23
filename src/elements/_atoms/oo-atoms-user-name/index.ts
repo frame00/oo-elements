@@ -33,6 +33,11 @@ export default class extends HTMLElement {
 		return [ATTR.DATA_IAM, ATTR.DATA_SIZE]
 	}
 
+	constructor() {
+		super()
+		size.set(this, asValidSize(this.getAttribute(ATTR.DATA_SIZE)))
+	}
+
 	attributeChangedCallback(attr, prev, next) {
 		if (prev === next) {
 			return
@@ -85,7 +90,6 @@ export default class extends HTMLElement {
 				}
 			}
 			header {
-				margin-bottom: 1rem;
 				a {
 					display: flex;
 					align-items: center;
@@ -94,15 +98,13 @@ export default class extends HTMLElement {
 				}
 				&.small {
 					.name {
-						width: 90%;
 						font-size: 1.2rem;
 						line-height: 1.2rem;
 						margin-left: 0.5rem;
 						font-weight: 300;
 					}
 					.photo {
-						width: 10%;
-						max-width: 45px;
+						width: 45px;
 						border-radius: 5px;
 					}
 				}

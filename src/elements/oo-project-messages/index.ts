@@ -106,6 +106,12 @@ export default class extends HTMLElement {
 					<oo-atoms-user-name data-iam$='${author}' data-size=small></oo-atoms-user-name>
 				</footer>`
 			return html`
+			<oo-molecules-message-payment
+				data-iam$=${author}
+				data-dest$=${author}
+				data-amount$=${'75.00'}
+				data-currency$=${'usd'}
+			></oo-molecules-message-payment>
 			<oo-atoms-message data-tooltip-position$='${position}'>
 				<section slot=body>
 					${repeat(lines, line => html`<p>${line}</p>`)}
