@@ -111,6 +111,7 @@ export default class extends HTMLElement {
 				data-dest$=${author}
 				data-amount$=${'75.00'}
 				data-currency$=${'usd'}
+				data-uid$=${mes.uid}
 			></oo-molecules-message-payment>
 			<oo-atoms-message data-tooltip-position$='${position}'>
 				<section slot=body>

@@ -9,6 +9,7 @@ import define from '../../../lib/define'
 import {currencyToSign} from '../../../lib/get-price-per-hour'
 import stripeCheckout from '../../../lib/payment-handler-by-stripe'
 import {StripeCheckoutToken} from '../../../d/stripe'
+import chargePayment from '../../../lib/oo-api-charge-payment'
 
 define('oo-atoms-message', ooMessage)
 define('oo-atoms-user-name', ooUserName)
@@ -24,6 +25,7 @@ interface Options {
 
 const ATTR = {
 	DATA_IAM: 'data-iam',
+	DATA_UID: 'data-uid',
 	DATA_DEST: 'data-dest',
 	DATA_AMOUNT: 'data-amount',
 	DATA_CURRENCY: 'data-currency',
@@ -31,6 +33,7 @@ const ATTR = {
 }
 
 const stateIam = weakMap<string>()
+const stateUid = weakMap<string>()
 const stateDest = weakMap<string>()
 const stateAmount = weakMap<string>()
 const stateCurrency = weakMap<Currency>()
@@ -45,7 +48,7 @@ const asCurrency = (data: string): Currency => {
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
-		return [ATTR.DATA_IAM, ATTR.DATA_DEST, ATTR.DATA_AMOUNT, ATTR.DATA_CURRENCY, ATTR.DATA_PAYMENT_UID]
+		return [ATTR.DATA_IAM, ATTR.DATA_UID, ATTR.DATA_DEST, ATTR.DATA_AMOUNT, ATTR.DATA_CURRENCY, ATTR.DATA_PAYMENT_UID]
 	}
 
 	attributeChangedCallback(attr, prev, next: string) {
@@ -55,6 +58,9 @@ export default class extends HTMLElement {
 		switch(attr) {
 			case ATTR.DATA_IAM:
 				stateIam.set(this, next)
+				break
+			case ATTR.DATA_UID:
+				stateUid.set(this, next)
 				break
 			case ATTR.DATA_DEST:
 				stateDest.set(this, next)
@@ -144,8 +150,17 @@ export default class extends HTMLElement {
 	}
 
 	async stripeCheckout() {
-		const callback = (token: StripeCheckoutToken): void => {
+		const callback = async (token: StripeCheckoutToken): Promise<void> => {
 			console.log(token)
+			const opts = {
+				stripe_token: token.id,
+				amount: token.amount,
+				currency: stateCurrency.get(this),
+				seller_uid: stateIam.get(this),
+				linked_message_uid: stateUid.get(this)
+			}
+			const payment = await chargePayment(opts)
+			console.log(payment)
 		}
 		const handler = await stripeCheckout(callback)
 		const amount = parseFloat(stateAmount.get(this)) * 100
