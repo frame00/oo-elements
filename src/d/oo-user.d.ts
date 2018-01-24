@@ -7,3 +7,8 @@ export interface OOUser {
 	created: number,
 	Extensions: OOExtensions
 }
+
+export interface OOUserConnectStripe {
+	user: OOUserUID,
+	stripe: string
+}

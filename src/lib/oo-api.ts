@@ -1,5 +1,5 @@
 import {OOAPIResponse, OOAPIResponseError} from '../d/oo-api-response'
-import {OOAPIResource, OOAPIVersion, OOAPIRequestBody, OOAPIRequestBodyUsers, OOAPIRequestBodyPayments} from '../d/oo-apis'
+import {OOAPIResource, OOAPIVersion, OOAPIRequestBody, OOAPIRequestBodyUsers, OOAPIRequestBodyPayments, OOAPIRequestUsersConnectStripe} from '../d/oo-apis'
 import {OOAPIResult} from '../d/oo-api'
 import state from './state'
 import store from './local-storage'
@@ -14,7 +14,7 @@ interface Options {
 	resource: OOAPIResource,
 	pathParameter?: string,
 	method?: string,
-	body?: OOAPIRequestBody | OOAPIRequestBodyUsers | OOAPIRequestBodyPayments,
+	body?: OOAPIRequestBody | OOAPIRequestBodyUsers | OOAPIRequestUsersConnectStripe | OOAPIRequestBodyPayments,
 	version?: OOAPIVersion
 }
 

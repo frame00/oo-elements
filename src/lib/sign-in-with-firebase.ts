@@ -5,6 +5,8 @@ import {OOUserUID, OOUser} from '../d/oo-user'
 import api from '../lib/oo-api'
 import createToken from './oo-api-create-token'
 import isSuccess from './is-api-success'
+import state from './state'
+import store from './local-storage'
 
 export default async (provider: AuthProvider, test?: string): Promise<{
 	token: OOToken,
@@ -59,6 +61,10 @@ export default async (provider: AuthProvider, test?: string): Promise<{
 		const {user} = ooapiRes.response
 		return user.uid
 	})(ooapiRes.response)
+
+	state.set('token', token)
+	store.token = token
+	store.uid = uid
 
 	return {
 		token,

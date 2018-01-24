@@ -2,7 +2,6 @@ import {html} from 'lit-html'
 import render from '../../lib/render'
 import {AuthProvider} from '../../d/auth-provider.d'
 import signInWithFirebase from '../../lib/sign-in-with-firebase'
-import state from '../../lib/state'
 import store from '../../lib/local-storage'
 
 const ATTR = {
@@ -124,9 +123,6 @@ export default class extends HTMLElement {
 			if (typeof signedIn === 'boolean') {
 				throw new Error()
 			}
-			state.set('token', signedIn.token)
-			store.token = signedIn.token
-			store.uid = signedIn.uid
 			this.dispatchEvent(EVENT.SIGNED_IN(signedIn))
 		} catch(err) {
 			this.dispatchEvent(EVENT.SIGNED_IN_ERROR(err))

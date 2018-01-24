@@ -10,6 +10,10 @@ export interface OOAPIRequestBodyUsers {
 	Extensions?: OOExtensions
 }
 
+export interface OOAPIRequestUsersConnectStripe {
+	code: string
+}
+
 export interface OOAPIRequestBodyPayments {
 	stripe_token: string,
 	amount: number,
@@ -22,3 +26,4 @@ export interface OOAPIRequestBodyPayments {
 export interface OOAPIRequestBody {
 	Extensions?: OOExtensions
 }
+
