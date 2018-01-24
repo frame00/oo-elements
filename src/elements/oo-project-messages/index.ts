@@ -99,6 +99,7 @@ export default class extends HTMLElement {
 		${repeat(mess, mes => {
 			const lines = lineBreak(mes.ext.get('body'))
 			const author = mes.ext.get('author')
+			const payment = mes.ext.get('payment')
 			const position = author === user ? 'right' : 'left'
 			const footer = author === user ? html`` :
 				html`
@@ -112,6 +113,7 @@ export default class extends HTMLElement {
 				data-amount$=${'75.00'}
 				data-currency$=${'usd'}
 				data-uid$=${mes.uid}
+				data-payment-uid$=${payment}
 			></oo-molecules-message-payment>
 			<oo-atoms-message data-tooltip-position$='${position}'>
 				<section slot=body>

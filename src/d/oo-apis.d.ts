@@ -20,7 +20,7 @@ export interface OOAPIRequestBodyPayments {
 	currency: string,
 	seller_uid: OOUserUID,
 	linked_message_uid: OOUserUID,
-	Extensions: OOExtensions
+	Extensions?: OOExtensions
 }
 
 export interface OOAPIRequestBody {

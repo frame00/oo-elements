@@ -10,6 +10,8 @@ import {currencyToSign} from '../../../lib/get-price-per-hour'
 import stripeCheckout from '../../../lib/payment-handler-by-stripe'
 import {StripeCheckoutToken} from '../../../d/stripe'
 import chargePayment from '../../../lib/oo-api-charge-payment'
+import getPayment from '../../../lib/oo-api-get-payment'
+import toMap from '../../../lib/extensions-to-map'
 
 define('oo-atoms-message', ooMessage)
 define('oo-atoms-user-name', ooUserName)
@@ -20,7 +22,8 @@ interface Options {
 	dest: string,
 	amount: string,
 	currency: Currency,
-	paymentUid?: string
+	paymentUid?: string,
+	paymentPaid: boolean
 }
 
 const ATTR = {
@@ -38,12 +41,20 @@ const stateDest = weakMap<string>()
 const stateAmount = weakMap<string>()
 const stateCurrency = weakMap<Currency>()
 const statePaymentUid = weakMap<string>()
+const statePaymentPaid = weakMap<boolean>()
 
 const asCurrency = (data: string): Currency => {
 	if (data === 'usd' || data === 'jpy') {
 		return data
 	}
 	return 'usd'
+}
+const asStripeAmount = (data: string): number => parseFloat(data) * 100
+const validUid = (data: string): boolean => {
+	if (typeof data === 'string' && data !== 'undefined' && data !== 'null' && data !== '') {
+		return true
+	}
+	return false
 }
 
 export default class extends HTMLElement {
@@ -73,6 +84,7 @@ export default class extends HTMLElement {
 				break
 			case ATTR.DATA_PAYMENT_UID:
 				statePaymentUid.set(this, next)
+				this.fetchPayment()
 				break
 			default:
 				break
@@ -81,9 +93,9 @@ export default class extends HTMLElement {
 	}
 
 	html(opts: Options) {
-		const {iam, currency, amount, paymentUid} = opts
+		const {iam, currency, amount, paymentPaid} = opts
 		const sign = currencyToSign(currency)
-		const done = typeof paymentUid === 'string'
+		const done = paymentPaid === true
 		const paymentButton = done ? html`` : html`<oo-atoms-button on-clicked='${() => this.stripeCheckout()}' data-block=enabled>Pay</oo-atoms-button>`
 		return html`
 		<style>
@@ -126,7 +138,7 @@ export default class extends HTMLElement {
 		</style>
 		<oo-atoms-message data-tooltip-position=center>
 			<section slot=body>
-				<article class$='${paymentUid ? 'done' : 'wait'}'>
+				<article class$='${done ? 'done' : 'wait'}'>
 					<header>${currency} ${sign}${amount}</header>
 					<div class=pay>
 						${paymentButton}
@@ -144,7 +156,12 @@ export default class extends HTMLElement {
 			dest: stateDest.get(this),
 			amount: stateAmount.get(this),
 			currency: stateCurrency.get(this),
-			paymentUid: statePaymentUid.get(this)
+			paymentUid: statePaymentUid.get(this),
+			paymentPaid: statePaymentPaid.get(this)
+		}
+		if (this.hasAttribute(ATTR.DATA_PAYMENT_UID) && opts.paymentPaid === undefined) {
+			// Wait for Payment API
+			return
 		}
 		render(this.html(opts), this)
 	}
@@ -154,7 +171,7 @@ export default class extends HTMLElement {
 			console.log(token)
 			const opts = {
 				stripe_token: token.id,
-				amount: token.amount,
+				amount: asStripeAmount(stateAmount.get(this)),
 				currency: stateCurrency.get(this),
 				seller_uid: stateIam.get(this),
 				linked_message_uid: stateUid.get(this)
@@ -163,11 +180,32 @@ export default class extends HTMLElement {
 			console.log(payment)
 		}
 		const handler = await stripeCheckout(callback)
-		const amount = parseFloat(stateAmount.get(this)) * 100
+		const amount = asStripeAmount(stateAmount.get(this))
 		handler.open({
 			name: 'Stripe.com',
 			description: '2 widgets',
 			amount
 		})
+	}
+
+	async fetchPayment() {
+		const uid = statePaymentUid.get(this)
+		if (validUid(uid) === false) {
+			statePaymentPaid.set(this, false)
+			this.render()
+			return
+		}
+		const payment = await getPayment(uid)
+		const {response} = payment
+		if (Array.isArray(response)) {
+			const [pay] = response
+			const exts = toMap(pay)
+			const charges = exts.get('stripe_charges')
+			if (charges) {
+				const paid = Boolean(charges.paid)
+				statePaymentPaid.set(this, paid)
+			}
+		}
+		this.render()
 	}
 }
