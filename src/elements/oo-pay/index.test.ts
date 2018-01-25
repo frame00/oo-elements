@@ -1,5 +1,6 @@
 import el from './index'
 import define from '../../lib/define'
+import stripe from '../../lib/stripe'
 import insertElement from '../../lib/test/insert-element'
 import getElement from '../../lib/test/get-element'
 import removeElement from '../../lib/test/remove-element'
@@ -8,6 +9,14 @@ import event from '../../lib/test/event'
 const {document} = window
 
 const ELEMENT = 'oo-pay'
+
+const requiredOptions: [string, any][] = [
+	['data-iam', 'test'],
+	['data-uid', 'x'],
+	['data-dest', 'test'],
+	['data-amount', '10.00'],
+	['data-currency', 'usd']
+]
 
 describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	before(() => {
@@ -21,7 +30,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Forword attributes', () => {
 		it('Forward "data-iam" attribute to <oo-atoms-user-name>', () => {
-			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+			const element = insertElement(ELEMENT, new Map(requiredOptions))
 			const slotBody: HTMLSlotElement = element.shadowRoot.querySelector('oo-atoms-message').shadowRoot.querySelector('slot[name=body]')
 			const [assigned] = slotBody.assignedNodes()
 			Array.prototype.forEach.call(assigned.childNodes, (item: Node) => {
@@ -33,7 +42,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Output contents', () => {
 		it('Display amount from "data-amount" and "data-currency" attribute', () => {
-			const element = insertElement(ELEMENT, new Map([['data-amount', '10.00'], ['data-currency', 'usd']]))
+			const element = insertElement(ELEMENT, new Map(requiredOptions))
 			const slotBody: HTMLSlotElement = element.shadowRoot.querySelector('oo-atoms-message').shadowRoot.querySelector('slot[name=body]')
 			const [assigned] = slotBody.assignedNodes()
 			Array.prototype.forEach.call(assigned.childNodes, (item: Node) => {
@@ -43,7 +52,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 
 		it('Display the "Pay" button when there is no "data-payment-uid" attribute', () => {
-			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+			const element = insertElement(ELEMENT, new Map(requiredOptions))
 			const slotBody: HTMLSlotElement = element.shadowRoot.querySelector('oo-atoms-message').shadowRoot.querySelector('slot[name=body]')
 			const [assigned] = slotBody.assignedNodes()
 			Array.prototype.forEach.call(assigned.childNodes, (item: Node) => {
@@ -52,18 +61,21 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			})
 		})
 
-		it('Display empty HTML when "data-iam", "data-uid", "data-dest", "data-amount", "data-currency" do not exist')
+		it('Display empty HTML when "data-iam", "data-uid", "data-dest", "data-amount", "data-currency" do not exist', () => {
+			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+			expect(element.shadowRoot.querySelector('*')).to.not.be.ok()
+		})
 	})
 
 	describe('Check payment status', () => {
 		it('Fetch payment status of "data-payment-uid" attribute value', async () => {
-			const element: any = insertElement(ELEMENT, new Map([['data-payment-uid', 'Mdo59S1a3i']]))
+			const element: any = insertElement(ELEMENT, new Map(requiredOptions.concat([['data-payment-uid', 'Mdo59S1a3i']])))
 			await sleep(100)
 			expect(element.paid).to.be.ok()
 		})
 
 		it('Hide "Pay" button when paid', async () => {
-			const element: any = insertElement(ELEMENT, new Map([['data-payment-uid', 'Mdo59S1a3i']]))
+			const element: any = insertElement(ELEMENT, new Map(requiredOptions.concat([['data-payment-uid', 'Mdo59S1a3i']])))
 			await sleep(100)
 			expect(element.paid).to.be.ok()
 			const slotBody: HTMLSlotElement = element.shadowRoot.querySelector('oo-atoms-message').shadowRoot.querySelector('slot[name=body]')
@@ -75,7 +87,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 
 		it('Display "Pay" button when unpaid', async () => {
-			const element: any = insertElement(ELEMENT, new Map([['data-payment-uid', 'wA7du485qP']]))
+			const element: any = insertElement(ELEMENT, new Map(requiredOptions.concat([['data-payment-uid', 'wA7du485qP']])))
 			await sleep(100)
 			expect(element.paid).to.not.be.ok()
 			const slotBody: HTMLSlotElement = element.shadowRoot.querySelector('oo-atoms-message').shadowRoot.querySelector('slot[name=body]')
@@ -88,21 +100,26 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	})
 
 	describe('Pay with Stripe', () => {
+		before(async () => {
+			// Warm up
+			await stripe()
+		})
+
 		it('Open Stripe Checkout when clicked "Pay" button', async () => {
-			const element = insertElement(ELEMENT, new Map([['data-amount', '10.00'], ['data-currency', 'usd']]))
+			const element = insertElement(ELEMENT, new Map(requiredOptions))
 			const slotBody: HTMLSlotElement = element.shadowRoot.querySelector('oo-atoms-message').shadowRoot.querySelector('slot[name=body]')
 			const [assigned] = slotBody.assignedNodes()
 			Array.prototype.forEach.call(assigned.childNodes, (item: Node) => {
 				const button = item.parentElement.querySelector('oo-atoms-button')
 				event(button, 'clicked')
 			})
-			await sleep(1500)
+			await sleep(1000)
 			const stripeIframe = document.querySelector('iframe[src^="https://checkout.stripe.com"]')
 			expect(stripeIframe).to.be.ok()
 		})
 
 		it('Charge with the Stripe Token, the display becomes "Paid" when successed', async () => {
-			const element: any = insertElement(ELEMENT, new Map([['data-amount', '10.00'], ['data-currency', 'usd']]))
+			const element: any = insertElement(ELEMENT, new Map(requiredOptions))
 			element.stripeCheckout(true)
 			await sleep(100)
 			expect(element.paid).to.be.ok()

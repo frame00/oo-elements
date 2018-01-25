@@ -19,11 +19,12 @@ define('oo-atoms-button', button)
 
 interface Options {
 	iam: string,
+	uid: string,
 	dest: string,
 	amount: string,
 	currency: Currency,
 	paymentUid?: string,
-	paymentPaid: boolean
+	paymentPaid?: boolean
 }
 
 const ATTR = {
@@ -43,6 +44,13 @@ const stateCurrency = weakMap<Currency>()
 const statePaymentUid = weakMap<string>()
 const statePaymentPaid = weakMap<boolean>()
 
+const isFullFilledRequiredStates = (opts: Options): boolean => {
+	const {iam, uid, dest, amount, currency} = opts
+	if (iam && uid && dest && amount && currency) {
+		return true
+	}
+	return false
+}
 const asCurrency = (data: string): Currency => {
 	if (data === 'usd' || data === 'jpy') {
 		return data
@@ -97,6 +105,9 @@ export default class extends HTMLElement {
 	}
 
 	html(opts: Options) {
+		if(isFullFilledRequiredStates(opts) === false) {
+			return html``
+		}
 		const {iam, currency, amount, paymentPaid} = opts
 		const sign = currencyToSign(currency)
 		const done = paymentPaid === true
@@ -155,17 +166,18 @@ export default class extends HTMLElement {
 	}
 
 	render() {
+		if (this.hasAttribute(ATTR.DATA_PAYMENT_UID) && statePaymentPaid.get(this) === undefined) {
+			// Wait for Payment API
+			return
+		}
 		const opts = {
 			iam: stateIam.get(this),
+			uid: stateUid.get(this),
 			dest: stateDest.get(this),
 			amount: stateAmount.get(this),
 			currency: stateCurrency.get(this),
 			paymentUid: statePaymentUid.get(this),
 			paymentPaid: statePaymentPaid.get(this)
-		}
-		if (this.hasAttribute(ATTR.DATA_PAYMENT_UID) && opts.paymentPaid === undefined) {
-			// Wait for Payment API
-			return
 		}
 		render(this.html(opts), this)
 	}
