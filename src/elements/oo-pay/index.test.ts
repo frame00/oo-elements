@@ -113,9 +113,20 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 				const button = item.parentElement.querySelector('oo-atoms-button')
 				event(button, 'clicked')
 			})
-			await sleep(1000)
-			const stripeIframe = document.querySelector('iframe[src^="https://checkout.stripe.com"]')
-			expect(stripeIframe).to.be.ok()
+			const iframe = await new Promise<Element>(resolve => {
+				const observer = new MutationObserver(mutationsList => {
+					for(const mutation of mutationsList) {
+						const ifrm = mutation.target.parentElement.querySelector('iframe')
+						if (ifrm) {
+							resolve(ifrm)
+							observer.disconnect()
+						}
+					}
+				})
+				observer.observe(document.body, {childList: true})
+			})
+			const src = iframe.getAttribute('src')
+			expect(src).to.contain('https://checkout.stripe.com')
 		})
 
 		it('Charge with the Stripe Token, the display becomes "Paid" when successed', async () => {
@@ -123,6 +134,14 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			element.stripeCheckout(true)
 			await sleep(100)
 			expect(element.paid).to.be.ok()
+		})
+
+		it('If the charge is successful, the "stripeCheckout" method will not do anything', async () => {
+			const element: any = insertElement(ELEMENT, new Map(requiredOptions))
+			element.stripeCheckout(true)
+			await sleep(100)
+			expect(element.paid).to.be.ok()
+			expect(await element.stripeCheckout(true)).to.be(false)
 		})
 	})
 

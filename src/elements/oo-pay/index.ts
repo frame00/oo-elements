@@ -8,10 +8,10 @@ import button from '../_atoms/oo-atoms-button'
 import define from '../../lib/define'
 import {currencyToSign} from '../../lib/get-price-per-hour'
 import stripeCheckout from '../../lib/payment-handler-by-stripe'
-import {StripeCheckoutToken} from '../../d/stripe'
-import chargePayment from '../../lib/oo-api-charge-payment'
 import getPayment from '../../lib/oo-api-get-payment'
 import toMap from '../../lib/extensions-to-map'
+import asStripeAmount from './lib/as-stripe-amount'
+import stripeCallback from './lib/stripe-callback'
 
 define('oo-atoms-message', ooMessage)
 define('oo-atoms-user-name', ooUserName)
@@ -25,6 +25,7 @@ interface Options {
 	currency: Currency,
 	paymentUid?: string,
 	paymentPaid?: boolean
+	chargeSuccessed?: boolean
 }
 
 const ATTR = {
@@ -43,6 +44,17 @@ const stateAmount = weakMap<string>()
 const stateCurrency = weakMap<Currency>()
 const statePaymentUid = weakMap<string>()
 const statePaymentPaid = weakMap<boolean>()
+const stateChargeSuccessed = weakMap<boolean>()
+const testData = {
+	client_ip: 'x',
+	created: 1,
+	email: 'x',
+	id: 'x',
+	livemode: true,
+	object: 'x',
+	type: 'x',
+	used: false
+}
 
 const isFullFilledRequiredStates = (opts: Options): boolean => {
 	const {iam, uid, dest, amount, currency} = opts
@@ -57,7 +69,6 @@ const asCurrency = (data: string): Currency => {
 	}
 	return 'usd'
 }
-const asStripeAmount = (data: string): number => parseFloat(data) * 100
 const validUid = (data: string): boolean => {
 	if (typeof data === 'string' && data !== 'undefined' && data !== 'null' && data !== '') {
 		return true
@@ -108,48 +119,52 @@ export default class extends HTMLElement {
 		if(isFullFilledRequiredStates(opts) === false) {
 			return html``
 		}
-		const {iam, currency, amount, paymentPaid} = opts
+		const {iam, currency, amount, paymentPaid, chargeSuccessed} = opts
 		const sign = currencyToSign(currency)
 		const done = paymentPaid === true
-		const paymentButton = done ? html`` : html`<oo-atoms-button on-clicked='${() => this.stripeCheckout()}' data-block=enabled>Pay</oo-atoms-button>`
+		const paymentButton = done ? html`` : (() => {
+			const state = chargeSuccessed === true ? 'resolved' : chargeSuccessed === false ? 'rejected' : ''
+			return html`<oo-atoms-button on-clicked='${() => this.stripeCheckout()}' data-state$='${state}' data-block=enabled>Pay</oo-atoms-button>`
+		})()
+
 		return html`
 		<style>
-		@import '../../style/_vars-font-family.css';
-		:host {
-			diaplay: block;
-		}
-		oo-atoms-message {
-			font-family: var(--font-family);
-		}
-		header {
-			padding: 1rem;
-			text-transform: uppercase;
-			font-size: 2rem;
-			font-weight: 300;
-			border-bottom: 0.5px solid #00000036;
-		}
-		.pay {
-			display: flex;
-			align-items: center;
-		}
-		oo-atoms-button,
-		oo-atoms-user-name {
-			padding: 1rem;
-			width: 50%;
-		}
-		oo-atoms-user-name {
-			display: flex;
-			align-items: center;
-		}
-		article {
-			&.wait {
-				background: #4caf50;
-				color: white;
+			@import '../../style/_vars-font-family.css';
+			:host {
+				diaplay: block;
 			}
-			&.done {
-				background: #cfd8dc;
+			oo-atoms-message {
+				font-family: var(--font-family);
 			}
-		}
+			header {
+				padding: 1rem;
+				text-transform: uppercase;
+				font-size: 2rem;
+				font-weight: 300;
+				border-bottom: 0.5px solid #00000036;
+			}
+			.pay {
+				display: flex;
+				align-items: center;
+			}
+			oo-atoms-button,
+			oo-atoms-user-name {
+				padding: 1rem;
+				width: 50%;
+			}
+			oo-atoms-user-name {
+				display: flex;
+				align-items: center;
+			}
+			article {
+				&.wait {
+					background: #4caf50;
+					color: white;
+				}
+				&.done {
+					background: #cfd8dc;
+				}
+			}
 		</style>
 		<oo-atoms-message data-tooltip-position=center>
 			<section slot=body>
@@ -166,7 +181,7 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		if (this.hasAttribute(ATTR.DATA_PAYMENT_UID) && statePaymentPaid.get(this) === undefined) {
+		if (this.hasAttribute(ATTR.DATA_PAYMENT_UID) && this.paid === undefined) {
 			// Wait for Payment API
 			return
 		}
@@ -177,34 +192,38 @@ export default class extends HTMLElement {
 			amount: stateAmount.get(this),
 			currency: stateCurrency.get(this),
 			paymentUid: statePaymentUid.get(this),
-			paymentPaid: statePaymentPaid.get(this)
+			paymentPaid: this.paid,
+			chargeSuccessed: stateChargeSuccessed.get(this)
 		}
 		render(this.html(opts), this)
 	}
 
 	async stripeCheckout(test?: boolean) {
-		const callback = async (token: StripeCheckoutToken): Promise<void> => {
-			console.log(token)
-			const opts = {
-				stripe_token: token.id,
-				amount: asStripeAmount(stateAmount.get(this)),
-				currency: stateCurrency.get(this),
-				seller_uid: stateIam.get(this),
-				linked_message_uid: stateUid.get(this)
-			}
-			try {
-				const payment = await chargePayment(opts)
-				const {response} = payment
+		if (stateChargeSuccessed.get(this) === true) {
+			return false
+		}
+		const options = {
+			amount: stateAmount.get(this),
+			currency: stateCurrency.get(this),
+			iam: stateIam.get(this),
+			uid: stateUid.get(this)
+		}
+		const callback = stripeCallback(this, options, (err, results) => {
+			if (err) {
+				stateChargeSuccessed.set(this, false)
+			} else {
+				const {response} = results
 				if (Array.isArray(response)) {
 					const [data] = response
 					statePaymentUid.set(this, data.uid)
 					statePaymentPaid.set(this, true)
+					stateChargeSuccessed.set(this, true)
+				} else {
+					stateChargeSuccessed.set(this, false)
 				}
-			} catch(err) {
-				console.log(err)
 			}
 			this.render()
-		}
+		})
 		try {
 			const handler = await stripeCheckout(callback)
 			const amount = asStripeAmount(stateAmount.get(this))
@@ -214,19 +233,10 @@ export default class extends HTMLElement {
 				amount
 			})
 		} catch(err) {
-			console.log(err)
+			console.error(err)
 		}
 		if (test === true) {
-			callback({
-				client_ip: 'x',
-				created: 1,
-				email: 'x',
-				id: 'x',
-				livemode: true,
-				object: 'x',
-				type: 'x',
-				used: false
-			})
+			callback(testData)
 		}
 	}
 
@@ -250,7 +260,7 @@ export default class extends HTMLElement {
 				}
 			}
 		} catch(err) {
-			console.log(err)
+			console.error(err)
 		}
 		this.render()
 	}
