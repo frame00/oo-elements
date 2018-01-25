@@ -4,24 +4,17 @@ import render from '../../lib/render'
 import getProjectMessages from '../../lib/oo-api-get-project-messages'
 import getMessage from '../../lib/oo-api-get-message'
 import toMap from '../../lib/extensions-to-map'
-import {OOExtensionMap} from '../../d/oo-extension'
-import {OOMessage} from '../../d/oo-message'
+import {OOMessage, MapedOOMessages} from '../../d/oo-message'
 import define from '../../lib/define'
 import ooMessage from '../_atoms/oo-atoms-message'
 import ooUserName from '../_atoms/oo-atoms-user-name'
 import ooButton from '../_atoms/oo-atoms-button'
-import lineBreak from '../../lib/line-break'
-import ooPay from '../oo-pay'
+import message from './lib/message'
 
 define('oo-atoms-message', ooMessage)
 define('oo-atoms-user-name', ooUserName)
 define('oo-atoms-button', ooButton)
-define('oo-pay', ooPay)
 
-interface MapedOOMessage extends OOMessage {
-	ext: OOExtensionMap
-}
-type MapedOOMessages = Array<MapedOOMessage>
 interface Options {
 	iam: string,
 	project: string,
@@ -96,33 +89,7 @@ export default class extends HTMLElement {
 			}
 		</style>
 		${more}
-		${repeat(mess, mes => {
-			const lines = lineBreak(mes.ext.get('body'))
-			const author = mes.ext.get('author')
-			const payment = mes.ext.get('payment')
-			const position = author === user ? 'right' : 'left'
-			const footer = author === user ? html`` :
-				html`
-				<footer slot=footer>
-					<oo-atoms-user-name data-iam$='${author}' data-size=small></oo-atoms-user-name>
-				</footer>`
-			return html`
-			<oo-pay
-				data-iam$=${author}
-				data-dest$=${author}
-				data-amount$=${'75.00'}
-				data-currency$=${'usd'}
-				data-uid$=${mes.uid}
-				data-payment-uid$=${payment}
-			></oo-pay>
-			<oo-atoms-message data-tooltip-position$='${position}'>
-				<section slot=body>
-					${repeat(lines, line => html`<p>${line}</p>`)}
-				</section>
-				${footer}
-			</oo-atoms-message>
-			`
-		})}
+		${repeat(mess, mes => message(user, mes))}
 		`
 	}
 
