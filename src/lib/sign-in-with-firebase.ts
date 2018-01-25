@@ -8,6 +8,12 @@ import isSuccess from './is-api-success'
 import state from './state'
 import store from './local-storage'
 
+const setState = (token: string, uid: string): void => {
+	state.set('token', token)
+	store.token = token
+	store.uid = uid
+}
+
 export default async (provider: AuthProvider, test?: string): Promise<{
 	token: OOToken,
 	uid: OOUserUID
@@ -23,6 +29,7 @@ export default async (provider: AuthProvider, test?: string): Promise<{
 	} else if (test === 'error') {
 		throw new Error('This is a test')
 	} else {
+		setState(test, test)
 		return {token: test, uid: test}
 	}
 	const ooapiRes = await api<OOUser>({
@@ -62,9 +69,7 @@ export default async (provider: AuthProvider, test?: string): Promise<{
 		return user.uid
 	})(ooapiRes.response)
 
-	state.set('token', token)
-	store.token = token
-	store.uid = uid
+	setState(token, uid)
 
 	return {
 		token,
