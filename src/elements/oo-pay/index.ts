@@ -62,6 +62,10 @@ export default class extends HTMLElement {
 		return [ATTR.DATA_IAM, ATTR.DATA_UID, ATTR.DATA_DEST, ATTR.DATA_AMOUNT, ATTR.DATA_CURRENCY, ATTR.DATA_PAYMENT_UID]
 	}
 
+	get paid() {
+		return statePaymentPaid.get(this)
+	}
+
 	attributeChangedCallback(attr, prev, next: string) {
 		if (prev === next && !next) {
 			return
@@ -177,7 +181,13 @@ export default class extends HTMLElement {
 				linked_message_uid: stateUid.get(this)
 			}
 			const payment = await chargePayment(opts)
-			console.log(payment)
+			const {response} = payment
+			if (Array.isArray(response)) {
+				const [data] = response
+				statePaymentUid.set(this, data.uid)
+				statePaymentPaid.set(this, true)
+			}
+			this.render()
 		}
 		const handler = await stripeCheckout(callback)
 		const amount = asStripeAmount(stateAmount.get(this))
