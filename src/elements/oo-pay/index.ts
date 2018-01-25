@@ -103,7 +103,7 @@ export default class extends HTMLElement {
 		const paymentButton = done ? html`` : html`<oo-atoms-button on-clicked='${() => this.stripeCheckout()}' data-block=enabled>Pay</oo-atoms-button>`
 		return html`
 		<style>
-		@import '../../../style/_vars-font-family.css';
+		@import '../../style/_vars-font-family.css';
 		:host {
 			diaplay: block;
 		}
@@ -170,7 +170,7 @@ export default class extends HTMLElement {
 		render(this.html(opts), this)
 	}
 
-	async stripeCheckout() {
+	async stripeCheckout(test?: boolean) {
 		const callback = async (token: StripeCheckoutToken): Promise<void> => {
 			console.log(token)
 			const opts = {
@@ -180,22 +180,42 @@ export default class extends HTMLElement {
 				seller_uid: stateIam.get(this),
 				linked_message_uid: stateUid.get(this)
 			}
-			const payment = await chargePayment(opts)
-			const {response} = payment
-			if (Array.isArray(response)) {
-				const [data] = response
-				statePaymentUid.set(this, data.uid)
-				statePaymentPaid.set(this, true)
+			try {
+				const payment = await chargePayment(opts)
+				const {response} = payment
+				if (Array.isArray(response)) {
+					const [data] = response
+					statePaymentUid.set(this, data.uid)
+					statePaymentPaid.set(this, true)
+				}
+			} catch(err) {
+				console.log(err)
 			}
 			this.render()
 		}
-		const handler = await stripeCheckout(callback)
-		const amount = asStripeAmount(stateAmount.get(this))
-		handler.open({
-			name: 'Stripe.com',
-			description: '2 widgets',
-			amount
-		})
+		try {
+			const handler = await stripeCheckout(callback)
+			const amount = asStripeAmount(stateAmount.get(this))
+			handler.open({
+				name: 'Stripe.com',
+				description: '2 widgets',
+				amount
+			})
+		} catch(err) {
+			console.log(err)
+		}
+		if (test === true) {
+			callback({
+				client_ip: 'x',
+				created: 1,
+				email: 'x',
+				id: 'x',
+				livemode: true,
+				object: 'x',
+				type: 'x',
+				used: false
+			})
+		}
 	}
 
 	async fetchPayment() {
@@ -205,16 +225,20 @@ export default class extends HTMLElement {
 			this.render()
 			return
 		}
-		const payment = await getPayment(uid)
-		const {response} = payment
-		if (Array.isArray(response)) {
-			const [pay] = response
-			const exts = toMap(pay)
-			const charges = exts.get('stripe_charges')
-			if (charges) {
-				const paid = Boolean(charges.paid)
-				statePaymentPaid.set(this, paid)
+		try {
+			const payment = await getPayment(uid)
+			const {response} = payment
+			if (Array.isArray(response)) {
+				const [pay] = response
+				const exts = toMap(pay)
+				const charges = exts.get('stripe_charges')
+				if (charges) {
+					const paid = Boolean(charges.paid)
+					statePaymentPaid.set(this, paid)
+				}
 			}
+		} catch(err) {
+			console.log(err)
 		}
 		this.render()
 	}

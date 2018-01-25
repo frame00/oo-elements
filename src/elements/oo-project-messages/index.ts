@@ -11,12 +11,12 @@ import ooMessage from '../_atoms/oo-atoms-message'
 import ooUserName from '../_atoms/oo-atoms-user-name'
 import ooButton from '../_atoms/oo-atoms-button'
 import lineBreak from '../../lib/line-break'
-import messagePayment from '../_molecules/oo-molecules-message-payment'
+import ooPay from '../oo-pay'
 
 define('oo-atoms-message', ooMessage)
 define('oo-atoms-user-name', ooUserName)
 define('oo-atoms-button', ooButton)
-define('oo-molecules-message-payment', messagePayment)
+define('oo-pay', ooPay)
 
 interface MapedOOMessage extends OOMessage {
 	ext: OOExtensionMap
@@ -107,14 +107,14 @@ export default class extends HTMLElement {
 					<oo-atoms-user-name data-iam$='${author}' data-size=small></oo-atoms-user-name>
 				</footer>`
 			return html`
-			<oo-molecules-message-payment
+			<oo-pay
 				data-iam$=${author}
 				data-dest$=${author}
 				data-amount$=${'75.00'}
 				data-currency$=${'usd'}
 				data-uid$=${mes.uid}
 				data-payment-uid$=${payment}
-			></oo-molecules-message-payment>
+			></oo-pay>
 			<oo-atoms-message data-tooltip-position$='${position}'>
 				<section slot=body>
 					${repeat(lines, line => html`<p>${line}</p>`)}
