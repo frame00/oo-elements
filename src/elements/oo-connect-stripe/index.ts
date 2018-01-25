@@ -8,6 +8,7 @@ import {parse} from 'query-string'
 import {OOUserUID} from '../../d/oo-user'
 import connectApi from '../../lib/oo-api-connect-user-stripe'
 import store from '../../lib/local-storage'
+import {StripeConnectedDetail, StripeConnected, StripeConnectionFailedDetail, StripeConnectionFailed} from '../../d/event'
 const {location} = window
 
 define('oo-atoms-button', button)
@@ -19,14 +20,19 @@ const URI_PARAMS = {
 	STATE: 'state'
 }
 const EVENT = {
-	CONNECTED: detail => new CustomEvent('connected', {detail}),
-	CONNECTION_FAILED: detail => new CustomEvent('connectionfailed', {detail})
+	CONNECTED: (detail: StripeConnectedDetail): StripeConnected => new CustomEvent('connected', {detail}),
+	CONNECTION_FAILED: (detail: StripeConnectionFailedDetail): StripeConnectionFailed => new CustomEvent('connectionfailed', {detail})
 }
 
 const stateUid = weakMap<string>()
 const stateConnection = weakMap<Connecntion>()
+const stripeWindow = weakMap<Window>()
 
 export default class extends HTMLElement {
+	get stripeWindow() {
+		return stripeWindow.get(this)
+	}
+
 	constructor() {
 		super()
 		const {uid} = store
@@ -51,7 +57,7 @@ export default class extends HTMLElement {
 		</style>
 		${(() => {
 			if (uid && connection === 'none') {
-				return html`<oo-atoms-button on-clicked='${() => this.connectStripe()}'>Connect with Stripe</oo-atoms-button>`
+				return html`<oo-atoms-button on-clicked='${() => this.connectStripe()}'>Connect with your Stripe</oo-atoms-button>`
 			} else if (connection === 'connecting') {
 				return html`<oo-atoms-button data-state=progress>Connecting now...</oo-atoms-button>`
 			} else if (connection === 'connected') {
@@ -68,8 +74,8 @@ export default class extends HTMLElement {
 		render(this.html(stateUid.get(this), stateConnection.get(this)), this)
 	}
 
-	async connectStripe() {
-		openStripeOauth()
+	connectStripe() {
+		stripeWindow.set(this, openStripeOauth())
 		stateConnection.set(this, 'connecting')
 		this.render()
 	}
@@ -77,9 +83,9 @@ export default class extends HTMLElement {
 	async onRedirected(params: {
 		code: string,
 		state: OOUserUID
-	}) {
+	}, test?: boolean) {
 		try {
-			const connect = await connectApi(params.code)
+			const connect = await connectApi(params.code, test)
 			const {response} = connect
 			if (Array.isArray(response)) {
 				const [uidAndStripe] = response
@@ -87,7 +93,7 @@ export default class extends HTMLElement {
 				this.render()
 				this.dispatchEvent(EVENT.CONNECTED(uidAndStripe))
 			} else {
-				throw response
+				throw connect
 			}
 		} catch(err) {
 			stateConnection.set(this, 'failed')
