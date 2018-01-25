@@ -5,7 +5,6 @@ import getElement from '../../lib/test/get-element'
 import removeElement from '../../lib/test/remove-element'
 import store from '../../lib/local-storage'
 import event from '../../lib/test/event'
-import sleep from '../../lib/test/sleep'
 import {StripeConnected, StripeConnectionFailed} from '../../d/event'
 
 const ELEMENT = 'oo-connect-stripe'
