@@ -17,6 +17,22 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(getElement(ELEMENT)[0]).to.be.ok()
 	})
 
+	describe('Not signed in', () => {
+		it('Display error message when not signed in')
+	})
+
+	describe('Signed in', () => {
+		it('Display "Connect" button when it is not a redirect from Stripe')
+	})
+
+	describe('Redirected from Stripe', () => {
+		it('Invoke Users API and display "Connecting" button when associating with Stripe and OO')
+
+		it('Display "Connected" button and dispatch "connected" event when Stripe and OO association succeed')
+
+		it('Display "Connection failed" button and dispatch "connectionfailed" event when Stripe and OO association failed')
+	})
+
 	after(() => {
 		removeElement(ELEMENT)
 		store.clear()
