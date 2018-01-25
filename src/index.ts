@@ -10,6 +10,7 @@ import ooProjectSummary from './elements/oo-project-summary'
 import ooProjectMessages from './elements/oo-project-messages'
 import ooMessageForm from './elements/oo-message-form'
 import ooConnectStripe from './elements/oo-connect-stripe'
+import ooPay from './elements/oo-pay'
 
 define('oo-button', ooButton)
 define('oo-modal', ooModal)
@@ -22,3 +23,4 @@ define('oo-project-summary', ooProjectSummary)
 define('oo-project-messages', ooProjectMessages)
 define('oo-message-form', ooMessageForm)
 define('oo-connect-stripe', ooConnectStripe)
+define('oo-pay', ooPay)

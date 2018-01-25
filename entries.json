@@ -58,5 +58,10 @@
     "file": "src/elements/oo-connect-stripe/define.ts",
     "dest": "dist/oo-connect-stripe.js",
     "name": "oo-connect-stripe"
+  },
+  {
+    "file": "src/elements/oo-pay/define.ts",
+    "dest": "dist/oo-pay.js",
+    "name": "oo-pay"
   }
 ]

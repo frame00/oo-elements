@@ -1,10 +1,10 @@
 import el from './index'
-import define from '../../../lib/define'
-import insertElement from '../../../lib/test/insert-element'
-import getElement from '../../../lib/test/get-element'
-import removeElement from '../../../lib/test/remove-element'
+import define from '../../lib/define'
+import insertElement from '../../lib/test/insert-element'
+import getElement from '../../lib/test/get-element'
+import removeElement from '../../lib/test/remove-element'
 
-const ELEMENT = 'oo-molecules-message-payment'
+const ELEMENT = 'oo-pay'
 
 describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	before(() => {
