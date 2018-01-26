@@ -63,5 +63,10 @@
     "file": "src/elements/oo-pay/define.ts",
     "dest": "dist/oo-pay.js",
     "name": "oo-pay"
+  },
+  {
+    "file": "src/elements/oo-projects/define.ts",
+    "dest": "dist/oo-projects.js",
+    "name": "oo-projects"
   }
 ]

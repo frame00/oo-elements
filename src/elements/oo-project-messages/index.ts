@@ -66,6 +66,9 @@ export default class extends HTMLElement {
 
 	html(opts: Options) {
 		const {iam: user, messages: mess, project, itemCount: count} = opts
+		if (mess.length === 0) {
+			return html``
+		}
 		const paging = mess[0].created - 1
 		const more = count > mess.length ? html`
 		<div class=paging>
