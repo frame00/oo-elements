@@ -12,6 +12,7 @@ const ELEMENT = 'oo-connect-stripe'
 describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	before(() => {
 		define(ELEMENT, el)
+		store.clear()
 	})
 
 	it('Mount on document', () => {

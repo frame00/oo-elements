@@ -116,5 +116,6 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	after(() => {
 		removeElement(ELEMENT)
+		store.clear()
 	})
 })
