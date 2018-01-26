@@ -57,7 +57,7 @@ export default async <T>(options: Options): Promise<OOAPIResult<T>> => {
 			status
 		}
 	} catch(err) {
-		console.error(err)
+		console.error(err, err.stack)
 	}
 	return {
 		response: {message: ''},

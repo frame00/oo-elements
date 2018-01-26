@@ -21,6 +21,7 @@ const stateUid = weakMap<string>()
 const stateProjectUid = weakMap<string>()
 const statePermission = weakMap<boolean>()
 const stateOfferer = weakMap<string>()
+const stateProgress = weakMap<boolean>()
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
@@ -40,13 +41,13 @@ export default class extends HTMLElement {
 		this.fetchProject(next)
 	}
 
-	html(uid: string, offerer: string, perm: boolean) {
+	html(uid: string, offerer: string, perm: boolean, progress: boolean) {
 		const header = () => {
 			if (perm === true) {
 				return 'Accepted'
 			} else if (perm === false) {
 				return 'Rejected'
-			} else if (uid === offerer) {
+			} else if (uid !== offerer) {
 				return 'Waiting for your answer'
 			}
 			return 'You are waiting for a reply.'
@@ -54,22 +55,33 @@ export default class extends HTMLElement {
 
 		return html`
 		<style>
+			article {
+				> * {
+					padding: 1rem;
+				}
+			}
+			header {
+				border-bottom: 0.5px solid #00000036;
+			}
+			.buttons {
+				display: flex;
+				> * {
+					width: 50%;
+				}
+			}
 		</style>
 		<oo-atoms-message data-tooltip-position=center>
 			<section slot=body>
 				<article class$='${perm ? 'accepted' : 'rejected'}'>
 					<header>${header()}</header>
 					${(() => {
-						if (uid !== offerer && perm !== undefined) {
+						if (perm !== undefined) {
 							return html``
-						}
-						if (uid === offerer && perm !== undefined) {
-							return html`<p>Waiting for vendor's answer.</p>`
 						}
 						return html`
 						<div class=buttons>
-							<oo-atoms-button on-clicked='${() => this.projectPermission(false)}' data-block=enabled>Reject</oo-atoms-button>
-							<oo-atoms-button on-clicked='${() => this.projectPermission(true)}' data-block=enabled>Accept</oo-atoms-button>
+							<oo-atoms-button on-clicked='${() => this.projectPermission(false)}' data-block=enabled data-state$='${progress === false ? 'progress' : ''}'>Reject</oo-atoms-button>
+							<oo-atoms-button on-clicked='${() => this.projectPermission(true)}' data-block=enabled data-state$='${progress === true ? 'progress' : ''}'>Accept</oo-atoms-button>
 						</div>
 						`
 					})()}
@@ -80,20 +92,24 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(stateUid.get(this), stateOfferer.get(this), statePermission.get(this)), this)
+		render(this.html(stateUid.get(this), stateOfferer.get(this), statePermission.get(this), stateProgress.get(this)), this)
 	}
 
 	async projectPermission(ans: boolean) {
 		if (ans === undefined) {
 			return
 		}
+		stateProgress.set(this, ans)
+		this.render()
 		const result = await patchProject({
+			uid: stateProjectUid.get(this),
 			offer_permission: Boolean(ans)
 		})
 		const {status} = result
 		if (success(status)) {
 			statePermission.set(this, ans)
 		}
+		stateProgress.delete(this)
 		this.render()
 	}
 
@@ -104,6 +120,7 @@ export default class extends HTMLElement {
 			const [item] = response
 			const mapedExtensions = toMap(item)
 			statePermission.set(this, mapedExtensions.get('offer_permission'))
+			stateOfferer.set(this, mapedExtensions.get('author'))
 		}
 		this.render()
 	}

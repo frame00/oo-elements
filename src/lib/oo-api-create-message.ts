@@ -26,19 +26,19 @@ export default async (options: MessageOptionsPost, test?: boolean): Promise<OOAP
 	}
 	const extensions: Array<OOExtension> = (opts => {
 		const exts: Array<OOExtension> = []
-		const users = kv(opts, 'users')
+		const users = kv<Array<string>>(opts, 'users')
 		if (users) {
 			exts.push(users)
 		}
-		const body = kv(opts, 'body')
+		const body = kv<string>(opts, 'body')
 		if (body) {
 			exts.push(body)
 		}
-		const author = kv(opts, 'author')
+		const author = kv<string>(opts, 'author')
 		if (author) {
 			exts.push(author)
 		}
-		const project = kv(opts, 'project')
+		const project = kv<string>(opts, 'project')
 		if (project) {
 			exts.push(project)
 		}

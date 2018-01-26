@@ -53,6 +53,7 @@ export default class extends HTMLElement {
 		switch(attr) {
 			case ATTR.DATA_UID:
 				projectUid.set(this, next)
+				messages.set(this, [])
 				break
 			case ATTR.DATA_IAM:
 				iam.set(this, next)
