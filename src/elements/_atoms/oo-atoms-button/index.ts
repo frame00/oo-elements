@@ -68,7 +68,7 @@ export default class extends HTMLElement {
 				border-radius: 5px;
 				border: 0.5px solid #ccc;
 				background: white;
-				&:hover {
+				&:hover:not(.state) {
 					background: whitesmoke;
 				}
 				&:focus:not(.state) {
