@@ -9,6 +9,7 @@ import {OOExtensionsLikeObject} from '../../d/oo-extension'
 import {HTMLElementEventMessageSent} from '../../d/event'
 import getProject from '../../lib/oo-api-get-project'
 import toMap from '../../lib/extensions-to-map'
+import weakMap from '../../lib/weak-map'
 
 define('oo-project-summary', summary)
 define('oo-project-messages', messages)
@@ -18,9 +19,10 @@ const ATTR = {
 	DATA_UID: 'data-uid'
 }
 
-const projectUid: WeakMap<object, string> = new WeakMap()
-const projectOfferer: WeakMap<object, string> = new WeakMap()
-const messageForm: WeakMap<object, messages> = new WeakMap()
+const projectUid = weakMap<string>()
+const projectOfferer = weakMap<string>()
+const messageForm = weakMap<messages>()
+const projectAccepted = weakMap<boolean>()
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
@@ -35,7 +37,7 @@ export default class extends HTMLElement {
 		this.fetchProject(projectUid.get(this))
 	}
 
-	html(user: string, uid: string, extensions: OOExtensionsLikeObject) {
+	html(user: string, uid: string, accepted: boolean, extensions: OOExtensionsLikeObject) {
 		const strExts = JSON.stringify(extensions)
 		return html`
 		<style>
@@ -46,7 +48,13 @@ export default class extends HTMLElement {
 		</style>
 		<oo-project-summary data-uid$='${uid}'></oo-project-summary>
 		<oo-project-messages data-iam$='${user ? user : ''}' data-uid$='${uid}'></oo-project-messages>
-		<oo-message-form data-iam$='${user}' data-extensions$='${strExts}' on-messagesent='${e => this.onMessagesent(e)}'></oo-message-form>
+		${(() => {
+			if (accepted === true) {
+				return html`
+				<oo-message-form data-iam$='${user}' data-extensions$='${strExts}' on-messagesent='${e => this.onMessagesent(e)}'></oo-message-form>
+				`
+			}
+		})()}
 		`
 	}
 
@@ -57,7 +65,7 @@ export default class extends HTMLElement {
 			author: user,
 			users: [user, projectOfferer.get(this)]
 		}
-		render(this.html(user, projectUid.get(this), extensions), this)
+		render(this.html(user, projectUid.get(this), projectAccepted.get(this), extensions), this)
 		if (messageForm.has(this) === false) {
 			messageForm.set(this, this.shadowRoot.querySelector('oo-project-messages'))
 		}
@@ -78,8 +86,10 @@ export default class extends HTMLElement {
 			const [item] = response
 			const mapedExtensions = toMap(item)
 			projectOfferer.set(this, mapedExtensions.get('author'))
+			projectAccepted.set(this, mapedExtensions.get('offer_permission'))
 		} else {
 			projectOfferer.delete(this)
+			projectAccepted.delete(this)
 		}
 		this.render()
 	}

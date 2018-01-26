@@ -14,6 +14,10 @@ access-control-allow-origin = "http://localhost:9876"
         "value": "test"
       },
       {
+        "key": "offer_permission",
+        "value": true
+      },
+      {
         "key": "users",
         "value": ["test"]
       },
