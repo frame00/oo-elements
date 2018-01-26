@@ -1,7 +1,5 @@
 import api from '../lib/oo-api'
 import {OOAPIResult} from '../d/oo-api'
-import {OOUserUID} from '../d/oo-user'
-import {Currency} from '../d/currency'
 import {OOExtension} from '../d/oo-extension'
 import {OOProject} from '../d/oo-project'
 

@@ -1,7 +1,6 @@
 import {html} from 'lit-html'
 import render from '../../../lib/render'
 import weakMap from '../../../lib/weak-map'
-import {Currency} from '../../../d/currency'
 import ooMessage from '../../_atoms/oo-atoms-message'
 import button from '../../_atoms/oo-atoms-button'
 import define from '../../../lib/define'
