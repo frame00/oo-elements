@@ -34,7 +34,6 @@ const fetching: WeakMap<object, boolean> = new WeakMap()
 const success: WeakMap<object, boolean> = new WeakMap()
 const validationError: WeakMap<object, string> = new WeakMap()
 const message: WeakMap<object, MessageOptionsPost> = new WeakMap()
-const projectAccepted: WeakMap<object, boolean> = new WeakMap()
 
 const asExtensions = (data: string): OOExtensionsLikeObject => {
 	try {

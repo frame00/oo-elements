@@ -26,7 +26,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			expect(attr).to.be('79zGMA1b6q')
 		})
 
-		it('Forward "data-uid" attribute to <oo-project-messages>', async() => {
+		it('Forward "data-uid" attribute to <oo-project-messages>', async () => {
 			const element = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
 			await sleep(100)
 			const attr = element.shadowRoot.querySelector('oo-project-messages').getAttribute('data-uid')
@@ -35,7 +35,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	})
 
 	describe('Fetch project', () => {
-		it('Fetch the project, create a value that passes the "data-extensions" attribute of <oo-message-form>', async() => {
+		it('Fetch the project, create a value that passes the "data-extensions" attribute of <oo-message-form>', async () => {
 			store.uid = 'test-user'
 			const element = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
 			await sleep(100)
