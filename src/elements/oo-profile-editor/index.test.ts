@@ -16,6 +16,20 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(getElement(ELEMENT)[0]).to.be.ok()
 	})
 
+	describe('Fetch user profile', () => {
+		it('Encode token to get user ID, fetch user profile')
+	})
+
+	describe('Update user profile', () => {
+		describe('After input, click the "Save" button to update the profile', () => {
+			it('Display name')
+
+			it('Skills')
+
+			it('Price per hour')
+		})
+	})
+
 	after(() => {
 		removeElement(ELEMENT)
 	})
