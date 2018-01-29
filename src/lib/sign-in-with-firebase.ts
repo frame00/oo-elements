@@ -7,6 +7,8 @@ import createToken from './oo-api-create-token'
 import isSuccess from './is-api-success'
 import state from './state'
 import store from './local-storage'
+import createExtensions from './create-extensions'
+import { AuthResult } from '../d/auth-result';
 
 const setState = (token: string, uid: string): void => {
 	state.set('token', token)
@@ -18,11 +20,10 @@ export default async (provider: AuthProvider, test?: string): Promise<{
 	token: OOToken,
 	uid: OOUserUID
 } | boolean> => {
-	let firebaseUid
+	let authRes: AuthResult
 	if (test === undefined) {
 		try {
-			const authRes = await auth(provider)
-			firebaseUid = authRes.user.uid
+			authRes = await auth(provider)
 		} catch(err) {
 			throw new Error(err)
 		}
@@ -32,11 +33,15 @@ export default async (provider: AuthProvider, test?: string): Promise<{
 		setState(test, test)
 		return {token: test, uid: test}
 	}
+	const firebaseUid = authRes.user.uid
+	const {name, email, picture} = authRes.additionalUserInfo.profile
+	const extensions = createExtensions({name, email, picture})
 	const ooapiRes = await api<OOUser>({
 		resource: 'users',
 		method: 'POST',
 		body: {
-			firebase_uid: firebaseUid
+			firebase_uid: firebaseUid,
+			Extensions: extensions
 		}
 	})
 
