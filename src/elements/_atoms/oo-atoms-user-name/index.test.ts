@@ -31,10 +31,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			expect(name.textContent).to.be('test')
 		})
 
-		it('profile photo', () => {
+		it('profile picture', () => {
 			const element = getElement(ELEMENT)[0]
-			const photo = element.shadowRoot.querySelector('.photo')
-			expect(photo.getAttribute('style')).to.be('background-image: url(https://example.com/img.jpg)')
+			const picture = element.shadowRoot.querySelector('.picture')
+			expect(picture.getAttribute('style')).to.be('background-image: url(https://example.com/img.jpg)')
 		})
 
 		it('link to profile', () => {

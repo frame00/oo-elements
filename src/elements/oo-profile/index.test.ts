@@ -21,7 +21,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		const callback = () => {
 			const element = getElement(ELEMENT)[0]
 			expect(element.shadowRoot.querySelector('.name').textContent).to.be('test')
-			expect(element.shadowRoot.querySelector('.photo').getAttribute('style')).to.be('background-image: url(https://example.com/img.jpg)')
+			expect(element.shadowRoot.querySelector('.picture').getAttribute('style')).to.be('background-image: url(https://example.com/img.jpg)')
 			Array.prototype.forEach.call(element.shadowRoot.querySelectorAll('.skill'), i => {
 				expect(i.textContent).to.be('test')
 			})
@@ -36,7 +36,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		const callback = () => {
 			const element = getElement(ELEMENT)[0]
 			expect(element.shadowRoot.querySelector('.name').textContent).to.be('')
-			expect(element.shadowRoot.querySelector('.photo').getAttribute('style')).to.be('background-image: url()')
+			expect(element.shadowRoot.querySelector('.picture').getAttribute('style')).to.be('background-image: url()')
 			expect(element.shadowRoot.querySelectorAll('.skill')).to.have.length(0)
 			element.removeEventListener('userupdated', callback)
 			done()

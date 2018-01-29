@@ -20,7 +20,7 @@ access-control-allow-origin = "http://localhost:9876"
         "value": "test"
       },
       {
-        "key": "photo",
+        "key": "picture",
         "value": "https://example.com/img.jpg"
       },
       {

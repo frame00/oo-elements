@@ -15,7 +15,7 @@ const EVENT = {
 
 const iam: WeakMap<object, string> = new WeakMap()
 const name: WeakMap<object, string> = new WeakMap()
-const photo: WeakMap<object, string> = new WeakMap()
+const picture: WeakMap<object, string> = new WeakMap()
 const skill: WeakMap<object, string> = new WeakMap()
 
 export default class extends HTMLElement {
@@ -70,7 +70,7 @@ export default class extends HTMLElement {
 					line-height: 1.4rem;
 				}
 			}
-			.photo {
+			.picture {
 				background-size: cover;
 				background-color: whitesmoke;
 				border-radius: 10px;
@@ -87,7 +87,7 @@ export default class extends HTMLElement {
 				display: flex;
 				align-items: center;
 				margin-bottom: 1rem;
-				.photo {
+				.picture {
 					width: 20%;
 				}
 				.name {
@@ -98,7 +98,7 @@ export default class extends HTMLElement {
 		</style>
 		<div class=container>
 			<header>
-				<div class=photo style$='background-image: url(${img})'></div>
+				<div class=picture style$='background-image: url(${img})'></div>
 				<p class$='name ${n ? '' : 'empty'}'>${n}</p>
 			</header>
 			<div class=skills>
@@ -110,7 +110,7 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(name.get(this), photo.get(this), skill.get(this)), this)
+		render(this.html(name.get(this), picture.get(this), skill.get(this)), this)
 	}
 
 	async fetchUserData() {
@@ -119,12 +119,12 @@ export default class extends HTMLElement {
 			const [item] = res.response
 			const ext = toMap(item)
 			name.set(this, ext.get('name'))
-			photo.set(this, ext.get('photo'))
+			picture.set(this, ext.get('picture'))
 			skill.set(this, ext.get('skill'))
 			this.render()
 		} else {
 			name.set(this, '')
-			photo.set(this, '')
+			picture.set(this, '')
 			skill.set(this, '')
 			this.render()
 		}
