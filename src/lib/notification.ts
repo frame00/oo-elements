@@ -5,15 +5,13 @@ const {document} = window
 
 define('oo-notification-center', notificationCenter)
 
-type StateKey = 'attach'
-
-const state: Map<StateKey, boolean> = new Map()
+const attached: WeakMap<Window, boolean> = new WeakMap()
 
 export const attach = (): void => {
-	if (!state.get('attach')) {
+	if (!attached.get(window)) {
 		const element = document.createElement('oo-notification-center')
 		document.body.appendChild(element)
-		state.set('attach', true)
+		attached.set(window, true)
 	}
 }
 
