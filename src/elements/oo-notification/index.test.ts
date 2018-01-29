@@ -54,6 +54,22 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 	})
 
+	describe('Event dispatch', () => {
+		it('Diapatch "shown" event when rendered', done => {
+			insertElement(ELEMENT).addEventListener('shown', () => {
+				done()
+			})
+		})
+
+		it('Dispatch "hidden" event when removed', done => {
+			const element = insertElement(ELEMENT)
+			element.addEventListener('hidden', () => {
+				done()
+			})
+			event(element.shadowRoot.querySelector('main'), 'click')
+		})
+	})
+
 	after(() => {
 		removeElement(ELEMENT)
 	})

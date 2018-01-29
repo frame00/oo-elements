@@ -7,6 +7,10 @@ type Type = 'error' | ''
 const ATTR = {
 	DATA_TYPE: 'data-type'
 }
+const EVENT = {
+	SHOWN: new Event('shown'),
+	HIDDEN: new Event('hidden')
+}
 
 const stateType = weakMap<Type>()
 
@@ -21,6 +25,10 @@ export default class extends HTMLElement {
 	connectedCallback() {
 		stateType.set(this, asType(this.getAttribute(ATTR.DATA_TYPE)))
 		this.render()
+	}
+
+	disconnectedCallback() {
+		this.dispatchEvent(EVENT.HIDDEN)
 	}
 
 	html(type: Type) {
@@ -62,6 +70,7 @@ export default class extends HTMLElement {
 
 	render() {
 		render(this.html(stateType.get(this)), this)
+		this.dispatchEvent(EVENT.SHOWN)
 	}
 
 	close() {
