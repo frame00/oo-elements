@@ -73,5 +73,10 @@
     "file": "src/elements/oo-profile-editor/define.ts",
     "dest": "dist/oo-profile-editor.js",
     "name": "oo-profile-editor"
+  },
+  {
+    "file": "src/elements/oo-notification/define.ts",
+    "dest": "dist/oo-notification.js",
+    "name": "oo-notification"
   }
 ]
