@@ -45,3 +45,15 @@ export interface HTMLElementEventStripeConnectionFailed<T extends HTMLElement> e
 	target: T
 }
 
+export interface NotificationDetail {
+	message: string,
+	type?: 'error'
+}
+
+export interface Notification extends CustomEvent {
+	detail: NotificationDetail
+}
+
+export interface DocumentNotificationEvent extends Notification {
+	target: Document
+}
