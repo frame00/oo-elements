@@ -68,5 +68,10 @@
     "file": "src/elements/oo-projects/define.ts",
     "dest": "dist/oo-projects.js",
     "name": "oo-projects"
+  },
+  {
+    "file": "src/elements/oo-profile-editor/define.ts",
+    "dest": "dist/oo-profile-editor.js",
+    "name": "oo-profile-editor"
   }
 ]

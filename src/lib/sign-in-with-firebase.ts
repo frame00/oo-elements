@@ -8,7 +8,7 @@ import isSuccess from './is-api-success'
 import state from './state'
 import store from './local-storage'
 import createExtensions from './create-extensions'
-import { AuthResult } from '../d/auth-result';
+import {AuthResult} from '../d/auth-result'
 
 const setState = (token: string, uid: string): void => {
 	state.set('token', token)
