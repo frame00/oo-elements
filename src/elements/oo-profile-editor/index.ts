@@ -11,6 +11,7 @@ import button from '../_atoms/oo-atoms-button'
 import htmlPricePerHour from './lib/price-per-hour'
 import {ExtensionPricePerHour} from '../../d/extension-price-per-hour'
 import patchUser from '../../lib/oo-api-patch-user'
+import {attach, dispatch} from '../../lib/notification'
 
 define('oo-connect-stripe', connectStripe)
 define('oo-atoms-button', button)
@@ -38,6 +39,7 @@ export default class extends HTMLElement {
 	constructor() {
 		super()
 		this.fetchUserSign()
+		attach()
 	}
 
 	get iam() {
@@ -138,6 +140,7 @@ export default class extends HTMLElement {
 			this.fetchUserData(uid)
 		} else {
 			stateIam.delete(this)
+			dispatch({message: 'You are not signed in.', type: 'error'})
 			this.render()
 		}
 	}
@@ -155,6 +158,7 @@ export default class extends HTMLElement {
 			this.render()
 		} else {
 			this.render()
+			dispatch({message: 'Could not get user.', type: 'error'})
 		}
 	}
 
@@ -195,6 +199,7 @@ export default class extends HTMLElement {
 			stateButton.set(this, 'resolved')
 		} else {
 			stateButton.set(this, 'rejected')
+			dispatch({message: 'User update failed. Please try again.', type: 'error'})
 		}
 		this.render()
 	}
