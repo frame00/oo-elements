@@ -3,8 +3,6 @@ import define from '../../lib/define'
 import insertElement from '../../lib/test/insert-element'
 import getElement from '../../lib/test/get-element'
 import removeElement from '../../lib/test/remove-element'
-import event from '../../lib/test/event'
-import sleep from '../../lib/test/sleep'
 
 const ELEMENT = 'oo-notification'
 
@@ -33,13 +31,6 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(assigned[0].textContent).to.be('The Content')
 	})
 
-	it('Remove self element when clicking <main>', async () => {
-		const element = insertElement(ELEMENT)
-		event(element.shadowRoot.querySelector('main'), 'click')
-		await sleep(50)
-		expect(getElement(ELEMENT)[0]).to.not.be.ok()
-	})
-
 	describe('Styling by "data-type" attribute', () => {
 		it('"data-type" is "error"', () => {
 			const element = insertElement(ELEMENT, new Map([['data-type', 'error']]))
@@ -51,22 +42,6 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const element = insertElement(ELEMENT, new Map([['data-type', 'xxx']]))
 			const main = element.shadowRoot.querySelector('main')
 			expect(main.classList.toString()).to.be('')
-		})
-	})
-
-	describe('Event dispatch', () => {
-		it('Diapatch "shown" event when rendered', done => {
-			insertElement(ELEMENT).addEventListener('shown', () => {
-				done()
-			})
-		})
-
-		it('Dispatch "hidden" event when removed', done => {
-			const element = insertElement(ELEMENT)
-			element.addEventListener('hidden', () => {
-				done()
-			})
-			event(element.shadowRoot.querySelector('main'), 'click')
 		})
 	})
 

@@ -7,10 +7,6 @@ type Type = 'error' | ''
 const ATTR = {
 	DATA_TYPE: 'data-type'
 }
-const EVENT = {
-	SHOWN: new Event('shown'),
-	HIDDEN: new Event('hidden')
-}
 
 const stateType = weakMap<Type>()
 
@@ -22,13 +18,22 @@ const asType = (data: string): Type => {
 }
 
 export default class extends HTMLElement {
-	connectedCallback() {
+	static get observedAttributes() {
+		return [ATTR.DATA_TYPE]
+	}
+
+	constructor() {
+		super()
 		stateType.set(this, asType(this.getAttribute(ATTR.DATA_TYPE)))
 		this.render()
 	}
 
-	disconnectedCallback() {
-		this.dispatchEvent(EVENT.HIDDEN)
+	attributeChangedCallback(attr, prev, next) {
+		if (prev === next) {
+			return
+		}
+		stateType.set(this, asType(next))
+		this.render()
 	}
 
 	html(type: Type) {
@@ -62,7 +67,7 @@ export default class extends HTMLElement {
 				}
 			}
 		</style>
-		<main class$='${type}' on-click='${() => this.close()}'>
+		<main class$='${type}'>
 			<slot name=body></slot>
 		</main>
 		`
@@ -70,10 +75,5 @@ export default class extends HTMLElement {
 
 	render() {
 		render(this.html(stateType.get(this)), this)
-		this.dispatchEvent(EVENT.SHOWN)
-	}
-
-	close() {
-		this.parentElement.removeChild(this)
 	}
 }
