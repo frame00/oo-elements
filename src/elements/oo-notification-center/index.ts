@@ -31,7 +31,17 @@ export default class extends HTMLElement {
 	html(items: NotificationList) {
 		return html`
 		<style>
-			oo-notification {}
+			div {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				padding: 1rem;
+				box-sizing: border-box;
+			}
+			oo-notification {
+				margin-bottom: 1rem;
+			}
 		</style>
 		<div>
 			${repeat(items, (item, i) => {
