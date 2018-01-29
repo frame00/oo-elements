@@ -18,8 +18,8 @@ export default (pricePerHour: ExtensionPricePerHour, callbacks: Callbacks): Temp
 	const {usd, jpy} = pricePerHour
 	return html`
 	<p>USD</p>
-	<input type=number step=0.01 min=0 value$='${usd}' on-change='${e => callbacks.usd(e, 'usd')}'></input>
+	<input name=usd type=number step=0.01 min=0 value$='${usd}' on-change='${e => callbacks.usd(e, 'usd')}'></input>
 	<p>JPY</p>
-	<input type=number step=1 min=0 value$='${jpy}' on-change='${e => callbacks.jpy(e, 'jpy')}'></input>
+	<input name=jpy type=number step=1 min=0 value$='${jpy}' on-change='${e => callbacks.jpy(e, 'jpy')}'></input>
 	`
 }

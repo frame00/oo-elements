@@ -50,8 +50,8 @@ export default class extends HTMLElement {
 			return html``
 		}
 		const options = [
-			{name: 'name', title: 'Display name', template: html`<input type=text value$='${name}' on-change='${e => this.onChange(e, 'name')}'></input>`},
-			{name: 'skill', title: 'Skill', template: html`<textarea on-change='${e => this.onChange(e, 'skill')}'>${skill}</textarea>`},
+			{name: 'name', title: 'Display name', template: html`<input name=name type=text value$='${name}' on-change='${e => this.onChange(e, 'name')}'></input>`},
+			{name: 'skill', title: 'Skill', template: html`<textarea name=skill on-change='${e => this.onChange(e, 'skill')}'>${skill}</textarea>`},
 			{name: 'price_per_hour', title: 'Price per hour', template: htmlPricePerHour(pricePerHour, {
 				usd: (e, cur) => this.onChange(e, cur), jpy: (e, cur) => this.onChange(e, cur)
 			})},

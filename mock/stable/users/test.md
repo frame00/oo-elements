@@ -1,6 +1,8 @@
 +++
 [headers]
 access-control-allow-origin = "http://localhost:9876"
+access-control-allow-headers = "Authorization"
+access-control-allow-methods = "GET, PATCH"
 +++
 
 ```json
@@ -12,7 +14,8 @@ access-control-allow-origin = "http://localhost:9876"
       {
         "key": "price_per_hour",
         "value": {
-          "usd": "10"
+          "usd": "10.00",
+          "jpy": "1000"
         }
       },
       {
