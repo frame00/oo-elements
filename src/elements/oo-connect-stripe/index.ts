@@ -85,7 +85,7 @@ export default class extends HTMLElement {
 		state: OOUserUID
 	}, test?: boolean) {
 		try {
-			const connect = await connectApi(params.code, test)
+			const connect = await connectApi(stateUid.get(this), params.code, test)
 			const {response} = connect
 			if (Array.isArray(response)) {
 				const [uidAndStripe] = response
