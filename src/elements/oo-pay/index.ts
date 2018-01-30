@@ -174,6 +174,9 @@ export default class extends HTMLElement {
 						${paymentButton}
 						<oo-atoms-user-name data-iam$=${iam} data-size=small></oo-atoms-user-name>
 					</div>
+					<section>
+						<slot name=body></slot>
+					</section>
 				</article>
 			</section>
 		</oo-atoms-message>

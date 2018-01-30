@@ -65,6 +65,24 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
 			expect(element.shadowRoot.querySelector('*')).to.not.be.ok()
 		})
+
+		it('"body" slot show as <section> inner', () => {
+			removeElement(ELEMENT)
+			document.body.insertAdjacentHTML('afterbegin', `
+			<${ELEMENT}
+				data-iam='test'
+				data-dest='test'
+				data-amount='10.00'
+				data-currency='usd'
+				data-uid='x'
+			>
+				<div slot=body>Body</div>
+			</${ELEMENT}>`)
+			const element = getElement(ELEMENT)[0]
+			const slot: HTMLSlotElement = element.shadowRoot.querySelector('slot[name="body"]')
+			const assigned = slot.assignedNodes()
+			expect(assigned[0].textContent).to.be('Body')
+		})
 	})
 
 	describe('Check payment status', () => {

@@ -91,6 +91,15 @@ export default class extends HTMLElement {
 				margin-bottom: 2rem;
 				text-align: center;
 			}
+			p {
+				margin: 0;
+			}
+			p:not(:last-child) {
+				margin-bottom: 1rem;
+			}
+			[slot=body] {
+				padding: 1rem;
+			}
 		</style>
 		${more}
 		${repeat(mess, mes => message(user, mes))}
