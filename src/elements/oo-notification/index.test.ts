@@ -32,6 +32,12 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	})
 
 	describe('Styling by "data-type" attribute', () => {
+		it('"data-type" is "success"', () => {
+			const element = insertElement(ELEMENT, new Map([['data-type', 'success']]))
+			const main = element.shadowRoot.querySelector('main')
+			expect(main.classList.toString()).to.contain('success')
+		})
+
 		it('"data-type" is "error"', () => {
 			const element = insertElement(ELEMENT, new Map([['data-type', 'error']]))
 			const main = element.shadowRoot.querySelector('main')

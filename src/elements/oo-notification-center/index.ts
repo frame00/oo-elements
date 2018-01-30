@@ -4,14 +4,14 @@ import render from '../../lib/render'
 import weakMap from '../../lib/weak-map'
 import define from '../../lib/define'
 import notification from '../oo-notification'
-import {DocumentNotificationEvent} from '../../d/event'
+import {DocumentNotificationEvent, NotificationType} from '../../d/event'
 const {document} = window
 
 define('oo-notification', notification)
 
 type NotificationList = Array<{
 	message: string,
-	type?: 'error'
+	type?: NotificationType
 }>
 
 const notificationList = weakMap<NotificationList>()

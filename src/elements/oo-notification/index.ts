@@ -1,8 +1,9 @@
 import {html} from 'lit-html'
 import render from '../../lib/render'
 import weakMap from '../../lib/weak-map'
+import {NotificationType} from '../../d/event'
 
-type Type = 'error' | ''
+type Type = NotificationType | ''
 
 const ATTR = {
 	DATA_TYPE: 'data-type'
@@ -11,7 +12,7 @@ const ATTR = {
 const stateType = weakMap<Type>()
 
 const asType = (data: string): Type => {
-	if (data === 'error' || data === '') {
+	if (data === 'error' || data === 'success' || data === '') {
 		return data
 	}
 	return ''
@@ -51,6 +52,10 @@ export default class extends HTMLElement {
 				animation-fill-mode: forwards;
 				border-radius: 5px;
 				background: whitesmoke;
+				&.success {
+					background: var(--resolved-background);
+					color: white;
+				}
 				&.error {
 					background: var(--rejected-background);
 					color: white;
