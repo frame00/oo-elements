@@ -20,14 +20,14 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	describe('Fetch messages', () => {
 		it('Fetch the message of the project specified by "data-uid" attribute', async () => {
 			const element: any = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
-			await sleep(100)
+			await sleep(300)
 			expect(element.messages).to.have.length(1)
 			expect(element.messages[0].uid).to.be('jX0hnUC2dR')
 		})
 
 		it('injectMessages method', async () => {
 			const element: any = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
-			await sleep(100)
+			await sleep(300)
 			element.injectMessages(['0mZD241zKT'])
 			await sleep(200)
 			expect(element.messages).to.have.length(2)

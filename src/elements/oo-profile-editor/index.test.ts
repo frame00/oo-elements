@@ -35,7 +35,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		describe('After input, click the "Save" button to update the profile', () => {
 			it('Display name', async () => {
 				const element = insertElement(ELEMENT)
-				await sleep(200)
+				await sleep(300)
 				const input = element.shadowRoot.querySelector('input[name=name]')
 				event(input, 'change', {})
 				const button = element.shadowRoot.querySelector('oo-atoms-button')
@@ -46,7 +46,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 			it('Skills', async () => {
 				const element = insertElement(ELEMENT)
-				await sleep(200)
+				await sleep(300)
 				const textarea = element.shadowRoot.querySelector('textarea[name=skill]')
 				event(textarea, 'change')
 				const button = element.shadowRoot.querySelector('oo-atoms-button')
@@ -57,7 +57,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 			it('Price per hour', async () => {
 				const element = insertElement(ELEMENT)
-				await sleep(200)
+				await sleep(300)
 				const usd = element.shadowRoot.querySelector('input[name=usd]')
 				usd.setAttribute('value', '50.00')
 				event(usd, 'change')
