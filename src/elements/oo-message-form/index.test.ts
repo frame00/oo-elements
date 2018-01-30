@@ -3,6 +3,8 @@ import define from '../../lib/define'
 import insertElement from '../../lib/test/insert-element'
 import getElement from '../../lib/test/get-element'
 import removeElement from '../../lib/test/remove-element'
+import sleep from '../../lib/test/sleep'
+import event from '../../lib/test/event'
 
 const ELEMENT = 'oo-message-form'
 
@@ -41,6 +43,91 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			setTimeout(() => {
 				expect(element.message.body).to.be('Body')
 				done()
+			})
+		})
+
+		describe('Specify allowed extension by TOML format', () => {
+			it('type, amount, and currency', async () => {
+				const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+				const textarea = element.shadowRoot.querySelector('textarea')
+				textarea.value = `
+				+++
+				type = 'pay'
+				amount = 10.01
+				currency = 'usd'
+				+++
+				`
+				event(textarea, 'change')
+				await sleep(100)
+				expect(element.message.type).to.be('pay')
+				expect(element.message.amount).to.be(10.01)
+				expect(element.message.currency).to.be('usd')
+			})
+
+			describe('"amounts" and "currency" are required when "type" is "pay"', () => {
+				it('amount is not found', done => {
+					const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+					const textarea = element.shadowRoot.querySelector('textarea')
+					textarea.value = `
+					+++
+					type = 'pay'
+					+++
+					`
+					document.addEventListener('oonotification', (e: CustomEvent) => {
+						expect(e.detail.message).to.contain('Invalid body')
+						done()
+					}, {once: true})
+					event(textarea, 'change')
+				})
+
+				it('amount is invalid type', done => {
+					const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+					const textarea = element.shadowRoot.querySelector('textarea')
+					textarea.value = `
+					+++
+					type = 'pay'
+					amount = 'xxx'
+					+++
+					`
+					document.addEventListener('oonotification', (e: CustomEvent) => {
+						expect(e.detail.message).to.contain('Invalid body')
+						done()
+					}, {once: true})
+					event(textarea, 'change')
+				})
+
+				it('currency is not found', done => {
+					const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+					const textarea = element.shadowRoot.querySelector('textarea')
+					textarea.value = `
+					+++
+					type = 'pay'
+					amount = 10
+					+++
+					`
+					document.addEventListener('oonotification', (e: CustomEvent) => {
+						expect(e.detail.message).to.contain('Invalid body')
+						done()
+					}, {once: true})
+					event(textarea, 'change')
+				})
+
+				it('currency is invalid type', done => {
+					const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+					const textarea = element.shadowRoot.querySelector('textarea')
+					textarea.value = `
+					+++
+					type = 'pay'
+					amount = 10
+					currency = ''
+					+++
+					`
+					document.addEventListener('oonotification', (e: CustomEvent) => {
+						expect(e.detail.message).to.contain('Invalid body')
+						done()
+					}, {once: true})
+					event(textarea, 'change')
+				})
 			})
 		})
 	})

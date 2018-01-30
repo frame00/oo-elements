@@ -26,6 +26,9 @@ const commonjsOptions = {
 		],
 		'node_modules/@firebase/util/dist/cjs/index.js': [
 			'deepCopy', 'deepExtend', 'createSubscribe', 'ErrorFactory', 'patchProperty'
+		],
+		'node_modules/toml/index.js': [
+			'parse'
 		]
 	}
 }

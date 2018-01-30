@@ -8,6 +8,8 @@ import {OOExtensionsLikeObject} from '../../d/oo-extension'
 import createMessage from '../../lib/oo-api-create-message'
 import {MessageVariationError, MessageVariationErrorDetail, MessageSentDetail, MessageSent} from '../../d/event'
 import {MessageOptionsPost} from '../../d/oo-options-message'
+import parseMessage from '../../lib/parse-message-body'
+import {attach, dispatch} from '../../lib/notification'
 
 define('oo-atoms-button', button)
 define('oo-atoms-user-name', userName)
@@ -29,6 +31,7 @@ const EVENT = {
 
 const messageAuthor: WeakMap<object, string> = new WeakMap()
 const messageExtensions: WeakMap<object, OOExtensionsLikeObject> = new WeakMap()
+const messageBodyExtensions: WeakMap<object, OOExtensionsLikeObject> = new WeakMap()
 const messageBody: WeakMap<object, string> = new WeakMap()
 const fetching: WeakMap<object, boolean> = new WeakMap()
 const success: WeakMap<object, boolean> = new WeakMap()
@@ -52,6 +55,11 @@ export default class extends HTMLElement {
 
 	get message() {
 		return message.get(this)
+	}
+
+	constructor() {
+		super()
+		attach()
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -128,20 +136,27 @@ export default class extends HTMLElement {
 	}
 
 	setMessage() {
-		const extensions: OOExtensionsLikeObject = messageExtensions.get(this)
+		const extensions = messageExtensions.get(this)
+		const bodyExtensions = messageBodyExtensions.get(this)
 		const data = {
 			author: messageAuthor.get(this),
 			body: messageBody.get(this)
 		}
-		message.set(this, {...extensions, ...data})
+		message.set(this, {...extensions, ...bodyExtensions, ...data})
 	}
 
 	onMessageChange(e: HTMLElementEvent<HTMLTextAreaElement>) {
 		const {target} = e
 		const {value} = target
-		if (value) {
-			messageBody.set(this, value)
-			this.setMessage()
+		try {
+			const parsed = parseMessage(value)
+			if (parsed) {
+				messageBody.set(this, parsed.body)
+				messageBodyExtensions.set(this, parsed)
+				this.setMessage()
+			}
+		} catch(err) {
+			dispatch({message: `Invalid body: ${err.message}`, type: 'error'})
 		}
 	}
 

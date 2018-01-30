@@ -1,4 +1,5 @@
 import {OOExtensions, OOExtensionMap} from './oo-extension'
+import {Currency} from './currency'
 
 export interface OOMessage {
 	uid: string,
@@ -13,3 +14,9 @@ export interface MapedOOMessage extends OOMessage {
 }
 
 export type MapedOOMessages = Array<MapedOOMessage>
+
+export interface AllowedParametersInBody {
+	type?: OOMessageType,
+	amount?: number,
+	currency?: Currency
+}
