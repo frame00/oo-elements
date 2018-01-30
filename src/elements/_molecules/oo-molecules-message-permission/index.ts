@@ -55,13 +55,20 @@ export default class extends HTMLElement {
 
 		return html`
 		<style>
+			@import '../../../style/_vars-input.css';
 			article {
 				> * {
 					padding: 1rem;
 				}
+				&.accepted {
+					background: var(--resolved-background);
+					color: white;
+				}
 			}
 			header {
-				border-bottom: 0.5px solid #00000036;
+				+ {
+					border-top: 0.5px solid #00000036;
+				}
 			}
 			.buttons {
 				display: flex;
