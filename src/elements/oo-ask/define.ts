@@ -1,4 +1,7 @@
+import stop from '../../lib/stop-when-unsupported'
 import define from '../../lib/define'
 import el from './index'
 
-define('oo-ask', el)
+if (stop() === false) {
+	define('oo-ask', el)
+}

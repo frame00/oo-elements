@@ -1,4 +1,7 @@
+import stop from '../../lib/stop-when-unsupported'
 import define from '../../lib/define'
 import el from './index'
 
-define('oo-sign-in', el)
+if (stop() === false) {
+	define('oo-sign-in', el)
+}
