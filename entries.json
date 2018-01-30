@@ -88,5 +88,10 @@
     "file": "src/elements/oo-nav/define.ts",
     "dest": "dist/oo-nav.js",
     "name": "oo-nav"
+  },
+  {
+    "file": "src/elements/oo-footer/define.ts",
+    "dest": "dist/oo-footer.js",
+    "name": "oo-footer"
   }
 ]
