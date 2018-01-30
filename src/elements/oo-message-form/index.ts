@@ -35,7 +35,6 @@ const messageBodyExtensions: WeakMap<object, OOExtensionsLikeObject> = new WeakM
 const messageBody: WeakMap<object, string> = new WeakMap()
 const fetching: WeakMap<object, boolean> = new WeakMap()
 const success: WeakMap<object, boolean> = new WeakMap()
-const validationError: WeakMap<object, string> = new WeakMap()
 const message: WeakMap<object, MessageOptionsPost> = new WeakMap()
 
 const asExtensions = (data: string): OOExtensionsLikeObject => {
@@ -80,7 +79,7 @@ export default class extends HTMLElement {
 		this.render()
 	}
 
-	html(isFetching: boolean, isSuccess: boolean, vldErr: string) {
+	html(isFetching: boolean, isSuccess: boolean) {
 		const state = ((): string => {
 			if (isFetching === false && isSuccess !== undefined) {
 				return isSuccess ? 'resolved' : 'rejected'
@@ -90,15 +89,10 @@ export default class extends HTMLElement {
 			}
 			return ''
 		})()
-		const error = vldErr ? html`
-		<div class=error>${vldErr}</div>
-		` : html``
 
 		return html`
 		<style>
-			@import '../../style/_vars-font-family.css';
 			@import '../../style/_mixin-textarea.css';
-			@import '../../style/_vars-input.css';
 			:host {
 				display: block;
 			}
@@ -112,27 +106,16 @@ export default class extends HTMLElement {
 				margin-bottom: 1rem;
 			}
 			oo-atoms-button {}
-			.error {
-				width: 100%;
-				padding: 1rem;
-				margin-bottom: 1rem;
-				border-radius: 5px;
-				background: var(--rejected-background);
-				border: var(--rejected-border);
-				color: white;
-				box-sizing: border-box;
-			}
 		</style>
 		<form on-submit='${() => this.sendMessage()}'>
 			<textarea on-change='${e => this.onMessageChange(e)}'></textarea>
-			${error}
 			<oo-atoms-button on-clicked='${() => this.sendMessage()}' data-state$='${state}'>Send a message</oo-atoms-button>
 		</form>
 		`
 	}
 
 	render() {
-		render(this.html(fetching.get(this), success.get(this), validationError.get(this)), this)
+		render(this.html(fetching.get(this), success.get(this)), this)
 	}
 
 	setMessage() {
@@ -162,8 +145,7 @@ export default class extends HTMLElement {
 
 	sendMessage() {
 		if (!this.message.body || this.message.body.length === 0) {
-			validationError.set(this, 'Empty text can not be sent.')
-			this.render()
+			dispatch({message: 'Empty text can not be sent.', type: 'error'})
 			return this.dispatchEvent(EVENT.MESSAGE_VARIATION_ERROR({message: 'body required'}))
 		}
 		fetching.set(this, true)
