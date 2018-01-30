@@ -5,14 +5,11 @@
       "es2017",
       "dom"
     ],
+    "moduleResolution": "node",
     "plugins": [
       {
         "name": "typescript-lit-html-plugin"
       }
     ]
-  },
-  "files": [
-    "node_modules/lit-html/lit-html.d.ts",
-    "node_modules/@firebase/polyfill/index.ts"
-  ]
+  }
 }

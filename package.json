@@ -12,7 +12,7 @@
     "build": "node rollup.js",
     "prebuild": "npm run lint",
     "postbuild": "cp -r dist example",
-    "lint": "tslint --fix --project tsconfig.lint.json",
+    "lint": "tslint --fix --project ./",
     "prepare": "npm run build"
   },
   "repository": {
