@@ -5,14 +5,23 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>oo-nav</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		body {
+			margin: 0;
+		}
+		oo-nav {
+			width: 200px;
+			height: 100vh;
+		}
+	</style>
 </head>
 <body>
 
 	<script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs/webcomponents-lite.min.js"></script>
 	<script async defer src="./dist/oo-nav.js"></script>
 
-	<oo-nav data-active=#item>
-		<a slot=item href="#first">First</a>
+	<oo-nav data-direction=column>
+		<a slot=item href="#first" active>First</a>
 		<a slot=item href="#second">Second</a>
 		<a slot=item href="#third">Third</a>
 	</oo-nav>
