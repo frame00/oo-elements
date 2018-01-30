@@ -106,11 +106,28 @@ export default class extends HTMLElement {
 				margin-bottom: 1rem;
 			}
 			oo-atoms-button {}
+			.tip {
+				margin-top: 1rem;
+				padding: 1rem;
+				background: whitesmoke;
+				font-size: 0.8rem;
+				border-radius: 5px;
+			}
 		</style>
 		<form on-submit='${() => this.sendMessage()}'>
 			<textarea on-change='${e => this.onMessageChange(e)}'></textarea>
 			<oo-atoms-button on-clicked='${() => this.sendMessage()}' data-state$='${state}'>Send a message</oo-atoms-button>
 		</form>
+		<div class=tip>
+			Tips:<br/>
+			# You can create a payment message by writing TOML format between "+++" and "+++".<br/>
+			e.g.<br/>
+			+++<br/>
+			type = 'pay'<br/>
+			amount = 10.00<br/>
+			currency = 'usd' or 'jpy'<br/>
+			+++
+		</div>
 		`
 	}
 
