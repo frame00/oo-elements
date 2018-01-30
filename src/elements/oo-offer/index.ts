@@ -266,7 +266,7 @@ export default class extends HTMLElement {
 			offer_amount_pend: pend,
 			offer_amount: amount.get(this),
 			offer_currency: currency.get(this),
-			offer_vendor: iam.get(this)
+			offer_assignee: iam.get(this)
 		})
 		if (success(project.status)) {
 			this.dispatchEvent(EVENT.PROJECT_CREATED(project))

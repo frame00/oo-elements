@@ -12,7 +12,7 @@ interface ProjectOptionsPost {
 	offer_amount?: string,
 	offer_amount_pend?: boolean,
 	offer_currency?: Currency,
-	offer_vendor?: OOUserUID
+	offer_assignee?: OOUserUID
 }
 
 const kv = <T>(obj: ProjectOptionsPost, key: string): {key: string, value: T} => {
@@ -30,7 +30,7 @@ export default async (options: ProjectOptionsPost): Promise<OOAPIResult<OOProjec
 		exts.push(kv(opts, 'author'))
 		exts.push(kv(opts, 'offer_amount'))
 		exts.push(kv(opts, 'offer_currency'))
-		exts.push(kv(opts, 'offer_vendor'))
+		exts.push(kv(opts, 'offer_assignee'))
 		return exts
 	})(options)
 
