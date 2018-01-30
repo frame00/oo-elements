@@ -12,6 +12,7 @@ import getPayment from '../../lib/oo-api-get-payment'
 import toMap from '../../lib/extensions-to-map'
 import asStripeAmount from './lib/as-stripe-amount'
 import stripeCallback from './lib/stripe-callback'
+import {attach, dispatch} from '../../lib/notification'
 
 define('oo-atoms-message', ooMessage)
 define('oo-atoms-user-name', ooUserName)
@@ -83,6 +84,11 @@ export default class extends HTMLElement {
 
 	get paid() {
 		return statePaymentPaid.get(this)
+	}
+
+	constructor() {
+		super()
+		attach()
 	}
 
 	attributeChangedCallback(attr, prev, next: string) {
@@ -221,8 +227,10 @@ export default class extends HTMLElement {
 					statePaymentUid.set(this, data.uid)
 					statePaymentPaid.set(this, true)
 					stateChargeSuccessed.set(this, true)
+					dispatch({message: 'Payment has been completed.', type: 'success'})
 				} else {
 					stateChargeSuccessed.set(this, false)
+					dispatch({message: response.message, type: 'error'})
 				}
 			}
 			this.render()
