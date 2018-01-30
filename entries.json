@@ -83,5 +83,10 @@
     "file": "src/elements/oo-notification-center/define.ts",
     "dest": "dist/oo-notification-center.js",
     "name": "oo-notification-center"
+  },
+  {
+    "file": "src/elements/oo-nav/define.ts",
+    "dest": "dist/oo-nav.js",
+    "name": "oo-nav"
   }
 ]

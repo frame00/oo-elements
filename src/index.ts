@@ -15,6 +15,7 @@ import ooProjects from './elements/oo-projects'
 import ooProfileEditor from './elements/oo-profile-editor'
 import ooNotification from './elements/oo-notification'
 import ooNotificationCenter from './elements/oo-notification-center'
+import ooNav from './elements/oo-nav'
 
 define('oo-button', ooButton)
 define('oo-modal', ooModal)
@@ -32,3 +33,4 @@ define('oo-projects', ooProjects)
 define('oo-profile-editor', ooProfileEditor)
 define('oo-notification', ooNotification)
 define('oo-notification-center', ooNotificationCenter)
+define('oo-nav', ooNav)
