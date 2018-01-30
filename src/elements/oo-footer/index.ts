@@ -14,11 +14,17 @@ export default class extends HTMLElement {
 			:host {
 				display: block;
 			}
+			footer {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+			}
 			::slotted(a) {
 				margin: 0 1rem;
 				padding: 1rem 0;
 				text-decoration: none;
-				color: var(--yellow);
+				color: color(var(--yellow) blend(red 20%));
+				font-size: 0.8rem;
 			}
 		</style>
 		<footer>

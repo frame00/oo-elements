@@ -3,7 +3,6 @@ import define from '../../lib/define'
 import insertElement from '../../lib/test/insert-element'
 import getElement from '../../lib/test/get-element'
 import removeElement from '../../lib/test/remove-element'
-import sleep from '../../lib/test/sleep'
 import event from '../../lib/test/event'
 const {document} = window
 
