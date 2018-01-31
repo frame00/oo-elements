@@ -1,5 +1,5 @@
-import {OOExtensionsLikeObject} from '../d/oo-extension'
-import {AllowedParametersInBody} from '../d/oo-message'
+import {OOExtensionsLikeObject} from '../type/oo-extension'
+import {AllowedParametersInBody} from '../type/oo-message'
 import {parse} from 'toml'
 
 interface Response extends AllowedParametersInBody {

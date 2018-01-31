@@ -1,6 +1,6 @@
 import api from '../lib/oo-api'
-import {OOAPIResult} from '../d/oo-api'
-import {OOToken} from '../d/oo-token'
+import {OOAPIResult} from '../type/oo-api'
+import {OOToken} from '../type/oo-token'
 
 export default async (firebaseUid: string): Promise<OOAPIResult<OOToken>> => {
 	const ooapiRes = await api<OOToken>({

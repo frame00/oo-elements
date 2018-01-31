@@ -1,7 +1,7 @@
 import {html} from 'lit-html'
 import {repeat} from 'lit-html/lib/repeat'
 import render from '../../../lib/render'
-import {Hour} from '../../../d/hour'
+import {Hour} from '../../../type/hour'
 
 const EVENT = {
 	CHANGE_HOUR: detail => new CustomEvent('changehour', {detail})

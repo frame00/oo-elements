@@ -1,6 +1,6 @@
 import api from '../lib/oo-api'
-import {OOAPIResult} from '../d/oo-api'
-import {OOUserConnectStripe} from '../d/oo-user'
+import {OOAPIResult} from '../type/oo-api'
+import {OOUserConnectStripe} from '../type/oo-user'
 
 export default async (uid: string, code: string, test?: boolean): Promise<OOAPIResult<OOUserConnectStripe>> => {
 	const body = {code}

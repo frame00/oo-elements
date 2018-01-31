@@ -5,10 +5,10 @@ import define from '../../lib/define'
 import button from '../_atoms/oo-atoms-button'
 import openStripeOauth from '../../lib/open-stripe-oauth'
 import {parse} from 'query-string'
-import {OOUserUID} from '../../d/oo-user'
+import {OOUserUID} from '../../type/oo-user'
 import connectApi from '../../lib/oo-api-connect-user-stripe'
 import store from '../../lib/local-storage'
-import {StripeConnectedDetail, StripeConnected, StripeConnectionFailedDetail, StripeConnectionFailed} from '../../d/event'
+import {StripeConnectedDetail, StripeConnected, StripeConnectionFailedDetail, StripeConnectionFailed} from '../../type/event'
 const {location} = window
 
 define('oo-atoms-button', button)

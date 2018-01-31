@@ -1,10 +1,10 @@
-import {StripeCheckoutToken} from '../../../d/stripe'
+import {StripeCheckoutToken} from '../../../type/stripe'
 import asStripeAmount from './as-stripe-amount'
 import chargePayment from '../../../lib/oo-api-charge-payment'
 import Pay from '../index'
-import {Currency} from '../../../d/currency'
-import {OOAPIResult} from '../../../d/oo-api'
-import {OOPayment} from '../../../d/oo-payment'
+import {Currency} from '../../../type/currency'
+import {OOAPIResult} from '../../../type/oo-api'
+import {OOPayment} from '../../../type/oo-payment'
 
 interface Options {
 	amount: string,

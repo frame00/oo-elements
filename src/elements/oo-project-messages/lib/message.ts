@@ -1,4 +1,4 @@
-import {OOMessageType, MapedOOMessage} from '../../../d/oo-message'
+import {OOMessageType, MapedOOMessage} from '../../../type/oo-message'
 import {TemplateResult} from 'lit-html'
 import def from './messages/default'
 import pay from './messages/pay'

@@ -6,8 +6,8 @@ import toMap from '../../lib/extensions-to-map'
 import getPricePerHour from '../../lib/get-price-per-hour'
 import selectHour from '../_atoms/oo-atoms-select-hour'
 import define from '../../lib/define'
-import {Hour} from '../../d/hour'
-import {LocaledCurrency} from '../../d/currency'
+import {Hour} from '../../type/hour'
+import {LocaledCurrency} from '../../type/currency'
 
 define('oo-atoms-select-hour', selectHour)
 

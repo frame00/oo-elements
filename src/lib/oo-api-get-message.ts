@@ -1,7 +1,7 @@
 import api from '../lib/oo-api'
-import {OOAPIResult} from '../d/oo-api'
-import {OOProject} from '../d/oo-project'
-import {OOMessage} from '../d/oo-message'
+import {OOAPIResult} from '../type/oo-api'
+import {OOProject} from '../type/oo-project'
+import {OOMessage} from '../type/oo-message'
 
 export default async (uid: string): Promise<OOAPIResult<OOMessage>> => {
 	const ooapiRes = await api<OOProject>({

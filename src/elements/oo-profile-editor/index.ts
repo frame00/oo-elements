@@ -9,7 +9,7 @@ import define from '../../lib/define'
 import connectStripe from '../oo-connect-stripe'
 import button from '../_atoms/oo-atoms-button'
 import htmlPricePerHour from './lib/price-per-hour'
-import {ExtensionPricePerHour} from '../../d/extension-price-per-hour'
+import {ExtensionPricePerHour} from '../../type/extension-price-per-hour'
 import patchUser from '../../lib/oo-api-patch-user'
 import {attach, dispatch} from '../../lib/notification'
 

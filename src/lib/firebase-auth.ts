@@ -1,7 +1,7 @@
 import {initializeApp, auth} from 'firebase'
 import {GoogleAuthProvider, FacebookAuthProvider, GithubAuthProvider} from '@firebase/auth-types'
-import {AuthProvider} from '../d/auth-provider'
-import {AuthResult} from '../d/auth-result'
+import {AuthProvider} from '../type/auth-provider'
+import {AuthResult} from '../type/auth-result'
 import config from '../conf/firebase'
 
 const state = {

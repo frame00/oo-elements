@@ -4,7 +4,7 @@ import render from '../../lib/render'
 import weakMap from '../../lib/weak-map'
 import define from '../../lib/define'
 import notification from '../oo-notification'
-import {DocumentNotificationEvent, NotificationType} from '../../d/event'
+import {DocumentNotificationEvent, NotificationType} from '../../type/event'
 const {document} = window
 
 define('oo-notification', notification)

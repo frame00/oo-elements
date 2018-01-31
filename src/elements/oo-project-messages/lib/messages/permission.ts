@@ -1,5 +1,5 @@
 import {html, TemplateResult} from 'lit-html'
-import {MapedOOMessage} from '../../../../d/oo-message'
+import {MapedOOMessage} from '../../../../type/oo-message'
 import define from '../../../../lib/define'
 import permission from '../../../_molecules/oo-molecules-message-permission'
 

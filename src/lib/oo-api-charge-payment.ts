@@ -1,8 +1,8 @@
 import api from '../lib/oo-api'
-import {OOAPIResult} from '../d/oo-api'
-import {OOUserUID} from '../d/oo-user'
-import {Currency} from '../d/currency'
-import {OOPayment} from '../d/oo-payment'
+import {OOAPIResult} from '../type/oo-api'
+import {OOUserUID} from '../type/oo-user'
+import {Currency} from '../type/currency'
+import {OOPayment} from '../type/oo-payment'
 
 interface PaymentOptionsPost {
 	stripe_token: string,

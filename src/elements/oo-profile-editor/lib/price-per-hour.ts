@@ -1,7 +1,7 @@
 import {html} from 'lit-html'
 import {TemplateResult} from 'lit-html'
-import {ExtensionPricePerHour} from '../../../d/extension-price-per-hour'
-import {Usd, Jpy} from '../../../d/currency'
+import {ExtensionPricePerHour} from '../../../type/extension-price-per-hour'
+import {Usd, Jpy} from '../../../type/currency'
 
 interface HTMLElementEvent<T extends HTMLElement> extends Event {
 	target: T

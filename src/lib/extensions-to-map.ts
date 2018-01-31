@@ -1,7 +1,7 @@
-import {OOExtension} from '../d/oo-extension'
-import {OOUser} from '../d/oo-user'
-import {OOProject} from '../d/oo-project'
-import {OOMessage} from '../d/oo-message'
+import {OOExtension} from '../type/oo-extension'
+import {OOUser} from '../type/oo-user'
+import {OOProject} from '../type/oo-project'
+import {OOMessage} from '../type/oo-message'
 
 export default (item: OOUser | OOProject | OOMessage): Map<string, any> => {
 	const {Extensions} = item

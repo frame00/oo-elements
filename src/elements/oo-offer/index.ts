@@ -6,10 +6,10 @@ import profile from '../oo-profile'
 import ask from '../oo-ask'
 import define from '../../lib/define'
 import createProject from '../../lib/oo-api-create-project'
-import {Currency} from '../../d/currency'
+import {Currency} from '../../type/currency'
 import success from '../../lib/is-api-success'
-import {OOAPIResult} from '../../d/oo-api'
-import {OOProject} from '../../d/oo-project'
+import {OOAPIResult} from '../../type/oo-api'
+import {OOProject} from '../../type/oo-project'
 
 interface ProjectCreatedEvent extends CustomEvent {
 	detail: OOAPIResult<OOProject>

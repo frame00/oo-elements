@@ -1,4 +1,4 @@
-import {Usd, Jpy} from '../d/currency'
+import {Usd, Jpy} from '../type/currency'
 
 const USD: Usd = 'usd'
 const JPY: Jpy = 'jpy'

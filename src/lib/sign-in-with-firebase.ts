@@ -1,14 +1,14 @@
 import auth from './firebase-auth'
-import {AuthProvider} from '../d/auth-provider'
-import {OOToken} from '../d/oo-token'
-import {OOUserUID, OOUser} from '../d/oo-user'
+import {AuthProvider} from '../type/auth-provider'
+import {OOToken} from '../type/oo-token'
+import {OOUserUID, OOUser} from '../type/oo-user'
 import api from '../lib/oo-api'
 import createToken from './oo-api-create-token'
 import isSuccess from './is-api-success'
 import state from './state'
 import store from './local-storage'
 import createExtensions from './create-extensions'
-import {AuthResult} from '../d/auth-result'
+import {AuthResult} from '../type/auth-result'
 
 const setState = (token: string, uid: string): void => {
 	state.set('token', token)

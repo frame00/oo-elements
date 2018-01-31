@@ -1,6 +1,6 @@
 import {html, TemplateResult} from 'lit-html'
 import {repeat} from 'lit-html/lib/repeat'
-import {MapedOOMessage} from '../../../../d/oo-message'
+import {MapedOOMessage} from '../../../../type/oo-message'
 import define from '../../../../lib/define'
 import ooPay from '../../../oo-pay'
 import lineBreak from '../../../../lib/line-break'

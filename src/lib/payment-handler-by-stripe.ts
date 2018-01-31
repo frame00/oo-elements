@@ -1,6 +1,6 @@
 import stripe from './stripe'
 import {publicKey} from '../conf/stripe'
-import {StripeCheckoutHandler, StripeCheckoutToken} from '../d/stripe'
+import {StripeCheckoutHandler, StripeCheckoutToken} from '../type/stripe'
 
 export default async (callback: (token: StripeCheckoutToken) => void): Promise<StripeCheckoutHandler> => {
 	const stripeCheckout = await stripe()

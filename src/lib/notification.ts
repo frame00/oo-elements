@@ -1,4 +1,4 @@
-import {NotificationDetail} from '../d/event'
+import {NotificationDetail} from '../type/event'
 import notificationCenter from '../elements/oo-notification-center'
 import define from './define'
 const {document} = window

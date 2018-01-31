@@ -1,7 +1,7 @@
 import api from '../lib/oo-api'
-import {OOAPIResult} from '../d/oo-api'
-import {OOExtensionsLikeObject} from '../d/oo-extension'
-import {OOUser} from '../d/oo-user'
+import {OOAPIResult} from '../type/oo-api'
+import {OOExtensionsLikeObject} from '../type/oo-extension'
+import {OOUser} from '../type/oo-user'
 import createExtensions from './create-extensions'
 
 export default async (uid: string, extensions: OOExtensionsLikeObject): Promise<OOAPIResult<OOUser>> => {

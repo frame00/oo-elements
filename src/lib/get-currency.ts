@@ -1,5 +1,5 @@
 import currency from '../conf/currency'
-import {Currency} from '../d/currency'
+import {Currency} from '../type/currency'
 import getLangs from './get-langs'
 
 export default (): Currency => {
