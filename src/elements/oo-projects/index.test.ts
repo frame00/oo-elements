@@ -25,7 +25,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const items = element.shadowRoot.querySelectorAll('oo-atoms-message')
 			expect(items).to.have.length(2)
 
-			const more = element.shadowRoot.querySelector('oo-atoms-button')
+			const more = element.shadowRoot.querySelector('.paging > oo-atoms-button')
 			expect(more).to.be.ok()
 		})
 	})
@@ -34,12 +34,12 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		it('Fetch the old projects when click paging button', async () => {
 			const element = insertElement(ELEMENT, new Map([['data-iam', 'JEr9hsMH5m']]))
 			await sleep(100)
-			const more = element.shadowRoot.querySelector('oo-atoms-button')
+			const more = element.shadowRoot.querySelector('.paging > oo-atoms-button')
 			event(more, 'clicked')
 			await sleep(100)
 			const items = element.shadowRoot.querySelectorAll('oo-atoms-message')
 			expect(items).to.have.length(4)
-			expect(element.shadowRoot.querySelector('oo-atoms-button')).to.not.be.ok()
+			expect(element.shadowRoot.querySelector('.paging > oo-atoms-button')).to.not.be.ok()
 		})
 	})
 
