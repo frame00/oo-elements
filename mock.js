@@ -2,7 +2,7 @@ const fs = require('fs')
 const toml = require('toml')
 const {send} = require('micro')
 
-const DIR = 'mock'
+const DIR = 'src/mock'
 const EXT = '.md'
 
 module.exports = (req, res) => {
