@@ -19,7 +19,6 @@ const keyPrefix = S3_PATH.replace(`${Bucket}/`, '')
 
 const config = {
 	Bucket,
-	ACL: 'public-read',
 	keyTransform(filename) {
 		return `${keyPrefix}${filename}`
 	}
