@@ -5,13 +5,14 @@ const typescript = require('rollup-plugin-typescript2')
 const multiEntry = require('rollup-plugin-multi-entry')
 const postcss = require('rollup-plugin-transform-postcss')
 const replace = require('rollup-plugin-replace')
+const uglify = require('rollup-plugin-uglify')
 const cssnext = require('postcss-cssnext')
 const precss = require('precss')
 const entries = require('./entries.json')
 const pkg = require('./package.json')
 
 const {BUILD_MODE} = process.env
-const [,,file] = process.argv
+const [, , file] = process.argv
 const postcssOptions = {
 	plugins: [precss, cssnext]
 }
@@ -41,13 +42,25 @@ const typescriptOptions = {
 const replaceOptions = {
 	'process.env': JSON.stringify({BUILD_MODE, PACKAGE_VERSION: pkg.version})
 }
+const uglifyOptions = {
+	output: {
+		comments: (node, comment) => {
+			const text = comment.value
+			const type = comment.type
+			if (type == 'comment2') {
+				return /@preserve|@license|@cc_on|copyright/i.test(text)
+			}
+		}
+	}
+}
 
 const plugins = [
 	postcss(postcssOptions),
 	resolve(resolveOptions),
 	commonjs(commonjsOptions),
 	typescript(typescriptOptions),
-	replace(replaceOptions)
+	replace(replaceOptions),
+	uglify(uglifyOptions)
 ]
 
 const build = async (rollupOptions, writeOptions) => {

@@ -57,6 +57,7 @@
     "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-transform-postcss": "^1.0.5",
     "rollup-plugin-typescript2": "^0.10.0",
+    "rollup-plugin-uglify": "^3.0.0",
     "serve": "^6.4.8",
     "toml": "^2.3.3",
     "tslint": "^5.9.1",
