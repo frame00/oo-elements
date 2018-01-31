@@ -8,8 +8,8 @@ branches:
 after_success:
   - if [ $TRAVIS_BRANCH = master ]; then STAGE=stable; fi
   - if [ $TRAVIS_BRANCH = develop ]; then STAGE=unstable; fi
-  - S3_STAGED_PATH=$S3_PATH/$STAGE
-  - S3_PATH=$S3_STAGED_PATH S3_IAM_KEY=$S3_IAM_KEY S3_IAM_SECRET=$S3_IAM_SECRET node deploy.js
+  - S3_STAGED_PATH=$S3_PATH$STAGE/
+  - npm run deploy $S3_STAGED_PATH $S3_IAM_KEY $S3_IAM_SECRET
 env:
   global:
     secure: utbcuAzjV+u5v+qSM5xlsftB1N1XClrNDwENhLRxTs6OaekBkQaPbS4aMf7CC1ghu8cLPXP7ku/BUg/AhcLHjJi6WrG8DUH4xE8yvigl/uGPmTcFIHIezHg4yW05cebIBW0MbATnpmsyqlas68HYNrYBy7PEGnukSZrra5WfVppUB8fm7vr3truRDt47XltlIGmSIbYibyWVWRvsmkgCRpXnuNw0SbGvJNetfgw+aKvNXhoxb54K44wsKeeIklG2eHUDQB7RjpuyO+mL1+s/HfZExl+yU5HGJe8R6uXPEg4kgOlpTE6G9Dl//D28JTqieT7LRoPXvOPL4bPn0mzKxvy45k/DKNSnShr+ggwnyudmSmbrJYrb6r6UuChXbWt5x2qdaw0zO49Sn4cFzwFIGTtAkgigfdpy/SVbJTradU5ZKx4UGT+K74OC8u/wS3Mw0NrF68211WZxSH391GdxtHpPFwAOYhQjTmh3IPloQ9XnxrGspdcxA45rwnowWUqG9gBxKRq5wD+u7IT1wvfQpqnqUk+sEcjseC3RWHFr6J/f+I/Sx+qZwvM6qd+KmDulRfqEQdWleOMS/84qbcWKqDrvWT955WMzCDCDmoQY2igM6uyjr2jhbTHZXss9wVAJW9/8+pJ2E5Vn2aI751mhzUJmYbRPk4ILYGQmfJfwlxA=

@@ -1,8 +1,8 @@
-const {
+const [, ,
 	S3_PATH, // e.g. Bucket/Dir/Src/
 	S3_IAM_KEY,
 	S3_IAM_SECRET
-} = process.env
+] = process.argv
 
 if (!S3_PATH || !S3_IAM_KEY || !S3_IAM_SECRET) {
 	return
