@@ -12,7 +12,7 @@ const entries = require('./entries.json')
 const pkg = require('./package.json')
 
 const {BUILD_MODE} = process.env
-const [, , file] = process.argv
+const [, , name] = process.argv
 const postcssOptions = {
 	plugins: [precss, cssnext]
 }
@@ -78,14 +78,16 @@ if (BUILD_MODE === 'TEST') {
 		file: 'dist/test.js'
 	})
 }
-const filteredEntries = file ? entries.filter(entry => entry.file === file) : entries
+const filteredEntries = name ? entries.filter(entry => entry.name === name) : entries
 Promise.all(filteredEntries.map(entry => {
-	return build({
-		input: entry.file,
-		plugins
-	}, {
-		format: 'umd',
-		name: entry.name,
-		file: entry.dest
-	})
+	return Promise.all(entry.build.map(bld => {
+		return build({
+			input: bld.file,
+			plugins
+		}, {
+			name: entry.name,
+			format: bld.format,
+			file: bld.dest
+		})
+	}))
 }))

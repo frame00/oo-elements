@@ -1,102 +1,302 @@
 [
-	{
-		"file": "src/index.ts",
-		"dest": "dist/oo-elements.js",
-		"name": "oo-elements"
-	},
-	{
-		"file": "src/elements/oo-button/define.ts",
-		"dest": "dist/oo-button.js",
-		"name": "oo-button"
-	},
-	{
-		"file": "src/elements/oo-modal/define.ts",
-		"dest": "dist/oo-modal.js",
-		"name": "oo-modal"
-	},
-	{
-		"file": "src/elements/oo-offer/define.ts",
-		"dest": "dist/oo-offer.js",
-		"name": "oo-offer"
-	},
-	{
-		"file": "src/elements/oo-sign-in/define.ts",
-		"dest": "dist/oo-sign-in.js",
-		"name": "oo-sign-in"
-	},
-	{
-		"file": "src/elements/oo-profile/define.ts",
-		"dest": "dist/oo-profile.js",
-		"name": "oo-profile"
+  {
+    "name": "oo-elements",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/define.ts",
+        "dest": "dist/oo-elements.js"
+      },
+      {
+        "format": "es",
+        "file": "src/index.ts",
+        "dest": "dist/oo-elements.mjs"
+      }
+    ]
   },
   {
-		"file": "src/elements/oo-ask/define.ts",
-		"dest": "dist/oo-ask.js",
-		"name": "oo-ask"
+    "name": "oo-button",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-button/define.ts",
+        "dest": "dist/oo-button.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-button/index.ts",
+        "dest": "dist/oo-button.mjs"
+      }
+    ]
   },
   {
-		"file": "src/elements/oo-project/define.ts",
-		"dest": "dist/oo-project.js",
-		"name": "oo-project"
-	},
-  {
-		"file": "src/elements/oo-project-summary/define.ts",
-		"dest": "dist/oo-project-summary.js",
-		"name": "oo-project-summary"
+    "name": "oo-modal",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-modal/define.ts",
+        "dest": "dist/oo-modal.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-modal/index.ts",
+        "dest": "dist/oo-modal.mjs"
+      }
+    ]
   },
   {
-		"file": "src/elements/oo-project-messages/define.ts",
-		"dest": "dist/oo-project-messages.js",
-		"name": "oo-project-messages"
-	},
-  {
-		"file": "src/elements/oo-message-form/define.ts",
-		"dest": "dist/oo-message-form.js",
-		"name": "oo-message-form"
+    "name": "oo-offer",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-offer/define.ts",
+        "dest": "dist/oo-offer.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-offer/index.ts",
+        "dest": "dist/oo-offer.mjs"
+      }
+    ]
   },
   {
-    "file": "src/elements/oo-connect-stripe/define.ts",
-    "dest": "dist/oo-connect-stripe.js",
-    "name": "oo-connect-stripe"
+    "name": "oo-sign-in",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-sign-in/define.ts",
+        "dest": "dist/oo-sign-in.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-sign-in/index.ts",
+        "dest": "dist/oo-sign-in.mjs"
+      }
+    ]
   },
   {
-    "file": "src/elements/oo-pay/define.ts",
-    "dest": "dist/oo-pay.js",
-    "name": "oo-pay"
+    "name": "oo-profile",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-profile/define.ts",
+        "dest": "dist/oo-profile.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-profile/index.ts",
+        "dest": "dist/oo-profile.mjs"
+      }
+    ]
   },
   {
-    "file": "src/elements/oo-projects/define.ts",
-    "dest": "dist/oo-projects.js",
-    "name": "oo-projects"
+    "name": "oo-ask",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-ask/define.ts",
+        "dest": "dist/oo-ask.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-ask/index.ts",
+        "dest": "dist/oo-ask.mjs"
+      }
+    ]
   },
   {
-    "file": "src/elements/oo-profile-editor/define.ts",
-    "dest": "dist/oo-profile-editor.js",
-    "name": "oo-profile-editor"
+    "name": "oo-project",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-project/define.ts",
+        "dest": "dist/oo-project.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-project/index.ts",
+        "dest": "dist/oo-project.mjs"
+      }
+    ]
   },
   {
-    "file": "src/elements/oo-notification/define.ts",
-    "dest": "dist/oo-notification.js",
-    "name": "oo-notification"
+    "name": "oo-project-summary",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-project-summary/define.ts",
+        "dest": "dist/oo-project-summary.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-project-summary/index.ts",
+        "dest": "dist/oo-project-summary.mjs"
+      }
+    ]
   },
   {
-    "file": "src/elements/oo-notification-center/define.ts",
-    "dest": "dist/oo-notification-center.js",
-    "name": "oo-notification-center"
+    "name": "oo-project-messages",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-project-messages/define.ts",
+        "dest": "dist/oo-project-messages.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-project-messages/index.ts",
+        "dest": "dist/oo-project-messages.mjs"
+      }
+    ]
   },
   {
-    "file": "src/elements/oo-nav/define.ts",
-    "dest": "dist/oo-nav.js",
-    "name": "oo-nav"
+    "name": "oo-message-form",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-message-form/define.ts",
+        "dest": "dist/oo-message-form.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-message-form/index.ts",
+        "dest": "dist/oo-message-form.mjs"
+      }
+    ]
   },
   {
-    "file": "src/elements/oo-footer/define.ts",
-    "dest": "dist/oo-footer.js",
-    "name": "oo-footer"
+    "name": "oo-connect-stripe",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-connect-stripe/define.ts",
+        "dest": "dist/oo-connect-stripe.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-connect-stripe/index.ts",
+        "dest": "dist/oo-connect-stripe.mjs"
+      }
+    ]
   },
   {
-    "file": "src/elements/oo-version/define.ts",
-    "dest": "dist/oo-version.js",
-    "name": "oo-version"
+    "name": "oo-pay",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-pay/define.ts",
+        "dest": "dist/oo-pay.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-pay/index.ts",
+        "dest": "dist/oo-pay.mjs"
+      }
+    ]
+  },
+  {
+    "name": "oo-projects",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-projects/define.ts",
+        "dest": "dist/oo-projects.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-projects/index.ts",
+        "dest": "dist/oo-projects.mjs"
+      }
+    ]
+  },
+  {
+    "name": "oo-profile-editor",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-profile-editor/define.ts",
+        "dest": "dist/oo-profile-editor.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-profile-editor/index.ts",
+        "dest": "dist/oo-profile-editor.mjs"
+      }
+    ]
+  },
+  {
+    "name": "oo-notification",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-notification/define.ts",
+        "dest": "dist/oo-notification.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-notification/index.ts",
+        "dest": "dist/oo-notification.mjs"
+      }
+    ]
+  },
+  {
+    "name": "oo-notification-center",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-notification-center/define.ts",
+        "dest": "dist/oo-notification-center.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-notification-center/index.ts",
+        "dest": "dist/oo-notification-center.mjs"
+      }
+    ]
+  },
+  {
+    "name": "oo-nav",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-nav/define.ts",
+        "dest": "dist/oo-nav.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-nav/index.ts",
+        "dest": "dist/oo-nav.mjs"
+      }
+    ]
+  },
+  {
+    "name": "oo-footer",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-footer/define.ts",
+        "dest": "dist/oo-footer.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-footer/index.ts",
+        "dest": "dist/oo-footer.mjs"
+      }
+    ]
+  },
+  {
+    "name": "oo-version",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-version/define.ts",
+        "dest": "dist/oo-version.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-version/index.ts",
+        "dest": "dist/oo-version.mjs"
+      }
+    ]
   }
 ]

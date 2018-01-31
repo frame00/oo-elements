@@ -43,7 +43,7 @@ npm run build
 or partial build
 
 ```bash
-npm run build src/elements/oo-button/define.ts
+npm run build oo-button
 ```
 
 ## Test
