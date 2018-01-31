@@ -1,6 +1,10 @@
 # oo-elements
 Web Components for OO
 
+<a href="https://travis-ci.org/frame00/oo-elements">
+  <img src="https://api.travis-ci.org/frame00/oo-elements.svg?branch=master" alt="build status">
+</a>
+
 # Development
 
 ## Install
