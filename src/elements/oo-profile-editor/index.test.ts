@@ -23,7 +23,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		it('Encode token to get user ID, fetch user profile', async () => {
 			store.token = 'test'
 			const element = insertElement(ELEMENT)
-			await sleep(300)
+			await sleep(500)
 			expect(element.shadowRoot.querySelector('input[name=name]').getAttribute('value')).to.be('test')
 			expect(element.shadowRoot.querySelector('textarea[name=skill]').textContent).to.be('test\ntest\ntest')
 			expect(element.shadowRoot.querySelector('input[name=usd]').getAttribute('value')).to.be('10.00')
@@ -35,7 +35,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		describe('After input, click the "Save" button to update the profile', () => {
 			it('Display name', async () => {
 				const element = insertElement(ELEMENT)
-				await sleep(300)
+				await sleep(500)
 				const input = element.shadowRoot.querySelector('input[name=name]')
 				event(input, 'change', {})
 				const button = element.shadowRoot.querySelector('oo-atoms-button')
@@ -46,7 +46,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 			it('Skills', async () => {
 				const element = insertElement(ELEMENT)
-				await sleep(300)
+				await sleep(500)
 				const textarea = element.shadowRoot.querySelector('textarea[name=skill]')
 				event(textarea, 'change')
 				const button = element.shadowRoot.querySelector('oo-atoms-button')
@@ -57,7 +57,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 			it('Price per hour', async () => {
 				const element = insertElement(ELEMENT)
-				await sleep(300)
+				await sleep(500)
 				const usd = element.shadowRoot.querySelector('input[name=usd]')
 				usd.setAttribute('value', '50.00')
 				event(usd, 'change')
