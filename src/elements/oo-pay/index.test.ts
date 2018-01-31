@@ -118,11 +118,6 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	})
 
 	describe('Pay with Stripe', () => {
-		before(async () => {
-			// Warm up
-			await stripe()
-		})
-
 		it('Open Stripe Checkout when clicked "Pay" button', async () => {
 			const element = insertElement(ELEMENT, new Map(requiredOptions))
 			const slotBody: HTMLSlotElement = element.shadowRoot.querySelector('oo-atoms-message').shadowRoot.querySelector('slot[name=body]')
@@ -145,19 +140,19 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			})
 			const src = iframe.getAttribute('src')
 			expect(src).to.contain('https://checkout.stripe.com')
-		})
+		}).timeout(5000)
 
 		it('Charge with the Stripe Token, the display becomes "Paid" when successed', async () => {
 			const element: any = insertElement(ELEMENT, new Map(requiredOptions))
 			element.stripeCheckout(true)
-			await sleep(100)
+			await sleep(300)
 			expect(element.paid).to.be.ok()
 		})
 
 		it('If the charge is successful, the "stripeCheckout" method will not do anything', async () => {
 			const element: any = insertElement(ELEMENT, new Map(requiredOptions))
 			element.stripeCheckout(true)
-			await sleep(100)
+			await sleep(300)
 			expect(element.paid).to.be.ok()
 			expect(await element.stripeCheckout(true)).to.be(false)
 		})
