@@ -23,7 +23,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		it('Encode token to get user ID, fetch user profile', async () => {
 			store.token = 'test'
 			const element = insertElement(ELEMENT)
-			await sleep(200)
+			await sleep(300)
 			expect(element.shadowRoot.querySelector('input[name=name]').getAttribute('value')).to.be('test')
 			expect(element.shadowRoot.querySelector('textarea[name=skill]').textContent).to.be('test\ntest\ntest')
 			expect(element.shadowRoot.querySelector('input[name=usd]').getAttribute('value')).to.be('10.00')
