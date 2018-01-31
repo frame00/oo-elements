@@ -3,6 +3,7 @@
   "version": "0.0.1-alpha.1",
   "description": "Web Components for OO",
   "main": "dist/oo-elements.js",
+  "module": "dist/oo-elements.mjs",
   "scripts": {
     "start": "serve example",
     "test": "node test.js",
