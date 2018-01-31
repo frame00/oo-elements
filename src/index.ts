@@ -17,6 +17,7 @@ import ooNotification from './elements/oo-notification'
 import ooNotificationCenter from './elements/oo-notification-center'
 import ooNav from './elements/oo-nav'
 import ooFooter from './elements/oo-footer'
+import ooVersion from './elements/oo-version'
 
 define('oo-button', ooButton)
 define('oo-modal', ooModal)
@@ -36,3 +37,4 @@ define('oo-notification', ooNotification)
 define('oo-notification-center', ooNotificationCenter)
 define('oo-nav', ooNav)
 define('oo-footer', ooFooter)
+define('oo-version', ooVersion)

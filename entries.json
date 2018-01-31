@@ -93,5 +93,10 @@
     "file": "src/elements/oo-footer/define.ts",
     "dest": "dist/oo-footer.js",
     "name": "oo-footer"
+  },
+  {
+    "file": "src/elements/oo-version/define.ts",
+    "dest": "dist/oo-version.js",
+    "name": "oo-version"
   }
 ]

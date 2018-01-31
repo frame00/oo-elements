@@ -8,6 +8,7 @@ const replace = require('rollup-plugin-replace')
 const cssnext = require('postcss-cssnext')
 const precss = require('precss')
 const entries = require('./entries.json')
+const pkg = require('./package.json')
 
 const {BUILD_MODE} = process.env
 const [,,file] = process.argv
@@ -38,7 +39,7 @@ const typescriptOptions = {
 	}
 }
 const replaceOptions = {
-	'process.env': JSON.stringify({BUILD_MODE})
+	'process.env': JSON.stringify({BUILD_MODE, PACKAGE_VERSION: pkg.version})
 }
 
 const plugins = [
