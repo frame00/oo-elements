@@ -14,7 +14,7 @@ export default class extends HTMLElement {
 		<style>
 			@import '../../style/_vars-font-family.css';
 			:host {
-				display: block;
+				display: inline-block;
 			}
 			span {
 				font-family: var(--font-family);
