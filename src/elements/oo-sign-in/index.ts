@@ -1,15 +1,17 @@
 import {html} from 'lit-html'
 import render from '../../lib/render'
 import {AuthProvider} from '../../type/auth-provider.d'
-import signInWithFirebase from '../../lib/sign-in-with-firebase'
 import store from '../../lib/local-storage'
+import {AuthResult} from '../../type/auth-result'
+import signInWithFirebaseToken from '../../lib/sign-in-with-firebase-token'
+import { SignedInDetail, SignedIn, SignedInError, SignedInErrorDetail } from '../../type/event';
 
 const ATTR = {
 	DATA_PROVIDER: 'data-provider'
 }
 const EVENT = {
-	SIGNED_IN: detail => new CustomEvent('signedin', {detail}),
-	SIGNED_IN_ERROR: detail => new CustomEvent('signedinerror', {detail})
+	SIGNED_IN: (detail: SignedInDetail): SignedIn => new CustomEvent('signedin', {detail}),
+	SIGNED_IN_ERROR: (detail: SignedInErrorDetail): SignedInError => new CustomEvent('signedinerror', {detail})
 }
 
 const asValidString = (data: string): AuthProvider => {
@@ -106,10 +108,14 @@ export default class extends HTMLElement {
 					background: color(var(--github) blackness(+15%));
 				}
 			}
+			iframe {
+				display: none;
+			}
 		</style>
 		<button class$='${prov}' on-click='${() => this.signIn()}'>
 			Sign in with ${label}
 		</button>
+		<iframe src$="https://elements.ooapp.co/stable/assets/iframe.firebase.authenticate.html?${prov}"></iframe>
 		`
 	}
 
@@ -117,24 +123,59 @@ export default class extends HTMLElement {
 		render(this.html(provider.get(this)), this)
 	}
 
-	async signIn(test?: string) {
-		try {
-			const signedIn = await signInWithFirebase(provider.get(this), test)
-			if (typeof signedIn === 'boolean') {
-				throw new Error()
+	async signIn() {
+		const iframe = this.shadowRoot.querySelector('iframe')
+		const token = await new Promise<AuthResult>((resolve, reject) => {
+			iframe.contentWindow.postMessage('run', '*')
+			const listener = e => {
+				const {source, data} = e
+				if (source !== iframe.contentWindow) {
+					return
+				}
+				let json: any
+				try {
+					json = JSON.parse(data)
+				} catch(err) {
+					return
+				}
+				try {
+					if (json.code) {
+						return reject(json)
+					}
+					const result = json as AuthResult
+					resolve(result)
+					window.removeEventListener('message', listener)
+				} catch(err) {
+					reject(err)
+				}
 			}
-			this.dispatchEvent(EVENT.SIGNED_IN(signedIn))
-		} catch(err) {
-			this.dispatchEvent(EVENT.SIGNED_IN_ERROR(err))
+			window.addEventListener('message', listener)
+		}).catch(err => {
+			this.dispatchSignedInError(err)
+		})
+		if (token) {
+			const signedIn = await signInWithFirebaseToken(token)
+			if (typeof signedIn === 'boolean') {
+				return this.dispatchSignedInError(signedIn)
+			}
+			this.dispatchSignedIn(signedIn)
 		}
 	}
 
 	checkSignInStatus() {
 		if (typeof store.uid === 'string' && typeof store.token === 'string') {
-			this.dispatchEvent(EVENT.SIGNED_IN({
+			this.dispatchSignedIn({
 				token: store.token,
 				uid: store.uid
-			}))
+			})
 		}
+	}
+
+	dispatchSignedIn(data: SignedInDetail) {
+		this.dispatchEvent(EVENT.SIGNED_IN(data))
+	}
+
+	dispatchSignedInError(data: SignedInErrorDetail) {
+		this.dispatchEvent(EVENT.SIGNED_IN_ERROR(data))
 	}
 }

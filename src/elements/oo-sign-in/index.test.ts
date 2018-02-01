@@ -44,24 +44,27 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	it('Run Firebase Authentication by this element click')
 
-	it('Dispatch "signedin" event and set state in "token" when sign-in to OO with the return value of Firebase Authentication', done => {
+	it('Dispatch "signedin" event', done => {
 		removeElement(ELEMENT)
 		const element: any = insertElement(ELEMENT)
 		element.addEventListener('signedin', (e: CustomEvent) => {
+			expect(e.detail.uid).to.be('test')
 			expect(e.detail.token).to.be('xxx')
-			expect(state.get('token')).to.be('xxx')
 			done()
 		})
-		element.signIn('xxx')
+		element.dispatchSignedIn({
+			uid: 'test',
+			token: 'xxx'
+		})
 	})
 
-	it('Dispatch "signedinerror" event when error on sign-in', done => {
+	it('Dispatch "signedinerror" event', done => {
 		removeElement(ELEMENT)
 		const element: any = insertElement(ELEMENT)
 		element.addEventListener('signedinerror', () => {
 			done()
 		})
-		element.signIn('error')
+		element.dispatchSignedInError('error')
 	})
 
 	describe('If "uid" and "token" exist in localStorage, dispatch "signedin" event when mount', () => {

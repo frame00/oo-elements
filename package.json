@@ -13,7 +13,7 @@
     "posttest": "rm dist/test.js",
     "build": "node rollup.js",
     "prebuild": "npm run lint",
-    "postbuild": "cp -r dist example",
+    "postbuild": "cp -r dist example && cp -r src/assets dist",
     "lint": "tslint --fix --project ./",
     "prepare": "npm run build"
   },

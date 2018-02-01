@@ -59,3 +59,26 @@ export interface Notification extends CustomEvent {
 export interface DocumentNotificationEvent extends Notification {
 	target: Document
 }
+
+export interface SignedInDetail {
+	uid: string,
+	token: string
+}
+
+export interface SignedIn extends CustomEvent {
+	detail: SignedInDetail
+}
+
+export interface HTMLElementEventSignedIn<T extends HTMLElement> extends SignedIn {
+	target: T
+}
+
+export type SignedInErrorDetail = any
+
+export interface SignedInError extends CustomEvent {
+	detail: SignedInErrorDetail
+}
+
+export interface HTMLElementEventSignedInError<T extends HTMLElement> extends SignedInError {
+	target: T
+}
