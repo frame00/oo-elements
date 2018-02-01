@@ -28,8 +28,6 @@
   },
   "homepage": "https://github.com/frame00/oo-elements#readme",
   "dependencies": {
-    "@firebase/polyfill": "^0.1.4",
-    "firebase": "^4.9.0",
     "lit-html": "^0.8.0",
     "query-string": "^5.0.1",
     "typescript": "^2.6.2"
