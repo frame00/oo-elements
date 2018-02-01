@@ -124,7 +124,7 @@ export default class extends HTMLElement {
 			}
 		</style>
 		<header class$='${s}'>
-			<a href$='https://ooapp.co/${uid}'>
+			<a href$='/${uid}'>
 				<div class=picture style$='background-image: url(${img})'></div>
 				<p class$='name ${n ? '' : 'empty'}'>${n}</p>
 			</a>

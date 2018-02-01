@@ -40,7 +40,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		it('link to profile', () => {
 			const element = getElement(ELEMENT)[0]
 			const a = element.shadowRoot.querySelector('a')
-			expect(a.getAttribute('href')).to.be('https://ooapp.co/test')
+			expect(a.getAttribute('href')).to.be('/test')
 		})
 
 		it('If it does not exist, "name" becomes empty', done => {

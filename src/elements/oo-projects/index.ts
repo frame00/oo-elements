@@ -106,6 +106,6 @@ export default class extends HTMLElement {
 	}
 
 	moveToDetail(uid: string) {
-		location.href = `https://ooapp.co/projects/${uid}`
+		location.href = `/project/${uid}`
 	}
 }
