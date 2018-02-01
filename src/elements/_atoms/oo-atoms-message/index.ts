@@ -66,7 +66,6 @@ export default class extends HTMLElement {
 			}
 			section,
 			footer {
-				width: 80%;
 				font-family: var(--font-family);
 				overflow: hidden;
 			}

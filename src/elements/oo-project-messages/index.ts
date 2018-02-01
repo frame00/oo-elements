@@ -100,6 +100,12 @@ export default class extends HTMLElement {
 			[slot=body] {
 				padding: 1rem;
 			}
+			[data-tooltip-position] {
+				width: 80%;
+			}
+			[data-tooltip-position=right] {
+				margin-left: 20%;
+			}
 		</style>
 		${more}
 		${repeat(mess, mes => message(user, mes))}
