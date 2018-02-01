@@ -1,0 +1,22 @@
+:root {
+	--light-gray: #e4e4e4;
+}
+@define-mixin progress {
+	pointer-events: none;
+	background: linear-gradient(90deg, var(--light-gray) 0%, var(--light-gray) 30%, whitesmoke 50%, var(--light-gray) 70%, var(--light-gray) 100%);
+	background-size: 400%;
+	background-position: 100%;
+	animation-name: animatedGradient;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	color: gray;
+}
+@keyframes animatedGradient {
+	0% {
+		background-position: 100%;
+	}
+	100% {
+		background-position: 0%;
+	}
+}

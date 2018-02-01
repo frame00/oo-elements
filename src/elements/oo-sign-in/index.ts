@@ -22,6 +22,7 @@ const asValidString = (data: string): AuthProvider => {
 }
 
 const provider: WeakMap<object, AuthProvider> = new WeakMap()
+const stateProgress: WeakMap<object, boolean> = new WeakMap()
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
@@ -50,7 +51,7 @@ export default class extends HTMLElement {
 		this.render()
 	}
 
-	html(prov: AuthProvider) {
+	html(prov: AuthProvider, progress) {
 		let label: string = prov
 		switch (prov) {
 			case 'google':
@@ -69,6 +70,7 @@ export default class extends HTMLElement {
 		<style>
 			@import '../../style/_reset-button.css';
 			@import '../../style/_vars-font-family.css';
+			@import '../../style/_mixin-button-progress.css';
 			:host {
 				display: inline-block;
 			}
@@ -108,11 +110,16 @@ export default class extends HTMLElement {
 					background: color(var(--github) blackness(+15%));
 				}
 			}
+			button {
+				&.progress {
+					@mixin progress;
+				}
+			}
 			iframe {
 				display: none;
 			}
 		</style>
-		<button class$='${prov}' on-click='${() => this.signIn()}'>
+		<button class$='${prov} ${progress ? 'progress' : ''}' on-click='${() => this.signIn()}'>
 			Sign in with ${label}
 		</button>
 		<iframe src$="./dist/assets/iframe.firebase.authenticate.html?${prov}"></iframe>
@@ -120,7 +127,7 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(provider.get(this)), this)
+		render(this.html(provider.get(this), stateProgress.get(this)), this)
 	}
 
 	async signIn() {

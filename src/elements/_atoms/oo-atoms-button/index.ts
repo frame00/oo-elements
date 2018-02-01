@@ -56,11 +56,9 @@ export default class extends HTMLElement {
 		<style>
 			@import '../../../style/_reset-button.css';
 			@import '../../../style/_vars-input.css';
+			@import '../../../style/_mixin-button-progress.css';
 			:host {
 				display: inline-block;
-			}
-			:root {
-				--light-gray: #e4e4e4;
 			}
 			button {
 				padding: 1rem;
@@ -82,15 +80,7 @@ export default class extends HTMLElement {
 				}
 			}
 			.progress {
-				pointer-events: none;
-				background: linear-gradient(90deg, var(--light-gray) 0%, var(--light-gray) 30%, whitesmoke 50%, var(--light-gray) 70%, var(--light-gray) 100%);
-				background-size: 400%;
-				background-position: 100%;
-				animation-name: animatedGradient;
-				animation-duration: 2s;
-				animation-iteration-count: infinite;
-				animation-timing-function: linear;
-				color: gray;
+				@mixin progress;
 			}
 			.resolved {
 				border: var(--resolved-border);
@@ -106,14 +96,6 @@ export default class extends HTMLElement {
 				color: white;
 				&:hover {
 					background: color(var(--rejected-background) blackness(+10%));
-				}
-			}
-			@keyframes animatedGradient {
-				0% {
-					background-position: 100%;
-				}
-				100% {
-					background-position: 0%;
 				}
 			}
 		</style>
