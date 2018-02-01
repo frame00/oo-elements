@@ -5,6 +5,7 @@ import store from '../../lib/local-storage'
 import {AuthResult} from '../../type/auth-result'
 import signInWithFirebaseToken from '../../lib/sign-in-with-firebase-token'
 import {SignedInDetail, SignedIn, SignedInError, SignedInErrorDetail} from '../../type/event'
+import {attach, dispatch} from '../../lib/notification'
 
 const ATTR = {
 	DATA_PROVIDER: 'data-provider'
@@ -22,7 +23,7 @@ const asValidString = (data: string): AuthProvider => {
 }
 
 const provider: WeakMap<object, AuthProvider> = new WeakMap()
-const stateProgress: WeakMap<object, boolean> = new WeakMap()
+let signedInNotification = false
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
@@ -37,6 +38,7 @@ export default class extends HTMLElement {
 		super()
 		provider.set(this, asValidString(this.getAttribute(ATTR.DATA_PROVIDER)))
 		this.render()
+		attach()
 	}
 
 	connectedCallback() {
@@ -51,7 +53,7 @@ export default class extends HTMLElement {
 		this.render()
 	}
 
-	html(prov: AuthProvider, progress) {
+	html(prov: AuthProvider) {
 		let label: string = prov
 		switch (prov) {
 			case 'google':
@@ -70,7 +72,6 @@ export default class extends HTMLElement {
 		<style>
 			@import '../../style/_reset-button.css';
 			@import '../../style/_vars-font-family.css';
-			@import '../../style/_mixin-button-progress.css';
 			:host {
 				display: inline-block;
 			}
@@ -110,16 +111,11 @@ export default class extends HTMLElement {
 					background: color(var(--github) blackness(+15%));
 				}
 			}
-			button {
-				&.progress {
-					@mixin progress;
-				}
-			}
 			iframe {
 				display: none;
 			}
 		</style>
-		<button class$='${prov} ${progress ? 'progress' : ''}' on-click='${() => this.signIn()}'>
+		<button class$='${prov}' on-click='${() => this.signIn()}'>
 			Sign in with ${label}
 		</button>
 		<iframe src$="./dist/assets/iframe.firebase.authenticate.html?${prov}"></iframe>
@@ -127,7 +123,7 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(provider.get(this), stateProgress.get(this)), this)
+		render(this.html(provider.get(this)), this)
 	}
 
 	async signIn() {
@@ -161,6 +157,10 @@ export default class extends HTMLElement {
 			this.dispatchSignedInError(err)
 		})
 		if (token) {
+			dispatch({
+				message: 'Signing in ...'
+			})
+
 			const signedIn = await signInWithFirebaseToken(token)
 			if (typeof signedIn === 'boolean') {
 				return this.dispatchSignedInError(signedIn)
@@ -179,10 +179,21 @@ export default class extends HTMLElement {
 	}
 
 	dispatchSignedIn(data: SignedInDetail) {
+		if (signedInNotification === false) {
+			dispatch({
+				message: 'Welcome!',
+				type: 'success'
+			})
+			signedInNotification = true
+		}
 		this.dispatchEvent(EVENT.SIGNED_IN(data))
 	}
 
 	dispatchSignedInError(data: SignedInErrorDetail) {
+		dispatch({
+			message: `Sign-in failure/${data.message}`,
+			type: 'error'
+		})
 		this.dispatchEvent(EVENT.SIGNED_IN_ERROR(data))
 	}
 }
