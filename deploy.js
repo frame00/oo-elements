@@ -1,4 +1,6 @@
-const [, ,
+require('dotenv').config()
+
+let [, ,
 	S3_PATH, // e.g. Bucket/Dir/Src/
 	S3_IAM_KEY,
 	S3_IAM_SECRET,
@@ -6,6 +8,12 @@ const [, ,
 	HOST_STAGE,
 	S3_CACHE_CONTROL_MAX_AGE = 86400,
 ] = process.argv
+
+S3_PATH = S3_PATH || process.env.S3_PATH
+S3_IAM_KEY = S3_IAM_KEY || process.env.S3_IAM_KEY
+S3_IAM_SECRET = S3_IAM_SECRET || process.env.S3_IAM_SECRET
+HOST = HOST || process.env.HOST
+HOST_STAGE = HOST_STAGE || process.env.HOST_STAGE
 
 if (!S3_PATH || !S3_IAM_KEY || !S3_IAM_SECRET) {
 	return

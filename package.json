@@ -37,6 +37,7 @@
     "@types/mocha": "^2.2.46",
     "@types/node": "^9.3.0",
     "@types/query-string": "^5.0.1",
+    "dotenv": "^5.0.0",
     "expect.js": "^0.3.1",
     "gulp": "^3.9.1",
     "gulp-s3-upload": "^1.7.0",
