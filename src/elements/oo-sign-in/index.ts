@@ -4,7 +4,7 @@ import {AuthProvider} from '../../type/auth-provider.d'
 import store from '../../lib/local-storage'
 import {AuthResult} from '../../type/auth-result'
 import signInWithFirebaseToken from '../../lib/sign-in-with-firebase-token'
-import { SignedInDetail, SignedIn, SignedInError, SignedInErrorDetail } from '../../type/event';
+import {SignedInDetail, SignedIn, SignedInError, SignedInErrorDetail} from '../../type/event'
 
 const ATTR = {
 	DATA_PROVIDER: 'data-provider'
@@ -115,7 +115,7 @@ export default class extends HTMLElement {
 		<button class$='${prov}' on-click='${() => this.signIn()}'>
 			Sign in with ${label}
 		</button>
-		<iframe src$="https://elements.ooapp.co/stable/assets/iframe.firebase.authenticate.html?${prov}"></iframe>
+		<iframe src$="./dist/assets/iframe.firebase.authenticate.html?${prov}"></iframe>
 		`
 	}
 

@@ -13,7 +13,7 @@
     "posttest": "rm dist/test.js",
     "build": "node rollup.js",
     "prebuild": "npm run lint",
-    "postbuild": "cp -r dist example && cp -r src/assets dist",
+    "postbuild": "cp -r src/assets dist && cp -r dist example",
     "lint": "tslint --fix --project ./",
     "prepare": "npm run build"
   },
@@ -42,6 +42,7 @@
     "expect.js": "^0.3.1",
     "gulp": "^3.9.1",
     "gulp-s3-upload": "^1.7.0",
+    "gulp-string-replace": "^1.0.0",
     "karma": "^2.0.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-mocha": "^1.3.0",
