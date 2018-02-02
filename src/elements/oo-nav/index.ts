@@ -63,6 +63,9 @@ export default class extends HTMLElement {
 				transition: transform 0.5s;
 				&.column {
 					flex-direction: column;
+					.items {
+						flex-direction: column;
+					}
 					&.close {
 						transform: translateX(-100%);
 					}
@@ -104,10 +107,11 @@ export default class extends HTMLElement {
 				margin: 0 1rem;
 				padding: 1rem 0;
 				text-decoration: none;
-				color: #333;
+				color: #607D8B;
 			}
+			::slotted(a:hover),
 			::slotted(a[active]) {
-				border-bottom: 1px solid;
+				color: #263238;
 			}
 			@media (min-width: 768px) {
 				nav {
