@@ -31,13 +31,11 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		insertElement(ELEMENT, new Map([['data-iam', 'test']])).addEventListener('userupdated', callback)
 	})
 
-	it('Display empty when there is a User UID that does not exist', done => {
+	it('Display <oo-empty> when there is a User UID that does not exist', done => {
 		removeElement(ELEMENT)
 		const callback = () => {
 			const element = getElement(ELEMENT)[0]
-			expect(element.shadowRoot.querySelector('.name').textContent).to.be('')
-			expect(element.shadowRoot.querySelector('.picture').getAttribute('style')).to.be('background-image: url()')
-			expect(element.shadowRoot.querySelectorAll('.skill')).to.have.length(0)
+			expect(element.shadowRoot.querySelector('oo-empty')).to.be.ok()
 			element.removeEventListener('userupdated', callback)
 			done()
 		}

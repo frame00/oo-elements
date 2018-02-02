@@ -28,6 +28,12 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const more = element.shadowRoot.querySelector('.paging > oo-atoms-button')
 			expect(more).to.be.ok()
 		})
+
+		it('Show <oo-empty> when no projects exists', async () => {
+			const element = insertElement(ELEMENT, new Map([['data-iam', 'xxx']]))
+			await sleep(100)
+			expect(element.shadowRoot.querySelector('oo-empty')).to.be.ok()
+		})
 	})
 
 	describe('Load paging', () => {

@@ -5,6 +5,11 @@ import getUser from '../../lib/oo-api-get-user'
 import isSuccess from '../../lib/is-api-success'
 import toMap from '../../lib/extensions-to-map'
 import lineBreak from '../../lib/line-break'
+import empty from '../oo-empty'
+import define from '../../lib/define'
+import weakMap from '../../lib/weak-map'
+
+define('oo-empty', empty)
 
 const ATTR = {
 	DATA_IAM: 'data-iam'
@@ -13,10 +18,11 @@ const EVENT = {
 	USER_UPDATED: new Event('userupdated')
 }
 
-const iam: WeakMap<object, string> = new WeakMap()
-const name: WeakMap<object, string> = new WeakMap()
-const picture: WeakMap<object, string> = new WeakMap()
-const skill: WeakMap<object, string> = new WeakMap()
+const iam = weakMap<string>()
+const name = weakMap<string>()
+const picture = weakMap<string>()
+const skill = weakMap<string>()
+const found = weakMap<boolean>()
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
@@ -31,7 +37,12 @@ export default class extends HTMLElement {
 		this.fetchUserData()
 	}
 
-	html(n: string, p: string, s: string) {
+	html(f: boolean, n: string, p: string, s: string) {
+		if (f === false) {
+			return html`
+			<oo-empty></oo-empty>
+			`
+		}
 		const img = p ? p : ''
 		const skills = lineBreak(s)
 		return html`
@@ -110,7 +121,7 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(name.get(this), picture.get(this), skill.get(this)), this)
+		render(this.html(found.get(this), name.get(this), picture.get(this), skill.get(this)), this)
 	}
 
 	async fetchUserData() {
@@ -118,11 +129,13 @@ export default class extends HTMLElement {
 		if (isSuccess(res.status) && Array.isArray(res.response)) {
 			const [item] = res.response
 			const ext = toMap(item)
+			found.set(this, true)
 			name.set(this, ext.get('name'))
 			picture.set(this, ext.get('picture'))
 			skill.set(this, ext.get('skill'))
 			this.render()
 		} else {
+			found.set(this, false)
 			name.set(this, '')
 			picture.set(this, '')
 			skill.set(this, '')

@@ -8,12 +8,14 @@ import weakMap from '../../lib/weak-map'
 import message from '../_atoms/oo-atoms-message'
 import button from '../_atoms/oo-atoms-button'
 import userName from '../_atoms/oo-atoms-user-name'
+import empty from '../oo-empty'
 import toMap from '../../lib/extensions-to-map'
 const {location} = window
 
 define('oo-atoms-message', message)
 define('oo-atoms-button', button)
 define('oo-atoms-user-name', userName)
+define('oo-empty', empty)
 
 const ATTR = {
 	DATA_IAM: 'data-iam'
@@ -39,7 +41,9 @@ export default class extends HTMLElement {
 
 	html(iam: string, projects: Array<OOProject>, count: number) {
 		if (projects.length === 0) {
-			return html``
+			return html`
+			<oo-empty data-type=will-be-find></oo-empty>
+			`
 		}
 		const paging = projects[projects.length - 1].created - 1
 		const more = count > projects.length ? html`

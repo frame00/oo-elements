@@ -10,6 +10,9 @@ import {Currency} from '../../type/currency'
 import success from '../../lib/is-api-success'
 import {OOAPIResult} from '../../type/oo-api'
 import {OOProject} from '../../type/oo-project'
+import empty from '../oo-empty'
+import weakMap from '../../lib/weak-map'
+import getUser from '../../lib/oo-api-get-user'
 
 interface ProjectCreatedEvent extends CustomEvent {
 	detail: OOAPIResult<OOProject>
@@ -19,6 +22,7 @@ define('oo-organisms-offer-step-sign-in', offerSignIn)
 define('oo-profile', profile)
 define('oo-ask', ask)
 define('oo-organisms-offer-created', created)
+define('oo-empty', empty)
 
 const ATTR = {
 	DATA_IAM: 'data-iam'
@@ -28,13 +32,13 @@ const EVENT = {
 	PROJECT_CREATION_FAILED: detail => new CustomEvent('projectcreationfailed', {detail})
 }
 
-const iam: WeakMap<object, string> = new WeakMap()
-const amount: WeakMap<object, string> = new WeakMap()
-const message: WeakMap<object, string> = new WeakMap()
-const offerer: WeakMap<object, string> = new WeakMap()
-const currency: WeakMap<object, Currency> = new WeakMap()
-const ready: WeakMap<object, boolean> = new WeakMap()
-const authorization: WeakMap<object, boolean> = new WeakMap()
+const iam = weakMap<string>()
+const amount = weakMap<string>()
+const message = weakMap<string>()
+const offerer = weakMap<string>()
+const currency = weakMap<Currency>()
+const authorization = weakMap<boolean>()
+const userFound = weakMap<boolean>()
 
 const validation = (el: HTMLElement): boolean => {
 	const users = [iam.get(el), offerer.get(el)]
@@ -59,7 +63,6 @@ export default class extends HTMLElement {
 
 	constructor() {
 		super()
-		ready.set(this, false)
 		authorization.set(this, false)
 	}
 
@@ -68,7 +71,7 @@ export default class extends HTMLElement {
 			return
 		}
 		iam.set(this, next)
-		this.render()
+		this.fetchUserData()
 	}
 
 	connectedCallback() {
@@ -82,7 +85,13 @@ export default class extends HTMLElement {
 		})
 	}
 
-	html(uid: string, rd: boolean, auth: boolean, sender: string) {
+	html(found: boolean, uid: string, auth: boolean, sender: string) {
+		if (found === false) {
+			return html`
+			<oo-empty></oo-empty>
+			`
+		}
+
 		const step = (() => {
 			if (sender !== undefined && sender !== '') {
 				return 'submit'
@@ -219,11 +228,17 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(iam.get(this), ready.get(this), authorization.get(this), offerer.get(this)), this)
+		render(this.html(userFound.get(this), iam.get(this), authorization.get(this), offerer.get(this)), this)
 	}
 
-	onReady() {
-		ready.set(this, true)
+	async fetchUserData() {
+		const api = await getUser(iam.get(this))
+		const {response} = api
+		if (Array.isArray(response)) {
+			userFound.set(this, true)
+		} else {
+			userFound.set(this, false)
+		}
 		this.render()
 	}
 

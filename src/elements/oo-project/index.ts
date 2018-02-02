@@ -33,7 +33,7 @@ const projectUid = weakMap<string>()
 const projectOfferer = weakMap<string>()
 const messageForm = weakMap<messages>()
 const projectAccepted = weakMap<boolean>()
-const projectFounded = weakMap<boolean>()
+const projectFound = weakMap<boolean>()
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
@@ -83,7 +83,7 @@ export default class extends HTMLElement {
 			users: [user, projectOfferer.get(this)]
 		}
 		const options = {
-			found: projectFounded.get(this),
+			found: projectFound.get(this),
 			user: store.uid,
 			uid: projectUid.get(this),
 			accepted: projectAccepted.get(this),
@@ -109,11 +109,11 @@ export default class extends HTMLElement {
 		if (Array.isArray(response)) {
 			const [item] = response
 			const mapedExtensions = toMap(item)
-			projectFounded.set(this, true)
+			projectFound.set(this, true)
 			projectOfferer.set(this, mapedExtensions.get('author'))
 			projectAccepted.set(this, mapedExtensions.get('offer_permission'))
 		} else {
-			projectFounded.set(this, false)
+			projectFound.set(this, false)
 			projectOfferer.delete(this)
 			projectAccepted.delete(this)
 		}
