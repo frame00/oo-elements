@@ -180,9 +180,6 @@ export default class extends HTMLElement {
 	}
 
 	checkSignInStatus() {
-		if (initNotification.get(this) === false) {
-			return
-		}
 		if (typeof store.uid === 'string' && typeof store.token === 'string') {
 			this.dispatchSignedIn({
 				token: store.token,
@@ -192,7 +189,7 @@ export default class extends HTMLElement {
 	}
 
 	dispatchSignedIn(data: SignedInDetail) {
-		if (signedInNotification === false) {
+		if (signedInNotification === false && initNotification.get(this)) {
 			dispatch({
 				message: 'Welcome!',
 				type: 'success'
