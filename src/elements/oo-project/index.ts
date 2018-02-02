@@ -15,6 +15,14 @@ define('oo-project-summary', summary)
 define('oo-project-messages', messages)
 define('oo-message-form', form)
 
+interface Options {
+	found: boolean,
+	user: string,
+	uid: string,
+	accepted: boolean,
+	extensions: OOExtensionsLikeObject
+}
+
 const ATTR = {
 	DATA_UID: 'data-uid'
 }
@@ -23,6 +31,7 @@ const projectUid = weakMap<string>()
 const projectOfferer = weakMap<string>()
 const messageForm = weakMap<messages>()
 const projectAccepted = weakMap<boolean>()
+const projectFounded = weakMap<boolean>()
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
@@ -37,7 +46,11 @@ export default class extends HTMLElement {
 		this.fetchProject(projectUid.get(this))
 	}
 
-	html(user: string, uid: string, accepted: boolean, extensions: OOExtensionsLikeObject) {
+	html(opts: Options) {
+		const {found, extensions, uid, user, accepted} = opts
+		if (found === false) {
+			return html``
+		}
 		const strExts = JSON.stringify(extensions)
 		return html`
 		<style>
@@ -65,7 +78,14 @@ export default class extends HTMLElement {
 			author: user,
 			users: [user, projectOfferer.get(this)]
 		}
-		render(this.html(user, projectUid.get(this), projectAccepted.get(this), extensions), this)
+		const options = {
+			found: projectFounded.get(this),
+			user: store.uid,
+			uid: projectUid.get(this),
+			accepted: projectAccepted.get(this),
+			extensions
+		}
+		render(this.html(options), this)
 		if (messageForm.has(this) === false) {
 			messageForm.set(this, this.shadowRoot.querySelector('oo-project-messages'))
 		}
@@ -85,9 +105,11 @@ export default class extends HTMLElement {
 		if (Array.isArray(response)) {
 			const [item] = response
 			const mapedExtensions = toMap(item)
+			projectFounded.set(this, true)
 			projectOfferer.set(this, mapedExtensions.get('author'))
 			projectAccepted.set(this, mapedExtensions.get('offer_permission'))
 		} else {
+			projectFounded.set(this, false)
 			projectOfferer.delete(this)
 			projectAccepted.delete(this)
 		}

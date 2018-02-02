@@ -44,6 +44,12 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			store.clear()
 		})
 
+		it('Show empty when no project exists', async () => {
+			const element = insertElement(ELEMENT, new Map([['data-uid', 'xxx']]))
+			await sleep(100)
+			expect(element.shadowRoot.querySelectorAll('*')).to.have.length(0)
+		})
+
 		describe('If "offer_permission" is not true <oo-message-form> is not displayed', () => {
 			it('"offer_permission" is true', async () => {
 				const element = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
