@@ -56,7 +56,9 @@ export default class extends HTMLElement {
 		return html`
 		<style>
 			@import '../../../style/_vars-input.css';
+			@import '../../../style/_vars-font-family.css';
 			article {
+				font-family: var(--font-family);
 				> * {
 					padding: 1rem;
 				}

@@ -57,6 +57,7 @@ export default class extends HTMLElement {
 			@import '../../../style/_reset-button.css';
 			@import '../../../style/_vars-input.css';
 			@import '../../../style/_mixin-button-progress.css';
+			@import '../../../style/_vars-font-family.css';
 			:host {
 				display: inline-block;
 			}
@@ -66,6 +67,7 @@ export default class extends HTMLElement {
 				border-radius: 5px;
 				border: 0.5px solid #ccc;
 				background: white;
+				font-family: var(--font-family);
 				&:hover:not(.state) {
 					background: whitesmoke;
 				}

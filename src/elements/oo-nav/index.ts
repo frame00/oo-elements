@@ -44,6 +44,7 @@ export default class extends HTMLElement {
 		<style>
 			@import '../../style/_reset-button.css';
 			@import '../../style/_vars-color-yellow.css';
+			@import '../../style/_vars-font-family.css';
 			:host {
 				display: block;
 			}
@@ -108,6 +109,7 @@ export default class extends HTMLElement {
 				padding: 1rem 0;
 				text-decoration: none;
 				color: #607D8B;
+				font-family: var(--font-family);
 			}
 			::slotted(a:hover),
 			::slotted(a[active]) {

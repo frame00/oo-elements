@@ -11,6 +11,7 @@ export default class extends HTMLElement {
 		return html`
 		<style>
 			@import '../../style/_vars-color-yellow.css';
+			@import '../../style/_vars-font-family.css';
 			:host {
 				display: block;
 			}
@@ -25,6 +26,7 @@ export default class extends HTMLElement {
 				text-decoration: none;
 				color: color(var(--yellow) blend(red 20%));
 				font-size: 0.8rem;
+				font-family: var(--font-family);
 			}
 		</style>
 		<footer>

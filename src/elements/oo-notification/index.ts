@@ -41,6 +41,7 @@ export default class extends HTMLElement {
 		return html`
 		<style>
 			@import '../../style/_vars-input.css';
+			@import '../../style/_vars-font-family.css';
 			:host {
 				display: block;
 			}
@@ -52,6 +53,7 @@ export default class extends HTMLElement {
 				animation-fill-mode: forwards;
 				border-radius: 5px;
 				background: whitesmoke;
+				font-family: var(--font-family);
 				&.success {
 					background: var(--resolved-background);
 					color: white;
