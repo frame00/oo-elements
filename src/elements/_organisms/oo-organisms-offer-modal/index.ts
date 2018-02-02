@@ -11,6 +11,10 @@ const ATTR = {
 	DATA_IAM: 'data-iam',
 	DATA_OPEN: 'data-open'
 }
+const EVENT = {
+	CLOSE: new Event('close')
+}
+
 const asBoolean = (data: string): boolean => {
 	switch(data) {
 		case 'enabled':
@@ -62,7 +66,7 @@ export default class extends HTMLElement {
 				display: block;
 			}
 		</style>
-		<oo-modal data-open$=${o ? 'enabled' : 'disabled'}>
+		<oo-modal data-open$='${o ? 'enabled' : 'disabled'}' on-close='${() => this.onModalClose()}'>
 			<div slot=body>
 				<oo-offer data-iam$=${i}></oo-offer>
 			</div>
@@ -72,5 +76,11 @@ export default class extends HTMLElement {
 
 	render() {
 		render(this.html(iam.get(this), open.get(this)), this)
+	}
+
+	onModalClose() {
+		open.set(this, false)
+		this.render()
+		this.dispatchEvent(EVENT.CLOSE)
 	}
 }

@@ -59,8 +59,7 @@ const plugins = [
 	resolve(resolveOptions),
 	commonjs(commonjsOptions),
 	typescript(typescriptOptions),
-	replace(replaceOptions),
-	uglify(uglifyOptions)
+	replace(replaceOptions)
 ]
 
 const build = async (rollupOptions, writeOptions) => {
@@ -81,6 +80,7 @@ if (BUILD_MODE === 'TEST') {
 const filteredEntries = name ? entries.filter(entry => entry.name === name) : entries
 Promise.all(filteredEntries.map(entry => {
 	return Promise.all(entry.build.map(bld => {
+		plugins.push(uglify(uglifyOptions))
 		return build({
 			input: bld.file,
 			plugins

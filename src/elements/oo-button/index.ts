@@ -25,7 +25,6 @@ const size: WeakMap<object, Size> = new WeakMap()
 const open: WeakMap<object, boolean> = new WeakMap()
 
 export default class extends HTMLElement {
-
 	static get observedAttributes() {
 		return [ATTR.DATA_SIZE, ATTR.DATA_IAM]
 	}
@@ -103,11 +102,11 @@ export default class extends HTMLElement {
 				}
 			}
 		</style>
-		<button title='Click to send me an offer' class$=${s} onclick=${() => this.onClickButton()}>
-			<oo-atoms-badge data-size$=${s}></oo-atoms-badge>
+		<button title='Click to send me an offer' class$='${s}' on-click='${() => this.onClickButton()}'>
+			<oo-atoms-badge data-size$='${s}'></oo-atoms-badge>
 			<div class=text>Offer Me</div>
 		</button>
-		<oo-organisms-offer-modal data-iam$=${i} data-open$=${o ? 'enabled' : 'disabled'}></oo-organisms-offer-modal>
+		<oo-organisms-offer-modal data-iam$='${i}' data-open$='${o ? 'enabled' : 'disabled'}' on-close='${() => this.onModalClose()}'></oo-organisms-offer-modal>
 		`
 	}
 
@@ -120,6 +119,11 @@ export default class extends HTMLElement {
 
 	onClickButton() {
 		open.set(this, !open.get(this))
+		this.render()
+	}
+
+	onModalClose() {
+		open.set(this, false)
 		this.render()
 	}
 }

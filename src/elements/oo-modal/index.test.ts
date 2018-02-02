@@ -55,6 +55,16 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(modal.clientHeight).to.be(0)
 	})
 
+	describe('Dispatch event', () => {
+		it('Dispatch "close" event when close this modal', done => {
+			const element = insertElement(ELEMENT, new Map([['data-open', 'enabled']]))
+			element.addEventListener('close', () => {
+				done()
+			})
+			element.setAttribute('data-open', 'disabled')
+		})
+	})
+
 	after(() => {
 		removeElement(ELEMENT)
 	})

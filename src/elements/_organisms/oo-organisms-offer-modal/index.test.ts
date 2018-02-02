@@ -3,6 +3,7 @@ import define from '../../../lib/define'
 import insertElement from '../../../lib/test/insert-element'
 import getElement from '../../../lib/test/get-element'
 import removeElement from '../../../lib/test/remove-element'
+import event from '../../../lib/test/event'
 
 const ELEMENT = 'oo-organisms-offer-modal'
 
@@ -28,6 +29,15 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		element.setAttribute('data-open', 'disabled')
 		const modal = element.shadowRoot.querySelector('oo-modal').shadowRoot.querySelector('.modal')
 		expect(modal.clientHeight).to.be(0)
+	})
+
+	it('Forward "close" event from <oo-modal>', done => {
+		const element = getElement(ELEMENT)[0]
+		element.addEventListener('close', () => {
+			done()
+		})
+		const modal = element.shadowRoot.querySelector('oo-modal')
+		event(modal, 'close')
 	})
 
 	after(() => {

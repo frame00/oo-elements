@@ -4,6 +4,10 @@ import render from '../../lib/render'
 const ATTR = {
 	DATA_OPEN: 'data-open'
 }
+const EVENT = {
+	CLOSE: new Event('close')
+}
+
 const asBoolean = (data: string): boolean => {
 	switch(data) {
 		case 'enabled':
@@ -31,6 +35,9 @@ export default class extends HTMLElement {
 	attributeChangedCallback(attr, prev, next) {
 		if (prev === next) {
 			return
+		}
+		if (open.get(this) && asBoolean(next) === false) {
+			this.dispatchClose()
 		}
 		open.set(this, asBoolean(next))
 		this.render()
@@ -129,14 +136,14 @@ export default class extends HTMLElement {
 				}
 			}
 		</style>
-		<div class$=${state ? 'open' : 'close'}>
+		<div class$='${state ? 'open' : 'close'}'>
 			<div class=backdrop></div>
 			<div class=modal>
 				<div class=dialog>
 					<div class=content>
 						<div class=header>
 							<slot name=header></slot>
-							<button class=close-button onclick=${() => this.onClickClose()}>×</button>
+							<button class=close-button on-click='${() => this.onClickClose()}'>×</button>
 						</div>
 						<div class=body>
 							<slot name=body></slot>
@@ -154,5 +161,9 @@ export default class extends HTMLElement {
 
 	onClickClose() {
 		this.setAttribute(ATTR.DATA_OPEN, 'disabled')
+	}
+
+	dispatchClose() {
+		this.dispatchEvent(EVENT.CLOSE)
 	}
 }
