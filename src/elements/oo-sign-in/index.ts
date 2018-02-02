@@ -6,9 +6,11 @@ import {AuthResult} from '../../type/auth-result'
 import signInWithFirebaseToken from '../../lib/sign-in-with-firebase-token'
 import {SignedInDetail, SignedIn, SignedInError, SignedInErrorDetail} from '../../type/event'
 import {attach, dispatch} from '../../lib/notification'
+import weakMap from '../../lib/weak-map'
 
 const ATTR = {
-	DATA_PROVIDER: 'data-provider'
+	DATA_PROVIDER: 'data-provider',
+	DATA_INIT_NOTIFICATION: 'data-init-notification'
 }
 const EVENT = {
 	SIGNED_IN: (detail: SignedInDetail): SignedIn => new CustomEvent('signedin', {detail}),
@@ -21,8 +23,15 @@ const asValidString = (data: string): AuthProvider => {
 	}
 	return 'google'
 }
+const asBoolean = (data: string): boolean => {
+	if(data === 'enabled') {
+		return true
+	}
+	return false
+}
 
-const provider: WeakMap<object, AuthProvider> = new WeakMap()
+const provider = weakMap<AuthProvider>()
+const initNotification = weakMap<boolean>()
 let signedInNotification = false
 
 export default class extends HTMLElement {
@@ -37,6 +46,7 @@ export default class extends HTMLElement {
 	constructor() {
 		super()
 		provider.set(this, asValidString(this.getAttribute(ATTR.DATA_PROVIDER)))
+		initNotification.set(this, asBoolean(this.getAttribute(ATTR.DATA_INIT_NOTIFICATION)))
 		this.render()
 		attach()
 	}
@@ -170,6 +180,9 @@ export default class extends HTMLElement {
 	}
 
 	checkSignInStatus() {
+		if (initNotification.get(this) === false) {
+			return
+		}
 		if (typeof store.uid === 'string' && typeof store.token === 'string') {
 			this.dispatchSignedIn({
 				token: store.token,
