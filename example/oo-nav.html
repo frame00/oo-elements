@@ -13,6 +13,11 @@
 			width: 200px;
 			height: 100vh;
 		}
+		[slot=brand] {
+			background: #9E9E9E;
+			height: 100%;
+			padding: 3rem;
+		}
 	</style>
 </head>
 <body>
@@ -20,6 +25,7 @@
 	<script async src="./dist/oo-nav.js"></script>
 
 	<oo-nav data-direction=column>
+		<div slot=brand>The Brand</div>
 		<a slot=item href="#first" active>First</a>
 		<a slot=item href="#second">Second</a>
 		<a slot=item href="#third">Third</a>

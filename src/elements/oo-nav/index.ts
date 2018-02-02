@@ -53,18 +53,16 @@ export default class extends HTMLElement {
 			}
 			nav {
 				display: flex;
-				flex-wrap: wrap;
-				align-content: start;
+				align-items: stretch;
 				width: 100%;
 				height: 100%;
 				max-height: 100%;
 				box-sizing: border-box;
-				padding: 2rem;
 				background: whitesmoke;
 				overflow: auto;
 				transition: transform 0.5s;
 				&.column {
-					justify-content: center;
+					flex-direction: column;
 					&.close {
 						transform: translateX(-100%);
 					}
@@ -72,6 +70,13 @@ export default class extends HTMLElement {
 						transform: translateX(0);
 					}
 				}
+			}
+			.items {
+				box-sizing: border-box;
+				padding: 2rem;
+				display: flex;
+				flex-wrap: wrap;
+				align-content: start;
 			}
 			.toggle {
 				width: 100%;
@@ -107,7 +112,6 @@ export default class extends HTMLElement {
 			@media (min-width: 768px) {
 				nav {
 					&.column {
-						justify-content: baseline;
 						&.close {
 							transform: translateX(0);
 						}
@@ -120,8 +124,13 @@ export default class extends HTMLElement {
 			}
 		</style>
 		<nav class$='${stte} ${dir}'>
-			<button class=toggle on-click='${() => this.onHandleClick()}'>×</button>
-			<slot name=item></slot>
+			<div class=brand>
+				<slot name=brand></slot>
+			</div>
+			<div class=items>
+				<button class=toggle on-click='${() => this.onHandleClick()}'>×</button>
+				<slot name=item></slot>
+			</div>
 		</nav>
 		<div class$='handle ${stte}' on-click='${() => this.onHandleClick()}'></div>
 		`

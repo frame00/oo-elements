@@ -31,11 +31,22 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 				<a slot=item>3</a>
 			</oo-nav>`)
 			const element = getElement(ELEMENT)[0]
-			const slotHeader: HTMLSlotElement = element.shadowRoot.querySelector('slot[name=item]')
+			const slotHeader: HTMLSlotElement = element.shadowRoot.querySelector('nav slot[name=item]')
 			const assigned = slotHeader.assignedNodes()
 			expect(assigned[0].textContent).to.be('1')
 			expect(assigned[1].textContent).to.be('2')
 			expect(assigned[2].textContent).to.be('3')
+		})
+
+		it('Show "brand" slot as nav inner contents', () => {
+			document.body.insertAdjacentHTML('afterbegin', `
+			<oo-nav>
+				<div slot=brand>The Brand</div>
+			</oo-nav>`)
+			const element = getElement(ELEMENT)[0]
+			const slotHeader: HTMLSlotElement = element.shadowRoot.querySelector('nav slot[name=brand]')
+			const assigned = slotHeader.assignedNodes()
+			expect(assigned[0].textContent).to.be('The Brand')
 		})
 	})
 
