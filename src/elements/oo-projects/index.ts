@@ -62,7 +62,9 @@ export default class extends HTMLElement {
 				padding: 1rem;
 				display: flex;
 				flex-direction: column;
-				align-items: flex-end;
+				oo-atoms-button {
+					align-self: flex-end;
+				}
 			}
 		</style>
 		<main>
