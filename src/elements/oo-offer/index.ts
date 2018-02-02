@@ -110,7 +110,6 @@ export default class extends HTMLElement {
 				display: flex;
 				width: 100%;
 				justify-content: flex-start;
-				align-items: center;
 				@media (min-width: 768px) {
 					width: 50%;
 				}
@@ -120,9 +119,10 @@ export default class extends HTMLElement {
 					flex-direction: column;
 				}
 			}
+			oo-profile,
 			oo-ask {
-				width: 100%;
 				padding: 2rem 1rem;
+				width: 100%;
 				box-sizing: border-box;
 			}
 			button {
