@@ -3,6 +3,7 @@ import render from '../../lib/render'
 import define from '../../lib/define'
 import summary from '../oo-project-summary'
 import messages from '../oo-project-messages'
+import empty from '../oo-empty'
 import form from '../oo-message-form'
 import store from '../../lib/local-storage'
 import {OOExtensionsLikeObject} from '../../type/oo-extension'
@@ -14,6 +15,7 @@ import weakMap from '../../lib/weak-map'
 define('oo-project-summary', summary)
 define('oo-project-messages', messages)
 define('oo-message-form', form)
+define('oo-empty', empty)
 
 interface Options {
 	found: boolean,
@@ -49,7 +51,9 @@ export default class extends HTMLElement {
 	html(opts: Options) {
 		const {found, extensions, uid, user, accepted} = opts
 		if (found === false) {
-			return html``
+			return html`
+			<oo-empty></oo-empty>
+			`
 		}
 		const strExts = JSON.stringify(extensions)
 		return html`

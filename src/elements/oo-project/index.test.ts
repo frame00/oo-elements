@@ -44,10 +44,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			store.clear()
 		})
 
-		it('Show empty when no project exists', async () => {
+		it('Show <oo-empty> when no project exists', async () => {
 			const element = insertElement(ELEMENT, new Map([['data-uid', 'xxx']]))
 			await sleep(100)
-			expect(element.shadowRoot.querySelectorAll('*')).to.have.length(0)
+			expect(element.shadowRoot.querySelector('oo-empty')).to.be.ok()
 		})
 
 		describe('If "offer_permission" is not true <oo-message-form> is not displayed', () => {

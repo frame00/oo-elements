@@ -17,6 +17,7 @@ import ooNotificationCenter from './elements/oo-notification-center'
 import ooNav from './elements/oo-nav'
 import ooFooter from './elements/oo-footer'
 import ooVersion from './elements/oo-version'
+import ooEmpty from './elements/oo-empty'
 
 export {
 	ooButton,
@@ -37,5 +38,6 @@ export {
 	ooNotificationCenter,
 	ooNav,
 	ooFooter,
-	ooVersion
+	ooVersion,
+	ooEmpty
 }

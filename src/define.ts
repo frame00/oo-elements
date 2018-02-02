@@ -18,7 +18,8 @@ import {
 	ooNotificationCenter,
 	ooNav,
 	ooFooter,
-	ooVersion
+	ooVersion,
+	ooEmpty
 } from './index'
 
 define('oo-button', ooButton)
@@ -40,3 +41,4 @@ define('oo-notification-center', ooNotificationCenter)
 define('oo-nav', ooNav)
 define('oo-footer', ooFooter)
 define('oo-version', ooVersion)
+define('oo-empty', ooEmpty)
