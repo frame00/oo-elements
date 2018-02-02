@@ -1,7 +1,7 @@
 import {html} from 'lit-html'
 
 export default () => {
-	return html`<svg viewBox="300 99.68160247802734 673.0000610351562 853.4321060180664" width="100%" xmlns="http://www.w3.org/2000/svg">
+	return html`<svg id="not-found" viewBox="300 99.68160247802734 673.0000610351562 853.4321060180664" width="100%" xmlns="http://www.w3.org/2000/svg">
 	<defs>
 	<style>
 	.cls-1 {

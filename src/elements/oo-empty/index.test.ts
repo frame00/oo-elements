@@ -16,6 +16,26 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(getElement(ELEMENT)[0]).to.be.ok()
 	})
 
+	describe('Switch svg by "data-type" attribute', () => {
+		it('Default is "not-found"', () => {
+			const element = insertElement(ELEMENT)
+			const svg = element.shadowRoot.querySelector('svg')
+			expect(svg.id).to.be('not-found')
+		})
+
+		it('"not-found"', () => {
+			const element = insertElement(ELEMENT, new Map([['data-type', 'not-found']]))
+			const svg = element.shadowRoot.querySelector('svg')
+			expect(svg.id).to.be('not-found')
+		})
+
+		it('"will-be-find"', () => {
+			const element = insertElement(ELEMENT, new Map([['data-type', 'will-be-find']]))
+			const svg = element.shadowRoot.querySelector('svg')
+			expect(svg.id).to.be('will-be-find')
+		})
+	})
+
 	after(() => {
 		removeElement(ELEMENT)
 	})
