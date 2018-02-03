@@ -21,7 +21,7 @@
     "type": "git",
     "url": "git+https://github.com/frame00/oo-elements.git"
   },
-  "author": "",
+  "author": "frame00",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/frame00/oo-elements/issues"
