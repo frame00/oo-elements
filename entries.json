@@ -75,6 +75,21 @@
     ]
   },
   {
+    "name": "oo-sign-out",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-sign-out/define.ts",
+        "dest": "dist/oo-sign-out.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-sign-out/index.ts",
+        "dest": "dist/oo-sign-out.mjs"
+      }
+    ]
+  },
+  {
     "name": "oo-profile",
     "build": [
       {

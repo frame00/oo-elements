@@ -4,6 +4,7 @@ import {
 	ooModal,
 	ooOffer,
 	ooSignIn,
+	ooSignOut,
 	ooProfile,
 	ooAsk,
 	ooProject,
@@ -26,6 +27,7 @@ define('oo-button', ooButton)
 define('oo-modal', ooModal)
 define('oo-offer', ooOffer)
 define('oo-sign-in', ooSignIn)
+define('oo-sign-out', ooSignOut)
 define('oo-profile', ooProfile)
 define('oo-ask', ooAsk)
 define('oo-project', ooProject)

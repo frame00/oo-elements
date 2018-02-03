@@ -30,6 +30,7 @@ export default class {
 		remove(key)
 	}
 	static clear() {
-		localStorage.clear()
+		remove('oo:token')
+		remove('oo:uid')
 	}
 }
