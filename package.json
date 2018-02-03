@@ -1,6 +1,6 @@
 {
   "name": "oo-elements",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.2-beta.0",
   "description": "Web Components for OO",
   "main": "dist/oo-elements.js",
   "module": "dist/oo-elements.mjs",
@@ -24,7 +24,9 @@
   "author": "frame00",
   "contributors": [
     {
-      "name": "aggre", "email": "hiroyuki.aggre@gmail.com", "url": "https://github.com/aggre"
+      "name": "aggre",
+      "email": "hiroyuki.aggre@gmail.com",
+      "url": "https://github.com/aggre"
     }
   ],
   "license": "Apache-2.0",
