@@ -38,6 +38,7 @@ export default class extends HTMLElement {
 				width: 100%;
 				padding: 1rem;
 				box-sizing: border-box;
+				z-index: 1001;
 			}
 			oo-notification {
 				margin-bottom: 1rem;
