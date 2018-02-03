@@ -75,32 +75,5 @@ import {ooButton} from 'oo-elements/dist/oo-elements.mjs'
 
 # Development
 
-## Install
-```bash
-git clone git@github.com:frame00/oo-elements.git
-cd oo-elements
-npm install
-```
-
-## Preview
-```bash
-npm start
-```
-
-## Build
-
-```bash
-npm run build
-```
-
-or partial build
-
-```bash
-npm run build oo-button
-```
-
-## Test
-
-```bash
-npm test
-```
+- [Contributing Guide](https://github.com/frame00/oo-elements/blob/master/.github/CONTRIBUTING.md)
+- [日本語] とくに英語の間違いを直したいです :_ (
