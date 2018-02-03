@@ -21,7 +21,10 @@ export default async (authRes: AuthResult): Promise<{
 } | boolean> => {
 	const firebaseUid = authRes.user.uid
 	const {name, email, picture} = authRes.additionalUserInfo.profile
-	const extensions = createExtensions({name, email, picture})
+	const extensions = createExtensions({name, email, picture, price_per_hour: {
+		usd: 10,
+		jpy: 1000
+	}})
 	const ooapiRes = await api<OOUser>({
 		resource: 'users',
 		method: 'POST',

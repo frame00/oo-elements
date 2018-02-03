@@ -12,10 +12,7 @@ interface Callbacks {
 }
 
 export default (pricePerHour: ExtensionPricePerHour, callbacks: Callbacks): TemplateResult => {
-	if (!pricePerHour) {
-		return html``
-	}
-	const {usd, jpy} = pricePerHour
+	const {usd = 10, jpy = 1000} = pricePerHour || {}
 	return html`
 	<p>USD</p>
 	<input name=usd type=number step=0.01 min=0 value$='${usd}' on-change='${e => callbacks.usd(e, 'usd')}'></input>
