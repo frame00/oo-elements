@@ -48,6 +48,17 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const assigned = slotHeader.assignedNodes()
 			expect(assigned[0].textContent).to.be('The Brand')
 		})
+
+		it('Show "footer" slot as nav inner contents', () => {
+			document.body.insertAdjacentHTML('afterbegin', `
+			<oo-nav>
+				<div slot=footer>Footer</div>
+			</oo-nav>`)
+			const element = getElement(ELEMENT)[0]
+			const slotHeader: HTMLSlotElement = element.shadowRoot.querySelector('nav slot[name=footer]')
+			const assigned = slotHeader.assignedNodes()
+			expect(assigned[0].textContent).to.be('Footer')
+		})
 	})
 
 	describe('Attribuets', () => {

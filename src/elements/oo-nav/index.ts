@@ -81,6 +81,7 @@ export default class extends HTMLElement {
 				display: flex;
 				flex-wrap: wrap;
 				align-content: start;
+				flex-grow: 1;
 			}
 			.toggle {
 				width: 100%;
@@ -137,6 +138,9 @@ export default class extends HTMLElement {
 				<button class=toggle on-click='${() => this.onHandleClick()}'>×</button>
 				<slot name=item></slot>
 			</div>
+			<footer>
+				<slot name=footer></slot>
+			</footer>
 		</nav>
 		<div class$='handle ${stte}' on-click='${() => this.onHandleClick()}'></div>
 		`
