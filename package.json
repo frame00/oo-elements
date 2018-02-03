@@ -22,6 +22,11 @@
     "url": "git+https://github.com/frame00/oo-elements.git"
   },
   "author": "frame00",
+  "contributors": [
+    {
+      "name": "aggre", "email": "hiroyuki.aggre@gmail.com", "url": "https://github.com/aggre"
+    }
+  ],
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/frame00/oo-elements/issues"
