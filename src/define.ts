@@ -20,7 +20,8 @@ import {
 	ooNav,
 	ooFooter,
 	ooVersion,
-	ooEmpty
+	ooEmpty,
+	ooDeleteAccount
 } from './index'
 
 define('oo-button', ooButton)
@@ -44,3 +45,4 @@ define('oo-nav', ooNav)
 define('oo-footer', ooFooter)
 define('oo-version', ooVersion)
 define('oo-empty', ooEmpty)
+define('oo-delete-account', ooDeleteAccount)

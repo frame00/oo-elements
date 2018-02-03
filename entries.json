@@ -313,5 +313,20 @@
         "dest": "dist/oo-version.mjs"
       }
     ]
+  },
+  {
+    "name": "oo-delete-account",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-delete-account/define.ts",
+        "dest": "dist/oo-delete-account.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-delete-account/index.ts",
+        "dest": "dist/oo-delete-account.mjs"
+      }
+    ]
   }
 ]

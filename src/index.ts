@@ -19,6 +19,7 @@ import ooNav from './elements/oo-nav'
 import ooFooter from './elements/oo-footer'
 import ooVersion from './elements/oo-version'
 import ooEmpty from './elements/oo-empty'
+import ooDeleteAccount from './elements/oo-delete-account'
 
 export {
 	ooButton,
@@ -41,5 +42,6 @@ export {
 	ooNav,
 	ooFooter,
 	ooVersion,
-	ooEmpty
+	ooEmpty,
+	ooDeleteAccount
 }
