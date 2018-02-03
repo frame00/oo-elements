@@ -47,6 +47,7 @@ export default class extends HTMLElement {
 			@import '../../style/_vars-font-family.css';
 			:host {
 				display: block;
+				pointer-events: none;
 			}
 			:root {
 				--handle-size: 58px;
@@ -104,6 +105,10 @@ export default class extends HTMLElement {
 				&.open {
 					transform: scale(0);
 				}
+			}
+			nav,
+			.handle {
+				pointer-events: all;
 			}
 			::slotted(a) {
 				margin: 0 1rem;
