@@ -40,7 +40,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 				event(input, 'change', {})
 				const button = element.shadowRoot.querySelector('oo-atoms-button')
 				event(button, 'clicked')
-				await sleep(100)
+				await sleep(500)
 				expect(button.getAttribute('data-state')).to.be('resolved')
 			})
 
@@ -51,7 +51,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 				event(textarea, 'change')
 				const button = element.shadowRoot.querySelector('oo-atoms-button')
 				event(button, 'clicked')
-				await sleep(100)
+				await sleep(500)
 				expect(button.getAttribute('data-state')).to.be('resolved')
 			})
 
@@ -66,7 +66,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 				event(jpy, 'change')
 				const button = element.shadowRoot.querySelector('oo-atoms-button')
 				event(button, 'clicked')
-				await sleep(100)
+				await sleep(500)
 				expect(button.getAttribute('data-state')).to.be('resolved')
 			})
 		})
