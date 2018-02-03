@@ -22,19 +22,22 @@ export default class extends HTMLElement {
 		}
 	}
 
-	html() {
+	html(progress: boolean) {
 		return html`
 		<style>
 		</style>
-		<oo-atoms-button on-clicked='${() => this.deleteAccount()}'>Delete your account</oo-atoms-button>
+		<oo-atoms-button
+			data-state$='${progress ? 'progress' : ''}'
+			on-clicked='${() => this.deleteAccount()}'>Delete your account</oo-atoms-button>
 		`
 	}
 
-	render() {
-		render(this.html(), this)
+	render(progress: boolean = false) {
+		render(this.html(progress), this)
 	}
 
 	async deleteAccount() {
+		this.render(true)
 		const {uid} = store
 		const del = await deleteUser(uid)
 		const {response} = del
@@ -50,5 +53,6 @@ export default class extends HTMLElement {
 				type: 'error'
 			})
 		}
+		this.render(false)
 	}
 }

@@ -23,16 +23,8 @@ const asValidString = (data: string): AuthProvider => {
 	}
 	return 'google'
 }
-const asBoolean = (data: string): boolean => {
-	if(data === 'enabled') {
-		return true
-	}
-	return false
-}
 
 const provider = weakMap<AuthProvider>()
-const initNotification = weakMap<boolean>()
-let signedInNotification = false
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
@@ -46,7 +38,6 @@ export default class extends HTMLElement {
 	constructor() {
 		super()
 		provider.set(this, asValidString(this.getAttribute(ATTR.DATA_PROVIDER)))
-		initNotification.set(this, asBoolean(this.getAttribute(ATTR.DATA_INIT_NOTIFICATION)))
 		this.render()
 		attach()
 	}
@@ -176,6 +167,10 @@ export default class extends HTMLElement {
 				return this.dispatchSignedInError(signedIn)
 			}
 			this.dispatchSignedIn(signedIn)
+			dispatch({
+				message: 'Welcome!',
+				type: 'success'
+			})
 		}
 	}
 
@@ -189,13 +184,6 @@ export default class extends HTMLElement {
 	}
 
 	dispatchSignedIn(data: SignedInDetail) {
-		if (signedInNotification === false && initNotification.get(this)) {
-			dispatch({
-				message: 'Welcome!',
-				type: 'success'
-			})
-			signedInNotification = true
-		}
 		this.dispatchEvent(EVENT.SIGNED_IN(data))
 	}
 

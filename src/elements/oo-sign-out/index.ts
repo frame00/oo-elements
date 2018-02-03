@@ -23,19 +23,22 @@ export default class extends HTMLElement {
 		}
 	}
 
-	html() {
+	html(progress: boolean) {
 		return html`
 		<style>
 		</style>
-		<oo-atoms-button on-clicked='${() => this.signOut()}'>Signing out</oo-atoms-button>
+		<oo-atoms-button
+			data-state$='${progress ? 'progress' : ''}'
+			on-clicked='${() => this.signOut()}'>Signing out</oo-atoms-button>
 		`
 	}
 
-	render() {
-		render(this.html(), this)
+	render(progress: boolean = false) {
+		render(this.html(progress), this)
 	}
 
 	async signOut() {
+		this.render(true)
 		const del = await deleteToken()
 		const {status} = del
 		if (isSuccess(status)) {
@@ -51,5 +54,6 @@ export default class extends HTMLElement {
 				type: 'error'
 			})
 		}
+		this.render(false)
 	}
 }
