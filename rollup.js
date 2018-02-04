@@ -14,7 +14,7 @@ const mixins = require('postcss-mixins')
 const entries = require('./entries.json')
 const pkg = require('./package.json')
 
-const {BUILD_MODE} = process.env
+const {BUILD_MODE, TRAVIS_BRANCH} = process.env
 const [, , name] = process.argv
 const postcssOptions = {
 	plugins: [cssimport, cssnested, mixins, cssnext]
@@ -59,8 +59,7 @@ const plugins = [
 	resolve(resolveOptions),
 	commonjs(commonjsOptions),
 	typescript(typescriptOptions),
-	replace(replaceOptions),
-	progress()
+	replace(replaceOptions)
 ]
 
 const build = async (rollupOptions, writeOptions) => {
@@ -87,6 +86,10 @@ if (BUILD_MODE === 'TEST') {
 }
 const filteredEntries = name ? entries.filter(entry => entry.name === name) : entries
 plugins.push(uglify(uglifyOptions))
+if (!TRAVIS_BRANCH) {
+	// In this case it is local
+	plugins.push(progress())
+}
 Promise.all(filteredEntries.map(entry => {
 	return Promise.all(entry.build.map(bld => {
 		return build({
