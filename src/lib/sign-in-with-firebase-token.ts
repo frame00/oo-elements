@@ -7,6 +7,7 @@ import state from './state'
 import store from './local-storage'
 import createExtensions from './create-extensions'
 import {AuthResult} from '../type/auth-result'
+import {OOAPIResponseError} from '../type/oo-api-response'
 
 const setState = (token: string, uid: string): void => {
 	state.set('token', token)
@@ -20,7 +21,10 @@ export default async (authRes: AuthResult): Promise<{
 } | boolean> => {
 	const firebaseUid = authRes.user.uid
 	const {name, email, picture} = authRes.additionalUserInfo.profile
-	const extensions = createExtensions({name, email, picture})
+	const extensions = createExtensions({name, email, picture, price_per_hour: {
+		usd: 10,
+		jpy: 1000
+	}})
 	const ooapiRes = await api<OOUser>({
 		resource: 'users',
 		method: 'POST',
@@ -30,7 +34,10 @@ export default async (authRes: AuthResult): Promise<{
 		}
 	})
 
-	if (!(!Array.isArray(ooapiRes.response) && ooapiRes.response.message.includes('existing'))) {
+	const {response, status} = ooapiRes
+	const isApiSuccess = Array.isArray(response)
+	const isApiExisting = status === 400
+	if (!isApiSuccess && !isApiExisting) {
 		return false
 	}
 
@@ -51,13 +58,15 @@ export default async (authRes: AuthResult): Promise<{
 	}
 
 	const uid = (res => {
-		if (Array.isArray(res)) {
-			const [u] = res
+		if (isApiSuccess) {
+			const [u] = res as Array<OOUser>
 			return u.uid
 		}
-		const {user} = ooapiRes.response
-		return user.uid
-	})(ooapiRes.response)
+		if (isApiExisting) {
+			const {user} = res as OOAPIResponseError
+			return user.uid
+		}
+	})(response)
 
 	setState(token, uid)
 

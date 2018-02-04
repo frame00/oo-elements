@@ -103,7 +103,7 @@ export default class extends HTMLElement {
 	async fetchProjects(iam: string, time?: number) {
 		const api = await getUserProjects(iam, time)
 		const {response, headers} = api
-		stateItemCount.set(this, Number(headers.get('x-oo-item-count')))
+		stateItemCount.set(this, Number(headers.get('x-oo-count')))
 		if (Array.isArray(response)) {
 			const current = stateProjects.get(this)
 			stateProjects.set(this, [...current, ...response])

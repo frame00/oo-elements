@@ -24,7 +24,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		it('Display "Waiting for response" message', async () => {
 			store.uid = 'xxx'
 			const element = insertElement(ELEMENT, new Map([['data-project-uid', 'zpSL563LhQ']]))
-			await sleep(100)
+			await sleep(500)
 			const header = querySlotSelector(element, 'oo-atoms-message', 'slot[name=body]', 'header')
 			expect(header.textContent).to.be('You are waiting for a reply.')
 		})
@@ -34,7 +34,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		it('Display "Accepted" message', async () => {
 			store.uid = 'xxx'
 			const element = insertElement(ELEMENT, new Map([['data-project-uid', 'Mx8g7M7hbh']]))
-			await sleep(100)
+			await sleep(500)
 			const header = querySlotSelector(element, 'oo-atoms-message', 'slot[name=body]', 'header')
 			expect(header.textContent).to.be('Accepted')
 		})
@@ -44,7 +44,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		it('Display "Accepted" message', async () => {
 			store.uid = 'test'
 			const element = insertElement(ELEMENT, new Map([['data-project-uid', 'Mx8g7M7hbh']]))
-			await sleep(100)
+			await sleep(500)
 			const header = querySlotSelector(element, 'oo-atoms-message', 'slot[name=body]', 'header')
 			expect(header.textContent).to.be('Accepted')
 		})
@@ -54,7 +54,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		it('Display "Rejected" message', async () => {
 			store.uid = 'xxx'
 			const element = insertElement(ELEMENT, new Map([['data-project-uid', 'yV7094Ol1Z']]))
-			await sleep(100)
+			await sleep(500)
 			const header = querySlotSelector(element, 'oo-atoms-message', 'slot[name=body]', 'header')
 			expect(header.textContent).to.be('Rejected')
 		})
@@ -64,7 +64,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		it('Display "Rejected" message', async () => {
 			store.uid = 'test'
 			const element = insertElement(ELEMENT, new Map([['data-project-uid', 'yV7094Ol1Z']]))
-			await sleep(100)
+			await sleep(500)
 			const header = querySlotSelector(element, 'oo-atoms-message', 'slot[name=body]', 'header')
 			expect(header.textContent).to.be('Rejected')
 		})
@@ -74,7 +74,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		it('Display "Waiting for your answer" message', async () => {
 			store.uid = 'test'
 			const element = insertElement(ELEMENT, new Map([['data-project-uid', 'zpSL563LhQ']]))
-			await sleep(100)
+			await sleep(500)
 			const header = querySlotSelector(element, 'oo-atoms-message', 'slot[name=body]', 'header')
 			expect(header.textContent).to.be('Waiting for your answer')
 		})
@@ -82,7 +82,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		it('Diaplay "Reject" and "Accept" buttons', async () => {
 			store.uid = 'test'
 			const element = insertElement(ELEMENT, new Map([['data-project-uid', 'zpSL563LhQ']]))
-			await sleep(100)
+			await sleep(500)
 			const buttons = querySlotSelector(element, 'oo-atoms-message', 'slot[name=body]', '.buttons')
 			expect(buttons.querySelectorAll('oo-atoms-button')).to.have.length(2)
 		})
@@ -91,10 +91,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			it('Change display to "Rejected"', async () => {
 				store.uid = 'test'
 				const element = insertElement(ELEMENT, new Map([['data-project-uid', 'zpSL563LhQ']]))
-				await sleep(100)
+				await sleep(500)
 				const button = querySlotSelector(element, 'oo-atoms-message', 'slot[name=body]', '.buttons > oo-atoms-button')
 				event(button, 'clicked')
-				await sleep(100)
+				await sleep(500)
 				const header = querySlotSelector(element, 'oo-atoms-message', 'slot[name=body]', 'header')
 				expect(header.textContent).to.be('Rejected')
 			})
@@ -104,10 +104,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			it('Change display to "Accepted"', async () => {
 				store.uid = 'test'
 				const element = insertElement(ELEMENT, new Map([['data-project-uid', 'zpSL563LhQ']]))
-				await sleep(100)
+				await sleep(500)
 				const button = querySlotSelector(element, 'oo-atoms-message', 'slot[name=body]', '.buttons > oo-atoms-button + oo-atoms-button')
 				event(button, 'clicked')
-				await sleep(100)
+				await sleep(500)
 				const header = querySlotSelector(element, 'oo-atoms-message', 'slot[name=body]', 'header')
 				expect(header.textContent).to.be('Accepted')
 			})

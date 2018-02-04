@@ -47,6 +47,7 @@ export default class extends HTMLElement {
 			@import '../../style/_vars-font-family.css';
 			:host {
 				display: block;
+				pointer-events: none;
 			}
 			:root {
 				--handle-size: 58px;
@@ -81,6 +82,7 @@ export default class extends HTMLElement {
 				display: flex;
 				flex-wrap: wrap;
 				align-content: start;
+				flex-grow: 1;
 			}
 			.toggle {
 				width: 100%;
@@ -103,6 +105,10 @@ export default class extends HTMLElement {
 				&.open {
 					transform: scale(0);
 				}
+			}
+			nav,
+			.handle {
+				pointer-events: all;
 			}
 			::slotted(a) {
 				margin: 0 1rem;
@@ -137,6 +143,9 @@ export default class extends HTMLElement {
 				<button class=toggle on-click='${() => this.onHandleClick()}'>×</button>
 				<slot name=item></slot>
 			</div>
+			<footer>
+				<slot name=footer></slot>
+			</footer>
 		</nav>
 		<div class$='handle ${stte}' on-click='${() => this.onHandleClick()}'></div>
 		`

@@ -2,6 +2,7 @@ import ooButton from './elements/oo-button'
 import ooModal from './elements/oo-modal'
 import ooOffer from './elements/oo-offer'
 import ooSignIn from './elements/oo-sign-in'
+import ooSignOut from './elements/oo-sign-out'
 import ooProfile from './elements/oo-profile'
 import ooAsk from './elements/oo-ask'
 import ooProject from './elements/oo-project'
@@ -18,12 +19,14 @@ import ooNav from './elements/oo-nav'
 import ooFooter from './elements/oo-footer'
 import ooVersion from './elements/oo-version'
 import ooEmpty from './elements/oo-empty'
+import ooDeleteAccount from './elements/oo-delete-account'
 
 export {
 	ooButton,
 	ooModal,
 	ooOffer,
 	ooSignIn,
+	ooSignOut,
 	ooProfile,
 	ooAsk,
 	ooProject,
@@ -39,5 +42,6 @@ export {
 	ooNav,
 	ooFooter,
 	ooVersion,
-	ooEmpty
+	ooEmpty,
+	ooDeleteAccount
 }
