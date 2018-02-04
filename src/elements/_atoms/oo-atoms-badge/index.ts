@@ -40,6 +40,12 @@ export default class extends HTMLElement {
 			:host {
 				display: block;
 			}
+			:root {
+				--size-small: 20px;
+				--size-medium: 50px;
+				--circle-small: 6px;
+				--circle-medium: 11px;
+			}
 			.oo-atoms-badge {
 				&-container {
 					display: flex;
@@ -48,19 +54,16 @@ export default class extends HTMLElement {
 					background: black;
 				}
 				&-small {
-					$size: 20px;
-					width: $size;
-					height: $size;
+					width: var(--size-small);
+					height: var(--size-small);
 				}
 				&-medium {
-					$size: 50px;
-					width: $size;
-					height: $size;
+					width: var(--size-medium);
+					height: var(--size-medium);
 				}
 				&-circle {
-					$size: 11px;
-					width: $size;
-					height: $size;
+					width: var(--circle-medium);
+					height: var(--circle-medium);
 					border: 2px solid white;
 					border-radius: 50%;
 				}
@@ -71,9 +74,8 @@ export default class extends HTMLElement {
 					transform: translateX(-3px);
 				}
 				&-small &-circle {
-					$size: 6px;
-					width: $size;
-					height: $size;
+					width: var(--circle-small);
+					height: var(--circle-small);
 					border-width: 1px;
 				}
 				&-small &-left {

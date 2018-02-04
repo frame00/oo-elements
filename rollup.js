@@ -9,6 +9,7 @@ const uglify = require('rollup-plugin-uglify')
 const progress = require('rollup-plugin-progress')
 const cssimport = require('postcss-import')
 const cssnext = require('postcss-cssnext')
+const cssnested = require('postcss-nested')
 const mixins = require('postcss-mixins')
 const entries = require('./entries.json')
 const pkg = require('./package.json')
@@ -16,7 +17,7 @@ const pkg = require('./package.json')
 const {BUILD_MODE} = process.env
 const [, , name] = process.argv
 const postcssOptions = {
-	plugins: [cssimport, mixins, cssnext]
+	plugins: [cssimport, cssnested, mixins, cssnext]
 }
 const resolveOptions = {
 	browser: true,
@@ -30,9 +31,6 @@ const commonjsOptions = {
 		],
 		'node_modules/@firebase/util/dist/cjs/index.js': [
 			'deepCopy', 'deepExtend', 'createSubscribe', 'ErrorFactory', 'patchProperty'
-		],
-		'node_modules/toml/index.js': [
-			'parse'
 		]
 	}
 }
