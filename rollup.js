@@ -6,6 +6,7 @@ const multiEntry = require('rollup-plugin-multi-entry')
 const postcss = require('rollup-plugin-transform-postcss')
 const replace = require('rollup-plugin-replace')
 const uglify = require('rollup-plugin-uglify')
+const progress = require('rollup-plugin-progress')
 const cssnext = require('postcss-cssnext')
 const precss = require('precss')
 const entries = require('./entries.json')
@@ -59,11 +60,19 @@ const plugins = [
 	resolve(resolveOptions),
 	commonjs(commonjsOptions),
 	typescript(typescriptOptions),
-	replace(replaceOptions)
+	replace(replaceOptions),
+	progress()
 ]
 
 const build = async (rollupOptions, writeOptions) => {
-	const bundle = await rollup.rollup(rollupOptions)
+	const bundle = await rollup.rollup({...rollupOptions, ...{
+		onwarn: e => {
+			if (e.message === `The 'this' keyword is equivalent to 'undefined' at the top level of an ES module, and has been rewritten`) {
+				return
+			}
+			console.error(e)
+		}
+	}})
 	await bundle.write(writeOptions)
 }
 
