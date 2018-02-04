@@ -7,15 +7,16 @@ const postcss = require('rollup-plugin-transform-postcss')
 const replace = require('rollup-plugin-replace')
 const uglify = require('rollup-plugin-uglify')
 const progress = require('rollup-plugin-progress')
+const cssimport = require('postcss-import')
 const cssnext = require('postcss-cssnext')
-const precss = require('precss')
+const mixins = require('postcss-mixins')
 const entries = require('./entries.json')
 const pkg = require('./package.json')
 
 const {BUILD_MODE} = process.env
 const [, , name] = process.argv
 const postcssOptions = {
-	plugins: [precss, cssnext]
+	plugins: [cssimport, mixins, cssnext]
 }
 const resolveOptions = {
 	browser: true,
@@ -87,9 +88,9 @@ if (BUILD_MODE === 'TEST') {
 	})
 }
 const filteredEntries = name ? entries.filter(entry => entry.name === name) : entries
+plugins.push(uglify(uglifyOptions))
 Promise.all(filteredEntries.map(entry => {
 	return Promise.all(entry.build.map(bld => {
-		plugins.push(uglify(uglifyOptions))
 		return build({
 			input: bld.file,
 			plugins
