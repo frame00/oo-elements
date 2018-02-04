@@ -1,5 +1,4 @@
-import {html} from 'lit-html'
-import render from '../../../lib/render'
+import {html, render} from '../../../lib/html'
 import signIn from '../../oo-sign-in'
 import define from '../../../lib/define'
 

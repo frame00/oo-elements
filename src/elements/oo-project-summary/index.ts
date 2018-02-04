@@ -1,6 +1,5 @@
-import {html} from 'lit-html'
 import {repeat} from 'lit-html/lib/repeat'
-import render from '../../lib/render'
+import {html, render} from '../../lib/html'
 import getProject from '../../lib/oo-api-get-project'
 import toMap from '../../lib/extensions-to-map'
 import {Currency} from '../../type/currency'

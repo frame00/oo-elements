@@ -1,5 +1,4 @@
-import {html} from 'lit-html'
-import render from '../../lib/render'
+import {html, render} from '../../lib/html'
 import notFound from '../../lib/svg/not-found'
 import willBeFind from '../../lib/svg/will-be-find'
 import weakMap from '../../lib/weak-map'

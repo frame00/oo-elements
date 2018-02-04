@@ -1,5 +1,4 @@
-import {html} from 'lit-html'
-import render from '../../lib/render'
+import {html, render} from '../../lib/html'
 import define from '../../lib/define'
 import userName from '../_atoms/oo-atoms-user-name'
 import datetime from '../_atoms/oo-atoms-datetime'

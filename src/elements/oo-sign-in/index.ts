@@ -1,5 +1,4 @@
-import {html} from 'lit-html'
-import render from '../../lib/render'
+import {html, render} from '../../lib/html'
 import {AuthProvider} from '../../type/auth-provider.d'
 import store from '../../lib/local-storage'
 import {AuthResult} from '../../type/auth-result'

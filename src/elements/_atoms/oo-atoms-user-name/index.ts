@@ -1,5 +1,4 @@
-import {html} from 'lit-html'
-import render from '../../../lib/render'
+import {html, render} from '../../../lib/html'
 import getUser from '../../../lib/oo-api-get-user'
 import toMap from '../../../lib/extensions-to-map'
 

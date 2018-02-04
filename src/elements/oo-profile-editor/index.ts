@@ -1,6 +1,5 @@
-import {html} from 'lit-html'
 import {repeat} from 'lit-html/lib/repeat'
-import render from '../../lib/render'
+import {html, render} from '../../lib/html'
 import getSign from '../../lib/oo-api-get-user-sign'
 import getUser from '../../lib/oo-api-get-user'
 import toMap from '../../lib/extensions-to-map'

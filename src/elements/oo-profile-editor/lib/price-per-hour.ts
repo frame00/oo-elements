@@ -1,5 +1,5 @@
-import {html} from 'lit-html'
 import {TemplateResult} from 'lit-html'
+import {html} from '../../../lib/html'
 import {ExtensionPricePerHour} from '../../../type/extension-price-per-hour'
 import {Usd, Jpy} from '../../../type/currency'
 

@@ -1,6 +1,5 @@
-import {html} from 'lit-html'
 import {repeat} from 'lit-html/lib/repeat'
-import render from '../../lib/render'
+import {html, render} from '../../lib/html'
 import weakMap from '../../lib/weak-map'
 import define from '../../lib/define'
 import notification from '../oo-notification'

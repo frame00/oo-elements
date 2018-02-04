@@ -1,5 +1,4 @@
-import {html} from 'lit-html'
-import render from '../../lib/render'
+import {html, render} from '../../lib/html'
 import badge from '../_atoms/oo-atoms-badge'
 import offerModal from '../_organisms/oo-organisms-offer-modal'
 import define from '../../lib/define'

@@ -1,6 +1,5 @@
-import {html} from 'lit-html'
 import {repeat} from 'lit-html/lib/repeat'
-import render from '../../lib/render'
+import {html, render} from '../../lib/html'
 import define from '../../lib/define'
 import {OOProject} from '../../type/oo-project'
 import getUserProjects from '../../lib/oo-api-get-user-projects'

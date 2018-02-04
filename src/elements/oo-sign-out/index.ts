@@ -1,5 +1,4 @@
-import {html} from 'lit-html'
-import render from '../../lib/render'
+import {html, render} from '../../lib/html'
 import define from '../../lib/define'
 import button from '../_atoms/oo-atoms-button'
 import {attach, dispatch} from '../../lib/notification'

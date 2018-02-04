@@ -1,5 +1,4 @@
-import {html} from 'lit-html'
-import render from '../../../lib/render'
+import {html, render} from '../../../lib/html'
 import ooOffer from '../../oo-offer'
 import ooModal from '../../oo-modal'
 import define from '../../../lib/define'

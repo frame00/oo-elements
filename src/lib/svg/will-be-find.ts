@@ -1,4 +1,4 @@
-import {html} from 'lit-html'
+import {html} from '../html'
 
 export default () => {
 	return html`<svg id="will-be-find" viewBox="0 0 1280 980" width="100%" xmlns="http://www.w3.org/2000/svg">

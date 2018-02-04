@@ -1,6 +1,5 @@
-import {html} from 'lit-html'
 import {repeat} from 'lit-html/lib/repeat'
-import render from '../../lib/render'
+import {html, render} from '../../lib/html'
 import getUser from '../../lib/oo-api-get-user'
 import isSuccess from '../../lib/is-api-success'
 import toMap from '../../lib/extensions-to-map'

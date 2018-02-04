@@ -1,5 +1,4 @@
-import {html} from 'lit-html'
-import render from '../../../lib/render'
+import {html, render} from '../../../lib/html'
 import weakMap from '../../../lib/weak-map'
 import ooMessage from '../../_atoms/oo-atoms-message'
 import button from '../../_atoms/oo-atoms-button'

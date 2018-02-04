@@ -1,6 +1,5 @@
-import {html} from 'lit-html'
 import {repeat} from 'lit-html/lib/repeat'
-import render from '../../lib/render'
+import {html, render} from '../../lib/html'
 import getProjectMessages from '../../lib/oo-api-get-project-messages'
 import getMessage from '../../lib/oo-api-get-message'
 import toMap from '../../lib/extensions-to-map'

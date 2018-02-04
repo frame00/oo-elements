@@ -1,5 +1,4 @@
-import {html} from 'lit-html'
-import render from '../../lib/render'
+import {html, render} from '../../lib/html'
 import offerSignIn from '../_organisms/oo-organisms-offer-step-sign-in'
 import created from '../_organisms/oo-organisms-offer-created'
 import profile from '../oo-profile'
