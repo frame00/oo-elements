@@ -28,7 +28,7 @@ export default class extends HTMLElement {
 		</style>
 		<oo-atoms-button
 			data-state$='${progress ? 'progress' : ''}'
-			on-clicked='${() => this.signOut()}'>Signing out</oo-atoms-button>
+			on-clicked='${() => this.signOut()}'>Sign out</oo-atoms-button>
 		`
 	}
 

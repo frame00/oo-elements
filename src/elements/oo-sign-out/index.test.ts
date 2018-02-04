@@ -24,10 +24,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			store.uid = 'test'
 		})
 
-		it('Display "Signing out" button', () => {
+		it('Display "Sign out" button', () => {
 			const element = insertElement(ELEMENT)
 			const button = element.shadowRoot.querySelector('oo-atoms-button')
-			expect(button.textContent).to.be('Signing out')
+			expect(button.textContent).to.be('Sign out')
 		})
 
 		it('Dispatch "signedout" event and clear store, when cliking "Signing out" button', done => {
