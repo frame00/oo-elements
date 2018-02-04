@@ -1,8 +1,8 @@
 +++
 [headers]
 access-control-allow-origin = "http://localhost:9876"
-access-control-expose-headers = "x-oo-item-count"
-x-oo-item-count = 2
+access-control-expose-headers = "x-oo-count"
+x-oo-count = 2
 +++
 
 ```json

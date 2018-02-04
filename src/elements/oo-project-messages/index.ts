@@ -128,7 +128,7 @@ export default class extends HTMLElement {
 		}
 		const api = await getProjectMessages(uid, time)
 		const {response, headers} = api
-		itemCount.set(this, Number(headers.get('x-oo-item-count')))
+		itemCount.set(this, Number(headers.get('x-oo-count')))
 		if (Array.isArray(response)) {
 			const items = this.mapMessages(response)
 			messages.set(this, this.mergeMessages(items.reverse()))
