@@ -84,6 +84,16 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 	})
 
+	describe('Fetch user data', () => {
+		it('Fetch user data from "data-iam" attribute value', async () => {
+			const element: any = insertElement(ELEMENT, new Map(requiredOptions))
+			await sleep(300)
+			expect(element.user.MapedExtensions).to.be.ok()
+			expect(element.user.MapedExtensions.get('name')).to.be('test')
+			expect(element.user.MapedExtensions.get('picture')).to.be('https://example.com/img.jpg')
+		})
+	})
+
 	describe('Check payment status', () => {
 		it('Fetch payment status of "data-payment-uid" attribute value', async () => {
 			const element: any = insertElement(ELEMENT, new Map(requiredOptions.concat([['data-payment-uid', 'Mdo59S1a3i']])))

@@ -18,7 +18,7 @@ export default (el: Pay, opts: Options, callback: (err: Error, res: OOAPIResult<
 	return async (token: StripeCheckoutToken): Promise<void> => {
 		const options = {
 			stripe_token: token.id,
-			amount: asStripeAmount(amount),
+			amount: asStripeAmount(amount, currency),
 			seller_uid: iam,
 			linked_message_uid: uid,
 			currency

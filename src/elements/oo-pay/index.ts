@@ -12,6 +12,8 @@ import toMap from '../../lib/extensions-to-map'
 import asStripeAmount from './lib/as-stripe-amount'
 import stripeCallback from './lib/stripe-callback'
 import {attach, dispatch} from '../../lib/notification'
+import clientGetUser from '../../lib/oo-client-get-user'
+import {OOUserWithMapedExtensions} from '../../type/oo-user'
 
 define('oo-atoms-message', ooMessage)
 define('oo-atoms-user-name', ooUserName)
@@ -45,6 +47,7 @@ const stateCurrency = weakMap<Currency>()
 const statePaymentUid = weakMap<string>()
 const statePaymentPaid = weakMap<boolean>()
 const stateChargeSuccessed = weakMap<boolean>()
+const stateUser = weakMap<OOUserWithMapedExtensions>()
 const testData = {
 	client_ip: 'x',
 	created: 1,
@@ -85,6 +88,10 @@ export default class extends HTMLElement {
 		return statePaymentPaid.get(this)
 	}
 
+	get user() {
+		return stateUser.get(this)
+	}
+
 	constructor() {
 		super()
 		attach()
@@ -97,6 +104,7 @@ export default class extends HTMLElement {
 		switch(attr) {
 			case ATTR.DATA_IAM:
 				stateIam.set(this, next)
+				this.fetchUser(next)
 				break
 			case ATTR.DATA_UID:
 				stateUid.set(this, next)
@@ -206,6 +214,14 @@ export default class extends HTMLElement {
 		render(this.html(opts), this)
 	}
 
+	async fetchUser(iam: string) {
+		const user = await clientGetUser(iam)
+		if (typeof user === 'boolean') {
+			return
+		}
+		stateUser.set(this, user)
+	}
+
 	async stripeCheckout(test?: boolean) {
 		if (stateChargeSuccessed.get(this) === true) {
 			return false
@@ -235,11 +251,14 @@ export default class extends HTMLElement {
 			this.render()
 		})
 		try {
-			const handler = await stripeCheckout(callback)
+			const user = stateUser.get(this)
 			const currency = stateCurrency.get(this)
 			const amount = asStripeAmount(stateAmount.get(this), currency)
+			const name = user ? user.MapedExtensions.get('name') : 'Double O'
+			const image = user && user.MapedExtensions.get('picture')
+			const handler = await stripeCheckout(callback, image)
 			handler.open({
-				name: 'Double O',
+				name,
 				description: '',
 				amount,
 				currency

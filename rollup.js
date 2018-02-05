@@ -85,7 +85,7 @@ if (BUILD_MODE === 'TEST') {
 	})
 }
 const filteredEntries = name ? entries.filter(entry => entry.name === name) : entries
-plugins.push(uglify(uglifyOptions))
+// plugins.push(uglify(uglifyOptions))
 if (!TRAVIS_BRANCH) {
 	// In this case it is local
 	plugins.push(progress())
