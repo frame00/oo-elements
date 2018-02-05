@@ -236,11 +236,13 @@ export default class extends HTMLElement {
 		})
 		try {
 			const handler = await stripeCheckout(callback)
-			const amount = asStripeAmount(stateAmount.get(this))
+			const currency = stateCurrency.get(this)
+			const amount = asStripeAmount(stateAmount.get(this), currency)
 			handler.open({
-				name: 'Stripe.com',
-				description: '2 widgets',
-				amount
+				name: 'Double O',
+				description: '',
+				amount,
+				currency
 			})
 		} catch(err) {
 			console.error(err)

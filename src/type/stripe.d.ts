@@ -1,3 +1,5 @@
+import {Currency} from './currency'
+
 export interface StripeCheckoutToken {
 	client_ip: string,
 	created: number,
@@ -13,7 +15,8 @@ export interface StripeCheckoutHandlerOpenOptions {
 	name: string,
 	description: string,
 	zipCode?: boolean,
-	amount: number
+	amount: number,
+	currency: Currency
 }
 
 export interface StripeCheckoutHandler {
