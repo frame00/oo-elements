@@ -128,7 +128,7 @@ export default class extends HTMLElement {
 		this.render()
 	}
 
-	html(opts: Options) {
+	html(opts: Options, progress?: boolean) {
 		if(isFullFilledRequiredStates(opts) === false) {
 			return html``
 		}
@@ -136,8 +136,9 @@ export default class extends HTMLElement {
 		const sign = currencyToSign(currency)
 		const done = paymentPaid === true
 		const paymentButton = done ? html`` : (() => {
-			const state = chargeSuccessed === true ? 'resolved' : chargeSuccessed === false ? 'rejected' : ''
-			return html`<oo-atoms-button on-clicked='${() => this.stripeCheckout()}' data-state$='${state}' data-block=enabled>Pay</oo-atoms-button>`
+			const state = chargeSuccessed === true ? 'resolved' : chargeSuccessed === false ? 'rejected' : progress ? 'progress' : ''
+			return html`
+			<oo-atoms-button on-clicked='${() => this.stripeCheckout()}' data-state$='${state}' data-block=enabled>Pay</oo-atoms-button>`
 		})()
 
 		return html`
@@ -196,7 +197,7 @@ export default class extends HTMLElement {
 		`
 	}
 
-	render() {
+	render(progress?: boolean) {
 		if (this.hasAttribute(ATTR.DATA_PAYMENT_UID) && this.paid === undefined) {
 			// Wait for Payment API
 			return
@@ -211,7 +212,7 @@ export default class extends HTMLElement {
 			paymentPaid: this.paid,
 			chargeSuccessed: stateChargeSuccessed.get(this)
 		}
-		render(this.html(opts), this)
+		render(this.html(opts, progress), this)
 	}
 
 	async fetchUser(iam: string) {
@@ -233,6 +234,7 @@ export default class extends HTMLElement {
 			uid: stateUid.get(this)
 		}
 		const callback = stripeCallback(this, options, (err, results) => {
+			this.render(true)
 			if (err) {
 				stateChargeSuccessed.set(this, false)
 			} else {
