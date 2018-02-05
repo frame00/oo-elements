@@ -12,11 +12,11 @@ interface Callbacks {
 }
 
 export default (pricePerHour: ExtensionPricePerHour, callbacks: Callbacks): TemplateResult => {
-	const {usd = 10, jpy = 1000} = pricePerHour || {}
+	const {usd = 100, jpy = 10000} = pricePerHour || {}
 	return html`
 	<p>USD</p>
-	<input name=usd type=number step=0.01 min=0 value$='${usd}' on-change='${e => callbacks.usd(e, 'usd')}'></input>
+	<input name=usd type=number step=0.01 min=5 value$='${usd}' on-change='${e => callbacks.usd(e, 'usd')}'></input>
 	<p>JPY</p>
-	<input name=jpy type=number step=1 min=0 value$='${jpy}' on-change='${e => callbacks.jpy(e, 'jpy')}'></input>
+	<input name=jpy type=number step=1 min=500 value$='${jpy}' on-change='${e => callbacks.jpy(e, 'jpy')}'></input>
 	`
 }
