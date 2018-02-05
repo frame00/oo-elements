@@ -40,7 +40,7 @@ const typescriptOptions = {
 	}
 }
 const replaceOptions = {
-	'process.env': JSON.stringify({BUILD_MODE, PACKAGE_VERSION: pkg.version})
+	'process.env': JSON.stringify({BUILD_MODE, TRAVIS_BRANCH, PACKAGE_VERSION: pkg.version})
 }
 const uglifyOptions = {
 	output: {
@@ -85,10 +85,11 @@ if (BUILD_MODE === 'TEST') {
 	})
 }
 const filteredEntries = name ? entries.filter(entry => entry.name === name) : entries
-// plugins.push(uglify(uglifyOptions))
 if (!TRAVIS_BRANCH) {
 	// In this case it is local
 	plugins.push(progress())
+} else {
+	plugins.push(uglify(uglifyOptions))
 }
 Promise.all(filteredEntries.map(entry => {
 	return Promise.all(entry.build.map(bld => {

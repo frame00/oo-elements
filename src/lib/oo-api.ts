@@ -3,10 +3,10 @@ import {OOAPIResource, OOAPIVersion, OOAPIRequestBody, OOAPIRequestBodyUsers, OO
 import {OOAPIResult} from '../type/oo-api'
 import state from './state'
 import store from './local-storage'
-import url from '../conf/api'
+import {url, version as _version} from '../conf/api'
 const {fetch} = window
 
-const endpoints = (resource: OOAPIResource, pathParameter?: string, version: OOAPIVersion = 'stable'): string => {
+const endpoints = (resource: OOAPIResource, pathParameter?: string, version: OOAPIVersion = _version): string => {
 	return `${url}/${version}/${resource}${pathParameter ? `/${pathParameter}` : ''}`
 }
 

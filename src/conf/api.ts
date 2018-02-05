@@ -1,3 +1,4 @@
-const {BUILD_MODE} = process.env
+const {BUILD_MODE, TRAVIS_BRANCH = false} = process.env
 
-export default BUILD_MODE === 'TEST' ? 'http://localhost:3000' : 'https://api.ooapp.co'
+export const url = BUILD_MODE === 'TEST' ? 'http://localhost:3000' : 'https://api.ooapp.co'
+export const version = TRAVIS_BRANCH ? 'stable' : 'dev'
