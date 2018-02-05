@@ -83,7 +83,7 @@ export default class extends HTMLElement {
 				<article class$='${perm ? 'accepted' : 'rejected'}'>
 					<header>${header()}</header>
 					${(() => {
-						if (perm !== undefined) {
+						if (perm !== undefined || uid === offerer) {
 							return html``
 						}
 						return html`

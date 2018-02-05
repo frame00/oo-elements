@@ -26,7 +26,9 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const element = insertElement(ELEMENT, new Map([['data-project-uid', 'zpSL563LhQ']]))
 			await sleep(500)
 			const header = querySlotSelector(element, 'oo-atoms-message', 'slot[name=body]', 'header')
+			const button = querySlotSelector(element, 'oo-atoms-message', 'slot[name=body]', 'oo-atoms-button')
 			expect(header.textContent).to.be('You are waiting for a reply.')
+			expect(button).to.not.be.ok()
 		})
 	})
 
@@ -76,7 +78,9 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const element = insertElement(ELEMENT, new Map([['data-project-uid', 'zpSL563LhQ']]))
 			await sleep(500)
 			const header = querySlotSelector(element, 'oo-atoms-message', 'slot[name=body]', 'header')
+			const button = querySlotSelector(element, 'oo-atoms-message', 'slot[name=body]', 'oo-atoms-button')
 			expect(header.textContent).to.be('Waiting for your answer')
+			expect(button).to.be.ok()
 		})
 
 		it('Diaplay "Reject" and "Accept" buttons', async () => {
