@@ -13,9 +13,12 @@ interface Options {
 	uid: string
 }
 
-export default (el: Pay, opts: Options, callback: (err: Error, res: OOAPIResult<OOPayment>) => void) => {
+export default (el: Pay, opts: Options, beforeCallback: Function, callback: (err: Error, res: OOAPIResult<OOPayment>) => void) => {
 	const {amount, currency, iam, uid} = opts
 	return async (token: StripeCheckoutToken): Promise<void> => {
+		if (typeof beforeCallback === 'function') {
+			beforeCallback()
+		}
 		const options = {
 			stripe_token: token.id,
 			amount: asStripeAmount(amount, currency),

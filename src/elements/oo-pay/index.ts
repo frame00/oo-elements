@@ -48,6 +48,7 @@ const statePaymentUid = weakMap<string>()
 const statePaymentPaid = weakMap<boolean>()
 const stateChargeSuccessed = weakMap<boolean>()
 const stateUser = weakMap<OOUserWithMapedExtensions>()
+const statePaymentFetching = weakMap<boolean>()
 const testData = {
 	client_ip: 'x',
 	created: 1,
@@ -77,6 +78,11 @@ const validUid = (data: string): boolean => {
 		return true
 	}
 	return false
+}
+const onBeforeunloadCallback = e => {
+	const message = 'Do you want to leave this page?\nPayment is not completed.'
+	e.returnValue = message
+	return message
 }
 
 export default class extends HTMLElement {
@@ -233,8 +239,11 @@ export default class extends HTMLElement {
 			iam: stateIam.get(this),
 			uid: stateUid.get(this)
 		}
-		const callback = stripeCallback(this, options, (err, results) => {
+		const beforeCallback = () => {
+			statePaymentFetching.set(this, true)
 			this.render(true)
+		}
+		const afterCallback = (err, results) => {
 			if (err) {
 				stateChargeSuccessed.set(this, false)
 			} else {
@@ -251,7 +260,10 @@ export default class extends HTMLElement {
 				}
 			}
 			this.render()
-		})
+			statePaymentFetching.set(this, false)
+			this.onBeforeunload(true)
+		}
+		const callback = stripeCallback(this, options, beforeCallback, afterCallback)
 		try {
 			const user = stateUser.get(this)
 			const currency = stateCurrency.get(this)
@@ -263,13 +275,27 @@ export default class extends HTMLElement {
 				name,
 				description: '',
 				amount,
-				currency
+				currency,
+				opened: () => this.onBeforeunload(),
+				closed: () => {
+					if (statePaymentFetching.get(this) !== true) {
+						this.onBeforeunload(true)
+					}
+				}
 			})
 		} catch(err) {
 			console.error(err)
 		}
 		if (test === true) {
 			callback(testData)
+		}
+	}
+
+	onBeforeunload(remove: boolean = false) {
+		if (remove) {
+			window.removeEventListener('beforeunload', onBeforeunloadCallback, false)
+		} else {
+			window.addEventListener('beforeunload', onBeforeunloadCallback, false)
 		}
 	}
 
