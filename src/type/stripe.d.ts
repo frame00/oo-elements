@@ -16,7 +16,9 @@ export interface StripeCheckoutHandlerOpenOptions {
 	description: string,
 	zipCode?: boolean,
 	amount: number,
-	currency: Currency
+	currency: Currency,
+	opened?: Function,
+	closed?: Function
 }
 
 export interface StripeCheckoutHandler {
