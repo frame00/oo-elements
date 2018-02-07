@@ -1,6 +1,6 @@
 import {html, render} from '../../lib/html'
-import offerSignIn from '../_organisms/oo-organisms-offer-step-sign-in'
-import created from '../_organisms/oo-organisms-offer-created'
+import offerSignIn from '../_organisms/oo-organisms-ask-step-sign-in'
+import created from '../_organisms/oo-organisms-ask-created'
 import profile from '../oo-profile'
 import ask from '../oo-ask-form'
 import define from '../../lib/define'
@@ -17,10 +17,10 @@ interface ProjectCreatedEvent extends CustomEvent {
 	detail: OOAPIResult<OOProject>
 }
 
-define('oo-organisms-offer-step-sign-in', offerSignIn)
+define('oo-organisms-ask-step-sign-in', offerSignIn)
 define('oo-profile', profile)
 define('oo-ask-form', ask)
-define('oo-organisms-offer-created', created)
+define('oo-organisms-ask-created', created)
 define('oo-empty', empty)
 
 const ATTR = {
@@ -197,7 +197,7 @@ export default class extends HTMLElement {
 							<p class=description>Next step: Authenticate account with Google, Facebook or GitHub.</p>
 						</li>
 						<li class=step>
-							<oo-organisms-offer-step-sign-in class=signin on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-organisms-offer-step-sign-in>
+							<oo-organisms-ask-step-sign-in class=signin on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-organisms-ask-step-sign-in>
 						</li>
 						<li class=step>
 							<button class=submit on-click='${() => this.createProject()}'>Offer</button>
@@ -217,11 +217,11 @@ export default class extends HTMLElement {
 				display: block;
 				height: 100%;
 			}
-			oo-organisms-offer-created {
+			oo-organisms-ask-created {
 				height: 100%;
 			}
 		</style>
-		<oo-organisms-offer-created data-uid$='${uid}'></oo-organisms-offer-created>
+		<oo-organisms-ask-created data-uid$='${uid}'></oo-organisms-ask-created>
 		`
 	}
 

@@ -1,10 +1,10 @@
 import {html, render} from '../../lib/html'
 import badge from '../_atoms/oo-atoms-badge'
-import offerModal from '../_organisms/oo-organisms-offer-modal'
+import offerModal from '../_organisms/oo-organisms-ask-modal'
 import define from '../../lib/define'
 
 define('oo-atoms-badge', badge)
-define('oo-organisms-offer-modal', offerModal)
+define('oo-organisms-ask-modal', offerModal)
 
 type Size = 'small' | 'medium'
 
@@ -105,7 +105,7 @@ export default class extends HTMLElement {
 			<oo-atoms-badge data-size$='${s}'></oo-atoms-badge>
 			<div class=text>Offer Me</div>
 		</button>
-		<oo-organisms-offer-modal data-iam$='${i}' data-open$='${o ? 'enabled' : 'disabled'}' on-close='${() => this.onModalClose()}'></oo-organisms-offer-modal>
+		<oo-organisms-ask-modal data-iam$='${i}' data-open$='${o ? 'enabled' : 'disabled'}' on-close='${() => this.onModalClose()}'></oo-organisms-ask-modal>
 		`
 	}
 

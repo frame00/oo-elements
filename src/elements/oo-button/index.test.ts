@@ -38,7 +38,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	it('Display modal by this element click', () => {
 		const element = getElement(ELEMENT)[0]
 		event(element.shadowRoot.querySelector('button'), 'click')
-		const modal = element.shadowRoot.querySelector('oo-organisms-offer-modal')
+		const modal = element.shadowRoot.querySelector('oo-organisms-ask-modal')
 		expect(modal.getAttribute('data-open')).to.be('enabled')
 	})
 

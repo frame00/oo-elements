@@ -5,7 +5,7 @@ import getElement from '../../../lib/test/get-element'
 import removeElement from '../../../lib/test/remove-element'
 import event from '../../../lib/test/event'
 
-const ELEMENT = 'oo-organisms-offer-step-sign-in'
+const ELEMENT = 'oo-organisms-ask-step-sign-in'
 
 describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	before(() => {
