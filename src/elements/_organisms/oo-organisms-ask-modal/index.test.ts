@@ -5,7 +5,7 @@ import getElement from '../../../lib/test/get-element'
 import removeElement from '../../../lib/test/remove-element'
 import event from '../../../lib/test/event'
 
-const ELEMENT = 'oo-organisms-offer-modal'
+const ELEMENT = 'oo-organisms-ask-modal'
 
 describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	before(() => {

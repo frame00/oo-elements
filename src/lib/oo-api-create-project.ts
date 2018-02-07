@@ -1,38 +1,22 @@
 import api from '../lib/oo-api'
 import {OOAPIResult} from '../type/oo-api'
 import {OOUserUID} from '../type/oo-user'
-import {Currency} from '../type/currency'
-import {OOExtension} from '../type/oo-extension'
 import {OOProject} from '../type/oo-project'
+import {Scope} from '../type/scope'
+import createExtensions from '../lib/create-extensions'
+import {Currency} from '../type/currency'
 
 interface ProjectOptionsPost {
 	users: Array<OOUserUID>,
 	body: string,
 	author: OOUserUID,
-	offer_amount?: string,
-	offer_amount_pend?: boolean,
-	offer_currency?: Currency,
-	offer_assignee?: OOUserUID
-}
-
-const kv = <T>(obj: ProjectOptionsPost, key: string): {key: string, value: T} => {
-	return {
-		key,
-		value: obj[key]
-	}
+	scope: Scope,
+	assignee?: OOUserUID,
+	currency?: Currency
 }
 
 export default async (options: ProjectOptionsPost): Promise<OOAPIResult<OOProject>> => {
-	const extensions: Array<OOExtension> = (opts => {
-		const exts: Array<OOExtension> = []
-		exts.push(kv(opts, 'users'))
-		exts.push(kv(opts, 'body'))
-		exts.push(kv(opts, 'author'))
-		exts.push(kv(opts, 'offer_amount'))
-		exts.push(kv(opts, 'offer_currency'))
-		exts.push(kv(opts, 'offer_assignee'))
-		return exts
-	})(options)
+	const extensions = createExtensions(options)
 
 	const ooapiRes = await api<OOProject>({
 		resource: 'projects',

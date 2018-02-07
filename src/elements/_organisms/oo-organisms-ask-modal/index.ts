@@ -1,9 +1,9 @@
 import {html, render} from '../../../lib/html'
-import ooOffer from '../../oo-offer'
+import ooOffer from '../../oo-ask'
 import ooModal from '../../oo-modal'
 import define from '../../../lib/define'
 
-define('oo-offer', ooOffer)
+define('oo-ask', ooOffer)
 define('oo-modal', ooModal)
 
 const ATTR = {
@@ -67,7 +67,7 @@ export default class extends HTMLElement {
 		</style>
 		<oo-modal data-open$='${o ? 'enabled' : 'disabled'}' on-close='${() => this.onModalClose()}'>
 			<div slot=body>
-				<oo-offer data-iam$=${i}></oo-offer>
+				<oo-ask data-iam$=${i}></oo-ask>
 			</div>
 		</oo-modal>
 		`

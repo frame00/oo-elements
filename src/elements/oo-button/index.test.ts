@@ -38,8 +38,26 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	it('Display modal by this element click', () => {
 		const element = getElement(ELEMENT)[0]
 		event(element.shadowRoot.querySelector('button'), 'click')
-		const modal = element.shadowRoot.querySelector('oo-organisms-offer-modal')
+		const modal = element.shadowRoot.querySelector('oo-organisms-ask-modal')
 		expect(modal.getAttribute('data-open')).to.be('enabled')
+	})
+
+	it('Mount with "ask" type', () => {
+		const element = getElement(ELEMENT)[0]
+		element.setAttribute('data-type', 'ask')
+		expect(element.shadowRoot.querySelector('button').textContent.trim()).to.be('ask me')
+	})
+
+	it('Mount with "offer" type', () => {
+		const element = getElement(ELEMENT)[0]
+		element.setAttribute('data-type', 'offer')
+		expect(element.shadowRoot.querySelector('button').textContent.trim()).to.be('offer me')
+	})
+
+	it('Default mount type is "ask"', () => {
+		const element = getElement(ELEMENT)[0]
+		element.removeAttribute('data-type')
+		expect(element.shadowRoot.querySelector('button').textContent.trim()).to.be('ask me')
 	})
 
 	after(() => {

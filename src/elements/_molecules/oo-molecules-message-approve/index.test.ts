@@ -8,7 +8,7 @@ import store from '../../../lib/local-storage'
 import querySlotSelector from '../../../lib/test/query-slot-selector'
 import event from '../../../lib/test/event'
 
-const ELEMENT = 'oo-molecules-message-permission'
+const ELEMENT = 'oo-molecules-message-approve'
 
 describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	before(() => {

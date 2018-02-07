@@ -5,15 +5,15 @@ import {OOProject} from '../type/oo-project'
 
 interface ProjectOptionsPost {
 	uid: string,
-	offer_permission: boolean
+	approve: boolean
 }
 
 export default async (options: ProjectOptionsPost): Promise<OOAPIResult<OOProject>> => {
-	const {uid, offer_permission} = options
+	const {uid, approve} = options
 	const extensions: Array<OOExtension> = [
 		{
-			key: 'offer_permission',
-			value: offer_permission
+			key: 'approve',
+			value: approve
 		}
 	]
 

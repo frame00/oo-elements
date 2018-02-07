@@ -4,7 +4,7 @@ import insertElement from '../../../lib/test/insert-element'
 import getElement from '../../../lib/test/get-element'
 import removeElement from '../../../lib/test/remove-element'
 
-const ELEMENT = 'oo-organisms-offer-created'
+const ELEMENT = 'oo-organisms-ask-created'
 
 describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	before(() => {
