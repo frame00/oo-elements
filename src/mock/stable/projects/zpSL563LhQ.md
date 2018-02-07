@@ -21,14 +21,6 @@ access-control-allow-methods = "GET, PATCH"
       {
         "key": "body",
         "value": "test"
-			},
-			{
-				"key": "offer_amount",
-				"value": "10.00"
-			},
-			{
-				"key": "offer_currency",
-				"value": "usd"
 			}
     ]
   }

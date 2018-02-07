@@ -16,7 +16,7 @@ x-oo-count = 4
         "value": "test"
       },
       {
-        "key": "offer_permission",
+        "key": "approve",
         "value": true
       },
       {
@@ -26,14 +26,6 @@ x-oo-count = 4
       {
         "key": "body",
         "value": "test"
-			},
-			{
-				"key": "offer_amount",
-				"value": "10.00"
-			},
-			{
-				"key": "offer_currency",
-				"value": "usd"
 			}
     ]
   },
@@ -46,7 +38,7 @@ x-oo-count = 4
         "value": "xxx"
       },
       {
-        "key": "offer_permission",
+        "key": "approve",
         "value": true
       },
       {
@@ -56,14 +48,6 @@ x-oo-count = 4
       {
         "key": "body",
         "value": "test"
-			},
-			{
-				"key": "offer_amount",
-				"value": "10.00"
-			},
-			{
-				"key": "offer_currency",
-				"value": "usd"
 			}
     ]
   }

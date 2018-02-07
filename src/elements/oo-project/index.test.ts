@@ -50,23 +50,39 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			expect(element.shadowRoot.querySelector('oo-empty')).to.be.ok()
 		})
 
-		describe('If "offer_permission" is not true <oo-message-form> is not displayed', () => {
-			it('"offer_permission" is true', async () => {
+		describe('If "approve" is not true, or if "scope" is not public <oo-message-form> is not displayed', () => {
+			it('"approve" is true', async () => {
+				store.uid = 'test-user'
 				const element = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
 				await sleep(100)
 				const form = element.shadowRoot.querySelector('oo-message-form')
 				expect(form).to.be.ok()
 			})
 
-			it('"offer_permission" is false', async () => {
+			it('"approve" is false', async () => {
 				const element = insertElement(ELEMENT, new Map([['data-uid', 'yV7094Ol1Z']]))
 				await sleep(100)
 				const form = element.shadowRoot.querySelector('oo-message-form')
 				expect(form).to.not.be.ok()
 			})
 
-			it('"offer_permission" is undefined', async () => {
+			it('"approve" is undefined', async () => {
 				const element = insertElement(ELEMENT, new Map([['data-uid', 'zpSL563LhQ']]))
+				await sleep(100)
+				const form = element.shadowRoot.querySelector('oo-message-form')
+				expect(form).to.not.be.ok()
+			})
+
+			it('"scope" is public', async () => {
+				const element = insertElement(ELEMENT, new Map([['data-uid', '97kmBTRJ4K']]))
+				await sleep(100)
+				const form = element.shadowRoot.querySelector('oo-message-form')
+				expect(form).to.be.ok()
+			})
+
+			it('"scope" is public, but no logged in', async () => {
+				store.clear()
+				const element = insertElement(ELEMENT, new Map([['data-uid', '97kmBTRJ4K']]))
 				await sleep(100)
 				const form = element.shadowRoot.querySelector('oo-message-form')
 				expect(form).to.not.be.ok()

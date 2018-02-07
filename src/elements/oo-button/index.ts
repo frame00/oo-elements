@@ -1,36 +1,46 @@
 import {html, render} from '../../lib/html'
 import badge from '../_atoms/oo-atoms-badge'
-import offerModal from '../_organisms/oo-organisms-offer-modal'
+import offerModal from '../_organisms/oo-organisms-ask-modal'
 import define from '../../lib/define'
 
 define('oo-atoms-badge', badge)
-define('oo-organisms-offer-modal', offerModal)
+define('oo-organisms-ask-modal', offerModal)
 
 type Size = 'small' | 'medium'
+type Type = 'ask' | 'offer'
 
 const ATTR = {
 	DATA_SIZE: 'data-size',
-	DATA_IAM: 'data-iam'
+	DATA_IAM: 'data-iam',
+	DATA_TYPE: 'data-type'
 }
-const asValidString = (data: string): Size => {
+const asSize = (data: string): Size => {
 	if (data === 'small' || data === 'medium') {
 		return data
 	}
 	return 'medium'
 }
+const asType = (data: string): Type => {
+	if (data === 'ask' || data === 'offer') {
+		return data
+	}
+	return 'ask'
+}
 
 const iam: WeakMap<object, string> = new WeakMap()
 const size: WeakMap<object, Size> = new WeakMap()
 const open: WeakMap<object, boolean> = new WeakMap()
+const type: WeakMap<object, Type> = new WeakMap()
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
-		return [ATTR.DATA_SIZE, ATTR.DATA_IAM]
+		return [ATTR.DATA_SIZE, ATTR.DATA_IAM, ATTR.DATA_TYPE]
 	}
 
 	constructor() {
 		super()
 		open.set(this, false)
+		type.set(this, 'ask')
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -39,7 +49,7 @@ export default class extends HTMLElement {
 		}
 		switch(attr) {
 			case ATTR.DATA_SIZE:
-				size.set(this, asValidString(next))
+				size.set(this, asSize(next))
 				break
 			case ATTR.DATA_IAM:
 				if (!next) {
@@ -47,13 +57,18 @@ export default class extends HTMLElement {
 				}
 				iam.set(this, next)
 				break
+			case ATTR.DATA_TYPE:
+				type.set(this, asType(next))
+				break
 			default:
 				break
 		}
 		this.render()
 	}
 
-	html(s: string, i: string, o: boolean) {
+	html(s: string, i: string, o: boolean, t: Type) {
+		const label = `${t} me`
+
 		return html`
 		<style>
 			@import '../../style/_reset-button.css';
@@ -69,6 +84,7 @@ export default class extends HTMLElement {
 				overflow: hidden;
 				transition-property: box-shadow;
 				transition-duration: 0.2s;
+				text-transform: capitalize;
 			}
 			button {
 				&:hover {
@@ -103,9 +119,9 @@ export default class extends HTMLElement {
 		</style>
 		<button title='Click to send me an offer' class$='${s}' on-click='${() => this.onClickButton()}'>
 			<oo-atoms-badge data-size$='${s}'></oo-atoms-badge>
-			<div class=text>Offer Me</div>
+			<div class=text>${label}</div>
 		</button>
-		<oo-organisms-offer-modal data-iam$='${i}' data-open$='${o ? 'enabled' : 'disabled'}' on-close='${() => this.onModalClose()}'></oo-organisms-offer-modal>
+		<oo-organisms-ask-modal data-iam$='${i}' data-open$='${o ? 'enabled' : 'disabled'}' on-close='${() => this.onModalClose()}'></oo-organisms-ask-modal>
 		`
 	}
 
@@ -113,7 +129,7 @@ export default class extends HTMLElement {
 		if (!iam.get(this)) {
 			return
 		}
-		render(this.html(size.get(this), iam.get(this), open.get(this)), this)
+		render(this.html(size.get(this), iam.get(this), open.get(this), type.get(this)), this)
 	}
 
 	onClickButton() {

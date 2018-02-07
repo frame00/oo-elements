@@ -1,32 +1,60 @@
 import {html, render} from '../../lib/html'
-import getUser from '../../lib/oo-api-get-user'
-import isSuccess from '../../lib/is-api-success'
-import toMap from '../../lib/extensions-to-map'
-import getPricePerHour from '../../lib/get-price-per-hour'
-import selectHour from '../_atoms/oo-atoms-select-hour'
+import offerSignIn from '../_organisms/oo-organisms-ask-step-sign-in'
+import created from '../_organisms/oo-organisms-ask-created'
+import profile from '../oo-profile'
+import ask from '../oo-ask-form'
 import define from '../../lib/define'
-import {Hour} from '../../type/hour'
-import {LocaledCurrency} from '../../type/currency'
+import createProject from '../../lib/oo-api-create-project'
+import {OOAPIResult} from '../../type/oo-api'
+import {OOProject} from '../../type/oo-project'
+import empty from '../oo-empty'
+import weakMap from '../../lib/weak-map'
+import getUser from '../../lib/oo-api-get-user'
+import {HTMLElementEventChangeAsk} from '../../type/event'
+import {Scope} from '../../type/scope'
+import {Currency} from '../../type/currency'
 
-define('oo-atoms-select-hour', selectHour)
-
-interface HTMLElementEvent<T extends HTMLElement> extends Event {
-	target: T,
-	currentTarget: T
+interface ProjectCreatedEvent extends CustomEvent {
+	detail: OOAPIResult<OOProject>
 }
+
+define('oo-organisms-ask-step-sign-in', offerSignIn)
+define('oo-profile', profile)
+define('oo-ask-form', ask)
+define('oo-organisms-ask-created', created)
+define('oo-empty', empty)
 
 const ATTR = {
 	DATA_IAM: 'data-iam'
 }
 const EVENT = {
-	USER_UPDATED: new Event('userupdated'),
-	CHANGED: detail => new CustomEvent('changed', {detail})
+	PROJECT_CREATED: detail => new CustomEvent('projectcreated', {detail}),
+	PROJECT_CREATION_FAILED: detail => new CustomEvent('projectcreationfailed', {detail})
 }
 
-const iam: WeakMap<object, string> = new WeakMap()
-const pricing: WeakMap<object, LocaledCurrency> = new WeakMap()
-const hour: WeakMap<object, Hour> = new WeakMap()
-const message: WeakMap<object, string> = new WeakMap()
+const iam = weakMap<string>()
+const message = weakMap<string>()
+const offerer = weakMap<string>()
+const stateScope = weakMap<Scope>()
+const stateCurrency = weakMap<Currency>()
+const authorization = weakMap<boolean>()
+const userFound = weakMap<boolean>()
+
+const validation = (el: HTMLElement): boolean => {
+	const users = [iam.get(el), offerer.get(el)]
+	if (users.some(i => i === undefined)) {
+		return false
+	}
+	const body = message.get(el)
+	if (body === undefined || body.match(/./) === null) {
+		return false
+	}
+	const author = offerer.get(el)
+	if (author === undefined) {
+		return false
+	}
+	return true
+}
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
@@ -35,25 +63,7 @@ export default class extends HTMLElement {
 
 	constructor() {
 		super()
-		hour.set(this, 1)
-		message.set(this, '')
-	}
-
-	get amount(): string {
-		const prc = pricing.get(this)
-		if (prc === undefined) {
-			return undefined
-		}
-		const h = hour.get(this)
-		if (h === 'pend') {
-			return h
-		}
-		const {price} = prc
-		return (price * h).toFixed(2)
-	}
-
-	get message() {
-		return message.get(this)
+		authorization.set(this, false)
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -64,90 +74,220 @@ export default class extends HTMLElement {
 		this.fetchUserData()
 	}
 
-	html(a: string, p: LocaledCurrency) {
-		if (a === undefined) {
-			return html``
-		}
-		const {currency, sign} = p
-		const amountTag = () => {
-			if (a === 'pend') {
-				return html`<p class=amount>to be determined</p>`
+	connectedCallback() {
+		this.addEventListener('projectcreated', (e: ProjectCreatedEvent) => {
+			const {detail} = e
+			const {response} = detail
+			if (Array.isArray(response)) {
+				const [project] = response
+				render(this.htmlForProjectCreated(project.uid), this)
 			}
-			return html`<p class=amount><span class=currency>${currency}</span> ${sign}${a}</p>`
+		})
+	}
+
+	html(found: boolean, uid: string, auth: boolean, sender: string) {
+		if (found === false) {
+			return html`
+			<oo-empty></oo-empty>
+			`
 		}
+
+		const step = (() => {
+			if (sender !== undefined && sender !== '') {
+				return 'submit'
+			}
+			return auth ? 'signin' : 'ask'
+		})()
 		return html`
 		<style>
-			@import '../../style/_reset-textare.css';
-			@import '../../style/_mixin-textarea.css';
+			@import '../../style/_reset-button.css';
+			@import '../../style/_vars-font-family.css';
+			@import '../../style/_vars-color-yellow.css';
 			:host {
 				display: block;
 			}
-			.amount {
+			:root {
+				--authorization: white;
+				--submit: color(var(--yellow) blend(red 10%));
+			}
+			.container {
+				width: 100%;
+				display: flex;
+				flex-wrap: wrap;
+			}
+			.column {
+				display: flex;
+				width: 100%;
+				justify-content: flex-start;
+				@media (min-width: 768px) {
+					width: 50%;
+				}
+				@media (min-width: 1024px) {
+				}
+				&.form {
+					flex-direction: column;
+				}
+			}
+			oo-profile,
+			oo-ask-form {
+				padding: 2rem 1rem;
+				width: 100%;
+				box-sizing: border-box;
+			}
+			button {
+				width: 100%;
+				padding: 1rem;
+				font-size: 1.2rem;
+				border-radius: 5px;
+			}
+			.steps {
+				width: 100%;
+				overflow: hidden;
+				ul {
+					width: 300%;
+					display: flex;
+					margin: 0;
+					padding: 0;
+					list-style: none;
+					transition: transform 0.5s;
+					&.ask {
+						transform: translateX(0);
+					}
+					&.signin {
+						transform: translateX(calc(-100% / 3));
+					}
+					&.submit {
+						transform: translateX(calc(-100% / 3 * 2));
+					}
+				}
+			}
+			.step {
+				width: 100%;
+				padding: 2rem 1rem;
+				.authorization {
+					border: 0.5px solid #ccc;
+					background: var(--authorization);
+					&:hover {
+						background: color(var(--authorization) blackness(+10%));
+					}
+				}
+				.signin {}
+				.submit {
+					border: 0.5px solid color(var(--submit) blackness(+10%));
+					background: var(--submit);
+					&:hover {
+						background: color(var(--submit) blackness(+10%));
+					}
+				}
+			}
+			.description {
 				margin: 1rem 0;
-				text-transform: uppercase;
-				font-size: 1.6rem;
-				font-weight: 300;
-				text-align: center;
-			}
-			.currency {
-				font-weight: 100;
-			}
-			textarea {
-				@mixin textarea;
+				font-size: 0.8rem;
+				font-family: var(--font-family);
 			}
 		</style>
-		<oo-atoms-select-hour on-changehour='${e => this.onHourChange(e)}'></oo-atoms-select-hour>
-		${amountTag()}
-		<form on-change='${e => this.onMessageChange(e)}' on-submit='${e => this.onMessageChange(e)}'>
-			<textarea name=message placeholder='What do you offer?'></textarea>
-		</form>
+		<div class=container>
+			<div class=column>
+				<oo-profile data-iam$='${uid}'></oo-profile>
+			</div>
+			<div class='column form'>
+				<oo-ask-form data-iam$='${uid}' on-changed='${e => this.onAskChanged(e)}'></oo-ask-form>
+				<div class=steps>
+					<ul class$='${step}'>
+						<li class=step>
+							<button class=authorization on-click='${() => this.onAuthorization()}'>Authenticate</button>
+							<p class=description>Next step: Authenticate account with Google, Facebook or GitHub.</p>
+						</li>
+						<li class=step>
+							<oo-organisms-ask-step-sign-in class=signin on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-organisms-ask-step-sign-in>
+						</li>
+						<li class=step>
+							<button class=submit on-click='${() => this.createProject()}'>Ask</button>
+							<p class=description>Just send it! In the case of a "Private", please pay the initial fee after being accepted by this person.</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		`
+	}
+
+	htmlForProjectCreated(uid: string) {
+		return html`
+		<style>
+			:host {
+				display: block;
+				height: 100%;
+			}
+			oo-organisms-ask-created {
+				height: 100%;
+			}
+		</style>
+		<oo-organisms-ask-created data-uid$='${uid}'></oo-organisms-ask-created>
 		`
 	}
 
 	render() {
-		render(this.html(this.amount, pricing.get(this)), this)
-	}
-
-	onHourChange(e: CustomEvent) {
-		const {detail} = e
-		hour.set(this, detail)
-		this.render()
-		this.dispatchChanged()
-	}
-
-	onMessageChange(e: HTMLElementEvent<HTMLFormElement>) {
-		const {target} = e
-		const {value} = target
-		if (value) {
-			message.set(this, value)
-			this.dispatchChanged()
-		}
+		render(this.html(userFound.get(this), iam.get(this), authorization.get(this), offerer.get(this)), this)
 	}
 
 	async fetchUserData() {
-		const res = await getUser(iam.get(this))
-		if (isSuccess(res.status) && Array.isArray(res.response)) {
-			const [item] = res.response
-			const ext = toMap(item)
-			const localed = getPricePerHour(ext.get('price_per_hour'))
-			pricing.set(this, localed)
-			message.set(this, '')
-			this.render()
+		const api = await getUser(iam.get(this))
+		const {response} = api
+		if (Array.isArray(response)) {
+			userFound.set(this, true)
 		} else {
-			pricing.delete(this)
-			message.delete(this)
-			this.render()
+			userFound.set(this, false)
 		}
-		this.dispatchEvent(EVENT.USER_UPDATED)
+		this.render()
 	}
 
-	dispatchChanged() {
-		const {currency} = pricing.get(this)
-		const detail = {
-			amount: this.amount,
-			currency,
-			message: this.message
+	onAskChanged(e: HTMLElementEventChangeAsk<HTMLElement>) {
+		const {detail} = e
+		const {message: m, scope, currency} = detail
+		message.set(this, m)
+		stateScope.set(this, scope)
+		stateCurrency.set(this, currency)
+	}
+
+	onAuthorization() {
+		authorization.set(this, true)
+		this.render()
+	}
+
+	onSignedIn(e: CustomEvent) {
+		const {detail} = e
+		const {uid} = detail
+		offerer.set(this, uid)
+		this.render()
+	}
+
+	onSignedInError(e) {
+		console.log(e)
+	}
+
+	async createProject() {
+		if (validation(this) === false) {
+			return
 		}
-		this.dispatchEvent(EVENT.CHANGED(detail))
+		const users = [iam.get(this), offerer.get(this)]
+		const body = message.get(this)
+		const author = offerer.get(this)
+		const scope = stateScope.get(this)
+		const currency = stateCurrency.get(this)
+		const project = await createProject({
+			users,
+			body,
+			author,
+			scope,
+			currency,
+			assignee: iam.get(this)
+		})
+		const {response} = project
+		if (Array.isArray(response)) {
+			this.dispatchEvent(EVENT.PROJECT_CREATED(project))
+		} else {
+			this.dispatchEvent(EVENT.PROJECT_CREATION_FAILED(project))
+		}
 	}
 }

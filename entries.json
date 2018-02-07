@@ -45,17 +45,17 @@
     ]
   },
   {
-    "name": "oo-offer",
+    "name": "oo-ask",
     "build": [
       {
         "format": "umd",
-        "file": "src/elements/oo-offer/define.ts",
-        "dest": "dist/oo-offer.js"
+        "file": "src/elements/oo-ask/define.ts",
+        "dest": "dist/oo-ask.js"
       },
       {
         "format": "es",
-        "file": "src/elements/oo-offer/index.ts",
-        "dest": "dist/oo-offer.mjs"
+        "file": "src/elements/oo-ask/index.ts",
+        "dest": "dist/oo-ask.mjs"
       }
     ]
   },
@@ -105,17 +105,17 @@
     ]
   },
   {
-    "name": "oo-ask",
+    "name": "oo-ask-form",
     "build": [
       {
         "format": "umd",
-        "file": "src/elements/oo-ask/define.ts",
-        "dest": "dist/oo-ask.js"
+        "file": "src/elements/oo-ask-form/define.ts",
+        "dest": "dist/oo-ask-form.js"
       },
       {
         "format": "es",
-        "file": "src/elements/oo-ask/index.ts",
-        "dest": "dist/oo-ask.mjs"
+        "file": "src/elements/oo-ask-form/index.ts",
+        "dest": "dist/oo-ask-form.mjs"
       }
     ]
   },
