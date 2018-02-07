@@ -36,7 +36,7 @@ export default class extends HTMLElement {
 		this.fetchUserData()
 	}
 
-	html(f: boolean, n: string, p: string, s: string) {
+	html(f: boolean, uid: string, n: string, p: string, s: string) {
 		if (f === false) {
 			return html`
 			<oo-empty></oo-empty>
@@ -56,6 +56,10 @@ export default class extends HTMLElement {
 			}
 			p {
 				margin: 0;
+			}
+			a {
+				color: black;
+				font-weight: 700;
 			}
 			.name,
 			.skills {
@@ -111,6 +115,9 @@ export default class extends HTMLElement {
 				<div class=picture style$='background-image: url(${img})'></div>
 				<p class$='name ${n ? '' : 'empty'}'>${n}</p>
 			</header>
+			<article>
+				<p><a href$='/${uid}/projects'>Public questions</a></p>
+			</article>
 			<div class=skills>
 				<div class=heading>What I can do</div>
 				${repeat(skills, sk => html`<p>${sk}</p>`)}
@@ -120,7 +127,7 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(found.get(this), name.get(this), picture.get(this), skill.get(this)), this)
+		render(this.html(found.get(this), iam.get(this), name.get(this), picture.get(this), skill.get(this)), this)
 	}
 
 	async fetchUserData() {
