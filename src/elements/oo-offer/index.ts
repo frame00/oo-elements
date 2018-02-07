@@ -5,13 +5,13 @@ import profile from '../oo-profile'
 import ask from '../oo-ask'
 import define from '../../lib/define'
 import createProject from '../../lib/oo-api-create-project'
-import {Currency} from '../../type/currency'
-import success from '../../lib/is-api-success'
 import {OOAPIResult} from '../../type/oo-api'
 import {OOProject} from '../../type/oo-project'
 import empty from '../oo-empty'
 import weakMap from '../../lib/weak-map'
 import getUser from '../../lib/oo-api-get-user'
+import {HTMLElementEventChangeAsk} from '../../type/event'
+import {Scope} from '../../type/scope'
 
 interface ProjectCreatedEvent extends CustomEvent {
 	detail: OOAPIResult<OOProject>
@@ -32,10 +32,9 @@ const EVENT = {
 }
 
 const iam = weakMap<string>()
-const amount = weakMap<string>()
 const message = weakMap<string>()
 const offerer = weakMap<string>()
-const currency = weakMap<Currency>()
+const stateScope = weakMap<Scope>()
 const authorization = weakMap<boolean>()
 const userFound = weakMap<boolean>()
 
@@ -241,12 +240,11 @@ export default class extends HTMLElement {
 		this.render()
 	}
 
-	onAskChanged(e: CustomEvent) {
+	onAskChanged(e: HTMLElementEventChangeAsk<HTMLElement>) {
 		const {detail} = e
-		const {amount: a, message: m, currency: c} = detail
-		amount.set(this, a)
+		const {message: m, scope} = detail
 		message.set(this, m)
-		currency.set(this, c)
+		stateScope.set(this, scope)
 	}
 
 	onAuthorization() {
@@ -272,17 +270,16 @@ export default class extends HTMLElement {
 		const users = [iam.get(this), offerer.get(this)]
 		const body = message.get(this)
 		const author = offerer.get(this)
-		const pend = amount.get(this) === 'pend'
+		const scope = stateScope.get(this)
 		const project = await createProject({
 			users,
 			body,
 			author,
-			offer_amount_pend: pend,
-			offer_amount: amount.get(this),
-			offer_currency: currency.get(this),
-			offer_assignee: iam.get(this)
+			scope,
+			assignee: iam.get(this)
 		})
-		if (success(project.status)) {
+		const {response} = project
+		if (Array.isArray(response)) {
 			this.dispatchEvent(EVENT.PROJECT_CREATED(project))
 		} else {
 			this.dispatchEvent(EVENT.PROJECT_CREATION_FAILED(project))

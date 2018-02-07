@@ -1,32 +1,26 @@
 import {html, render} from '../../lib/html'
-import getUser from '../../lib/oo-api-get-user'
-import isSuccess from '../../lib/is-api-success'
-import toMap from '../../lib/extensions-to-map'
-import getPricePerHour from '../../lib/get-price-per-hour'
-import selectHour from '../_atoms/oo-atoms-select-hour'
+import selectScope from '../_atoms/oo-atoms-select-scope'
 import define from '../../lib/define'
-import {Hour} from '../../type/hour'
-import {LocaledCurrency} from '../../type/currency'
+import weakMap from '../../lib/weak-map'
+import {Scope} from '../../type/scope'
+import {ChangeAskDetail, ChangeAsk, HTMLElementEventChangeScope} from '../../type/event'
 
-define('oo-atoms-select-hour', selectHour)
+define('oo-atoms-select-scope', selectScope)
 
 interface HTMLElementEvent<T extends HTMLElement> extends Event {
-	target: T,
-	currentTarget: T
+	target: T
 }
 
 const ATTR = {
 	DATA_IAM: 'data-iam'
 }
 const EVENT = {
-	USER_UPDATED: new Event('userupdated'),
-	CHANGED: detail => new CustomEvent('changed', {detail})
+	CHANGED: (detail: ChangeAskDetail): ChangeAsk => new CustomEvent('changed', {detail})
 }
 
-const iam: WeakMap<object, string> = new WeakMap()
-const pricing: WeakMap<object, LocaledCurrency> = new WeakMap()
-const hour: WeakMap<object, Hour> = new WeakMap()
-const message: WeakMap<object, string> = new WeakMap()
+const iam = weakMap<string>()
+const message = weakMap<string>()
+const stateScope = weakMap<Scope>()
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
@@ -35,25 +29,15 @@ export default class extends HTMLElement {
 
 	constructor() {
 		super()
-		hour.set(this, 1)
 		message.set(this, '')
-	}
-
-	get amount(): string {
-		const prc = pricing.get(this)
-		if (prc === undefined) {
-			return undefined
-		}
-		const h = hour.get(this)
-		if (h === 'pend') {
-			return h
-		}
-		const {price} = prc
-		return (price * h).toFixed(2)
 	}
 
 	get message() {
 		return message.get(this)
+	}
+
+	get scope() {
+		return stateScope.get(this)
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -61,20 +45,10 @@ export default class extends HTMLElement {
 			return
 		}
 		iam.set(this, next)
-		this.fetchUserData()
+		this.render()
 	}
 
-	html(a: string, p: LocaledCurrency) {
-		if (a === undefined) {
-			return html``
-		}
-		const {currency, sign} = p
-		const amountTag = () => {
-			if (a === 'pend') {
-				return html`<p class=amount>to be determined</p>`
-			}
-			return html`<p class=amount><span class=currency>${currency}</span> ${sign}${a}</p>`
-		}
+	html() {
 		return html`
 		<style>
 			@import '../../style/_reset-textare.css';
@@ -92,25 +66,29 @@ export default class extends HTMLElement {
 			.currency {
 				font-weight: 100;
 			}
+			oo-atoms-select-scope {
+				overflow: hidden;
+				border-radius: 5px;
+				margin-bottom: 1rem;
+			}
 			textarea {
 				@mixin textarea;
 			}
 		</style>
-		<oo-atoms-select-hour on-changehour='${e => this.onHourChange(e)}'></oo-atoms-select-hour>
-		${amountTag()}
+		<oo-atoms-select-scope on-changescope='${e => this.onScopeChange(e)}'></oo-atoms-select-scope>
 		<form on-change='${e => this.onMessageChange(e)}' on-submit='${e => this.onMessageChange(e)}'>
-			<textarea name=message placeholder='What do you offer?'></textarea>
+			<textarea name=message placeholder='Would you like to ask me?'></textarea>
 		</form>
 		`
 	}
 
 	render() {
-		render(this.html(this.amount, pricing.get(this)), this)
+		render(this.html(), this)
 	}
 
-	onHourChange(e: CustomEvent) {
+	onScopeChange(e: HTMLElementEventChangeScope<HTMLElement>) {
 		const {detail} = e
-		hour.set(this, detail)
+		stateScope.set(this, detail.scope)
 		this.render()
 		this.dispatchChanged()
 	}
@@ -124,29 +102,10 @@ export default class extends HTMLElement {
 		}
 	}
 
-	async fetchUserData() {
-		const res = await getUser(iam.get(this))
-		if (isSuccess(res.status) && Array.isArray(res.response)) {
-			const [item] = res.response
-			const ext = toMap(item)
-			const localed = getPricePerHour(ext.get('price_per_hour'))
-			pricing.set(this, localed)
-			message.set(this, '')
-			this.render()
-		} else {
-			pricing.delete(this)
-			message.delete(this)
-			this.render()
-		}
-		this.dispatchEvent(EVENT.USER_UPDATED)
-	}
-
 	dispatchChanged() {
-		const {currency} = pricing.get(this)
 		const detail = {
-			amount: this.amount,
-			currency,
-			message: this.message
+			message: this.message,
+			scope: this.scope
 		}
 		this.dispatchEvent(EVENT.CHANGED(detail))
 	}

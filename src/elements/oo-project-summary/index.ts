@@ -17,9 +17,7 @@ define('oo-atoms-datetime', datetime)
 interface HTMLOptions {
 	created: number,
 	body: string,
-	offerer: string,
-	amount: string,
-	currency: Currency
+	author: string
 }
 
 const ATTR = {
@@ -28,9 +26,7 @@ const ATTR = {
 
 const projectUid: WeakMap<object, string> = new WeakMap()
 const projectBody: WeakMap<object, string> = new WeakMap()
-const projectOfferer: WeakMap<object, string> = new WeakMap()
-const projectOfferAmount: WeakMap<object, string> = new WeakMap()
-const projectOfferCurrency: WeakMap<object, Currency> = new WeakMap()
+const projectAuthor: WeakMap<object, string> = new WeakMap()
 const projectCreated: WeakMap<object, number> = new WeakMap()
 
 export default class extends HTMLElement {
@@ -47,8 +43,7 @@ export default class extends HTMLElement {
 	}
 
 	html(opts: HTMLOptions) {
-		const {created, body, offerer, amount, currency} = opts
-		const sign = currencyToSign(currency)
+		const {created, body, author} = opts
 		const lines = lineBreak(body)
 		return html`
 		<style>
@@ -96,16 +91,9 @@ export default class extends HTMLElement {
 					${repeat(lines, line => html`<p>${line}</p>`)}
 				</section>
 				<footer slot=footer>
-					<oo-atoms-user-name data-iam$='${offerer}' data-size=small></oo-atoms-user-name>
+					<oo-atoms-user-name data-iam$='${author}' data-size=small></oo-atoms-user-name>
 				</footer>
 			</oo-atoms-message>
-			<h2>About this offer</h2>
-			<dl>
-				<dt>Offer date</dt>
-				<dd class=date><oo-atoms-datetime data-unixtime$='${created}'></oo-atoms-datetime></dd>
-				<dt>Offer amount</dt>
-				<dd class=amount>${currency} ${sign}${amount}</dd>
-			</dl>
 		</main>
 		`
 	}
@@ -114,9 +102,7 @@ export default class extends HTMLElement {
 		render(this.html({
 			created: projectCreated.get(this),
 			body: projectBody.get(this),
-			offerer: projectOfferer.get(this),
-			amount: projectOfferAmount.get(this),
-			currency: projectOfferCurrency.get(this)
+			author: projectAuthor.get(this)
 		}), this)
 	}
 
@@ -128,14 +114,10 @@ export default class extends HTMLElement {
 			const mapedExtensions = toMap(item)
 			projectCreated.set(this, item.created)
 			projectBody.set(this, mapedExtensions.get('body'))
-			projectOfferer.set(this, mapedExtensions.get('author'))
-			projectOfferAmount.set(this, mapedExtensions.get('offer_amount'))
-			projectOfferCurrency.set(this, mapedExtensions.get('offer_currency'))
+			projectAuthor.set(this, mapedExtensions.get('author'))
 		} else {
 			projectBody.delete(this)
-			projectOfferer.delete(this)
-			projectOfferAmount.delete(this)
-			projectOfferCurrency.delete(this)
+			projectAuthor.delete(this)
 		}
 		this.render()
 	}

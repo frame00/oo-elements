@@ -1,30 +1,31 @@
 import {repeat} from 'lit-html/lib/repeat'
 import {html, render} from '../../../lib/html'
-import {Hour} from '../../../type/hour'
+import weakMap from '../../../lib/weak-map'
+import {Scope} from '../../../type/scope'
+import {ChangeScopeDetail, ChangeScope} from '../../../type/event'
 
 const EVENT = {
-	CHANGE_HOUR: detail => new CustomEvent('changehour', {detail})
+	CHANGE_SCOPE: (detail: ChangeScopeDetail): ChangeScope => new CustomEvent('changescope', {detail})
 }
 
-const hour: WeakMap<object, Hour> = new WeakMap()
+const stateScope = weakMap<Scope>()
 
 export default class extends HTMLElement {
-	get hour() {
-		return hour.get(this)
+	get scope() {
+		return stateScope.get(this)
 	}
 
 	constructor() {
 		super()
-		hour.set(this, 1)
+		stateScope.set(this, 'public')
 		this.render()
 	}
 
-	html(h: Hour) {
-		const values: Array<Hour> = [1, 2, 3, 'pend']
+	html(scope: Scope) {
+		const values: Array<Scope> = ['public', 'private']
 		return html`
 		<style>
 			@import '../../../style/_reset-button.css';
-			@import '../../../style/_mixin-heading.css';
 			@import '../../../style/_vars-font-family.css';
 			@import '../../../style/_vars-color-yellow.css';
 			:host {
@@ -37,13 +38,9 @@ export default class extends HTMLElement {
 				list-style: none;
 				justify-content: space-around;
 				li {
-					width: calc(100% / 4);
+					width: 50%;
 					display: flex;
 					justify-content: center;
-					border-left: 1px solid whitesmoke;
-					&:first-child {
-						border: 0;
-					}
 				}
 			}
 			button {
@@ -51,7 +48,9 @@ export default class extends HTMLElement {
 				height: 4rem;
 				font-size: 1.2rem;
 				font-weight: 400;
+				text-transform: capitalize;
 				font-family: var(--font-family);
+				background: #f1eedf;
 			}
 			.active {
 				button {
@@ -59,22 +58,14 @@ export default class extends HTMLElement {
 					background: var(--yellow);
 					color: black;
 				}
-				&,
-				+ li {
-					border: 0;
-				}
-			}
-			.heading {
-				@mixin heading;
 			}
 		</style>
-		<div class=heading>Hours?</div>
 		<from>
 			<ul>
 				${repeat(values, item => html`
-				<li class$=${item === h ? 'active' : ''}>
-					<button data-hour$=${item} on-click='${() => this.onButtonClick(item)}'>
-						${item === 'pend' ? 'TBD' : item}
+				<li class$=${item === scope ? 'active' : ''}>
+					<button data-scope$='${item}' on-click='${() => this.onButtonClick(item)}'>
+						${item}
 					</button>
 				</li>`)}
 			</ul>
@@ -83,17 +74,16 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(this.hour), this)
+		render(this.html(this.scope), this)
 	}
 
-	onButtonClick(item: Hour) {
-		const h = item === 'pend' ? item : ~~item
-		hour.set(this, h)
+	onButtonClick(item: Scope) {
+		stateScope.set(this, item)
 		this.render()
 		this.dispatch()
 	}
 
 	dispatch() {
-		this.dispatchEvent(EVENT.CHANGE_HOUR(this.hour))
+		this.dispatchEvent(EVENT.CHANGE_SCOPE({scope: this.scope}))
 	}
 }
