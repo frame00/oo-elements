@@ -26,11 +26,11 @@ import {
 
 define('oo-button', ooButton)
 define('oo-modal', ooModal)
-define('oo-offer', ooOffer)
+define('oo-ask', ooOffer)
 define('oo-sign-in', ooSignIn)
 define('oo-sign-out', ooSignOut)
 define('oo-profile', ooProfile)
-define('oo-ask', ooAsk)
+define('oo-ask-form', ooAsk)
 define('oo-project', ooProject)
 define('oo-project-summary', ooProjectSummary)
 define('oo-project-messages', ooProjectMessages)

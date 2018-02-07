@@ -1,26 +1,58 @@
 import {html, render} from '../../lib/html'
-import selectScope from '../_atoms/oo-atoms-select-scope'
+import offerSignIn from '../_organisms/oo-organisms-offer-step-sign-in'
+import created from '../_organisms/oo-organisms-offer-created'
+import profile from '../oo-profile'
+import ask from '../oo-ask-form'
 import define from '../../lib/define'
+import createProject from '../../lib/oo-api-create-project'
+import {OOAPIResult} from '../../type/oo-api'
+import {OOProject} from '../../type/oo-project'
+import empty from '../oo-empty'
 import weakMap from '../../lib/weak-map'
+import getUser from '../../lib/oo-api-get-user'
+import {HTMLElementEventChangeAsk} from '../../type/event'
 import {Scope} from '../../type/scope'
-import {ChangeAskDetail, ChangeAsk, HTMLElementEventChangeScope} from '../../type/event'
 
-define('oo-atoms-select-scope', selectScope)
-
-interface HTMLElementEvent<T extends HTMLElement> extends Event {
-	target: T
+interface ProjectCreatedEvent extends CustomEvent {
+	detail: OOAPIResult<OOProject>
 }
+
+define('oo-organisms-offer-step-sign-in', offerSignIn)
+define('oo-profile', profile)
+define('oo-ask-form', ask)
+define('oo-organisms-offer-created', created)
+define('oo-empty', empty)
 
 const ATTR = {
 	DATA_IAM: 'data-iam'
 }
 const EVENT = {
-	CHANGED: (detail: ChangeAskDetail): ChangeAsk => new CustomEvent('changed', {detail})
+	PROJECT_CREATED: detail => new CustomEvent('projectcreated', {detail}),
+	PROJECT_CREATION_FAILED: detail => new CustomEvent('projectcreationfailed', {detail})
 }
 
 const iam = weakMap<string>()
 const message = weakMap<string>()
+const offerer = weakMap<string>()
 const stateScope = weakMap<Scope>()
+const authorization = weakMap<boolean>()
+const userFound = weakMap<boolean>()
+
+const validation = (el: HTMLElement): boolean => {
+	const users = [iam.get(el), offerer.get(el)]
+	if (users.some(i => i === undefined)) {
+		return false
+	}
+	const body = message.get(el)
+	if (body === undefined || body.match(/./) === null) {
+		return false
+	}
+	const author = offerer.get(el)
+	if (author === undefined) {
+		return false
+	}
+	return true
+}
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
@@ -29,16 +61,7 @@ export default class extends HTMLElement {
 
 	constructor() {
 		super()
-		message.set(this, '')
-		stateScope.set(this, 'public')
-	}
-
-	get message() {
-		return message.get(this)
-	}
-
-	get scope() {
-		return stateScope.get(this)
+		authorization.set(this, false)
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -46,68 +69,220 @@ export default class extends HTMLElement {
 			return
 		}
 		iam.set(this, next)
-		this.render()
+		this.fetchUserData()
 	}
 
-	html() {
+	connectedCallback() {
+		this.addEventListener('projectcreated', (e: ProjectCreatedEvent) => {
+			const {detail} = e
+			const {response} = detail
+			if (Array.isArray(response)) {
+				const [project] = response
+				render(this.htmlForProjectCreated(project.uid), this)
+			}
+		})
+	}
+
+	html(found: boolean, uid: string, auth: boolean, sender: string) {
+		if (found === false) {
+			return html`
+			<oo-empty></oo-empty>
+			`
+		}
+
+		const step = (() => {
+			if (sender !== undefined && sender !== '') {
+				return 'submit'
+			}
+			return auth ? 'signin' : 'ask'
+		})()
 		return html`
 		<style>
-			@import '../../style/_reset-textare.css';
-			@import '../../style/_mixin-textarea.css';
+			@import '../../style/_reset-button.css';
+			@import '../../style/_vars-font-family.css';
+			@import '../../style/_vars-color-yellow.css';
 			:host {
 				display: block;
 			}
-			.amount {
-				margin: 1rem 0;
-				text-transform: uppercase;
-				font-size: 1.6rem;
-				font-weight: 300;
-				text-align: center;
+			:root {
+				--authorization: white;
+				--submit: color(var(--yellow) blend(red 10%));
 			}
-			.currency {
-				font-weight: 100;
+			.container {
+				width: 100%;
+				display: flex;
+				flex-wrap: wrap;
 			}
-			oo-atoms-select-scope {
-				overflow: hidden;
+			.column {
+				display: flex;
+				width: 100%;
+				justify-content: flex-start;
+				@media (min-width: 768px) {
+					width: 50%;
+				}
+				@media (min-width: 1024px) {
+				}
+				&.form {
+					flex-direction: column;
+				}
+			}
+			oo-profile,
+			oo-ask-form {
+				padding: 2rem 1rem;
+				width: 100%;
+				box-sizing: border-box;
+			}
+			button {
+				width: 100%;
+				padding: 1rem;
+				font-size: 1.2rem;
 				border-radius: 5px;
-				margin-bottom: 1rem;
 			}
-			textarea {
-				@mixin textarea;
+			.steps {
+				width: 100%;
+				overflow: hidden;
+				ul {
+					width: 300%;
+					display: flex;
+					margin: 0;
+					padding: 0;
+					list-style: none;
+					transition: transform 0.5s;
+					&.ask {
+						transform: translateX(0);
+					}
+					&.signin {
+						transform: translateX(calc(-100% / 3));
+					}
+					&.submit {
+						transform: translateX(calc(-100% / 3 * 2));
+					}
+				}
+			}
+			.step {
+				width: 100%;
+				padding: 2rem 1rem;
+				.authorization {
+					border: 0.5px solid #ccc;
+					background: var(--authorization);
+					&:hover {
+						background: color(var(--authorization) blackness(+10%));
+					}
+				}
+				.signin {}
+				.submit {
+					border: 0.5px solid color(var(--submit) blackness(+10%));
+					background: var(--submit);
+					&:hover {
+						background: color(var(--submit) blackness(+10%));
+					}
+				}
+			}
+			.description {
+				margin: 1rem 0;
+				font-size: 0.8rem;
+				font-family: var(--font-family);
 			}
 		</style>
-		<oo-atoms-select-scope on-changescope='${e => this.onScopeChange(e)}'></oo-atoms-select-scope>
-		<form on-change='${e => this.onMessageChange(e)}' on-submit='${e => this.onMessageChange(e)}'>
-			<textarea name=message placeholder='Would you like to ask me?'></textarea>
-		</form>
+		<div class=container>
+			<div class=column>
+				<oo-profile data-iam$='${uid}'></oo-profile>
+			</div>
+			<div class='column form'>
+				<oo-ask-form data-iam$='${uid}' on-changed='${e => this.onAskChanged(e)}'></oo-ask-form>
+				<div class=steps>
+					<ul class$='${step}'>
+						<li class=step>
+							<button class=authorization on-click='${() => this.onAuthorization()}'>Authenticate</button>
+							<p class=description>Next step: Authenticate account with Google, Facebook or GitHub.</p>
+						</li>
+						<li class=step>
+							<oo-organisms-offer-step-sign-in class=signin on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-organisms-offer-step-sign-in>
+						</li>
+						<li class=step>
+							<button class=submit on-click='${() => this.createProject()}'>Offer</button>
+							<p class=description>Just send it! If this person accept, please pay with credit card.</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		`
+	}
+
+	htmlForProjectCreated(uid: string) {
+		return html`
+		<style>
+			:host {
+				display: block;
+				height: 100%;
+			}
+			oo-organisms-offer-created {
+				height: 100%;
+			}
+		</style>
+		<oo-organisms-offer-created data-uid$='${uid}'></oo-organisms-offer-created>
 		`
 	}
 
 	render() {
-		render(this.html(), this)
+		render(this.html(userFound.get(this), iam.get(this), authorization.get(this), offerer.get(this)), this)
 	}
 
-	onScopeChange(e: HTMLElementEventChangeScope<HTMLElement>) {
-		const {detail} = e
-		stateScope.set(this, detail.scope)
+	async fetchUserData() {
+		const api = await getUser(iam.get(this))
+		const {response} = api
+		if (Array.isArray(response)) {
+			userFound.set(this, true)
+		} else {
+			userFound.set(this, false)
+		}
 		this.render()
-		this.dispatchChanged()
 	}
 
-	onMessageChange(e: HTMLElementEvent<HTMLFormElement>) {
-		const {target} = e
-		const {value} = target
-		if (value) {
-			message.set(this, value)
-			this.dispatchChanged()
-		}
+	onAskChanged(e: HTMLElementEventChangeAsk<HTMLElement>) {
+		const {detail} = e
+		const {message: m, scope} = detail
+		message.set(this, m)
+		stateScope.set(this, scope)
 	}
 
-	dispatchChanged() {
-		const detail = {
-			message: this.message,
-			scope: this.scope
+	onAuthorization() {
+		authorization.set(this, true)
+		this.render()
+	}
+
+	onSignedIn(e: CustomEvent) {
+		const {detail} = e
+		const {uid} = detail
+		offerer.set(this, uid)
+		this.render()
+	}
+
+	onSignedInError(e) {
+		console.log(e)
+	}
+
+	async createProject() {
+		if (validation(this) === false) {
+			return
 		}
-		this.dispatchEvent(EVENT.CHANGED(detail))
+		const users = [iam.get(this), offerer.get(this)]
+		const body = message.get(this)
+		const author = offerer.get(this)
+		const scope = stateScope.get(this)
+		const project = await createProject({
+			users,
+			body,
+			author,
+			scope,
+			assignee: iam.get(this)
+		})
+		const {response} = project
+		if (Array.isArray(response)) {
+			this.dispatchEvent(EVENT.PROJECT_CREATED(project))
+		} else {
+			this.dispatchEvent(EVENT.PROJECT_CREATION_FAILED(project))
+		}
 	}
 }

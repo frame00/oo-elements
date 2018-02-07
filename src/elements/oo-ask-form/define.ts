@@ -3,5 +3,5 @@ import define from '../../lib/define'
 import el from './index'
 
 if (stop() === false) {
-	define('oo-offer', el)
+	define('oo-ask-form', el)
 }
