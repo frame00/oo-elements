@@ -12,6 +12,7 @@ import weakMap from '../../lib/weak-map'
 import getUser from '../../lib/oo-api-get-user'
 import {HTMLElementEventChangeAsk} from '../../type/event'
 import {Scope} from '../../type/scope'
+import {Currency} from '../../type/currency'
 
 interface ProjectCreatedEvent extends CustomEvent {
 	detail: OOAPIResult<OOProject>
@@ -35,6 +36,7 @@ const iam = weakMap<string>()
 const message = weakMap<string>()
 const offerer = weakMap<string>()
 const stateScope = weakMap<Scope>()
+const stateCurrency = weakMap<Currency>()
 const authorization = weakMap<boolean>()
 const userFound = weakMap<boolean>()
 
@@ -242,9 +244,10 @@ export default class extends HTMLElement {
 
 	onAskChanged(e: HTMLElementEventChangeAsk<HTMLElement>) {
 		const {detail} = e
-		const {message: m, scope} = detail
+		const {message: m, scope, currency} = detail
 		message.set(this, m)
 		stateScope.set(this, scope)
+		stateCurrency.set(this, currency)
 	}
 
 	onAuthorization() {
@@ -271,11 +274,13 @@ export default class extends HTMLElement {
 		const body = message.get(this)
 		const author = offerer.get(this)
 		const scope = stateScope.get(this)
+		const currency = stateCurrency.get(this)
 		const project = await createProject({
 			users,
 			body,
 			author,
 			scope,
+			currency,
 			assignee: iam.get(this)
 		})
 		const {response} = project

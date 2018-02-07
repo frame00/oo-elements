@@ -4,13 +4,15 @@ import {OOUserUID} from '../type/oo-user'
 import {OOProject} from '../type/oo-project'
 import {Scope} from '../type/scope'
 import createExtensions from '../lib/create-extensions'
+import {Currency} from '../type/currency'
 
 interface ProjectOptionsPost {
 	users: Array<OOUserUID>,
 	body: string,
 	author: OOUserUID,
 	scope: Scope,
-	assignee?: OOUserUID
+	assignee?: OOUserUID,
+	currency?: Currency
 }
 
 export default async (options: ProjectOptionsPost): Promise<OOAPIResult<OOProject>> => {

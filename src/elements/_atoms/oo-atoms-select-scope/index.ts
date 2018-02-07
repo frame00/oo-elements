@@ -3,12 +3,17 @@ import {html, render} from '../../../lib/html'
 import weakMap from '../../../lib/weak-map'
 import {Scope} from '../../../type/scope'
 import {ChangeScopeDetail, ChangeScope} from '../../../type/event'
+import {Currency} from '../../../type/currency'
+import getCurrency from '../../../lib/get-currency'
+import getInitPrice from '../../../lib/get-init-price'
+import {currencyToSign} from '../../../lib/get-price-per-hour'
 
 const EVENT = {
 	CHANGE_SCOPE: (detail: ChangeScopeDetail): ChangeScope => new CustomEvent('changescope', {detail})
 }
 
 const stateScope = weakMap<Scope>()
+const stateCurrency = weakMap<Currency>()
 
 export default class extends HTMLElement {
 	get scope() {
@@ -18,11 +23,18 @@ export default class extends HTMLElement {
 	constructor() {
 		super()
 		stateScope.set(this, 'public')
+		stateCurrency.set(this, getCurrency())
 		this.render()
 	}
 
-	html(scope: Scope) {
+	html(scope: Scope, currency: Currency) {
 		const values: Array<Scope> = ['public', 'private']
+		const price = (() => {
+			const sign = currencyToSign(currency)
+			const amount = getInitPrice(currency)
+			return `${sign}${amount.amount}`
+		})()
+
 		return html`
 		<style>
 			@import '../../../style/_reset-button.css';
@@ -65,7 +77,7 @@ export default class extends HTMLElement {
 				${repeat(values, item => html`
 				<li class$=${item === scope ? 'active' : ''}>
 					<button data-scope$='${item}' on-click='${() => this.onButtonClick(item)}'>
-						${item}
+						${item}${item === 'private' ? ` (${price})` : ''}
 					</button>
 				</li>`)}
 			</ul>
@@ -74,7 +86,7 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(this.scope), this)
+		render(this.html(this.scope, stateCurrency.get(this)), this)
 	}
 
 	onButtonClick(item: Scope) {
@@ -84,6 +96,9 @@ export default class extends HTMLElement {
 	}
 
 	dispatch() {
-		this.dispatchEvent(EVENT.CHANGE_SCOPE({scope: this.scope}))
+		this.dispatchEvent(EVENT.CHANGE_SCOPE({
+			scope: this.scope,
+			currency: stateCurrency.get(this)
+		}))
 	}
 }

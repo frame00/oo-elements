@@ -4,6 +4,7 @@ import define from '../../lib/define'
 import weakMap from '../../lib/weak-map'
 import {Scope} from '../../type/scope'
 import {ChangeAskDetail, ChangeAsk, HTMLElementEventChangeScope} from '../../type/event'
+import {Currency} from '../../type/currency'
 
 define('oo-atoms-select-scope', selectScope)
 
@@ -21,6 +22,7 @@ const EVENT = {
 const iam = weakMap<string>()
 const message = weakMap<string>()
 const stateScope = weakMap<Scope>()
+const stateCurrency = weakMap<Currency>()
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
@@ -89,7 +91,9 @@ export default class extends HTMLElement {
 
 	onScopeChange(e: HTMLElementEventChangeScope<HTMLElement>) {
 		const {detail} = e
-		stateScope.set(this, detail.scope)
+		const {scope, currency} = detail
+		stateScope.set(this, scope)
+		stateCurrency.set(this, currency)
 		this.render()
 		this.dispatchChanged()
 	}
@@ -106,7 +110,8 @@ export default class extends HTMLElement {
 	dispatchChanged() {
 		const detail = {
 			message: this.message,
-			scope: this.scope
+			scope: this.scope,
+			currency: stateCurrency.get(this)
 		}
 		this.dispatchEvent(EVENT.CHANGED(detail))
 	}

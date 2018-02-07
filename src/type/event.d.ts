@@ -3,6 +3,8 @@ import {OOUserConnectStripe} from './oo-user'
 import { OOAPIResponseError } from './oo-api-response';
 import { OOAPIResult } from './oo-api';
 import { Scope } from './scope';
+import currency from '../conf/currency';
+import { Currency } from './currency';
 
 export interface MessageVariationErrorDetail {
 	message: 'body required'
@@ -85,7 +87,8 @@ export interface HTMLElementEventSignedInError<T extends HTMLElement> extends Si
 }
 
 export interface ChangeScopeDetail {
-	scope: Scope
+	scope: Scope,
+	currency: Currency
 }
 
 export interface ChangeScope extends CustomEvent {
@@ -98,7 +101,8 @@ export interface HTMLElementEventChangeScope<T extends HTMLElement> extends Chan
 
 export interface ChangeAskDetail {
 	scope: Scope,
-	message: string
+	message: string,
+	currency?: Currency
 }
 
 export interface ChangeAsk extends CustomEvent {

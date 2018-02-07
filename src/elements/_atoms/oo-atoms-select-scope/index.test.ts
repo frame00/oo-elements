@@ -42,16 +42,23 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 	})
 
+	it('Display currency and initial cost on private button', () => {
+		const element: any = getElement(ELEMENT)[0]
+		const button = element.shadowRoot.querySelector('button[data-scope=private]')
+		expect(button.textContent.trim()).to.be('private ($5)')
+	})
+
 	it('Dispatch "changescope" event when changing scope', done => {
 		const element = getElement(ELEMENT)[0]
 		const callback = (e: CustomEvent) => {
 			expect(e.detail).to.be.eql({
-				scope: 'public'
+				scope: 'private',
+				currency: 'usd'
 			})
 			done()
 		}
 		element.addEventListener('changescope', callback)
-		event(element.shadowRoot.querySelector('button[data-scope=public]'), 'click')
+		event(element.shadowRoot.querySelector('button[data-scope=private]'), 'click')
 	})
 
 	after(() => {
