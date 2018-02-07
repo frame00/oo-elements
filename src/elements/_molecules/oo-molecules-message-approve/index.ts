@@ -18,7 +18,7 @@ const ATTR = {
 
 const stateUid = weakMap<string>()
 const stateProjectUid = weakMap<string>()
-const statePermission = weakMap<boolean>()
+const stateapprove = weakMap<boolean>()
 const stateOfferer = weakMap<string>()
 const stateProgress = weakMap<boolean>()
 
@@ -88,8 +88,8 @@ export default class extends HTMLElement {
 						}
 						return html`
 						<div class=buttons>
-							<oo-atoms-button on-clicked='${() => this.projectPermission(false)}' data-block=enabled data-state$='${progress === false ? 'progress' : ''}'>Reject</oo-atoms-button>
-							<oo-atoms-button on-clicked='${() => this.projectPermission(true)}' data-block=enabled data-state$='${progress === true ? 'progress' : ''}'>Accept</oo-atoms-button>
+							<oo-atoms-button on-clicked='${() => this.projectApprove(false)}' data-block=enabled data-state$='${progress === false ? 'progress' : ''}'>Reject</oo-atoms-button>
+							<oo-atoms-button on-clicked='${() => this.projectApprove(true)}' data-block=enabled data-state$='${progress === true ? 'progress' : ''}'>Accept</oo-atoms-button>
 						</div>
 						`
 					})()}
@@ -100,10 +100,10 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(stateUid.get(this), stateOfferer.get(this), statePermission.get(this), stateProgress.get(this)), this)
+		render(this.html(stateUid.get(this), stateOfferer.get(this), stateapprove.get(this), stateProgress.get(this)), this)
 	}
 
-	async projectPermission(ans: boolean) {
+	async projectApprove(ans: boolean) {
 		if (ans === undefined) {
 			return
 		}
@@ -111,11 +111,11 @@ export default class extends HTMLElement {
 		this.render()
 		const result = await patchProject({
 			uid: stateProjectUid.get(this),
-			offer_permission: Boolean(ans)
+			approve: Boolean(ans)
 		})
 		const {status} = result
 		if (success(status)) {
-			statePermission.set(this, ans)
+			stateapprove.set(this, ans)
 		}
 		stateProgress.delete(this)
 		this.render()
@@ -127,7 +127,7 @@ export default class extends HTMLElement {
 		if (Array.isArray(response)) {
 			const [item] = response
 			const mapedExtensions = toMap(item)
-			statePermission.set(this, mapedExtensions.get('offer_permission'))
+			stateapprove.set(this, mapedExtensions.get('approve'))
 			stateOfferer.set(this, mapedExtensions.get('author'))
 		}
 		this.render()

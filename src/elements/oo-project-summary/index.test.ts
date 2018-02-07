@@ -33,8 +33,6 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const textContent = item.parentElement.querySelector('p').textContent
 			expect(textContent).to.be('test')
 		})
-		expect(element.shadowRoot.querySelector('oo-atoms-datetime').getAttribute('data-unixtime')).to.be('1516380671346')
-		expect(element.shadowRoot.querySelector('.amount').textContent).to.be('usd $10.00')
 	})
 
 	after(() => {

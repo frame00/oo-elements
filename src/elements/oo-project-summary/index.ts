@@ -2,12 +2,10 @@ import {repeat} from 'lit-html/lib/repeat'
 import {html, render} from '../../lib/html'
 import getProject from '../../lib/oo-api-get-project'
 import toMap from '../../lib/extensions-to-map'
-import {Currency} from '../../type/currency'
 import define from '../../lib/define'
 import message from '../_atoms/oo-atoms-message'
 import userName from '../_atoms/oo-atoms-user-name'
 import lineBreak from '../../lib/line-break'
-import {currencyToSign} from '../../lib/get-price-per-hour'
 import datetime from '../_atoms/oo-atoms-datetime'
 
 define('oo-atoms-message', message)
@@ -92,6 +90,7 @@ export default class extends HTMLElement {
 				</section>
 				<footer slot=footer>
 					<oo-atoms-user-name data-iam$='${author}' data-size=small></oo-atoms-user-name>
+					<oo-atoms-datetime data-unixtime='${created}'></oo-atoms-datetime>
 				</footer>
 			</oo-atoms-message>
 		</main>

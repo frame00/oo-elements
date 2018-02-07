@@ -6,7 +6,7 @@ access-control-allow-origin = "http://localhost:9876"
 ```json
 [
   {
-    "uid": "79zGMA1b6q",
+    "uid": "97kmBTRJ4K",
     "created": 1516380671346,
     "Extensions": [
       {
@@ -14,12 +14,8 @@ access-control-allow-origin = "http://localhost:9876"
         "value": "test"
       },
       {
-        "key": "approve",
-        "value": true
-      },
-      {
         "key": "scope",
-        "value": "private"
+        "value": "public"
       },
       {
         "key": "users",

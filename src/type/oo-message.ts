@@ -7,7 +7,7 @@ export interface OOMessage {
 	Extensions?: OOExtensions
 }
 
-export type OOMessageType = void | 'pay' | 'permission'
+export type OOMessageType = void | 'pay' | 'approve'
 
 export interface MapedOOMessage extends OOMessage {
 	ext: OOExtensionMap

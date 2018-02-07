@@ -30,6 +30,7 @@ export default class extends HTMLElement {
 	constructor() {
 		super()
 		message.set(this, '')
+		stateScope.set(this, 'public')
 	}
 
 	get message() {
