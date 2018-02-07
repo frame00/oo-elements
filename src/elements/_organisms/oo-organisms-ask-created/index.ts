@@ -46,7 +46,7 @@ export default class extends HTMLElement {
 		</style>
 		<main>
 			<p class=project>
-				<a href$='https://ooapp.co/project/${uid}' target=_blank rel=noopener>Created Offer</a>
+				<a href$='https://ooapp.co/project/${uid}' target=_blank rel=noopener>Created project</a>
 			</p>
 			<p class=profile>
 				<a href='https://ooapp.co/dashboard' target=_blank rel=noopener>View your profile</a>
