@@ -202,8 +202,8 @@ export default class extends HTMLElement {
 							<oo-organisms-ask-step-sign-in class=signin on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-organisms-ask-step-sign-in>
 						</li>
 						<li class=step>
-							<button class=submit on-click='${() => this.createProject()}'>Offer</button>
-							<p class=description>Just send it! If this person accept, please pay with credit card.</p>
+							<button class=submit on-click='${() => this.createProject()}'>Ask</button>
+							<p class=description>Just send it! In the case of a "Private", please pay the initial fee after being accepted by this person.</p>
 						</li>
 					</ul>
 				</div>

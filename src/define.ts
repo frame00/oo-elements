@@ -2,11 +2,11 @@ import define from './lib/define'
 import {
 	ooButton,
 	ooModal,
-	ooOffer,
+	ooAsk,
 	ooSignIn,
 	ooSignOut,
 	ooProfile,
-	ooAsk,
+	ooAskForm,
 	ooProject,
 	ooProjectSummary,
 	ooProjectMessages,
@@ -26,11 +26,11 @@ import {
 
 define('oo-button', ooButton)
 define('oo-modal', ooModal)
-define('oo-ask', ooOffer)
+define('oo-ask', ooAsk)
 define('oo-sign-in', ooSignIn)
 define('oo-sign-out', ooSignOut)
 define('oo-profile', ooProfile)
-define('oo-ask-form', ooAsk)
+define('oo-ask-form', ooAskForm)
 define('oo-project', ooProject)
 define('oo-project-summary', ooProjectSummary)
 define('oo-project-messages', ooProjectMessages)
