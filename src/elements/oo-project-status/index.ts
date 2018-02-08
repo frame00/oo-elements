@@ -46,6 +46,7 @@ export default class extends HTMLElement {
 				padding: 0.2rem 1rem;
 				border-radius: 5px;
 				color: white;
+				font-size: 0.8rem;
 				text-transform: capitalize;
 				font-family: var(--font-family);
 				&.public {
@@ -69,7 +70,7 @@ export default class extends HTMLElement {
 
 	async fetchProject(uid: string) {
 		const api = await getProject(uid)
-		const {response, status} = api
+		const {response} = api
 		if (Array.isArray(response)) {
 			const [item] = response
 			const mapedExtensions = toMap(item)
