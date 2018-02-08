@@ -25,9 +25,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const element = insertElement(ELEMENT)
 			await sleep(500)
 			expect(element.shadowRoot.querySelector('input[name=name]').getAttribute('value')).to.be('test')
-			expect(element.shadowRoot.querySelector('textarea[name=skill]').textContent).to.be('test\ntest\ntest')
-			expect(element.shadowRoot.querySelector('input[name=usd]').getAttribute('value')).to.be('10.00')
-			expect(element.shadowRoot.querySelector('input[name=jpy]').getAttribute('value')).to.be('1000')
+			expect(element.shadowRoot.querySelector('textarea[name=bio]').textContent).to.be('test\ntest\ntest')
 		})
 	})
 
@@ -44,26 +42,11 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 				expect(button.getAttribute('data-state')).to.be('resolved')
 			})
 
-			it('Skills', async () => {
+			it('Bio', async () => {
 				const element = insertElement(ELEMENT)
 				await sleep(500)
-				const textarea = element.shadowRoot.querySelector('textarea[name=skill]')
+				const textarea = element.shadowRoot.querySelector('textarea[name=bio]')
 				event(textarea, 'change')
-				const button = element.shadowRoot.querySelector('oo-atoms-button')
-				event(button, 'clicked')
-				await sleep(500)
-				expect(button.getAttribute('data-state')).to.be('resolved')
-			})
-
-			it('Price per hour', async () => {
-				const element = insertElement(ELEMENT)
-				await sleep(500)
-				const usd = element.shadowRoot.querySelector('input[name=usd]')
-				usd.setAttribute('value', '50.00')
-				event(usd, 'change')
-				const jpy = element.shadowRoot.querySelector('input[name=jpy]')
-				jpy.setAttribute('value', '5000')
-				event(jpy, 'change')
 				const button = element.shadowRoot.querySelector('oo-atoms-button')
 				event(button, 'clicked')
 				await sleep(500)
