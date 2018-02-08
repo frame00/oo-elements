@@ -12,13 +12,6 @@ access-control-allow-methods = "GET, PATCH, DELETE"
     "created": 1516380671346,
     "Extensions": [
       {
-        "key": "price_per_hour",
-        "value": {
-          "usd": "10.00",
-          "jpy": "1000"
-        }
-      },
-      {
         "key": "name",
         "value": "test"
       },
@@ -27,7 +20,7 @@ access-control-allow-methods = "GET, PATCH, DELETE"
         "value": "https://example.com/img.jpg"
       },
       {
-        "key": "skill",
+        "key": "bio",
         "value": "test\ntest\ntest"
       }
     ]

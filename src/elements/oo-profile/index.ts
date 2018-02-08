@@ -20,7 +20,7 @@ const EVENT = {
 const iam = weakMap<string>()
 const name = weakMap<string>()
 const picture = weakMap<string>()
-const skill = weakMap<string>()
+const bio = weakMap<string>()
 const found = weakMap<boolean>()
 
 export default class extends HTMLElement {
@@ -36,18 +36,17 @@ export default class extends HTMLElement {
 		this.fetchUserData()
 	}
 
-	html(f: boolean, uid: string, n: string, p: string, s: string) {
+	html(f: boolean, uid: string, n: string, p: string, b: string) {
 		if (f === false) {
 			return html`
 			<oo-empty></oo-empty>
 			`
 		}
 		const img = p ? p : ''
-		const skills = lineBreak(s)
+		const bi = lineBreak(b)
 		return html`
 		<style>
 			@import '../../style/_vars-font-family.css';
-			@import '../../style/_mixin-heading.css';
 			:host {
 				display: block;
 			}
@@ -61,8 +60,11 @@ export default class extends HTMLElement {
 				color: black;
 				font-weight: 700;
 			}
+			article {
+				margin-bottom: 1rem;
+			}
 			.name,
-			.skills {
+			.bio {
 				font-family: var(--font-family);
 			}
 			.name {
@@ -77,7 +79,7 @@ export default class extends HTMLElement {
 					}
 				}
 			}
-			.skills {
+			.bio {
 				p {
 					margin-bottom: 1rem;
 					font-size: 1rem;
@@ -93,9 +95,6 @@ export default class extends HTMLElement {
 					display: block;
 					padding-top: 100%;
 				}
-			}
-			.heading {
-				@mixin heading;
 			}
 			header {
 				display: flex;
@@ -118,16 +117,15 @@ export default class extends HTMLElement {
 			<article>
 				<p><a href$='/${uid}/projects'>Public questions</a></p>
 			</article>
-			<div class=skills>
-				<div class=heading>What I can do</div>
-				${repeat(skills, sk => html`<p>${sk}</p>`)}
+			<div class=bio>
+				${repeat(bi, bios => html`<p>${bios}</p>`)}
 			</div>
 		</div>
 		`
 	}
 
 	render() {
-		render(this.html(found.get(this), iam.get(this), name.get(this), picture.get(this), skill.get(this)), this)
+		render(this.html(found.get(this), iam.get(this), name.get(this), picture.get(this), bio.get(this)), this)
 	}
 
 	async fetchUserData() {
@@ -138,13 +136,13 @@ export default class extends HTMLElement {
 			found.set(this, true)
 			name.set(this, ext.get('name'))
 			picture.set(this, ext.get('picture'))
-			skill.set(this, ext.get('skill'))
+			bio.set(this, ext.get('bio'))
 			this.render()
 		} else {
 			found.set(this, false)
 			name.set(this, '')
 			picture.set(this, '')
-			skill.set(this, '')
+			bio.set(this, '')
 			this.render()
 		}
 		this.dispatchEvent(EVENT.USER_UPDATED)

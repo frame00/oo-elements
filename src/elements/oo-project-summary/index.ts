@@ -7,12 +7,15 @@ import message from '../_atoms/oo-atoms-message'
 import userName from '../_atoms/oo-atoms-user-name'
 import lineBreak from '../../lib/line-break'
 import datetime from '../_atoms/oo-atoms-datetime'
+import projectStatus from '../oo-project-status'
 
 define('oo-atoms-message', message)
 define('oo-atoms-user-name', userName)
 define('oo-atoms-datetime', datetime)
+define('oo-project-status', projectStatus)
 
 interface HTMLOptions {
+	uid: string,
 	created: number,
 	body: string,
 	author: string
@@ -41,7 +44,7 @@ export default class extends HTMLElement {
 	}
 
 	html(opts: HTMLOptions) {
-		const {created, body, author} = opts
+		const {uid, created, body, author} = opts
 		const lines = lineBreak(body)
 		return html`
 		<style>
@@ -79,6 +82,9 @@ export default class extends HTMLElement {
 					width: 70%;
 				}
 			}
+			oo-project-status {
+				margin-bottom: 0.5rem;
+			}
 			.amount {
 				text-transform: uppercase;
 			}
@@ -86,6 +92,7 @@ export default class extends HTMLElement {
 		<main>
 			<oo-atoms-message data-tooltip-position=left>
 				<section slot=body>
+					<oo-project-status data-uid$='${uid}'></oo-project-status>
 					${repeat(lines, line => html`<p>${line}</p>`)}
 				</section>
 				<footer slot=footer>
@@ -99,6 +106,7 @@ export default class extends HTMLElement {
 
 	render() {
 		render(this.html({
+			uid: projectUid.get(this),
 			created: projectCreated.get(this),
 			body: projectBody.get(this),
 			author: projectAuthor.get(this)

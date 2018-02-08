@@ -22,7 +22,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const element = getElement(ELEMENT)[0]
 			expect(element.shadowRoot.querySelector('.name').textContent).to.be('test')
 			expect(element.shadowRoot.querySelector('.picture').getAttribute('style')).to.be('background-image: url(https://example.com/img.jpg)')
-			Array.prototype.forEach.call(element.shadowRoot.querySelectorAll('.skill'), i => {
+			Array.prototype.forEach.call(element.shadowRoot.querySelectorAll('.bio > p'), i => {
 				expect(i.textContent).to.be('test')
 			})
 			element.removeEventListener('userupdated', callback)

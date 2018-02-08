@@ -8,6 +8,7 @@ import ooAskForm from './elements/oo-ask-form'
 import ooProject from './elements/oo-project'
 import ooProjectSummary from './elements/oo-project-summary'
 import ooProjectMessages from './elements/oo-project-messages'
+import ooProjectStatus from './elements/oo-project-status'
 import ooMessageForm from './elements/oo-message-form'
 import ooConnectStripe from './elements/oo-connect-stripe'
 import ooPay from './elements/oo-pay'
@@ -32,6 +33,7 @@ export {
 	ooProject,
 	ooProjectSummary,
 	ooProjectMessages,
+	ooProjectStatus,
 	ooMessageForm,
 	ooConnectStripe,
 	ooPay,

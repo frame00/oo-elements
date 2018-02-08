@@ -150,6 +150,21 @@
     ]
   },
   {
+    "name": "oo-project-status",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-project-status/define.ts",
+        "dest": "dist/oo-project-status.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-project-status/index.ts",
+        "dest": "dist/oo-project-status.mjs"
+      }
+    ]
+  },
+  {
     "name": "oo-project-messages",
     "build": [
       {

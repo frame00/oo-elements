@@ -1,6 +1,7 @@
 import {repeat} from 'lit-html/lib/repeat'
 import {html, render} from '../../lib/html'
 import define from '../../lib/define'
+import projectStatus from '../oo-project-status'
 import {OOProject} from '../../type/oo-project'
 import getUserProjects from '../../lib/oo-api-get-user-projects'
 import weakMap from '../../lib/weak-map'
@@ -15,6 +16,7 @@ define('oo-atoms-message', message)
 define('oo-atoms-button', button)
 define('oo-atoms-user-name', userName)
 define('oo-empty', empty)
+define('oo-project-status', projectStatus)
 
 const ATTR = {
 	DATA_IAM: 'data-iam'
@@ -61,6 +63,9 @@ export default class extends HTMLElement {
 					margin-bottom: 3rem;
 				}
 			}
+			oo-project-status {
+				margin-bottom: 0.5rem;
+			}
 			section {
 				padding: 1rem;
 				display: flex;
@@ -79,6 +84,7 @@ export default class extends HTMLElement {
 				return html`
 				<oo-atoms-message>
 					<section slot=body>
+						<oo-project-status data-uid$='${uid}'></oo-project-status>
 						<div class=body>
 							${body}
 						</div>

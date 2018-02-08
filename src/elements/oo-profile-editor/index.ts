@@ -7,8 +7,6 @@ import weakMap from '../../lib/weak-map'
 import define from '../../lib/define'
 import connectStripe from '../oo-connect-stripe'
 import button from '../_atoms/oo-atoms-button'
-import htmlPricePerHour from './lib/price-per-hour'
-import {ExtensionPricePerHour} from '../../type/extension-price-per-hour'
 import patchUser from '../../lib/oo-api-patch-user'
 import {attach, dispatch} from '../../lib/notification'
 
@@ -21,17 +19,15 @@ interface HTMLElementEvent<T extends HTMLElement> extends Event {
 interface Options {
 	iam: string,
 	name: string,
-	skill: string,
+	bio: string,
 	stripeUser: string,
-	pricePerHour: ExtensionPricePerHour,
 	buttonState: string
 }
 
 const stateIam = weakMap<string>()
 const stateName = weakMap<string>()
-const stateSkill = weakMap<string>()
+const stateBio = weakMap<string>()
 const stateStripeUser = weakMap<string>()
-const statePricePerHour = weakMap<ExtensionPricePerHour>()
 const stateButton = weakMap<string>()
 
 export default class extends HTMLElement {
@@ -46,16 +42,13 @@ export default class extends HTMLElement {
 	}
 
 	html(opts: Options) {
-		const {iam, name, skill, stripeUser, pricePerHour, buttonState} = opts
+		const {iam, name, bio, stripeUser, buttonState} = opts
 		if (typeof iam !== 'string') {
 			return html``
 		}
 		const options = [
 			{name: 'name', title: 'Display name', template: html`<input name=name type=text value$='${name}' on-change='${e => this.onChange(e, 'name')}'></input>`},
-			{name: 'skill', title: 'Skill', template: html`<textarea name=skill on-change='${e => this.onChange(e, 'skill')}'>${skill}</textarea>`},
-			{name: 'price_per_hour', title: 'Price per hour', template: htmlPricePerHour(pricePerHour, {
-				usd: (e, cur) => this.onChange(e, cur), jpy: (e, cur) => this.onChange(e, cur)
-			})},
+			{name: 'bio', title: 'Bio', template: html`<textarea name=bio on-change='${e => this.onChange(e, 'bio')}'>${bio}</textarea>`},
 			{name: 'stripe', title: 'Stripe', template: html`<oo-connect-stripe data-iam$='${iam}'></oo-connect-stripe>
 			${(() => {
 				if (typeof stripeUser === 'string') {
@@ -122,9 +115,8 @@ export default class extends HTMLElement {
 		const opts = {
 			iam: stateIam.get(this),
 			name: stateName.get(this),
-			skill: stateSkill.get(this),
+			bio: stateBio.get(this),
 			stripeUser: stateStripeUser.get(this),
-			pricePerHour: statePricePerHour.get(this),
 			buttonState: stateButton.get(this)
 		}
 		render(this.html(opts), this)
@@ -151,9 +143,8 @@ export default class extends HTMLElement {
 			const [item] = response
 			const ext = toMap(item)
 			stateName.set(this, ext.get('name'))
-			stateSkill.set(this, ext.get('skill'))
+			stateBio.set(this, ext.get('bio'))
 			stateStripeUser.set(this, ext.get('stripe_user_id'))
-			statePricePerHour.set(this, ext.get('price_per_hour'))
 			this.render()
 		} else {
 			this.render()
@@ -168,16 +159,8 @@ export default class extends HTMLElement {
 			case 'name':
 				stateName.set(this, value)
 				break
-			case 'skill':
-				stateSkill.set(this, value)
-				break
-			case 'usd':
-				const usd = {usd: Number(value)}
-				statePricePerHour.set(this, {...statePricePerHour.get(this), ...usd})
-				break
-			case 'jpy':
-				const jpy = {jpy: Number(value)}
-				statePricePerHour.set(this, {...statePricePerHour.get(this), ...jpy})
+			case 'bio':
+				stateBio.set(this, value)
 				break
 			default:
 				break
@@ -189,8 +172,7 @@ export default class extends HTMLElement {
 		this.render()
 		const extensions = {
 			name: stateName.get(this),
-			skill: stateSkill.get(this),
-			price_per_hour: statePricePerHour.get(this)
+			bio: stateBio.get(this)
 		}
 		const res = await patchUser(stateIam.get(this), extensions)
 		const {response} = res
