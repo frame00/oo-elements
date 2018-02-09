@@ -4,6 +4,7 @@ import {
 	ooModal,
 	ooAsk,
 	ooSignIn,
+	ooSignInWithRedirect,
 	ooSignOut,
 	ooProfile,
 	ooAskForm,
@@ -29,6 +30,7 @@ define('oo-button', ooButton)
 define('oo-modal', ooModal)
 define('oo-ask', ooAsk)
 define('oo-sign-in', ooSignIn)
+define('oo-sign-in-with-redirect', ooSignInWithRedirect)
 define('oo-sign-out', ooSignOut)
 define('oo-profile', ooProfile)
 define('oo-ask-form', ooAskForm)

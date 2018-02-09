@@ -75,6 +75,21 @@
     ]
   },
   {
+    "name": "oo-sign-in-with-redirect",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-sign-in-with-redirect/define.ts",
+        "dest": "dist/oo-sign-in-with-redirect.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-sign-in-with-redirect/index.ts",
+        "dest": "dist/oo-sign-in-with-redirect.mjs"
+      }
+    ]
+  },
+  {
     "name": "oo-sign-out",
     "build": [
       {

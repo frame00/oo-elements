@@ -1,6 +1,6 @@
 {
   "name": "oo-elements",
-  "version": "0.0.4-beta.1",
+  "version": "0.0.4-beta.3",
   "description": "Web Components for OO",
   "main": "dist/oo-elements.js",
   "module": "dist/oo-elements.mjs",
@@ -35,6 +35,7 @@
   },
   "homepage": "https://github.com/frame00/oo-elements#readme",
   "dependencies": {
+    "firebase": "^4.9.1",
     "lit-html": "^0.9.0",
     "query-string": "^5.1.0",
     "typescript": "^2.7.1"
