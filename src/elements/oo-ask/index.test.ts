@@ -43,6 +43,12 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(element.shadowRoot.querySelector('oo-ask-form').getAttribute('data-iam')).to.be('test')
 	})
 
+	it('Pass "data-sign-in-flow" attribute to <oo-organisms-ask-step-sign-in>', async () => {
+		const element = insertElement(ELEMENT, new Map([['data-iam', 'test'], ['data-sign-in-flow', 'redirect']]))
+		await sleep(300)
+		expect(element.shadowRoot.querySelector('oo-organisms-ask-step-sign-in').getAttribute('data-flow')).to.be('redirect')
+	})
+
 	describe('Signing in', () => {
 		it('Sign in by <oo-organisms-offer-step-sign-in>')
 	})

@@ -18,6 +18,16 @@ interface ProjectCreatedEvent extends CustomEvent {
 	detail: OOAPIResult<OOProject>
 }
 
+interface Options {
+	found: boolean,
+	uid: string,
+	auth: boolean,
+	sender: string,
+	flow: SignInFlow
+}
+
+type SignInFlow = 'popup' | 'redirect'
+
 define('oo-organisms-ask-step-sign-in', offerSignIn)
 define('oo-profile', profile)
 define('oo-ask-form', ask)
@@ -25,7 +35,8 @@ define('oo-organisms-ask-created', created)
 define('oo-empty', empty)
 
 const ATTR = {
-	DATA_IAM: 'data-iam'
+	DATA_IAM: 'data-iam',
+	DATA_SIGN_IN_FLOW: 'data-sign-in-flow'
 }
 const EVENT = {
 	PROJECT_CREATED: detail => new CustomEvent('projectcreated', {detail}),
@@ -39,6 +50,7 @@ const stateScope = weakMap<Scope>()
 const stateCurrency = weakMap<Currency>()
 const authorization = weakMap<boolean>()
 const userFound = weakMap<boolean>()
+const signInFlow = weakMap<SignInFlow>()
 
 const validation = (el: HTMLElement): boolean => {
 	const users = [iam.get(el), offerer.get(el)]
@@ -55,10 +67,16 @@ const validation = (el: HTMLElement): boolean => {
 	}
 	return true
 }
+const asSignInFlow = (d: string): SignInFlow => {
+	if (d === 'popup' || d === 'redirect') {
+		return d
+	}
+	return 'popup'
+}
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
-		return [ATTR.DATA_IAM]
+		return [ATTR.DATA_IAM, ATTR.DATA_SIGN_IN_FLOW]
 	}
 
 	constructor() {
@@ -70,7 +88,16 @@ export default class extends HTMLElement {
 		if (prev === next || !next) {
 			return
 		}
-		iam.set(this, next)
+		switch(attr) {
+			case ATTR.DATA_IAM:
+				iam.set(this, next)
+				break
+			case ATTR.DATA_SIGN_IN_FLOW:
+				signInFlow.set(this, asSignInFlow(next))
+				break
+			default:
+				break
+		}
 		this.fetchUserData()
 	}
 
@@ -85,7 +112,8 @@ export default class extends HTMLElement {
 		})
 	}
 
-	html(found: boolean, uid: string, auth: boolean, sender: string) {
+	html(opts: Options) {
+		const {found, uid, auth, sender, flow} = opts
 		if (found === false) {
 			return html`
 			<oo-empty></oo-empty>
@@ -199,7 +227,7 @@ export default class extends HTMLElement {
 							<p class=description>Next step: Authenticate account with Google, Facebook or GitHub.</p>
 						</li>
 						<li class=step>
-							<oo-organisms-ask-step-sign-in class=signin on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-organisms-ask-step-sign-in>
+							<oo-organisms-ask-step-sign-in class=signin data-flow$='${flow}' on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-organisms-ask-step-sign-in>
 						</li>
 						<li class=step>
 							<button class=submit on-click='${() => this.createProject()}'>Ask</button>
@@ -228,7 +256,13 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(userFound.get(this), iam.get(this), authorization.get(this), offerer.get(this)), this)
+		render(this.html({
+			found: userFound.get(this),
+			uid: iam.get(this),
+			auth: authorization.get(this),
+			sender: offerer.get(this),
+			flow: signInFlow.get(this)
+		}), this)
 	}
 
 	async fetchUserData() {
