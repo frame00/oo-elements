@@ -1,6 +1,6 @@
 {
   "name": "oo-elements",
-  "version": "0.0.4-beta.2",
+  "version": "0.0.4-beta.3",
   "description": "Web Components for OO",
   "main": "dist/oo-elements.js",
   "module": "dist/oo-elements.mjs",
