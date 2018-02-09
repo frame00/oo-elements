@@ -25,13 +25,13 @@ export default class extends SignIn {
 			if (typeof signedIn === 'boolean') {
 				return this.dispatchSignedInError(signedIn)
 			}
-			session.clear()
 			this.dispatchSignedIn(signedIn)
 			dispatch({
 				message: 'Welcome!',
 				type: 'success'
 			})
 		}
+		session.clear()
 	}
 
 	disconnectedCallback() {
