@@ -49,7 +49,6 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 		it('Change message', () => {
 			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
-			const scopeSelector = element.shadowRoot.querySelector('oo-atoms-select-scope')
 			const textarea = element.shadowRoot.querySelector('textarea')
 			textarea.value = 'xxx'
 			textarea.dispatchEvent(new Event('change', {bubbles: true}))
