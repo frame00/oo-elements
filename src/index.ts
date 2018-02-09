@@ -2,6 +2,7 @@ import ooButton from './elements/oo-button'
 import ooModal from './elements/oo-modal'
 import ooAsk from './elements/oo-ask'
 import ooSignIn from './elements/oo-sign-in'
+import ooSignInWithRedirect from './elements/oo-sign-in-with-redirect'
 import ooSignOut from './elements/oo-sign-out'
 import ooProfile from './elements/oo-profile'
 import ooAskForm from './elements/oo-ask-form'
@@ -27,6 +28,7 @@ export {
 	ooModal,
 	ooAsk,
 	ooSignIn,
+	ooSignInWithRedirect,
 	ooSignOut,
 	ooProfile,
 	ooAskForm,
