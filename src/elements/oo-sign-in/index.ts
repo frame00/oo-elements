@@ -1,133 +1,26 @@
-import {html, render} from '../../lib/html'
-import {AuthProvider} from '../../type/auth-provider.d'
-import store from '../../lib/local-storage'
 import {AuthResult} from '../../type/auth-result'
 import signInWithFirebaseToken from '../../lib/sign-in-with-firebase-token'
-import {SignedInDetail, SignedIn, SignedInError, SignedInErrorDetail} from '../../type/event'
-import {attach, dispatch} from '../../lib/notification'
+import {dispatch} from '../../lib/notification'
 import weakMap from '../../lib/weak-map'
+import SignIn from '../../lib/classes/sign-in'
+const {document} = window
 
-const ATTR = {
-	DATA_PROVIDER: 'data-provider',
-	DATA_INIT_NOTIFICATION: 'data-init-notification'
-}
-const EVENT = {
-	SIGNED_IN: (detail: SignedInDetail): SignedIn => new CustomEvent('signedin', {detail}),
-	SIGNED_IN_ERROR: (detail: SignedInErrorDetail): SignedInError => new CustomEvent('signedinerror', {detail})
-}
+const stateIframe = weakMap<HTMLIFrameElement>()
 
-const asValidString = (data: string): AuthProvider => {
-	if (data === 'google' || data === 'facebook' || data === 'github') {
-		return data
-	}
-	return 'google'
-}
-
-const provider = weakMap<AuthProvider>()
-
-export default class extends HTMLElement {
-	static get observedAttributes() {
-		return [ATTR.DATA_PROVIDER]
-	}
-
-	get provider() {
-		return provider.get(this)
-	}
-
-	constructor() {
-		super()
-		provider.set(this, asValidString(this.getAttribute(ATTR.DATA_PROVIDER)))
-		this.render()
-		attach()
-	}
-
+export default class extends SignIn {
 	connectedCallback() {
-		this.checkSignInStatus()
-	}
-
-	attributeChangedCallback(attr, prev, next) {
-		if (prev === next) {
-			return
-		}
-		provider.set(this, asValidString(next))
-		this.render()
-	}
-
-	html(prov: AuthProvider) {
-		let label: string = prov
-		switch (prov) {
-			case 'google':
-				label = 'Google'
-				break
-			case 'facebook':
-				label = 'Facebook'
-				break
-			case 'github':
-				label = 'GitHub'
-				break
-			default:
-				break
-		}
-		return html`
-		<style>
-			@import '../../style/_reset-button.css';
-			@import '../../style/_vars-font-family.css';
-			:host {
-				display: inline-block;
-			}
-			:root {
-				--google: #4283f4;
-				--facebook: #4267b2;
-				--github: #444;
-			}
-			button {
-				width: inherit;
-				height: inherit;
-				padding: 0.8rem 1rem;
-				border-radius: 5px;
-				color: white;
-				font-family: var(--font-family);
-				transition: background 0.2s, transform 0.2s;
-				&:active {
-					position: relative;
-					transform: translateY(2px);
-				}
-			}
-			.google {
-				background: var(--google);
-				&:hover {
-					background: color(var(--google) blackness(+10%));
-				}
-			}
-			.facebook {
-				background: var(--facebook);
-				&:hover {
-					background: color(var(--facebook) blackness(+10%));
-				}
-			}
-			.github {
-				background: var(--github);
-				&:hover {
-					background: color(var(--github) blackness(+15%));
-				}
-			}
-			iframe {
-				display: none;
-			}
-		</style>
-		<button class$='${prov}' on-click='${() => this.signIn()}'>
-			Sign in with ${label}
-		</button>
-		<iframe src$="./dist/assets/iframe.firebase.authenticate.html?${prov}"></iframe>
-		`
-	}
-
-	render() {
-		render(this.html(provider.get(this)), this)
+		super.connectedCallback()
+		const div = document.createElement('div')
+		const shadow = div.attachShadow({mode: 'open'})
+		this.appendChild(div)
+		shadow.innerHTML = `<iframe src='./dist/assets/iframe.firebase.authenticate.html?${this.provider}'></iframe>`
+		const iframe = shadow.querySelector('iframe')
+		stateIframe.set(this, iframe)
 	}
 
 	async signIn() {
-		const iframe = this.shadowRoot.querySelector('iframe')
+		super.signIn()
+		const iframe = stateIframe.get(this)
 		const token = await new Promise<AuthResult>((resolve, reject) => {
 			iframe.contentWindow.postMessage('run', '*')
 			const listener = e => {
@@ -171,26 +64,5 @@ export default class extends HTMLElement {
 				type: 'success'
 			})
 		}
-	}
-
-	checkSignInStatus() {
-		if (typeof store.uid === 'string' && typeof store.token === 'string') {
-			this.dispatchSignedIn({
-				token: store.token,
-				uid: store.uid
-			})
-		}
-	}
-
-	dispatchSignedIn(data: SignedInDetail) {
-		this.dispatchEvent(EVENT.SIGNED_IN(data))
-	}
-
-	dispatchSignedInError(data: SignedInErrorDetail) {
-		dispatch({
-			message: `Sign-in failure/${data.message}`,
-			type: 'error'
-		})
-		this.dispatchEvent(EVENT.SIGNED_IN_ERROR(data))
 	}
 }
