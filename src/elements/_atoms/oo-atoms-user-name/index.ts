@@ -1,6 +1,7 @@
 import {html, render} from '../../../lib/html'
 import getUser from '../../../lib/oo-api-get-user'
 import toMap from '../../../lib/extensions-to-map'
+import getPicture from '../../../lib/get-picture'
 
 type Size = 'small' | 'medium'
 interface HTMLOptions {
@@ -124,7 +125,7 @@ export default class extends HTMLElement {
 		</style>
 		<header class$='${s}'>
 			<a href$='/${uid}'>
-				<div class=picture style$='background-image: url(${img})'></div>
+				<div class=picture style$='background-image: url(${getPicture(img)})'></div>
 				<p class$='name ${n ? '' : 'empty'}'>${n}</p>
 			</a>
 		</header>
