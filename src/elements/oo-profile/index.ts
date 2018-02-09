@@ -57,10 +57,6 @@ export default class extends HTMLElement {
 			p {
 				margin: 0;
 			}
-			a {
-				color: black;
-				font-weight: 700;
-			}
 			article {
 				margin-bottom: 1rem;
 			}
@@ -115,9 +111,6 @@ export default class extends HTMLElement {
 				<div class=picture style$='background-image: url(${getPicture(img)})'></div>
 				<p class$='name ${n ? '' : 'empty'}'>${n}</p>
 			</header>
-			<article>
-				<p><a href$='/${uid}/projects'>Public questions</a></p>
-			</article>
 			<div class=bio>
 				${repeat(bi, bios => html`<p>${bios}</p>`)}
 			</div>
