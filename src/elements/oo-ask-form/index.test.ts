@@ -4,6 +4,7 @@ import insertElement from '../../lib/test/insert-element'
 import getElement from '../../lib/test/get-element'
 import removeElement from '../../lib/test/remove-element'
 import event from '../../lib/test/event'
+import session from '../../lib/session-storage'
 
 const ELEMENT = 'oo-ask-form'
 
@@ -28,10 +29,71 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			expect(e.detail.scope).to.be('private')
 			done()
 		})
-		event(element.shadowRoot.querySelector('oo-atoms-select-scope'), 'changescope', {scope: 'private'})
+		const scopeSelector = element.shadowRoot.querySelector('oo-atoms-select-scope')
+		event(scopeSelector, 'changescope', {scope: 'private'})
+	})
+
+	describe('Record to session', () => {
+		it('Change scope and currency', () => {
+			session.clear()
+			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+			const scopeSelector = element.shadowRoot.querySelector('oo-atoms-select-scope')
+			event(scopeSelector, 'changescope', {scope: 'private', currency: 'jpy'})
+			expect(session.previousAsk).to.eql({
+				iam: 'test',
+				body: '',
+				scope: 'private',
+				currency: 'jpy'
+			})
+		})
+
+		it('Change message', () => {
+			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+			const scopeSelector = element.shadowRoot.querySelector('oo-atoms-select-scope')
+			const textarea = element.shadowRoot.querySelector('textarea')
+			textarea.value = 'xxx'
+			textarea.dispatchEvent(new Event('change', {bubbles: true}))
+			expect(session.previousAsk).to.eql({
+				iam: 'test',
+				body: 'xxx',
+				scope: 'private',
+				currency: 'jpy'
+			})
+		})
+	})
+
+	describe('Restoration from session', () => {
+		it('Restore scope, message, currency', done => {
+			removeElement(ELEMENT)
+			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+			element.addEventListener('changed', e => {
+				expect(e.detail).to.be.eql({
+					message: 'xxx',
+					scope: 'private',
+					currency: 'jpy'
+				})
+				done()
+			})
+			element.dispatchChanged()
+		})
+
+		it('If IAM does not match, it will not restore', done => {
+			removeElement(ELEMENT)
+			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'xxx']]))
+			element.addEventListener('changed', e => {
+				expect(e.detail).to.be.eql({
+					message: '',
+					scope: 'public',
+					currency: undefined
+				})
+				done()
+			})
+			element.dispatchChanged()
+		})
 	})
 
 	after(() => {
 		removeElement(ELEMENT)
+		session.clear()
 	})
 })
