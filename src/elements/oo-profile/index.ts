@@ -7,6 +7,7 @@ import lineBreak from '../../lib/line-break'
 import empty from '../oo-empty'
 import define from '../../lib/define'
 import weakMap from '../../lib/weak-map'
+import getPicture from '../../lib/get-picture'
 
 define('oo-empty', empty)
 
@@ -111,7 +112,7 @@ export default class extends HTMLElement {
 		</style>
 		<div class=container>
 			<header>
-				<div class=picture style$='background-image: url(${img})'></div>
+				<div class=picture style$='background-image: url(${getPicture(img)})'></div>
 				<p class$='name ${n ? '' : 'empty'}'>${n}</p>
 			</header>
 			<article>
