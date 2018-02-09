@@ -8,22 +8,63 @@ import getCurrency from '../../../lib/get-currency'
 import getInitPrice from '../../../lib/get-init-price'
 import {currencyToSign} from '../../../lib/get-price-per-hour'
 
+const ATTR = {
+	DATA_SCOPE: 'data-scope',
+	DATA_CURRENCY: 'data-currency'
+}
 const EVENT = {
 	CHANGE_SCOPE: (detail: ChangeScopeDetail): ChangeScope => new CustomEvent('changescope', {detail})
+}
+const asScope = (d: string): Scope => {
+	if (d === 'public' || d === 'private') {
+		return d
+	}
+	return 'public'
+}
+const asCurrency = (d: string): Currency => {
+	if (d === 'usd' || d === 'jpy') {
+		return d
+	}
+	return getCurrency()
 }
 
 const stateScope = weakMap<Scope>()
 const stateCurrency = weakMap<Currency>()
 
 export default class extends HTMLElement {
+	static get observedAttributes() {
+		return [ATTR.DATA_SCOPE, ATTR.DATA_CURRENCY]
+	}
+
 	get scope() {
 		return stateScope.get(this)
 	}
 
+	get currency() {
+		return stateCurrency.get(this)
+	}
+
 	constructor() {
 		super()
-		stateScope.set(this, 'public')
-		stateCurrency.set(this, getCurrency())
+		stateScope.set(this, asScope(this.getAttribute(ATTR.DATA_SCOPE)))
+		stateCurrency.set(this, asCurrency(this.getAttribute(ATTR.DATA_CURRENCY)))
+		this.render()
+	}
+
+	attributeChangedCallback(attr, prev, next) {
+		if (prev === next || !next) {
+			return
+		}
+		switch(attr) {
+			case ATTR.DATA_SCOPE:
+				stateScope.set(this, asScope(next))
+				break
+			case ATTR.DATA_CURRENCY:
+				stateCurrency.set(this, asCurrency(next))
+				break
+			default:
+				break
+		}
 		this.render()
 	}
 
@@ -86,7 +127,7 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(this.scope, stateCurrency.get(this)), this)
+		render(this.html(this.scope, this.currency), this)
 	}
 
 	onButtonClick(item: Scope) {

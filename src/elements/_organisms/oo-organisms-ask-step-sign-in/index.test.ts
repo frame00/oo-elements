@@ -21,6 +21,26 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(getElement(ELEMENT)[0]).to.be.ok()
 	})
 
+	describe('Switch sign-in mode', () => {
+		it('Use "oo-sign-in" elements', () => {
+			const element = insertElement(ELEMENT, new Map([['data-flow', 'popup']]))
+			const buttons = element.shadowRoot.querySelectorAll('oo-sign-in')
+			expect(buttons).to.have.length(3)
+		})
+
+		it('Use "oo-sign-in-with-redirect" elements', () => {
+			const element = insertElement(ELEMENT, new Map([['data-flow', 'redirect']]))
+			const buttons = element.shadowRoot.querySelectorAll('oo-sign-in-with-redirect')
+			expect(buttons).to.have.length(3)
+		})
+
+		it('Default is "oo-sign-in" elements', () => {
+			const element = insertElement(ELEMENT)
+			const buttons = element.shadowRoot.querySelectorAll('oo-sign-in')
+			expect(buttons).to.have.length(3)
+		})
+	})
+
 	it('Forward "signedin" event of <oo-sign-in>', done => {
 		const element = insertElement(ELEMENT)
 		element.addEventListener('signedin', (e: CustomEvent) => {

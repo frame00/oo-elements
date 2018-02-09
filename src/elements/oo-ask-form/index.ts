@@ -5,11 +5,18 @@ import weakMap from '../../lib/weak-map'
 import {Scope} from '../../type/scope'
 import {ChangeAskDetail, ChangeAsk, HTMLElementEventChangeScope} from '../../type/event'
 import {Currency} from '../../type/currency'
+import session from '../../lib/session-storage'
 
 define('oo-atoms-select-scope', selectScope)
 
 interface HTMLElementEvent<T extends HTMLElement> extends Event {
 	target: T
+}
+
+interface Initial {
+	body: string,
+	scope: Scope,
+	currency: Currency
 }
 
 const ATTR = {
@@ -23,6 +30,12 @@ const iam = weakMap<string>()
 const message = weakMap<string>()
 const stateScope = weakMap<Scope>()
 const stateCurrency = weakMap<Currency>()
+const stateInitialData = weakMap<{
+	iam: string,
+	body: string,
+	scope: Scope,
+	currency: Currency
+}>()
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
@@ -43,15 +56,33 @@ export default class extends HTMLElement {
 		return stateScope.get(this)
 	}
 
+	get currency() {
+		return stateCurrency.get(this)
+	}
+
 	attributeChangedCallback(attr, prev, next) {
 		if (prev === next || !next) {
 			return
 		}
 		iam.set(this, next)
+		const prevAsk = session.previousAsk
+		if (prevAsk) {
+			if (prevAsk.iam === iam.get(this)) {
+				stateInitialData.set(this, prevAsk)
+				message.set(this, prevAsk.body)
+				stateScope.set(this, prevAsk.scope)
+				stateCurrency.set(this, prevAsk.currency)
+			}
+		}
 		this.render()
 	}
 
-	html() {
+	connectedCallback() {
+		this.dispatchChanged()
+	}
+
+	html(init: Initial) {
+		const {body = '', scope = '', currency = ''} = init || {}
 		return html`
 		<style>
 			@import '../../style/_reset-textare.css';
@@ -78,15 +109,28 @@ export default class extends HTMLElement {
 				@mixin textarea;
 			}
 		</style>
-		<oo-atoms-select-scope on-changescope='${e => this.onScopeChange(e)}'></oo-atoms-select-scope>
+		<oo-atoms-select-scope data-scope$='${scope}' data-currency$='${currency}' on-changescope='${e => this.onScopeChange(e)}'></oo-atoms-select-scope>
 		<form on-change='${e => this.onMessageChange(e)}' on-submit='${e => this.onMessageChange(e)}'>
-			<textarea name=message placeholder='Would you like to ask me?'></textarea>
+			<textarea name=message placeholder='Would you like to ask me?'>${body}</textarea>
 		</form>
 		`
 	}
 
 	render() {
-		render(this.html(), this)
+		render(this.html(stateInitialData.get(this)), this)
+	}
+
+	updateSession() {
+		session.previousAsk = {
+			iam: iam.get(this),
+			body: this.message,
+			scope: this.scope,
+			currency: this.currency
+		}
+	}
+
+	removeSession() {
+		session.remove('oo:previous-ask')
 	}
 
 	onScopeChange(e: HTMLElementEventChangeScope<HTMLElement>) {
@@ -111,8 +155,9 @@ export default class extends HTMLElement {
 		const detail = {
 			message: this.message,
 			scope: this.scope,
-			currency: stateCurrency.get(this)
+			currency: this.currency
 		}
+		this.updateSession()
 		this.dispatchEvent(EVENT.CHANGED(detail))
 	}
 }
