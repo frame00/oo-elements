@@ -22,6 +22,10 @@ access-control-allow-methods = "GET, PATCH, DELETE"
       {
         "key": "bio",
         "value": "test\ntest\ntest"
+      },
+      {
+        "key": "notifications_opt_email",
+        "value": true
       }
     ]
   }
