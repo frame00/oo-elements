@@ -21,13 +21,15 @@ interface Options {
 	name: string,
 	bio: string,
 	stripeUser: string,
-	buttonState: string
+	buttonState: string,
+	notificationEMail: boolean
 }
 
 const stateIam = weakMap<string>()
 const stateName = weakMap<string>()
 const stateBio = weakMap<string>()
 const stateStripeUser = weakMap<string>()
+const stateNotificationEMail = weakMap<boolean>()
 const stateButton = weakMap<string>()
 
 export default class extends HTMLElement {
@@ -42,7 +44,7 @@ export default class extends HTMLElement {
 	}
 
 	html(opts: Options) {
-		const {iam, name, bio, stripeUser, buttonState} = opts
+		const {iam, name, bio, stripeUser, notificationEMail, buttonState} = opts
 		if (typeof iam !== 'string') {
 			return html``
 		}
@@ -55,7 +57,13 @@ export default class extends HTMLElement {
 					return html`<p><span class='state success'>Connected</span></p>`
 				}
 				return html`<p><span class='state error'>Disconnected</span></p>`
-			})()}`}
+			})()}`},
+			{name: 'notifications-email', title: 'E-Mail notification', template: html`
+				<label>
+					<input name=notifications_opt_email type=checkbox checked?='${notificationEMail}' on-change='${e => this.onChange(e, 'notifications_opt_email')}'></input>
+					New project and message
+				</label>
+			`}
 		]
 		return html`
 		<style>
@@ -76,11 +84,14 @@ export default class extends HTMLElement {
 			dd {
 			}
 			textarea,
-			input {
+			input:not([type=checkbox]) {
 				@mixin textarea;
 			}
-			input {
+			input:not([type=checkbox]) {
 				height: 3rem;
+			}
+			input[type=checkbox] {
+				margin-right: 0.5rem;
 			}
 			.state {
 				display: inline-block;
@@ -94,6 +105,9 @@ export default class extends HTMLElement {
 				&.success {
 					background: var(--resolved-background);
 				}
+			}
+			oo-atoms-button {
+				margin-top: 3rem;
 			}
 		</style>
 		<main>
@@ -117,6 +131,7 @@ export default class extends HTMLElement {
 			name: stateName.get(this),
 			bio: stateBio.get(this),
 			stripeUser: stateStripeUser.get(this),
+			notificationEMail: stateNotificationEMail.get(this),
 			buttonState: stateButton.get(this)
 		}
 		render(this.html(opts), this)
@@ -145,6 +160,7 @@ export default class extends HTMLElement {
 			stateName.set(this, ext.get('name'))
 			stateBio.set(this, ext.get('bio'))
 			stateStripeUser.set(this, ext.get('stripe_user_id'))
+			stateNotificationEMail.set(this, ext.get('notifications_opt_email'))
 			this.render()
 		} else {
 			this.render()
@@ -162,6 +178,10 @@ export default class extends HTMLElement {
 			case 'bio':
 				stateBio.set(this, value)
 				break
+			case 'notifications_opt_email':
+				const {checked} = target as HTMLInputElement
+				stateNotificationEMail.set(this, checked)
+				break
 			default:
 				break
 		}
@@ -172,7 +192,8 @@ export default class extends HTMLElement {
 		this.render()
 		const extensions = {
 			name: stateName.get(this),
-			bio: stateBio.get(this)
+			bio: stateBio.get(this),
+			notifications_opt_email: stateNotificationEMail.get(this)
 		}
 		const res = await patchUser(stateIam.get(this), extensions)
 		const {response} = res

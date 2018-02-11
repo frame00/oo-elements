@@ -26,6 +26,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			await sleep(500)
 			expect(element.shadowRoot.querySelector('input[name=name]').getAttribute('value')).to.be('test')
 			expect(element.shadowRoot.querySelector('textarea[name=bio]').textContent).to.be('test\ntest\ntest')
+			expect((element.shadowRoot.querySelector('input[name=notifications_opt_email]') as HTMLInputElement).checked).to.be.ok()
 		})
 	})
 
@@ -47,6 +48,17 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 				await sleep(500)
 				const textarea = element.shadowRoot.querySelector('textarea[name=bio]')
 				event(textarea, 'change')
+				const button = element.shadowRoot.querySelector('oo-atoms-button')
+				event(button, 'clicked')
+				await sleep(500)
+				expect(button.getAttribute('data-state')).to.be('resolved')
+			})
+
+			it('E-Mail notification', async () => {
+				const element = insertElement(ELEMENT)
+				await sleep(500)
+				const input = element.shadowRoot.querySelector('input[name=notifications_opt_email]')
+				event(input, 'click')
 				const button = element.shadowRoot.querySelector('oo-atoms-button')
 				event(button, 'clicked')
 				await sleep(500)
