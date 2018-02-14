@@ -109,7 +109,9 @@ export default class extends HTMLElement {
 				@mixin textarea;
 			}
 		</style>
+		<slot name=beforeSelectScope></slot>
 		<oo-atoms-select-scope data-scope$='${scope}' data-currency$='${currency}' on-changescope='${e => this.onScopeChange(e)}'></oo-atoms-select-scope>
+		<slot name=beforeForm></slot>
 		<form on-change='${e => this.onMessageChange(e)}' on-submit='${e => this.onMessageChange(e)}'>
 			<textarea name=message placeholder='Would you like to ask me?'>${body}</textarea>
 		</form>
