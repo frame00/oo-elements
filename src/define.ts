@@ -3,11 +3,12 @@ import {
 	ooButton,
 	ooModal,
 	ooAsk,
+	ooAskForm,
+	ooAskWithSignIn,
 	ooSignIn,
 	ooSignInWithRedirect,
 	ooSignOut,
 	ooProfile,
-	ooAskForm,
 	ooProject,
 	ooProjectSummary,
 	ooProjectMessages,
@@ -29,11 +30,12 @@ import {
 define('oo-button', ooButton)
 define('oo-modal', ooModal)
 define('oo-ask', ooAsk)
+define('oo-ask-form', ooAskForm)
+define('oo-ask-with-sign-in', ooAskWithSignIn)
 define('oo-sign-in', ooSignIn)
 define('oo-sign-in-with-redirect', ooSignInWithRedirect)
 define('oo-sign-out', ooSignOut)
 define('oo-profile', ooProfile)
-define('oo-ask-form', ooAskForm)
 define('oo-project', ooProject)
 define('oo-project-summary', ooProjectSummary)
 define('oo-project-messages', ooProjectMessages)
