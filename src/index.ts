@@ -1,11 +1,12 @@
 import ooButton from './elements/oo-button'
 import ooModal from './elements/oo-modal'
 import ooAsk from './elements/oo-ask'
+import ooAskForm from './elements/oo-ask-form'
+import ooAskWithSignIn from './elements/oo-ask-with-sign-in'
 import ooSignIn from './elements/oo-sign-in'
 import ooSignInWithRedirect from './elements/oo-sign-in-with-redirect'
 import ooSignOut from './elements/oo-sign-out'
 import ooProfile from './elements/oo-profile'
-import ooAskForm from './elements/oo-ask-form'
 import ooProject from './elements/oo-project'
 import ooProjectSummary from './elements/oo-project-summary'
 import ooProjectMessages from './elements/oo-project-messages'
@@ -27,11 +28,12 @@ export {
 	ooButton,
 	ooModal,
 	ooAsk,
+	ooAskForm,
+	ooAskWithSignIn,
 	ooSignIn,
 	ooSignInWithRedirect,
 	ooSignOut,
 	ooProfile,
-	ooAskForm,
 	ooProject,
 	ooProjectSummary,
 	ooProjectMessages,

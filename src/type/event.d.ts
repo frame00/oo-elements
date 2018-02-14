@@ -5,6 +5,7 @@ import { OOAPIResult } from './oo-api';
 import { Scope } from './scope';
 import currency from '../conf/currency';
 import { Currency } from './currency';
+import { OOProject } from './oo-project';
 
 export interface MessageVariationErrorDetail {
 	message: 'body required'
@@ -110,5 +111,15 @@ export interface ChangeAsk extends CustomEvent {
 }
 
 export interface HTMLElementEventChangeAsk<T extends HTMLElement> extends ChangeAsk {
+	target: T
+}
+
+export type ProjectCreatedDetail = OOAPIResult<OOProject>
+
+export interface ProjectCreated extends CustomEvent {
+	detail: ProjectCreatedDetail
+}
+
+export interface HTMLElementEventProjectCreated<T extends HTMLElement> extends ProjectCreated {
 	target: T
 }

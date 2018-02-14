@@ -26,7 +26,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
 			await sleep(300)
 			expect(element.shadowRoot.querySelector('oo-profile').getAttribute('data-iam')).to.be('test')
-			expect(element.shadowRoot.querySelector('oo-ask-form').getAttribute('data-iam')).to.be('test')
+			expect(element.shadowRoot.querySelector('oo-ask-with-sign-in').getAttribute('data-iam')).to.be('test')
 		})
 
 		it('Show <oo-empty> when user not found', async () => {
@@ -36,38 +36,18 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 	})
 
-	it('Pass "data-iam" attribute to <oo-profile> and <oo-ask-form>', async () => {
+	it('Pass "data-iam" attribute to <oo-profile> and <oo-ask-with-sign-in>', async () => {
 		const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
 		await sleep(300)
 		expect(element.shadowRoot.querySelector('oo-profile').getAttribute('data-iam')).to.be('test')
-		expect(element.shadowRoot.querySelector('oo-ask-form').getAttribute('data-iam')).to.be('test')
+		expect(element.shadowRoot.querySelector('oo-ask-with-sign-in').getAttribute('data-iam')).to.be('test')
 	})
 
-	it('Pass "data-sign-in-flow" attribute to <oo-organisms-ask-step-sign-in>', async () => {
+	it('Pass "data-sign-in-flow" attribute to <oo-ask-with-sign-in>', async () => {
 		const element = insertElement(ELEMENT, new Map([['data-iam', 'test'], ['data-sign-in-flow', 'redirect']]))
 		await sleep(300)
-		expect(element.shadowRoot.querySelector('oo-organisms-ask-step-sign-in').getAttribute('data-flow')).to.be('redirect')
+		expect(element.shadowRoot.querySelector('oo-ask-with-sign-in').getAttribute('data-sign-in-flow')).to.be('redirect')
 	})
-
-	describe('Signing in', () => {
-		it('Sign in by <oo-organisms-offer-step-sign-in>')
-	})
-
-	it('Dispatch "projectcreated" event when project created', async () => {
-		const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
-		await sleep(300)
-		element.onAskChanged(new CustomEvent('test', {detail: {amount: '1.00', message: 'test', currency: 'usd'}}))
-		element.onSignedIn(new CustomEvent('test', {detail: {uid: 'test'}}))
-		await new Promise(resolve => {
-			element.addEventListener('projectcreated', (e: CustomEvent) => {
-				expect(e.detail.response[0].uid).to.be('test')
-				resolve()
-			})
-			element.createProject()
-		})
-	})
-
-	it('Dispatch "projectcreationfailed" event when failed to project create')
 
 	after(() => {
 		removeElement(ELEMENT)

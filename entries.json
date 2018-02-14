@@ -60,6 +60,36 @@
     ]
   },
   {
+    "name": "oo-ask-form",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-ask-form/define.ts",
+        "dest": "dist/oo-ask-form.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-ask-form/index.ts",
+        "dest": "dist/oo-ask-form.mjs"
+      }
+    ]
+  },
+  {
+    "name": "oo-ask-with-sign-in",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-ask-with-sign-in/define.ts",
+        "dest": "dist/oo-ask-with-sign-in.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-ask-with-sign-in/index.ts",
+        "dest": "dist/oo-ask-with-sign-in.mjs"
+      }
+    ]
+  },
+  {
     "name": "oo-sign-in",
     "build": [
       {
@@ -116,21 +146,6 @@
         "format": "es",
         "file": "src/elements/oo-profile/index.ts",
         "dest": "dist/oo-profile.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-ask-form",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-ask-form/define.ts",
-        "dest": "dist/oo-ask-form.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-ask-form/index.ts",
-        "dest": "dist/oo-ask-form.mjs"
       }
     ]
   },
