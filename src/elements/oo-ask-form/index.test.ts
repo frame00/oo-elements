@@ -33,34 +33,6 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		event(scopeSelector, 'changescope', {scope: 'private'})
 	})
 
-	describe('Show slots', () => {
-		it('Show "beforeSelectScope" slot as before contents of <oo-atoms-select-scope>', () => {
-			removeElement(ELEMENT)
-			document.body.insertAdjacentHTML('afterbegin', `
-			<${ELEMENT} data-iam=test>
-				<div slot="beforeSelectScope">Before select scope</div>
-			</${ELEMENT}>`)
-			const element = getElement(ELEMENT)[0]
-			const slot: HTMLSlotElement = element.shadowRoot.querySelector('slot[name=beforeSelectScope]')
-			expect(slot.nextElementSibling.localName).to.be('oo-atoms-select-scope')
-			const assigned = slot.assignedNodes()
-			expect(assigned[0].textContent).to.be('Before select scope')
-		})
-
-		it('Show "beforeForm" slot as before contents of <form>', () => {
-			removeElement(ELEMENT)
-			document.body.insertAdjacentHTML('afterbegin', `
-			<${ELEMENT} data-iam=test>
-				<div slot="beforeForm">Before form</div>
-			</${ELEMENT}>`)
-			const element = getElement(ELEMENT)[0]
-			const slot: HTMLSlotElement = element.shadowRoot.querySelector('slot[name=beforeForm]')
-			expect(slot.nextElementSibling.localName).to.be('form')
-			const assigned = slot.assignedNodes()
-			expect(assigned[0].textContent).to.be('Before form')
-		})
-	})
-
 	describe('Record to session', () => {
 		it('Change scope and currency', () => {
 			session.clear()
