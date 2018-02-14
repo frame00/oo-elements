@@ -4,6 +4,7 @@ import insertElement from '../../lib/test/insert-element'
 import getElement from '../../lib/test/get-element'
 import removeElement from '../../lib/test/remove-element'
 import sleep from '../../lib/test/sleep'
+import event from '../../lib/test/event'
 
 const ELEMENT = 'oo-ask'
 
@@ -47,6 +48,16 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		const element = insertElement(ELEMENT, new Map([['data-iam', 'test'], ['data-sign-in-flow', 'redirect']]))
 		await sleep(300)
 		expect(element.shadowRoot.querySelector('oo-ask-with-sign-in').getAttribute('data-sign-in-flow')).to.be('redirect')
+	})
+
+	it('Show <oo-organisms-ask-created> when dispatched "projectcreated" event on <oo-ask-with-sign-in>', async () => {
+		const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+		await sleep(300)
+		const askWithSignIn = element.shadowRoot.querySelector('oo-ask-with-sign-in')
+		event(askWithSignIn, 'projectcreated', {response: [{uid: 'test'}]})
+		const created = element.shadowRoot.querySelector('oo-organisms-ask-created')
+		expect(created).to.be.ok()
+		expect(element.shadowRoot.querySelector('*:not(style):not(oo-organisms-ask-created)')).to.not.be.ok()
 	})
 
 	after(() => {
