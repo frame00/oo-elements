@@ -28,7 +28,11 @@ access-control-allow-origin = "http://localhost:9876"
       {
         "key": "body",
         "value": "test"
-			}
+      },
+      {
+        "key": "assignee",
+        "value": "test"
+      }
     ]
   }
 ]

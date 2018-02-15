@@ -21,7 +21,11 @@ access-control-allow-methods = "GET, PATCH"
       {
         "key": "body",
         "value": "test"
-			}
+			},
+      {
+        "key": "assignee",
+        "value": "test"
+      }
     ]
   }
 ]
