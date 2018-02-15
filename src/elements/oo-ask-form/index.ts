@@ -46,6 +46,7 @@ export default class extends HTMLElement {
 		super()
 		message.set(this, '')
 		stateScope.set(this, 'public')
+		this.render()
 	}
 
 	get message() {
@@ -60,8 +61,12 @@ export default class extends HTMLElement {
 		return stateCurrency.get(this)
 	}
 
+	get dontAssign() {
+		return !Boolean(iam.get(this))
+	}
+
 	attributeChangedCallback(attr, prev, next) {
-		if (prev === next || !next) {
+		if (prev === next) {
 			return
 		}
 		iam.set(this, next)
@@ -81,8 +86,12 @@ export default class extends HTMLElement {
 		this.dispatchChanged()
 	}
 
-	html(init: Initial) {
+	html(dontAssign: boolean, init: Initial) {
 		const {body = '', scope = '', currency = ''} = init || {}
+		const scopeSelector = dontAssign ? '' : html`
+		<oo-atoms-select-scope data-scope$='${scope}' data-currency$='${currency}' on-changescope='${e => this.onScopeChange(e)}'></oo-atoms-select-scope>
+		`
+
 		return html`
 		<style>
 			@import '../../style/_reset-textare.css';
@@ -109,7 +118,7 @@ export default class extends HTMLElement {
 				@mixin textarea;
 			}
 		</style>
-		<oo-atoms-select-scope data-scope$='${scope}' data-currency$='${currency}' on-changescope='${e => this.onScopeChange(e)}'></oo-atoms-select-scope>
+		${scopeSelector}
 		<form on-change='${e => this.onMessageChange(e)}' on-submit='${e => this.onMessageChange(e)}'>
 			<textarea name=message placeholder='Would you like to ask me?'>${body}</textarea>
 		</form>
@@ -117,7 +126,7 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(stateInitialData.get(this)), this)
+		render(this.html(this.dontAssign, stateInitialData.get(this)), this)
 	}
 
 	updateSession() {

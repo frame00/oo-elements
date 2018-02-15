@@ -7,10 +7,10 @@ import createExtensions from '../lib/create-extensions'
 import {Currency} from '../type/currency'
 
 interface ProjectOptionsPost {
-	users: Array<OOUserUID>,
 	body: string,
 	author: OOUserUID,
 	scope: Scope,
+	users?: Array<OOUserUID>,
 	assignee?: OOUserUID,
 	currency?: Currency
 }
