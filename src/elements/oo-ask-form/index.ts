@@ -120,7 +120,7 @@ export default class extends HTMLElement {
 		</style>
 		${scopeSelector}
 		<form on-change='${e => this.onMessageChange(e)}' on-submit='${e => this.onMessageChange(e)}'>
-			<textarea name=message placeholder='Would you like to ask me?'>${body}</textarea>
+			<textarea name=message placeholder='What do you like to ask?'>${body}</textarea>
 		</form>
 		`
 	}
