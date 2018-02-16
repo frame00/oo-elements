@@ -173,7 +173,7 @@ export default class extends HTMLElement {
 				</li>
 				<li class=step>
 					<button class=submit on-click='${() => this.createProject()}'>Ask</button>
-					<p class=description>Just send it! In the case of a "Private", please pay the initial fee after being accepted by this person.</p>
+					<p class=description>Just send it!</p>
 				</li>
 			</ul>
 		</div>
