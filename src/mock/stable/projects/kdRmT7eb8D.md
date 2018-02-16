@@ -7,7 +7,7 @@ access-control-allow-methods = "GET, PATCH"
 ```json
 [
   {
-    "uid": "yV7094Ol1Z",
+    "uid": "kdRmT7eb8D",
     "created": 1516380671346,
     "Extensions": [
       {
@@ -15,25 +15,9 @@ access-control-allow-methods = "GET, PATCH"
         "value": "xxx"
       },
       {
-        "key": "approve",
-        "value": false
-      },
-      {
-        "key": "scope",
-        "value": "private"
-      },
-      {
-        "key": "users",
-        "value": ["test", "xxx"]
-      },
-      {
         "key": "body",
         "value": "test"
-			},
-      {
-        "key": "assignee",
-        "value": "test"
-      }
+			}
     ]
   }
 ]

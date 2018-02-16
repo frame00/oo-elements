@@ -33,6 +33,20 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		event(scopeSelector, 'changescope', {scope: 'private'})
 	})
 
+	describe('Show <oo-atoms-select-scope>', () => {
+		it('Show <oo-atoms-select-scope> when exsits "data-iam" attribute', () => {
+			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+			const scopeSelector = element.shadowRoot.querySelector('oo-atoms-select-scope')
+			expect(scopeSelector).to.be.ok()
+		})
+
+		it('Dont show <oo-atoms-select-scope> when not exsits "data-iam" attribute', () => {
+			const element = insertElement(ELEMENT)
+			const scopeSelector = element.shadowRoot.querySelector('oo-atoms-select-scope')
+			expect(scopeSelector).to.not.be.ok()
+		})
+	})
+
 	describe('Record to session', () => {
 		it('Change scope and currency', () => {
 			session.clear()

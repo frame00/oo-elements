@@ -1,6 +1,8 @@
 +++
 [headers]
 access-control-allow-origin = "http://localhost:9876"
+access-control-expose-headers = "x-oo-count"
+x-oo-count = 4
 +++
 
 ```json
@@ -18,21 +20,35 @@ access-control-allow-origin = "http://localhost:9876"
         "value": true
       },
       {
-        "key": "scope",
-        "value": "private"
-      },
-      {
         "key": "users",
-        "value": ["test"]
+        "value": ["test", "JEr9hsMH5m"]
       },
       {
         "key": "body",
         "value": "test"
+			}
+    ]
+  },
+  {
+    "uid": "Mx8g7M7hbh",
+    "created": 1516380661346,
+    "Extensions": [
+      {
+        "key": "author",
+        "value": "xxx"
       },
       {
-        "key": "assignee",
+        "key": "approve",
+        "value": true
+      },
+      {
+        "key": "users",
+        "value": ["test", "xxx", "JEr9hsMH5m"]
+      },
+      {
+        "key": "body",
         "value": "test"
-      }
+			}
     ]
   }
 ]

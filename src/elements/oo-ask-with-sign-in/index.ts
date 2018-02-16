@@ -38,10 +38,6 @@ const stateAuthorized = weakMap<boolean>()
 const stateSignInFlow = weakMap<SignInFlow>()
 
 const validation = (el: HTMLElement): boolean => {
-	const users = [stateIam.get(el), stateOfferer.get(el)]
-	if (users.some(i => i === undefined)) {
-		return false
-	}
 	const body = stateMessage.get(el)
 	if (body === undefined || body.match(/./) === null) {
 		return false
@@ -67,10 +63,11 @@ export default class extends HTMLElement {
 	constructor() {
 		super()
 		stateAuthorized.set(this, false)
+		this.render()
 	}
 
 	attributeChangedCallback(attr, prev, next) {
-		if (prev === next || !next) {
+		if (prev === next) {
 			return
 		}
 		switch(attr) {
@@ -164,7 +161,7 @@ export default class extends HTMLElement {
 				font-family: var(--font-family);
 			}
 		</style>
-		<oo-ask-form data-iam$='${uid}' on-changed='${e => this.onAskChanged(e)}'></oo-ask-form>
+		<oo-ask-form data-iam$='${uid ? uid : ''}' on-changed='${e => this.onAskChanged(e)}'></oo-ask-form>
 		<div class=steps>
 			<ul class$='${step}'>
 				<li class=step>
@@ -216,19 +213,37 @@ export default class extends HTMLElement {
 		if (validation(this) === false) {
 			return
 		}
-		const users = [stateIam.get(this), stateOfferer.get(this)]
+		const iam = stateIam.get(this)
+		const offerer = stateOfferer.get(this)
 		const body = stateMessage.get(this)
 		const author = stateOfferer.get(this)
 		const scope = stateScope.get(this)
 		const currency = stateCurrency.get(this)
-		const project = await createProject({
-			users,
+		const opts: {
+			body: string,
+			author: string,
+			scope: Scope,
+			users?: Array<string>,
+			currency?: Currency,
+			assignee?: string
+		} = {
 			body,
 			author,
-			scope,
-			currency,
-			assignee: stateIam.get(this)
-		})
+			scope
+		}
+		if (typeof currency === 'string') {
+			opts.currency = currency
+		}
+		if (typeof iam === 'string' && iam !== '') {
+			opts.assignee = iam
+			if (typeof offerer === 'string' && offerer !== '') {
+				opts.users = [iam, offerer]
+			}
+		}
+		if (typeof currency === 'string') {
+			opts.currency = currency
+		}
+		const project = await createProject(opts)
 		const {response} = project
 		if (Array.isArray(response)) {
 			this.dispatchEvent(EVENT.PROJECT_CREATED(project))
