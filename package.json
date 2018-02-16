@@ -44,7 +44,7 @@
     "@types/expect.js": "^0.3.29",
     "@types/mocha": "^2.2.48",
     "@types/node": "^9.4.0",
-    "@types/query-string": "^5.0.1",
+    "@types/query-string": "^5.1.0",
     "dotenv": "^5.0.0",
     "expect.js": "^0.3.1",
     "gulp": "^3.9.1",

@@ -25,6 +25,13 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			expect(element.messages[0].uid).to.be('jX0hnUC2dR')
 		})
 
+		it('Fetch messages up to the value of "data-limit"', async () => {
+			const element: any = insertElement(ELEMENT, new Map([['data-uid', 's8F8NzGjxH'], ['data-limit', '2']]))
+			await sleep(300)
+			expect(element.messages).to.have.length(2)
+			expect(element.messages[0].uid).to.be('k7hzALUGea')
+		})
+
 		it('injectMessages method', async () => {
 			const element: any = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
 			await sleep(300)
@@ -41,6 +48,12 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 				const element = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
 				await sleep(100)
 				expect(element.shadowRoot.querySelector('.paging')).to.be.ok()
+			})
+
+			it('When the fetched content is partial, but when exists "data-limit", not display the button', async () => {
+				const element = insertElement(ELEMENT, new Map([['data-uid', 's8F8NzGjxH'], ['data-limit', '2']]))
+				await sleep(100)
+				expect(element.shadowRoot.querySelector('.paging')).to.not.be.ok()
 			})
 
 			it('When the fetched content is all, not display the button', async () => {
