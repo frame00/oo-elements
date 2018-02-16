@@ -3,6 +3,7 @@ import {html, render} from '../../lib/html'
 import define from '../../lib/define'
 import projectStatus from '../oo-project-status'
 import {OOProject} from '../../type/oo-project'
+import getPublicProjects from '../../lib/oo-api-get-public-projects'
 import getUserProjects from '../../lib/oo-api-get-user-projects'
 import weakMap from '../../lib/weak-map'
 import message from '../_atoms/oo-atoms-message'
@@ -31,13 +32,28 @@ export default class extends HTMLElement {
 		return [ATTR.DATA_IAM]
 	}
 
+	get iam() {
+		return stateIam.get(this)
+	}
+
+	get projects() {
+		return stateProjects.get(this)
+	}
+
+	connectedCallback() {
+		if (this.hasAttribute(ATTR.DATA_IAM) === false) {
+			stateProjects.set(this, [])
+			this.fetchProjects(this.iam)
+		}
+	}
+
 	attributeChangedCallback(attr, prev, next) {
-		if (prev === next || !next) {
+		if (prev === next) {
 			return
 		}
 		stateIam.set(this, next)
 		stateProjects.set(this, [])
-		this.fetchProjects(stateIam.get(this))
+		this.fetchProjects(this.iam)
 	}
 
 	html(iam: string, projects: Array<OOProject>, count: number) {
@@ -102,15 +118,20 @@ export default class extends HTMLElement {
 	}
 
 	render() {
-		render(this.html(stateIam.get(this), stateProjects.get(this), stateItemCount.get(this)), this)
+		render(this.html(this.iam, this.projects, stateItemCount.get(this)), this)
 	}
 
-	async fetchProjects(iam: string, time?: number) {
-		const api = await getUserProjects(iam, time)
+	async fetchProjects(iam: string | null, time?: number) {
+		const api = await (() => {
+			if (typeof iam === 'string' && iam !== '') {
+				return getUserProjects(iam, time)
+			}
+			return getPublicProjects(time)
+		})()
 		const {response, headers} = api
 		stateItemCount.set(this, Number(headers.get('x-oo-count')))
 		if (Array.isArray(response)) {
-			const current = stateProjects.get(this)
+			const current = this.projects
 			stateProjects.set(this, [...current, ...response])
 		}
 		this.render()

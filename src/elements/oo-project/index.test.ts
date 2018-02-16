@@ -6,7 +6,7 @@ import removeElement from '../../lib/test/remove-element'
 import store from '../../lib/local-storage'
 import sleep from '../../lib/test/sleep'
 import event from '../../lib/test/event'
-import { HTMLElementEventProjectCreated } from '../../type/event';
+import {HTMLElementEventProjectCreated} from '../../type/event'
 
 const ELEMENT = 'oo-project'
 

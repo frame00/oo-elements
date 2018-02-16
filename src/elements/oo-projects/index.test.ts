@@ -20,8 +20,19 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Fetch projects', () => {
 		it('Fetch the related projects from "data-iam" attribute value', async () => {
-			const element = insertElement(ELEMENT, new Map([['data-iam', 'JEr9hsMH5m']]))
-			await sleep(100)
+			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'JEr9hsMH5m']]))
+			await sleep(300)
+			const items = element.shadowRoot.querySelectorAll('oo-atoms-message')
+			console.log('xxxx', element.projects)
+			expect(items).to.have.length(2)
+
+			const more = element.shadowRoot.querySelector('.paging > oo-atoms-button')
+			expect(more).to.be.ok()
+		})
+
+		it('Fetch public projects when not exists "data-iam" attribute value', async () => {
+			const element = insertElement(ELEMENT)
+			await sleep(300)
 			const items = element.shadowRoot.querySelectorAll('oo-atoms-message')
 			expect(items).to.have.length(2)
 
@@ -30,8 +41,9 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 
 		it('Show <oo-empty> when no projects exists', async () => {
-			const element = insertElement(ELEMENT, new Map([['data-iam', 'xxx']]))
-			await sleep(100)
+			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'xxx']]))
+			await sleep(300)
+			console.log('xxxx', element.projects)
 			expect(element.shadowRoot.querySelector('oo-empty')).to.be.ok()
 		})
 	})
