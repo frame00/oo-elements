@@ -210,6 +210,21 @@
     ]
   },
   {
+    "name": "oo-forks",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-forks/define.ts",
+        "dest": "dist/oo-forks.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-forks/index.ts",
+        "dest": "dist/oo-forks.mjs"
+      }
+    ]
+  },
+  {
     "name": "oo-message-form",
     "build": [
       {

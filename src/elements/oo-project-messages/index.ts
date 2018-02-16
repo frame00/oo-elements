@@ -9,6 +9,7 @@ import ooMessage from '../_atoms/oo-atoms-message'
 import ooUserName from '../_atoms/oo-atoms-user-name'
 import ooButton from '../_atoms/oo-atoms-button'
 import message from './lib/message'
+import weakMap from '../../lib/weak-map'
 
 define('oo-atoms-message', ooMessage)
 define('oo-atoms-user-name', ooUserName)
@@ -18,22 +19,25 @@ interface Options {
 	iam: string,
 	project: string,
 	messages: MapedOOMessages,
-	itemCount: number
+	itemCount: number,
+	limit: number
 }
 
 const ATTR = {
 	DATA_IAM: 'data-iam',
-	DATA_UID: 'data-uid'
+	DATA_UID: 'data-uid',
+	DATA_LIMIT: 'data-limit'
 }
 
-const iam: WeakMap<object, string> = new WeakMap()
-const projectUid: WeakMap<object, string> = new WeakMap()
-const messages: WeakMap<object, MapedOOMessages> = new WeakMap()
-const itemCount: WeakMap<object, number> = new WeakMap()
+const iam = weakMap<string>()
+const projectUid = weakMap<string>()
+const messages = weakMap<MapedOOMessages>()
+const itemCount = weakMap<number>()
+const stateLimit = weakMap<number>()
 
 export default class extends HTMLElement {
 	static get observedAttributes() {
-		return [ATTR.DATA_UID, ATTR.DATA_IAM]
+		return [ATTR.DATA_UID, ATTR.DATA_IAM, ATTR.DATA_LIMIT]
 	}
 
 	constructor() {
@@ -57,6 +61,9 @@ export default class extends HTMLElement {
 			case ATTR.DATA_IAM:
 				iam.set(this, next)
 				break
+			case ATTR.DATA_LIMIT:
+				stateLimit.set(this, ~~next)
+				break
 			default:
 				break
 		}
@@ -64,12 +71,12 @@ export default class extends HTMLElement {
 	}
 
 	html(opts: Options) {
-		const {iam: user, messages: mess, project, itemCount: count} = opts
+		const {iam: user, messages: mess, project, itemCount: count, limit} = opts
 		if (mess.length === 0) {
 			return html``
 		}
 		const paging = mess[0].created - 1
-		const more = count > mess.length ? html`
+		const more = count > mess.length && limit === undefined ? html`
 		<div class=paging>
 			<oo-atoms-button on-clicked='${() => this.fetchMessages(project, paging)}'>More</oo-atoms-button>
 		</div>
@@ -116,7 +123,8 @@ export default class extends HTMLElement {
 			iam: iam.get(this),
 			project: projectUid.get(this),
 			messages: messages.get(this),
-			itemCount: itemCount.get(this)
+			itemCount: itemCount.get(this),
+			limit: stateLimit.get(this)
 		}
 		render(this.html(opts), this)
 	}
@@ -125,7 +133,11 @@ export default class extends HTMLElement {
 		if (typeof uid !== 'string') {
 			return
 		}
-		const api = await getProjectMessages(uid, time)
+		const limit = stateLimit.get(this)
+		if (limit === undefined && this.hasAttribute(ATTR.DATA_LIMIT)) {
+			return
+		}
+		const api = await getProjectMessages(uid, time, {limit})
 		const {response, headers} = api
 		itemCount.set(this, Number(headers.get('x-oo-count')))
 		if (Array.isArray(response)) {

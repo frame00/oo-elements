@@ -13,6 +13,7 @@ import {
 	ooProjectSummary,
 	ooProjectMessages,
 	ooProjectStatus,
+	ooForks,
 	ooMessageForm,
 	ooConnectStripe,
 	ooPay,
@@ -40,6 +41,7 @@ define('oo-project', ooProject)
 define('oo-project-summary', ooProjectSummary)
 define('oo-project-messages', ooProjectMessages)
 define('oo-project-status', ooProjectStatus)
+define('oo-forks', ooForks)
 define('oo-message-form', ooMessageForm)
 define('oo-connect-stripe', ooConnectStripe)
 define('oo-pay', ooPay)
