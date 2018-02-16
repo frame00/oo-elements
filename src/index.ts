@@ -11,6 +11,7 @@ import ooProject from './elements/oo-project'
 import ooProjectSummary from './elements/oo-project-summary'
 import ooProjectMessages from './elements/oo-project-messages'
 import ooProjectStatus from './elements/oo-project-status'
+import ooForks from './elements/oo-forks'
 import ooMessageForm from './elements/oo-message-form'
 import ooConnectStripe from './elements/oo-connect-stripe'
 import ooPay from './elements/oo-pay'
@@ -38,6 +39,7 @@ export {
 	ooProjectSummary,
 	ooProjectMessages,
 	ooProjectStatus,
+	ooForks,
 	ooMessageForm,
 	ooConnectStripe,
 	ooPay,
