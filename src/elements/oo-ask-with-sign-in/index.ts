@@ -106,7 +106,7 @@ export default class extends HTMLElement {
 				--submit: color(var(--yellow) blend(red 10%));
 			}
 			oo-ask-form {
-				padding: 2rem 1rem;
+				margin-bottom: 1rem;
 				width: 100%;
 				box-sizing: border-box;
 			}
@@ -139,7 +139,6 @@ export default class extends HTMLElement {
 			}
 			.step {
 				width: 100%;
-				padding: 2rem 1rem;
 				.authorization {
 					border: 0.5px solid #ccc;
 					background: var(--authorization);

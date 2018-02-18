@@ -96,7 +96,8 @@ export default class extends HTMLElement {
 					flex-direction: column;
 				}
 			}
-			oo-profile {
+			oo-profile,
+			oo-ask-with-sign-in {
 				padding: 2rem 1rem;
 				width: 100%;
 				box-sizing: border-box;
