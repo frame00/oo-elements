@@ -66,9 +66,6 @@ export default class extends HTMLElement {
 				margin-bottom: 1rem;
 				display: inline-block;
 				font-size: 0.8rem;
-				&::before {
-					content: '';
-				}
 			}
 		</style>
 		<main>
