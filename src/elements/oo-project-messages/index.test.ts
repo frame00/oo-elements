@@ -50,12 +50,6 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 				expect(element.shadowRoot.querySelector('.paging')).to.be.ok()
 			})
 
-			it('When the fetched content is partial, but when exists "data-limit", not display the button', async () => {
-				const element = insertElement(ELEMENT, new Map([['data-uid', 's8F8NzGjxH'], ['data-limit', '2']]))
-				await sleep(100)
-				expect(element.shadowRoot.querySelector('.paging')).to.not.be.ok()
-			})
-
 			it('When the fetched content is all, not display the button', async () => {
 				const element = insertElement(ELEMENT, new Map([['data-uid', 'kY8FF7AT2W']]))
 				await sleep(100)

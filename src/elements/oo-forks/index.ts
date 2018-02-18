@@ -54,12 +54,28 @@ export default class extends HTMLElement {
 			:host {
 				display: block;
 			}
+			:root {
+				--link: #2196F3;
+			}
+			article {
+				margin-bottom: 1rem;
+				padding-bottom: 1rem;
+			}
+			a {
+				color: var(--link);
+				margin-bottom: 1rem;
+				display: inline-block;
+				font-size: 0.8rem;
+			}
 		</style>
 		<main>
 			${repeat(projects, project => {
 				const {uid} = project
 				return html`
-				<oo-project-messages data-uid$='${uid}' data-limit=2></oo-project-messages>
+				<article>
+					<a href$='/project/${uid}'>Fork #${uid}</a>
+					<oo-project-messages data-uid$='${uid}' data-limit=2></oo-project-messages>
+				</article>
 				`
 			})}
 			${more}
