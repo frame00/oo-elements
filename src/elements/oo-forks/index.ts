@@ -54,12 +54,23 @@ export default class extends HTMLElement {
 			:host {
 				display: block;
 			}
+			article {
+				margin-bottom: 1rem;
+				padding-bottom: 1rem;
+			}
+			a {
+				color: inherit;
+			}
 		</style>
 		<main>
 			${repeat(projects, project => {
 				const {uid} = project
 				return html`
-				<oo-project-messages data-uid$='${uid}' data-limit=2></oo-project-messages>
+				<article>
+					<a href$='/project/${uid}'>
+						<oo-project-messages data-uid$='${uid}' data-limit=2></oo-project-messages>
+					</a>
+				</article>
 				`
 			})}
 			${more}
