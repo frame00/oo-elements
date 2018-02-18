@@ -23,7 +23,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		it('Encode token to get user ID, fetch user profile', async () => {
 			store.token = 'test'
 			const element = insertElement(ELEMENT)
-			await sleep(500)
+			await sleep(1000)
 			expect(element.shadowRoot.querySelector('input[name=name]').getAttribute('value')).to.be('test')
 			expect(element.shadowRoot.querySelector('textarea[name=bio]').textContent).to.be('test\ntest\ntest')
 			expect((element.shadowRoot.querySelector('input[name=notifications_opt_email]') as HTMLInputElement).checked).to.be.ok()

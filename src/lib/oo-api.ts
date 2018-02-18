@@ -1,3 +1,4 @@
+import {stringify} from 'query-string'
 import {OOAPIResponse, OOAPIResponseError} from '../type/oo-api-response'
 import {OOAPIResource, OOAPIVersion, OOAPIRequestBody, OOAPIRequestBodyUsers, OOAPIRequestBodyPayments, OOAPIRequestUsersConnectStripe} from '../type/oo-apis'
 import {OOAPIResult} from '../type/oo-api'
@@ -6,13 +7,14 @@ import store from './local-storage'
 import {url, version as _version} from '../conf/api'
 const {fetch} = window
 
-const endpoints = (resource: OOAPIResource, pathParameter?: string, version: OOAPIVersion = _version): string => {
-	return `${url}/${version}/${resource}${pathParameter ? `/${pathParameter}` : ''}`
+const endpoints = (resource: OOAPIResource, pathParameter?: string, query?: any, version: OOAPIVersion = _version): string => {
+	return `${url}/${version}/${resource}${pathParameter ? `/${pathParameter}` : ''}${query ? `?${stringify(query)}` : ''}`
 }
 
 interface Options {
 	resource: OOAPIResource,
 	pathParameter?: string,
+	query?: any,
 	method?: string,
 	body?: OOAPIRequestBody | OOAPIRequestBodyUsers | OOAPIRequestUsersConnectStripe | OOAPIRequestBodyPayments,
 	version?: OOAPIVersion
@@ -22,12 +24,13 @@ export default async <T>(options: Options): Promise<OOAPIResult<T>> => {
 	const {
 		resource,
 		pathParameter,
+		query,
 		method = 'GET',
 		body,
 		version
 	} = options
 
-	const endpoint = endpoints(resource, pathParameter, version)
+	const endpoint = endpoints(resource, pathParameter, query, version)
 	const init: RequestInit = {
 		method,
 		mode: 'cors'
