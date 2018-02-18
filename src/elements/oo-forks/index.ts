@@ -54,12 +54,21 @@ export default class extends HTMLElement {
 			:host {
 				display: block;
 			}
+			:root {
+				--link: #2196F3;
+			}
 			article {
 				margin-bottom: 1rem;
 				padding-bottom: 1rem;
 			}
 			a {
-				color: inherit;
+				color: var(--link);
+				margin-bottom: 1rem;
+				display: inline-block;
+				font-size: 0.8rem;
+				&::before {
+					content: '';
+				}
 			}
 		</style>
 		<main>
@@ -67,9 +76,8 @@ export default class extends HTMLElement {
 				const {uid} = project
 				return html`
 				<article>
-					<a href$='/project/${uid}'>
-						<oo-project-messages data-uid$='${uid}' data-limit=2></oo-project-messages>
-					</a>
+					<a href$='/project/${uid}'>Fork #${uid}</a>
+					<oo-project-messages data-uid$='${uid}' data-limit=2></oo-project-messages>
 				</article>
 				`
 			})}
