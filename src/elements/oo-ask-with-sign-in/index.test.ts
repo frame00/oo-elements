@@ -38,13 +38,16 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		await sleep(300)
 		element.onAskChanged(new CustomEvent('test', {detail: {amount: '1.00', message: 'test', currency: 'usd'}}))
 		element.onSignedIn(new CustomEvent('test', {detail: {uid: 'test'}}))
+		const button = element.shadowRoot.querySelector('button.submit')
 		await new Promise(resolve => {
 			element.addEventListener('projectcreated', (e: CustomEvent) => {
 				expect(e.detail.response[0].uid).to.be('test')
 				resolve()
 			})
 			element.createProject()
+			expect(button.hasAttribute('disabled')).to.be.ok()
 		})
+		expect(button.hasAttribute('disabled')).to.not.be.ok()
 	})
 
 	it('Dispatch "projectcreationfailed" event when failed to project create')
