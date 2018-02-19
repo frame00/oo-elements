@@ -8,6 +8,7 @@ import weakMap from '../../lib/weak-map'
 import {HTMLElementEventChangeAsk, ProjectCreatedDetail, ProjectCreated} from '../../type/event'
 import {Scope} from '../../type/scope'
 import {Currency} from '../../type/currency'
+import customEvent from '../../lib/custom-event'
 
 define('oo-organisms-ask-step-sign-in', stepSignIn)
 define('oo-ask-form', askForm)
@@ -26,8 +27,8 @@ const ATTR = {
 	DATA_SIGN_IN_FLOW: 'data-sign-in-flow'
 }
 const EVENT = {
-	PROJECT_CREATED: (detail: ProjectCreatedDetail): ProjectCreated => new CustomEvent('projectcreated', {detail}),
-	PROJECT_CREATION_FAILED: detail => new CustomEvent('projectcreationfailed', {detail})
+	PROJECT_CREATED: (detail: ProjectCreatedDetail): ProjectCreated => customEvent('projectcreated', detail),
+	PROJECT_CREATION_FAILED: detail => customEvent('projectcreationfailed', detail)
 }
 
 const stateIam = weakMap<string>()

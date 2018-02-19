@@ -10,6 +10,7 @@ import {MessageOptionsPost} from '../../type/oo-options-message'
 import parseMessage from '../../lib/parse-message-body'
 import {attach, dispatch} from '../../lib/notification'
 import weakMap from '../../lib/weak-map'
+import customEvent from '../../lib/custom-event'
 
 define('oo-atoms-button', button)
 define('oo-atoms-user-name', userName)
@@ -24,9 +25,9 @@ const ATTR = {
 	DATA_EXTENSIONS: 'data-extensions'
 }
 const EVENT = {
-	MESSAGE_VARIATION_ERROR: (detail: MessageVariationErrorDetail): MessageVariationError => new CustomEvent('messagevariationerror', {detail}),
-	MESSAGE_SENT: (detail: MessageSentDetail): MessageSent => new CustomEvent('messagesent', {detail}),
-	MESSAGE_CREATION_FAILED: detail => new CustomEvent('messagecreationfailed', {detail})
+	MESSAGE_VARIATION_ERROR: (detail: MessageVariationErrorDetail): MessageVariationError => customEvent('messagevariationerror', detail),
+	MESSAGE_SENT: (detail: MessageSentDetail): MessageSent => customEvent('messagesent', detail),
+	MESSAGE_CREATION_FAILED: detail => customEvent('messagecreationfailed', detail)
 }
 
 const messageAuthor = weakMap<string>()

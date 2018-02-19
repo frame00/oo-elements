@@ -5,11 +5,12 @@ import {attach, dispatch} from '../../lib/notification'
 import store from '../../lib/local-storage'
 import deleteToken from '../../lib/oo-api-delete-token'
 import isSuccess from '../../lib/is-api-success'
+import customEvent from '../../lib/custom-event'
 
 define('oo-atoms-button', button)
 
 const EVENT = {
-	SIGNED_OUT: new Event('signedout')
+	SIGNED_OUT: customEvent('signedout')
 }
 
 export default class extends HTMLElement {

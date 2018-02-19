@@ -14,6 +14,7 @@ import weakMap from '../../lib/weak-map'
 import {Scope} from '../../type/scope'
 import createProjectForks from '../../lib/oo-api-create-project-forks'
 import {ProjectCreatedDetail, ProjectCreated} from '../../type/event'
+import customEvent from '../../lib/custom-event'
 
 define('oo-project-summary', summary)
 define('oo-project-messages', messages)
@@ -35,8 +36,8 @@ const ATTR = {
 	DATA_UID: 'data-uid'
 }
 const EVENT = {
-	PROJECT_CREATED: (detail: ProjectCreatedDetail): ProjectCreated => new CustomEvent('projectcreated', {detail}),
-	PROJECT_CREATION_FAILED: detail => new CustomEvent('projectcreationfailed', {detail})
+	PROJECT_CREATED: (detail: ProjectCreatedDetail): ProjectCreated => customEvent('projectcreated', detail),
+	PROJECT_CREATION_FAILED: detail => customEvent('projectcreationfailed', detail)
 }
 
 const projectUid = weakMap<string>()

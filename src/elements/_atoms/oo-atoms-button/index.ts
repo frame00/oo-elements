@@ -1,5 +1,6 @@
 import {html, render} from '../../../lib/html'
 import wm from '../../../lib/weak-map'
+import customEvent from '../../../lib/custom-event'
 
 type State = 'progress' | 'resolved' | 'rejected' | ''
 
@@ -8,7 +9,7 @@ const ATTR = {
 	DATA_BLOCK: 'data-block'
 }
 const EVENT = {
-	CLICKED: new Event('clicked')
+	CLICKED: customEvent('clicked')
 }
 
 const state = wm<State>()

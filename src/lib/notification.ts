@@ -1,6 +1,7 @@
 import {NotificationDetail} from '../type/event'
 import notificationCenter from '../elements/oo-notification-center'
 import define from './define'
+import customEvent from './custom-event'
 const {document} = window
 
 define('oo-notification-center', notificationCenter)
@@ -17,7 +18,7 @@ export const attach = (): void => {
 
 export const dispatch = (opts: NotificationDetail): boolean => {
 	try {
-		return document.dispatchEvent(new CustomEvent('oonotification', {detail: opts}))
+		return document.dispatchEvent(customEvent('oonotification', opts))
 	} catch(err) {
 		return false
 	}

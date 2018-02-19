@@ -13,10 +13,6 @@ define('oo-sign-in-with-redirect', signInWithRedirect)
 const ATTR = {
 	DATA_FLOW: 'data-flow'
 }
-const EVENT = {
-	SIGNED_IN: detail => new CustomEvent('signedin', {detail}),
-	SIGNED_IN_ERROR: detail => new CustomEvent('signedinerror', {detail})
-}
 const asSignInFlow = (d: string): SignInFlow => {
 	if (d === 'popup' || d === 'redirect') {
 		return d
@@ -48,8 +44,8 @@ export default class extends HTMLElement {
 	html(flow: SignInFlow) {
 		const buttons = f => {
 			const provs = ['google', 'facebook', 'github']
-			const popup = prov => html`<oo-sign-in class=button data-provider$='${prov}' on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-sign-in>`
-			const redirect = prov => html`<oo-sign-in-with-redirect class=button data-provider$='${prov}' on-signedin='${e => this.onSignedIn(e)}' on-signedinerror='${e => this.onSignedInError(e)}'></oo-sign-in-with-redirect>`
+			const popup = prov => html`<oo-sign-in class=button data-provider$='${prov}'></oo-sign-in>`
+			const redirect = prov => html`<oo-sign-in-with-redirect class=button data-provider$='${prov}'></oo-sign-in-with-redirect>`
 			if (f === 'popup') {
 				return repeat(provs, prov => popup(prov))
 			}
@@ -89,13 +85,5 @@ export default class extends HTMLElement {
 
 	render() {
 		render(this.html(stateSignInFlow.get(this)), this)
-	}
-
-	onSignedIn(e: CustomEvent) {
-		this.dispatchEvent(EVENT.SIGNED_IN(e.detail))
-	}
-
-	onSignedInError(e: CustomEvent) {
-		this.dispatchEvent(EVENT.SIGNED_IN_ERROR(e.detail))
 	}
 }

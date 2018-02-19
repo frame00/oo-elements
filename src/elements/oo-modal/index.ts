@@ -1,10 +1,11 @@
 import {html, render} from '../../lib/html'
+import customEvent from '../../lib/custom-event'
 
 const ATTR = {
 	DATA_OPEN: 'data-open'
 }
 const EVENT = {
-	CLOSE: new Event('close')
+	CLOSE: customEvent('close')
 }
 
 const asBoolean = (data: string): boolean => {
