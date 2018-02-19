@@ -181,6 +181,32 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 	})
 
+	describe('Toggle tips', () => {
+		it('Default is closed', () => {
+			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+			const article = element.shadowRoot.querySelector('article')
+			expect(article.offsetHeight).to.be(0)
+		})
+
+		it('Click the button to open', () => {
+			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+			const button = element.shadowRoot.querySelector('button')
+			const article = element.shadowRoot.querySelector('article')
+			event(button, 'click')
+			expect(article.offsetHeight).to.be.above(0)
+		})
+
+		it('Toggle by button click', () => {
+			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+			const button = element.shadowRoot.querySelector('button')
+			const article = element.shadowRoot.querySelector('article')
+			event(button, 'click')
+			expect(article.offsetHeight).to.be.above(0)
+			event(button, 'click')
+			expect(article.offsetHeight).to.be(0)
+		})
+	})
+
 	after(() => {
 		removeElement(ELEMENT)
 	})
