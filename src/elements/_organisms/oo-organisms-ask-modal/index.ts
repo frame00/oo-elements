@@ -10,9 +10,6 @@ const ATTR = {
 	DATA_IAM: 'data-iam',
 	DATA_OPEN: 'data-open'
 }
-const EVENT = {
-	CLOSE: new Event('close')
-}
 
 const asBoolean = (data: string): boolean => {
 	switch(data) {
@@ -80,6 +77,5 @@ export default class extends HTMLElement {
 	onModalClose() {
 		open.set(this, false)
 		this.render()
-		this.dispatchEvent(EVENT.CLOSE)
 	}
 }

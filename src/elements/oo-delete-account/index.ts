@@ -4,11 +4,12 @@ import button from '../_atoms/oo-atoms-button'
 import {attach, dispatch} from '../../lib/notification'
 import store from '../../lib/local-storage'
 import deleteUser from '../../lib/oo-api-delete-user'
+import customEvent from '../../lib/custom-event'
 
 define('oo-atoms-button', button)
 
 const EVENT = {
-	DELETED: new Event('deleted')
+	DELETED: customEvent('deleted')
 }
 
 export default class extends HTMLElement {

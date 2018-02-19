@@ -6,6 +6,7 @@ import {Scope} from '../../type/scope'
 import {ChangeAskDetail, ChangeAsk, HTMLElementEventChangeScope} from '../../type/event'
 import {Currency} from '../../type/currency'
 import session from '../../lib/session-storage'
+import customEvent from '../../lib/custom-event'
 
 define('oo-atoms-select-scope', selectScope)
 
@@ -23,7 +24,7 @@ const ATTR = {
 	DATA_IAM: 'data-iam'
 }
 const EVENT = {
-	CHANGED: (detail: ChangeAskDetail): ChangeAsk => new CustomEvent('changed', {detail})
+	CHANGED: (detail: ChangeAskDetail): ChangeAsk => customEvent('changed', detail)
 }
 
 const iam = weakMap<string>()

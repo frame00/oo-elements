@@ -7,13 +7,14 @@ import {Currency} from '../../../type/currency'
 import getCurrency from '../../../lib/get-currency'
 import getInitPrice from '../../../lib/get-init-price'
 import {currencyToSign} from '../../../lib/get-price-per-hour'
+import customEvent from '../../../lib/custom-event'
 
 const ATTR = {
 	DATA_SCOPE: 'data-scope',
 	DATA_CURRENCY: 'data-currency'
 }
 const EVENT = {
-	CHANGE_SCOPE: (detail: ChangeScopeDetail): ChangeScope => new CustomEvent('changescope', {detail})
+	CHANGE_SCOPE: (detail: ChangeScopeDetail): ChangeScope => customEvent('changescope', detail)
 }
 const asScope = (d: string): Scope => {
 	if (d === 'public' || d === 'private') {

@@ -9,6 +9,7 @@ import connectApi from '../../lib/oo-api-connect-user-stripe'
 import store from '../../lib/local-storage'
 import {StripeConnectedDetail, StripeConnected, StripeConnectionFailedDetail, StripeConnectionFailed} from '../../type/event'
 const {location} = window
+import customEvent from '../../lib/custom-event'
 
 define('oo-atoms-button', button)
 
@@ -19,8 +20,8 @@ const URI_PARAMS = {
 	STATE: 'state'
 }
 const EVENT = {
-	CONNECTED: (detail: StripeConnectedDetail): StripeConnected => new CustomEvent('connected', {detail}),
-	CONNECTION_FAILED: (detail: StripeConnectionFailedDetail): StripeConnectionFailed => new CustomEvent('connectionfailed', {detail})
+	CONNECTED: (detail: StripeConnectedDetail): StripeConnected => customEvent('connected', detail),
+	CONNECTION_FAILED: (detail: StripeConnectionFailedDetail): StripeConnectionFailed => customEvent('connectionfailed', detail)
 }
 
 const stateUid = weakMap<string>()

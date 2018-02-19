@@ -4,14 +4,15 @@ import store from '../local-storage'
 import {SignedInDetail, SignedIn, SignedInError, SignedInErrorDetail} from '../../type/event'
 import {attach, dispatch} from '../notification'
 import weakMap from '../weak-map'
+import customEvent from '../../lib/custom-event'
 
 const ATTR = {
 	DATA_PROVIDER: 'data-provider',
 	DATA_INIT_NOTIFICATION: 'data-init-notification'
 }
 const EVENT = {
-	SIGNED_IN: (detail: SignedInDetail): SignedIn => new CustomEvent('signedin', {detail}),
-	SIGNED_IN_ERROR: (detail: SignedInErrorDetail): SignedInError => new CustomEvent('signedinerror', {detail})
+	SIGNED_IN: (detail: SignedInDetail): SignedIn => customEvent('signedin', detail),
+	SIGNED_IN_ERROR: (detail: SignedInErrorDetail): SignedInError => customEvent('signedinerror', detail)
 }
 
 const asValidString = (data: string): AuthProvider => {
