@@ -9,6 +9,7 @@ import {MessageVariationError, MessageVariationErrorDetail, MessageSentDetail, M
 import {MessageOptionsPost} from '../../type/oo-options-message'
 import parseMessage from '../../lib/parse-message-body'
 import {attach, dispatch} from '../../lib/notification'
+import weakMap from '../../lib/weak-map'
 
 define('oo-atoms-button', button)
 define('oo-atoms-user-name', userName)
@@ -28,13 +29,14 @@ const EVENT = {
 	MESSAGE_CREATION_FAILED: detail => new CustomEvent('messagecreationfailed', {detail})
 }
 
-const messageAuthor: WeakMap<object, string> = new WeakMap()
-const messageExtensions: WeakMap<object, OOExtensionsLikeObject> = new WeakMap()
-const messageBodyExtensions: WeakMap<object, OOExtensionsLikeObject> = new WeakMap()
-const messageBody: WeakMap<object, string> = new WeakMap()
-const fetching: WeakMap<object, boolean> = new WeakMap()
-const success: WeakMap<object, boolean> = new WeakMap()
-const message: WeakMap<object, MessageOptionsPost> = new WeakMap()
+const messageAuthor = weakMap<string>()
+const messageExtensions = weakMap<OOExtensionsLikeObject>()
+const messageBodyExtensions = weakMap<OOExtensionsLikeObject>()
+const messageBody = weakMap<string>()
+const fetching = weakMap<boolean>()
+const success = weakMap<boolean>()
+const message = weakMap<MessageOptionsPost>()
+const tipsOpen = weakMap<boolean>()
 
 const asExtensions = (data: string): OOExtensionsLikeObject => {
 	try {
@@ -78,7 +80,7 @@ export default class extends HTMLElement {
 		this.render()
 	}
 
-	html(isFetching: boolean, isSuccess: boolean) {
+	html(isFetching: boolean, isSuccess: boolean, open: boolean) {
 		const state = ((): string => {
 			if (isFetching === false && isSuccess !== undefined) {
 				return isSuccess ? 'resolved' : 'rejected'
@@ -92,6 +94,7 @@ export default class extends HTMLElement {
 		return html`
 		<style>
 			@import '../../style/_mixin-textarea.css';
+			@import '../../style/_reset-button.css';
 			:host {
 				display: block;
 			}
@@ -104,34 +107,52 @@ export default class extends HTMLElement {
 				@mixin textarea;
 				margin-bottom: 1rem;
 			}
-			oo-atoms-button {}
 			.tip {
-				margin-top: 1rem;
+				width: 100%;
+				box-sizing: border-box;
+				margin-bottom: 1rem;
 				padding: 1rem;
 				background: whitesmoke;
 				font-size: 0.8rem;
 				border-radius: 5px;
 			}
+			button {
+				text-transform: capitalize;
+			}
+			article {
+				margin-top: 1rem;
+				&.close {
+					display: none;
+				}
+			}
 		</style>
 		<form on-submit='${() => this.sendMessage()}'>
 			<textarea on-change='${e => this.onMessageChange(e)}'></textarea>
+			<div class=tip>
+				<button on-click='${e => this.toggleTips(e)}'>tips: ${open ? '📕' : '📖'}</button>
+				<article class$='${open ? 'open' : 'close'}'>
+					# Create a payment message by writing TOML format between "+++" and "+++".<br/>
+					e.g.<br/>
+					+++<br/>
+					type = 'pay'<br/>
+					amount = 10.00<br/>
+					currency = 'usd' or 'jpy'<br/>
+					+++
+				</article>
+			</div>
 			<oo-atoms-button on-clicked='${() => this.sendMessage()}' data-state$='${state}'>Send a message</oo-atoms-button>
 		</form>
-		<div class=tip>
-			Tips:<br/>
-			# You can create a payment message by writing TOML format between "+++" and "+++".<br/>
-			e.g.<br/>
-			+++<br/>
-			type = 'pay'<br/>
-			amount = 10.00<br/>
-			currency = 'usd' or 'jpy'<br/>
-			+++
-		</div>
 		`
 	}
 
 	render() {
-		render(this.html(fetching.get(this), success.get(this)), this)
+		render(this.html(fetching.get(this), success.get(this), tipsOpen.get(this)), this)
+	}
+
+	toggleTips(e: HTMLElementEvent<HTMLButtonElement>) {
+		e.preventDefault()
+		tipsOpen.set(this, !Boolean(tipsOpen.get(this)))
+		this.render()
 	}
 
 	setMessage() {
