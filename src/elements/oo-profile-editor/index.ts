@@ -22,7 +22,8 @@ interface Options {
 	bio: string,
 	stripeUser: string,
 	buttonState: string,
-	notificationEMail: boolean
+	notificationEMail: boolean,
+	notificationEMailServiceInformation: boolean
 }
 
 const stateIam = weakMap<string>()
@@ -30,6 +31,7 @@ const stateName = weakMap<string>()
 const stateBio = weakMap<string>()
 const stateStripeUser = weakMap<string>()
 const stateNotificationEMail = weakMap<boolean>()
+const stateNotificationEMailServiceInformation = weakMap<boolean>()
 const stateButton = weakMap<string>()
 
 export default class extends HTMLElement {
@@ -44,7 +46,7 @@ export default class extends HTMLElement {
 	}
 
 	html(opts: Options) {
-		const {iam, name, bio, stripeUser, notificationEMail, buttonState} = opts
+		const {iam, name, bio, stripeUser, notificationEMail, notificationEMailServiceInformation, buttonState} = opts
 		if (typeof iam !== 'string') {
 			return html``
 		}
@@ -62,6 +64,10 @@ export default class extends HTMLElement {
 				<label>
 					<input name=notifications_opt_email type=checkbox checked?='${notificationEMail}' on-change='${e => this.onChange(e, 'notifications_opt_email')}'></input>
 					New project and message
+				</label>
+				<label>
+					<input name=notifications_opt_email_service_information type=checkbox checked?='${notificationEMailServiceInformation}' on-change='${e => this.onChange(e, 'notifications_opt_email_service_information')}'></input>
+					New features of Double O
 				</label>
 			`}
 		]
@@ -82,6 +88,9 @@ export default class extends HTMLElement {
 				@mixin heading;
 			}
 			dd {
+			}
+			label {
+				display: block;
 			}
 			textarea,
 			input:not([type=checkbox]) {
@@ -132,6 +141,7 @@ export default class extends HTMLElement {
 			bio: stateBio.get(this),
 			stripeUser: stateStripeUser.get(this),
 			notificationEMail: stateNotificationEMail.get(this),
+			notificationEMailServiceInformation: stateNotificationEMailServiceInformation.get(this),
 			buttonState: stateButton.get(this)
 		}
 		render(this.html(opts), this)
@@ -161,6 +171,7 @@ export default class extends HTMLElement {
 			stateBio.set(this, ext.get('bio'))
 			stateStripeUser.set(this, ext.get('stripe_user_id'))
 			stateNotificationEMail.set(this, ext.get('notifications_opt_email'))
+			stateNotificationEMailServiceInformation.set(this, ext.get('notifications_opt_email_service_information'))
 			this.render()
 		} else {
 			this.render()
@@ -182,6 +193,10 @@ export default class extends HTMLElement {
 				const {checked} = target as HTMLInputElement
 				stateNotificationEMail.set(this, checked)
 				break
+			case 'notifications_opt_email_service_information':
+				const {checked: chcd} = target as HTMLInputElement
+				stateNotificationEMailServiceInformation.set(this, chcd)
+				break
 			default:
 				break
 		}
@@ -193,7 +208,8 @@ export default class extends HTMLElement {
 		const extensions = {
 			name: stateName.get(this),
 			bio: stateBio.get(this),
-			notifications_opt_email: stateNotificationEMail.get(this)
+			notifications_opt_email: stateNotificationEMail.get(this),
+			notifications_opt_email_service_information: stateNotificationEMailServiceInformation.get(this)
 		}
 		const res = await patchUser(stateIam.get(this), extensions)
 		const {response} = res

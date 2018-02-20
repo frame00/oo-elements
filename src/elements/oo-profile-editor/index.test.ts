@@ -64,6 +64,17 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 				await sleep(800)
 				expect(button.getAttribute('data-state')).to.be('resolved')
 			}).timeout(2000)
+
+			it('E-Mail notification of service information', async () => {
+				const element = insertElement(ELEMENT)
+				await sleep(800)
+				const input = element.shadowRoot.querySelector('input[name=notifications_opt_email_service_information]')
+				event(input, 'click')
+				const button = element.shadowRoot.querySelector('oo-atoms-button')
+				event(button, 'clicked')
+				await sleep(800)
+				expect(button.getAttribute('data-state')).to.be('resolved')
+			}).timeout(2000)
 		})
 	})
 
