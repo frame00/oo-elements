@@ -1,3 +1,4 @@
+import OOElement from '../../lib/classes/oo-element'
 import {html, render} from '../../lib/html'
 import badge from '../_atoms/oo-atoms-badge'
 import offerModal from '../_organisms/oo-organisms-ask-modal'
@@ -32,7 +33,7 @@ const size: WeakMap<object, Size> = new WeakMap()
 const open: WeakMap<object, boolean> = new WeakMap()
 const type: WeakMap<object, Type> = new WeakMap()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_SIZE, ATTR.DATA_IAM, ATTR.DATA_TYPE]
 	}
@@ -63,7 +64,17 @@ export default class extends HTMLElement {
 			default:
 				break
 		}
-		this.render()
+		if (this.connected) {
+			this.render()
+		}
+	}
+
+	connectedCallback() {
+		super.connectedCallback()
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback()
 	}
 
 	html(s: string, i: string, o: boolean, t: Type) {

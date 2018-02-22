@@ -11,11 +11,18 @@ export default class extends HTMLElement {
 		super()
 	}
 
-	connectedCallback() {
+	connectedCallback(render: boolean = true) {
 		connected.set(this, true)
+		if (render) {
+			this.render()
+		}
 	}
 
 	disconnectedCallback() {
 		connected.delete(this)
+	}
+
+	render() {
+		// Renderer
 	}
 }

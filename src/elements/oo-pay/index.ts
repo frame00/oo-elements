@@ -1,3 +1,4 @@
+import OOElement from '../../lib/classes/oo-element'
 import {html, render} from '../../lib/html'
 import weakMap from '../../lib/weak-map'
 import {Currency} from '../../type/currency'
@@ -85,7 +86,7 @@ const onBeforeunloadCallback = e => {
 	return message
 }
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_IAM, ATTR.DATA_UID, ATTR.DATA_DEST, ATTR.DATA_AMOUNT, ATTR.DATA_CURRENCY, ATTR.DATA_PAYMENT_UID]
 	}
@@ -131,7 +132,17 @@ export default class extends HTMLElement {
 			default:
 				break
 		}
-		this.render()
+		if (this.connected) {
+			this.render()
+		}
+	}
+
+	connectedCallback() {
+		super.connectedCallback()
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback()
 	}
 
 	html(opts: Options, progress?: boolean) {

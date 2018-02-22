@@ -1,3 +1,4 @@
+import OOElement from '../../../lib/classes/oo-element'
 import {html, render} from '../../../lib/html'
 import ooOffer from '../../oo-ask'
 import ooModal from '../../oo-modal'
@@ -25,7 +26,7 @@ const asBoolean = (data: string): boolean => {
 const iam: WeakMap<object, string> = new WeakMap()
 const open: WeakMap<object, boolean> = new WeakMap()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_IAM, ATTR.DATA_OPEN]
 	}
@@ -52,7 +53,17 @@ export default class extends HTMLElement {
 			default:
 				break
 		}
-		this.render()
+		if (this.connected) {
+			this.render()
+		}
+	}
+
+	connectedCallback() {
+		super.connectedCallback()
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback()
 	}
 
 	html(i: string, o: boolean) {

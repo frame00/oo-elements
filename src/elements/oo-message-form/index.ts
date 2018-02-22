@@ -1,3 +1,4 @@
+import OOElement from '../../lib/classes/oo-element'
 import {html, render} from '../../lib/html'
 import define from '../../lib/define'
 import userName from '../_atoms/oo-atoms-user-name'
@@ -49,7 +50,7 @@ const asExtensions = (data: string): OOExtensionsLikeObject => {
 	return []
 }
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_IAM, ATTR.DATA_EXTENSIONS]
 	}
@@ -78,7 +79,17 @@ export default class extends HTMLElement {
 				break
 		}
 		this.setMessage()
-		this.render()
+		if (this.connected) {
+			this.render()
+		}
+	}
+
+	connectedCallback() {
+		super.connectedCallback()
+	}
+
+	disconnectedCallback() {
+		super.connectedCallback()
 	}
 
 	html(isFetching: boolean, isSuccess: boolean, open: boolean) {

@@ -1,3 +1,4 @@
+import OOElement from '../../lib/classes/oo-element'
 import {html, render} from '../../lib/html'
 import selectScope from '../_atoms/oo-atoms-select-scope'
 import define from '../../lib/define'
@@ -38,7 +39,7 @@ const stateInitialData = weakMap<{
 	currency: Currency
 }>()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_IAM]
 	}
@@ -47,7 +48,6 @@ export default class extends HTMLElement {
 		super()
 		message.set(this, '')
 		stateScope.set(this, 'public')
-		this.render()
 	}
 
 	get message() {
@@ -80,11 +80,18 @@ export default class extends HTMLElement {
 				stateCurrency.set(this, prevAsk.currency)
 			}
 		}
-		this.render()
+		if (this.connected) {
+			this.render()
+		}
 	}
 
 	connectedCallback() {
+		super.connectedCallback()
 		this.dispatchChanged()
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback()
 	}
 
 	html(dontAssign: boolean, init: Initial) {

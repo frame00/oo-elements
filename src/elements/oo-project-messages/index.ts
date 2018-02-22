@@ -1,3 +1,4 @@
+import OOElement from '../../lib/classes/oo-element'
 import {repeat} from 'lit-html/lib/repeat'
 import {html, render} from '../../lib/html'
 import getProjectMessages from '../../lib/oo-api-get-project-messages'
@@ -35,7 +36,7 @@ const messages = weakMap<MapedOOMessages>()
 const itemCount = weakMap<number>()
 const stateLimit = weakMap<number>()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_UID, ATTR.DATA_IAM, ATTR.DATA_LIMIT]
 	}
@@ -57,7 +58,10 @@ export default class extends HTMLElement {
 			case ATTR.DATA_UID:
 				projectUid.set(this, next)
 				messages.set(this, [])
-				break
+				if (this.connected) {
+					this.fetchMessages(projectUid.get(this))
+				}
+				return
 			case ATTR.DATA_IAM:
 				iam.set(this, next)
 				break
@@ -67,7 +71,18 @@ export default class extends HTMLElement {
 			default:
 				break
 		}
+		if (this.connected) {
+			this.render()
+		}
+	}
+
+	connectedCallback() {
+		super.connectedCallback(false)
 		this.fetchMessages(projectUid.get(this))
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback()
 	}
 
 	html(opts: Options) {

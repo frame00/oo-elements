@@ -1,3 +1,4 @@
+import OOElement from '../../../lib/classes/oo-element'
 import {repeat} from 'lit-html/lib/repeat'
 import {html, render} from '../../../lib/html'
 import signIn from '../../oo-sign-in'
@@ -22,7 +23,7 @@ const asSignInFlow = (d: string): SignInFlow => {
 
 const stateSignInFlow = weakMap<SignInFlow>()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_FLOW]
 	}
@@ -30,7 +31,6 @@ export default class extends HTMLElement {
 	constructor() {
 		super()
 		stateSignInFlow.set(this, asSignInFlow(this.getAttribute(ATTR.DATA_FLOW)))
-		this.render()
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -38,7 +38,17 @@ export default class extends HTMLElement {
 			return
 		}
 		stateSignInFlow.set(this, asSignInFlow(next))
-		this.render()
+		if (this.connected) {
+			this.render()
+		}
+	}
+
+	connectedCallback() {
+		super.connectedCallback()
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback()
 	}
 
 	html(flow: SignInFlow) {

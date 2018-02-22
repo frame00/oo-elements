@@ -1,3 +1,4 @@
+import OOElement from '../../lib/classes/oo-element'
 import {html, render} from '../../lib/html'
 import weakMap from '../../lib/weak-map'
 
@@ -18,7 +19,7 @@ const asDirection = (d: string): Direction => {
 	return 'column'
 }
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_DIRECTION]
 	}
@@ -27,7 +28,6 @@ export default class extends HTMLElement {
 		super()
 		state.set(this, 'close')
 		direction.set(this, asDirection(this.getAttribute(ATTR.DATA_DIRECTION)))
-		this.render()
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -35,7 +35,17 @@ export default class extends HTMLElement {
 			return
 		}
 		direction.set(this, asDirection(next))
-		this.render()
+		if (this.connected) {
+			this.render()
+		}
+	}
+
+	connectedCallback() {
+		super.connectedCallback()
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback()
 	}
 
 	html(stte: State, dir: Direction) {

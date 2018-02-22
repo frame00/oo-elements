@@ -1,3 +1,4 @@
+import OOElement from '../../lib/classes/oo-element'
 import {html, render} from '../../lib/html'
 import notFound from '../../lib/svg/not-found'
 import willBeFind from '../../lib/svg/will-be-find'
@@ -18,7 +19,7 @@ const asType = (s: string): Type => {
 	return 'not-found'
 }
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_TYPE]
 	}
@@ -26,7 +27,6 @@ export default class extends HTMLElement {
 	constructor() {
 		super()
 		stateType.set(this, asType(this.getAttribute(ATTR.DATA_TYPE)))
-		this.render()
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -34,7 +34,17 @@ export default class extends HTMLElement {
 			return
 		}
 		stateType.set(this, asType(next))
-		this.render()
+		if (this.connected) {
+			this.render()
+		}
+	}
+
+	connectedCallback() {
+		super.connectedCallback()
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback()
 	}
 
 	html(type: Type) {

@@ -1,3 +1,4 @@
+import OOElement from '../../../lib/classes/oo-element'
 import {html, render} from '../../../lib/html'
 
 type Size = 'small' | 'medium'
@@ -14,7 +15,7 @@ const asValidString = (data: string): Size => {
 
 const size: WeakMap<object, Size> = new WeakMap()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_SIZE]
 	}
@@ -22,7 +23,6 @@ export default class extends HTMLElement {
 	constructor() {
 		super()
 		size.set(this, asValidString(this.getAttribute(ATTR.DATA_SIZE)))
-		this.render()
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -30,7 +30,17 @@ export default class extends HTMLElement {
 			return
 		}
 		size.set(this, asValidString(next))
-		this.render()
+		if (this.connected) {
+			this.render()
+		}
+	}
+
+	connectedCallback() {
+		super.connectedCallback()
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback()
 	}
 
 	html(s: Size) {

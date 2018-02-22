@@ -1,3 +1,4 @@
+import OOElement from '../../../lib/classes/oo-element'
 import {repeat} from 'lit-html/lib/repeat'
 import {html, render} from '../../../lib/html'
 import weakMap from '../../../lib/weak-map'
@@ -32,7 +33,7 @@ const asCurrency = (d: string): Currency => {
 const stateScope = weakMap<Scope>()
 const stateCurrency = weakMap<Currency>()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_SCOPE, ATTR.DATA_CURRENCY]
 	}
@@ -49,7 +50,6 @@ export default class extends HTMLElement {
 		super()
 		stateScope.set(this, asScope(this.getAttribute(ATTR.DATA_SCOPE)))
 		stateCurrency.set(this, asCurrency(this.getAttribute(ATTR.DATA_CURRENCY)))
-		this.render()
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -66,7 +66,17 @@ export default class extends HTMLElement {
 			default:
 				break
 		}
-		this.render()
+		if (this.connected) {
+			this.render()
+		}
+	}
+
+	connectedCallback() {
+		super.connectedCallback()
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback()
 	}
 
 	html(scope: Scope, currency: Currency) {

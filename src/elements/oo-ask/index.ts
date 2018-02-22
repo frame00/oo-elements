@@ -1,3 +1,4 @@
+import OOElement from '../../lib/classes/oo-element'
 import {html, render} from '../../lib/html'
 import askWithSiginIn from '../oo-ask-with-sign-in'
 import created from '../_organisms/oo-organisms-ask-created'
@@ -38,7 +39,7 @@ const asSignInFlow = (d: string): SignInFlow => {
 	return 'popup'
 }
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_IAM, ATTR.DATA_SIGN_IN_FLOW]
 	}
@@ -55,14 +56,25 @@ export default class extends HTMLElement {
 		switch(attr) {
 			case ATTR.DATA_IAM:
 				iam.set(this, next)
+				this.fetchUserData()
 				break
 			case ATTR.DATA_SIGN_IN_FLOW:
 				signInFlow.set(this, asSignInFlow(next))
+				if (this.connected) {
+					this.render()
+				}
 				break
 			default:
 				break
 		}
-		this.fetchUserData()
+	}
+
+	connectedCallback() {
+		super.connectedCallback()
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback()
 	}
 
 	html(opts: Options) {

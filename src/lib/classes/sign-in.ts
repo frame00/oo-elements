@@ -1,3 +1,4 @@
+import OOElement from './oo-element'
 import {html, render} from '../html'
 import {AuthProvider} from '../../type/auth-provider.d'
 import store from '../local-storage'
@@ -24,7 +25,7 @@ const asValidString = (data: string): AuthProvider => {
 
 const provider = weakMap<AuthProvider>()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_PROVIDER]
 	}
@@ -36,12 +37,16 @@ export default class extends HTMLElement {
 	constructor() {
 		super()
 		provider.set(this, asValidString(this.getAttribute(ATTR.DATA_PROVIDER)))
-		this.render()
 		attach()
 	}
 
 	connectedCallback() {
+		super.connectedCallback()
 		this.checkSignInStatus()
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback()
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -49,7 +54,9 @@ export default class extends HTMLElement {
 			return
 		}
 		provider.set(this, asValidString(next))
-		this.render()
+		if (this.connected) {
+			this.render()
+		}
 	}
 
 	html(prov: AuthProvider) {
