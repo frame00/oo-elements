@@ -1,4 +1,4 @@
-import OO from '../../lib/classes/oo-element'
+import OOElement from '../../lib/classes/oo-element'
 import {html, render} from '../../lib/html'
 import stepSignIn from '../_organisms/oo-organisms-ask-step-sign-in'
 import askForm from '../oo-ask-form'
@@ -66,7 +66,7 @@ const fitHeight = (el: HTMLElement, target: HTMLElement): boolean => {
 	return false
 }
 
-export default class extends OO {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_IAM, ATTR.DATA_SIGN_IN_FLOW]
 	}
@@ -97,7 +97,6 @@ export default class extends OO {
 
 	connectedCallback() {
 		super.connectedCallback()
-		this.render()
 	}
 
 	disconnectedCallback() {

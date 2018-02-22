@@ -1,3 +1,4 @@
+import OOElement from '../../lib/classes/oo-element'
 import {html, render} from '../../lib/html'
 import customEvent from '../../lib/custom-event'
 
@@ -21,7 +22,7 @@ const asBoolean = (data: string): boolean => {
 
 const open: WeakMap<object, boolean> = new WeakMap()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_OPEN]
 	}
@@ -29,7 +30,6 @@ export default class extends HTMLElement {
 	constructor() {
 		super()
 		open.set(this, asBoolean(this.getAttribute(ATTR.DATA_OPEN)))
-		this.render()
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -40,7 +40,17 @@ export default class extends HTMLElement {
 			this.dispatchClose()
 		}
 		open.set(this, asBoolean(next))
-		this.render()
+		if (this.connected) {
+			this.render()
+		}
+	}
+
+	connectedCallback() {
+		super.connectedCallback()
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback()
 	}
 
 	html(state: boolean) {

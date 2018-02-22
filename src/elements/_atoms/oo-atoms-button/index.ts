@@ -1,3 +1,4 @@
+import OOElement from '../../../lib/classes/oo-element'
 import {html, render} from '../../../lib/html'
 import wm from '../../../lib/weak-map'
 import customEvent from '../../../lib/custom-event'
@@ -22,7 +23,7 @@ const asValidState = (s: string): State => {
 	return ''
 }
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_STATE, ATTR.DATA_BLOCK]
 	}
@@ -31,7 +32,6 @@ export default class extends HTMLElement {
 		super()
 		state.set(this, asValidState(this.getAttribute(ATTR.DATA_STATE)))
 		block.set(this, false)
-		this.render()
 	}
 
 	attributeChangedCallback(attr, prev, next: string) {
@@ -48,7 +48,17 @@ export default class extends HTMLElement {
 			default:
 				break
 		}
-		this.render()
+		if (this.connected) {
+			this.render()
+		}
+	}
+
+	connectedCallback() {
+		super.connectedCallback()
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback()
 	}
 
 	html(st: State, blk: boolean) {

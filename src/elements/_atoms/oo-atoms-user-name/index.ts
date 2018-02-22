@@ -1,3 +1,4 @@
+import OOElement from '../../../lib/classes/oo-element'
 import {html, render} from '../../../lib/html'
 import getUser from '../../../lib/oo-api-get-user'
 import toMap from '../../../lib/extensions-to-map'
@@ -28,7 +29,7 @@ const asValidSize = (data: string): Size => {
 	return 'medium'
 }
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_IAM, ATTR.DATA_SIZE]
 	}
@@ -56,7 +57,17 @@ export default class extends HTMLElement {
 			default:
 				break
 		}
-		this.render()
+		if (this.connected) {
+			this.render()
+		}
+	}
+
+	connectedCallback() {
+		super.connectedCallback(false)
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback()
 	}
 
 	html(options: HTMLOptions) {
