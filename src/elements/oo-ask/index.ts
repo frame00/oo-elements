@@ -55,6 +55,7 @@ export default class extends HTMLElement {
 		switch(attr) {
 			case ATTR.DATA_IAM:
 				iam.set(this, next)
+				this.fetchUserData()
 				break
 			case ATTR.DATA_SIGN_IN_FLOW:
 				signInFlow.set(this, asSignInFlow(next))
@@ -62,7 +63,6 @@ export default class extends HTMLElement {
 			default:
 				break
 		}
-		this.fetchUserData()
 	}
 
 	html(opts: Options) {
