@@ -6,12 +6,10 @@ import toMap from '../../lib/extensions-to-map'
 import weakMap from '../../lib/weak-map'
 import define from '../../lib/define'
 import connectStripe from '../oo-connect-stripe'
-import button from '../_atoms/oo-atoms-button'
 import patchUser from '../../lib/oo-api-patch-user'
 import {attach, dispatch} from '../../lib/notification'
 
 define('oo-connect-stripe', connectStripe)
-define('oo-atoms-button', button)
 
 interface HTMLElementEvent<T extends HTMLElement> extends Event {
 	target: T
@@ -20,6 +18,7 @@ interface Options {
 	iam: string,
 	name: string,
 	bio: string,
+	email: string,
 	stripeUser: string,
 	buttonState: string,
 	notificationEMail: boolean,
@@ -29,6 +28,7 @@ interface Options {
 const stateIam = weakMap<string>()
 const stateName = weakMap<string>()
 const stateBio = weakMap<string>()
+const stateEMail = weakMap<string>()
 const stateStripeUser = weakMap<string>()
 const stateNotificationEMail = weakMap<boolean>()
 const stateNotificationEMailServiceInformation = weakMap<boolean>()
@@ -46,12 +46,12 @@ export default class extends HTMLElement {
 	}
 
 	html(opts: Options) {
-		const {iam, name, bio, stripeUser, notificationEMail, notificationEMailServiceInformation, buttonState} = opts
+		const {iam, name, bio, email, stripeUser, notificationEMail, notificationEMailServiceInformation, buttonState} = opts
 		if (typeof iam !== 'string') {
 			return html``
 		}
 		const options = [
-			{name: 'name', title: 'Display name', template: html`<input name=name type=text value$='${name}' on-change='${e => this.onChange(e, 'name')}'></input>`},
+			{name: 'name', title: 'Display name', template: html`<input name=name type=text value$='${name}' on-change='${e => this.onChange(e, 'name')}' required></input>`},
 			{name: 'bio', title: 'Bio', template: html`<textarea name=bio on-change='${e => this.onChange(e, 'bio')}'>${bio}</textarea>`},
 			{name: 'stripe', title: 'Stripe', template: html`<oo-connect-stripe data-iam$='${iam}'></oo-connect-stripe>
 			${(() => {
@@ -69,10 +69,12 @@ export default class extends HTMLElement {
 					<input name=notifications_opt_email_service_information type=checkbox checked?='${notificationEMailServiceInformation}' on-change='${e => this.onChange(e, 'notifications_opt_email_service_information')}'></input>
 					New features of Double O
 				</label>
-			`}
+			`},
+			{name: 'email', title: 'E-Mail address', template: html`<input name=email type=email value$='${email}' on-change='${e => this.onChange(e, 'email')}' required></input>`}
 		]
 		return html`
 		<style>
+			@import '../../style/_mixin-button.css';
 			@import '../../style/_mixin-heading.css';
 			@import '../../style/_mixin-textarea.css';
 			@import '../../style/_vars-input.css';
@@ -115,21 +117,24 @@ export default class extends HTMLElement {
 					background: var(--resolved-background);
 				}
 			}
-			oo-atoms-button {
+			button {
 				margin-top: 3rem;
+				@mixin button;
 			}
 		</style>
 		<main>
-			<dl>
-				${repeat(options, opt => {
-					const {title, template} = opt
-					return html`
-					<dt>${title}</dt>
-					<dd>${template}</dd>
-					`
-				})}
-			</dl>
-			<oo-atoms-button data-state$='${buttonState}' on-clicked='${() => this.onButtonClick()}'>Save</oo-atoms-button>
+			<form on-submit='${e => this.onSubmit(e)}'>
+				<dl>
+					${repeat(options, opt => {
+						const {title, template} = opt
+						return html`
+						<dt>${title}</dt>
+						<dd>${template}</dd>
+						`
+					})}
+				</dl>
+				<button class$='${buttonState}'>Save</button>
+			</form>
 		</main>
 		`
 	}
@@ -139,6 +144,7 @@ export default class extends HTMLElement {
 			iam: stateIam.get(this),
 			name: stateName.get(this),
 			bio: stateBio.get(this),
+			email: stateEMail.get(this),
 			stripeUser: stateStripeUser.get(this),
 			notificationEMail: stateNotificationEMail.get(this),
 			notificationEMailServiceInformation: stateNotificationEMailServiceInformation.get(this),
@@ -167,8 +173,10 @@ export default class extends HTMLElement {
 		if (Array.isArray(response)) {
 			const [item] = response
 			const ext = toMap(item)
+			const email = ext.get('email')
 			stateName.set(this, ext.get('name'))
 			stateBio.set(this, ext.get('bio'))
+			stateEMail.set(this, typeof email === 'string' ? email : '')
 			stateStripeUser.set(this, ext.get('stripe_user_id'))
 			stateNotificationEMail.set(this, ext.get('notifications_opt_email'))
 			stateNotificationEMailServiceInformation.set(this, ext.get('notifications_opt_email_service_information'))
@@ -189,6 +197,9 @@ export default class extends HTMLElement {
 			case 'bio':
 				stateBio.set(this, value)
 				break
+			case 'email':
+				stateEMail.set(this, value)
+				break
 			case 'notifications_opt_email':
 				const {checked} = target as HTMLInputElement
 				stateNotificationEMail.set(this, checked)
@@ -202,12 +213,14 @@ export default class extends HTMLElement {
 		}
 	}
 
-	async onButtonClick() {
+	async onSubmit(e: Event) {
+		e.preventDefault()
 		stateButton.set(this, 'progress')
 		this.render()
 		const extensions = {
 			name: stateName.get(this),
 			bio: stateBio.get(this),
+			email: stateEMail.get(this),
 			notifications_opt_email: stateNotificationEMail.get(this),
 			notifications_opt_email_service_information: stateNotificationEMailServiceInformation.get(this)
 		}

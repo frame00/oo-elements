@@ -1,0 +1,44 @@
+@import './_reset-button.css';
+@import './_vars-input.css';
+@import './_mixin-button-progress.css';
+@import './_vars-font-family.css';
+
+@define-mixin button {
+	padding: 1rem;
+	font-size: 1.2rem;
+	border-radius: 5px;
+	border: 0.5px solid #ccc;
+	background: white;
+	font-family: var(--font-family);
+	&:hover:not(.progress):not(.resolved):not(.rejected) {
+		background: whitesmoke;
+	}
+	&:focus:not(.progress):not(.resolved):not(.rejected) {
+		box-shadow: var(--focused-shadow);
+		border: var(--focused-border);
+		background: white;
+	}
+	&.block {
+		display: block;
+		width: 100%;
+	}
+	&.progress {
+		@mixin progress;
+	}
+	&.resolved {
+		border: var(--resolved-border);
+		background: var(--resolved-background);
+		color: white;
+		&:hover {
+			background: color(var(--resolved-background) blackness(+10%));
+		}
+	}
+	&.rejected {
+		border: var(--rejected-border);
+		background: var(--rejected-background);
+		color: white;
+		&:hover {
+			background: color(var(--rejected-background) blackness(+10%));
+		}
+	}
+}

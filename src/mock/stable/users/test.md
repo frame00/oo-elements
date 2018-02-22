@@ -30,6 +30,10 @@ access-control-allow-methods = "GET, PATCH, DELETE"
       {
         "key": "notifications_opt_email_service_information",
         "value": true
+      },
+      {
+        "key": "email",
+        "value": "user@example.com"
       }
     ]
   }

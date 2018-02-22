@@ -54,54 +54,15 @@ export default class extends HTMLElement {
 	html(st: State, blk: boolean) {
 		return html`
 		<style>
-			@import '../../../style/_reset-button.css';
-			@import '../../../style/_vars-input.css';
-			@import '../../../style/_mixin-button-progress.css';
-			@import '../../../style/_vars-font-family.css';
+			@import '../../../style/_mixin-button.css';
 			:host {
 				display: inline-block;
 			}
 			button {
-				padding: 1rem;
-				font-size: 1.2rem;
-				border-radius: 5px;
-				border: 0.5px solid #ccc;
-				background: white;
-				font-family: var(--font-family);
-				&:hover:not(.state) {
-					background: whitesmoke;
-				}
-				&:focus:not(.state) {
-					box-shadow: var(--focused-shadow);
-					border: var(--focused-border);
-					background: white;
-				}
-				&.block {
-					display: block;
-					width: 100%;
-				}
-			}
-			.progress {
-				@mixin progress;
-			}
-			.resolved {
-				border: var(--resolved-border);
-				background: var(--resolved-background);
-				color: white;
-				&:hover {
-					background: color(var(--resolved-background) blackness(+10%));
-				}
-			}
-			.rejected {
-				border: var(--rejected-border);
-				background: var(--rejected-background);
-				color: white;
-				&:hover {
-					background: color(var(--rejected-background) blackness(+10%));
-				}
+				@mixin button;
 			}
 		</style>
-		<button class$='${st ? 'state' : '' } ${st} ${blk ? 'block' : ''}' on-click='${() => this.onClicked()}'>
+		<button class$='${st} ${blk ? 'block' : ''}' on-click='${() => this.onClicked()}'>
 			<slot></slot>
 		</button>
 		`
