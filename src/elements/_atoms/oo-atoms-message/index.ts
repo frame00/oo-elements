@@ -1,5 +1,5 @@
-import OOElement from '../../../lib/classes/oo-element'
-import {html, render} from '../../../lib/html'
+import {OOElement} from '../../oo-element'
+import {html} from '../../../lib/html'
 
 type Position = 'left' | 'right' | 'center'
 
@@ -31,19 +31,12 @@ export default class extends OOElement {
 		}
 		tooltipPosition.set(this, asValidString(next))
 		if (this.connected) {
-			this.render()
+			this.update()
 		}
 	}
 
-	connectedCallback() {
-		super.connectedCallback()
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback()
-	}
-
-	html(position: Position) {
+	render() {
+		const position = tooltipPosition.get(this)
 		return html`
 		<style>
 			@import '../../../style/_vars-font-family.css';
@@ -94,9 +87,5 @@ export default class extends OOElement {
 			</footer>
 		</main>
 		`
-	}
-
-	render() {
-		render(this.html(tooltipPosition.get(this)), this)
 	}
 }
