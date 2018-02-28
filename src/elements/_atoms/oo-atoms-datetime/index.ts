@@ -1,4 +1,5 @@
-import {html, render} from '../../../lib/html'
+import {OOElement} from '../../oo-element'
+import {html} from '../../../lib/html'
 import getLangs from '../../../lib/get-langs'
 
 const ATTR = {
@@ -7,7 +8,7 @@ const ATTR = {
 
 const unixtime: WeakMap<object, number> = new WeakMap()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_UNIXTIME]
 	}
@@ -17,19 +18,7 @@ export default class extends HTMLElement {
 			return
 		}
 		unixtime.set(this, Number(next))
-		this.render()
-	}
-
-	html(time: string) {
-		return html`
-		<style>
-			@import '../../../style/_vars-font-family.css';
-			span {
-				font-family: var(--font-family);
-			}
-		</style>
-		<span>${time}</span>
-		`
+		this.update()
 	}
 
 	render() {
@@ -49,7 +38,15 @@ export default class extends HTMLElement {
 			timeZone: tz
 		}
 		const [lang = 'en-US'] = getLangs()
-		const localDateTime = new Intl.DateTimeFormat(lang, options).format(date)
-		render(this.html(localDateTime), this)
+		const time = new Intl.DateTimeFormat(lang, options).format(date)
+		return html`
+		<style>
+			@import '../../../style/_vars-font-family.css';
+			span {
+				font-family: var(--font-family);
+			}
+		</style>
+		<span>${time}</span>
+		`
 	}
 }
