@@ -1,6 +1,6 @@
-import OOElement from '../../../lib/classes/oo-element'
+import {OOElement} from '../../oo-element'
 import {repeat} from 'lit-html/lib/repeat'
-import {html, render} from '../../../lib/html'
+import {html} from '../../../lib/html'
 import signIn from '../../oo-sign-in'
 import signInWithRedirect from '../../oo-sign-in-with-redirect'
 import define from '../../../lib/define'
@@ -39,19 +39,12 @@ export default class extends OOElement {
 		}
 		stateSignInFlow.set(this, asSignInFlow(next))
 		if (this.connected) {
-			this.render()
+			this.update()
 		}
 	}
 
-	connectedCallback() {
-		super.connectedCallback()
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback()
-	}
-
-	html(flow: SignInFlow) {
+	render() {
+		const flow = stateSignInFlow.get(this)
 		const buttons = f => {
 			const provs = ['google', 'facebook', 'github']
 			const popup = prov => html`<oo-sign-in class=button data-provider$='${prov}'></oo-sign-in>`
@@ -91,9 +84,5 @@ export default class extends OOElement {
 			${buttons(flow)}
 		</div>
 		`
-	}
-
-	render() {
-		render(this.html(stateSignInFlow.get(this)), this)
 	}
 }
