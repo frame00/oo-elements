@@ -1,5 +1,5 @@
-import OOElement from '../../lib/classes/oo-element'
-import {html, render} from '../../lib/html'
+import {OOElement} from '../oo-element'
+import {html} from '../../lib/html'
 import selectScope from '../_atoms/oo-atoms-select-scope'
 import define from '../../lib/define'
 import weakMap from '../../lib/weak-map'
@@ -13,12 +13,6 @@ define('oo-atoms-select-scope', selectScope)
 
 interface HTMLElementEvent<T extends HTMLElement> extends Event {
 	target: T
-}
-
-interface Initial {
-	body: string,
-	scope: Scope,
-	currency: Currency
 }
 
 const ATTR = {
@@ -81,7 +75,7 @@ export default class extends OOElement {
 			}
 		}
 		if (this.connected) {
-			this.render()
+			this.update()
 		}
 	}
 
@@ -90,11 +84,9 @@ export default class extends OOElement {
 		this.dispatchChanged()
 	}
 
-	disconnectedCallback() {
-		super.disconnectedCallback()
-	}
-
-	html(dontAssign: boolean, init: Initial) {
+	render() {
+		const dontAssign = this.dontAssign
+		const init = stateInitialData.get(this)
 		const {body = '', scope = '', currency = ''} = init || {}
 		const scopeSelector = dontAssign ? '' : html`
 		<oo-atoms-select-scope data-scope$='${scope}' data-currency$='${currency}' on-changescope='${e => this.onScopeChange(e)}'></oo-atoms-select-scope>
@@ -133,10 +125,6 @@ export default class extends OOElement {
 		`
 	}
 
-	render() {
-		render(this.html(this.dontAssign, stateInitialData.get(this)), this)
-	}
-
 	updateSession() {
 		session.previousAsk = {
 			iam: iam.get(this),
@@ -155,7 +143,7 @@ export default class extends OOElement {
 		const {scope, currency} = detail
 		stateScope.set(this, scope)
 		stateCurrency.set(this, currency)
-		this.render()
+		this.update()
 		this.dispatchChanged()
 	}
 
