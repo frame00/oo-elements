@@ -1,6 +1,6 @@
-import OOElement from '../../../lib/classes/oo-element'
+import {OOElement} from '../../oo-element'
 import {repeat} from 'lit-html/lib/repeat'
-import {html, render} from '../../../lib/html'
+import {html} from '../../../lib/html'
 import weakMap from '../../../lib/weak-map'
 import {Scope} from '../../../type/scope'
 import {ChangeScopeDetail, ChangeScope} from '../../../type/event'
@@ -67,19 +67,13 @@ export default class extends OOElement {
 				break
 		}
 		if (this.connected) {
-			this.render()
+			this.update()
 		}
 	}
 
-	connectedCallback() {
-		super.connectedCallback()
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback()
-	}
-
-	html(scope: Scope, currency: Currency) {
+	render() {
+		const scope = this.scope
+		const currency = this.currency
 		const values: Array<Scope> = ['public', 'private']
 		const price = (() => {
 			const sign = currencyToSign(currency)
@@ -137,13 +131,9 @@ export default class extends OOElement {
 		`
 	}
 
-	render() {
-		render(this.html(this.scope, this.currency), this)
-	}
-
 	onButtonClick(item: Scope) {
 		stateScope.set(this, item)
-		this.render()
+		this.update()
 		this.dispatch()
 	}
 
