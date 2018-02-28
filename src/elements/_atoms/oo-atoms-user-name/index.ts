@@ -1,5 +1,5 @@
-import OOElement from '../../../lib/classes/oo-element'
-import {html, render} from '../../../lib/html'
+import {OOElement} from '../../oo-element'
+import {html} from '../../../lib/html'
 import getUser from '../../../lib/oo-api-get-user'
 import toMap from '../../../lib/extensions-to-map'
 import getPicture from '../../../lib/get-picture'
@@ -58,7 +58,7 @@ export default class extends OOElement {
 				break
 		}
 		if (this.connected) {
-			this.render()
+			this.update()
 		}
 	}
 
@@ -66,11 +66,13 @@ export default class extends OOElement {
 		super.connectedCallback(false)
 	}
 
-	disconnectedCallback() {
-		super.disconnectedCallback()
-	}
-
-	html(options: HTMLOptions) {
+	render() {
+		const options: HTMLOptions = {
+			iam: iam.get(this),
+			name: name.get(this),
+			picture: picture.get(this),
+			size: size.get(this)
+		}
 		const {iam: uid, name: n, picture: img, size: s} = options
 		return html`
 		<style>
@@ -143,16 +145,6 @@ export default class extends OOElement {
 		`
 	}
 
-	render() {
-		const opts = {
-			iam: iam.get(this),
-			name: name.get(this),
-			picture: picture.get(this),
-			size: size.get(this)
-		}
-		render(this.html(opts), this)
-	}
-
 	async fetchUserData() {
 		if (!iam.get(this)) {
 			return
@@ -167,6 +159,6 @@ export default class extends OOElement {
 			name.delete(this)
 			picture.delete(this)
 		}
-		this.render()
+		this.update()
 	}
 }
