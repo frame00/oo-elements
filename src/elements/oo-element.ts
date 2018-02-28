@@ -22,6 +22,7 @@ export class OOElement extends HTMLElement {
 
 	private _render(template: TemplateResult) {
 		render(template, this.shadowRoot || this.attachShadow({mode: 'open'}))
+		this.renderedCallback()
 	}
 
 	protected update() {
@@ -33,5 +34,9 @@ export class OOElement extends HTMLElement {
 
 	protected render(): TemplateResult {
 		throw new Error('Render function not Implemented')
+	}
+
+	protected renderedCallback() {
+		// Empty
 	}
 }
