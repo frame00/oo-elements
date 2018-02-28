@@ -1,5 +1,5 @@
-import OOElement from '../../../lib/classes/oo-element'
-import {html, render} from '../../../lib/html'
+import {OOElement} from '../../oo-element'
+import {html} from '../../../lib/html'
 import wm from '../../../lib/weak-map'
 import customEvent from '../../../lib/custom-event'
 
@@ -49,19 +49,13 @@ export default class extends OOElement {
 				break
 		}
 		if (this.connected) {
-			this.render()
+			this.update()
 		}
 	}
 
-	connectedCallback() {
-		super.connectedCallback()
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback()
-	}
-
-	html(st: State, blk: boolean) {
+	render() {
+		const st = state.get(this)
+		const blk = block.get(this)
 		return html`
 		<style>
 			@import '../../../style/_mixin-button.css';
@@ -76,10 +70,6 @@ export default class extends OOElement {
 			<slot></slot>
 		</button>
 		`
-	}
-
-	render() {
-		render(this.html(state.get(this), block.get(this)), this)
 	}
 
 	onClicked() {
