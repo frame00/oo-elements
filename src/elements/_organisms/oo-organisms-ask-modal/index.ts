@@ -1,5 +1,5 @@
-import OOElement from '../../../lib/classes/oo-element'
-import {html, render} from '../../../lib/html'
+import {OOElement} from '../../oo-element'
+import {html} from '../../../lib/html'
 import ooOffer from '../../oo-ask'
 import ooModal from '../../oo-modal'
 import define from '../../../lib/define'
@@ -54,19 +54,13 @@ export default class extends OOElement {
 				break
 		}
 		if (this.connected) {
-			this.render()
+			this.update()
 		}
 	}
 
-	connectedCallback() {
-		super.connectedCallback()
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback()
-	}
-
-	html(i: string, o: boolean) {
+	render() {
+		const i = iam.get(this)
+		const o = open.get(this)
 		return html`
 		<style>
 			:host {
@@ -81,12 +75,8 @@ export default class extends OOElement {
 		`
 	}
 
-	render() {
-		render(this.html(iam.get(this), open.get(this)), this)
-	}
-
 	onModalClose() {
 		open.set(this, false)
-		this.render()
+		this.update()
 	}
 }
