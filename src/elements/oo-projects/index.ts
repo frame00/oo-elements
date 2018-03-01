@@ -102,12 +102,15 @@ export default class extends OOElement {
 			${repeat(projects, project => {
 				const {uid} = project
 				const exts = toMap(project)
+				const title = exts.has('title') ? exts.get('title') : ''
 				const body = exts.has('body') ? exts.get('body') : ''
-				const offerer =exts.has('author') ? exts.get('author') : ''
+				const offerer = exts.has('author') ? exts.get('author') : ''
+				const titleHTML = title ? html`<h1>${title}</h1>` : html``
 				return html`
 				<oo-atoms-message>
 					<section slot=body>
 						<oo-project-status data-uid$='${uid}'></oo-project-status>
+						${titleHTML}
 						<div class=body>
 							<oo-markdown>${body}</oo-markdown>
 						</div>

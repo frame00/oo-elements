@@ -8,6 +8,7 @@ import message from '../_atoms/oo-atoms-message'
 import userName from '../_atoms/oo-atoms-user-name'
 import datetime from '../_atoms/oo-atoms-datetime'
 import projectStatus from '../oo-project-status'
+import weakMap from '../../lib/weak-map'
 
 define('oo-markdown', markdown)
 define('oo-atoms-message', message)
@@ -19,10 +20,11 @@ const ATTR = {
 	DATA_UID: 'data-uid'
 }
 
-const projectUid: WeakMap<object, string> = new WeakMap()
-const projectBody: WeakMap<object, string> = new WeakMap()
-const projectAuthor: WeakMap<object, string> = new WeakMap()
-const projectCreated: WeakMap<object, number> = new WeakMap()
+const projectUid = weakMap<string>()
+const projectTitle = weakMap<string>()
+const projectBody = weakMap<string>()
+const projectAuthor = weakMap<string>()
+const projectCreated = weakMap<number>()
 
 export default class extends OOElement {
 	static get observedAttributes() {
@@ -42,9 +44,10 @@ export default class extends OOElement {
 	}
 
 	render() {
-		const {uid, created, body, author} = {
+		const {uid, created, title, body, author} = {
 			uid: projectUid.get(this),
 			created: projectCreated.get(this),
+			title: projectTitle.get(this),
 			body: projectBody.get(this),
 			author: projectAuthor.get(this)
 		}
@@ -87,6 +90,12 @@ export default class extends OOElement {
 			oo-project-status {
 				margin-bottom: 0.5rem;
 			}
+			h1 {
+				font-family: var(--font-family);
+			}
+			oo-atoms-user-name {
+				margin-bottom: 1rem;
+			}
 			.amount {
 				text-transform: uppercase;
 			}
@@ -95,11 +104,17 @@ export default class extends OOElement {
 			<oo-atoms-message data-tooltip-position=left>
 				<section slot=body>
 					<oo-project-status data-uid$='${uid}'></oo-project-status>
+					${(() => {
+						if (title) {
+							return html`<h1>${title}</h1>`
+						}
+						return html``
+					})()}
 					<oo-markdown>${body}</oo-markdown>
 				</section>
 				<footer slot=footer>
 					<oo-atoms-user-name data-iam$='${author}' data-size=small></oo-atoms-user-name>
-					<oo-atoms-datetime data-unixtime='${created}'></oo-atoms-datetime>
+					<oo-atoms-datetime data-unixtime$='${created}'></oo-atoms-datetime>
 				</footer>
 			</oo-atoms-message>
 		</main>
@@ -113,6 +128,7 @@ export default class extends OOElement {
 			const [item] = response
 			const mapedExtensions = toMap(item)
 			projectCreated.set(this, item.created)
+			projectTitle.set(this, mapedExtensions.get('title'))
 			projectBody.set(this, mapedExtensions.get('body'))
 			projectAuthor.set(this, mapedExtensions.get('author'))
 		} else {
