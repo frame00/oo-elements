@@ -1,12 +1,8 @@
-import {html, render} from '../../lib/html'
+import {OOElement} from '../oo-element'
+import {html} from '../../lib/html'
 
-export default class extends HTMLElement {
-	constructor() {
-		super()
-		this.render()
-	}
-
-	html() {
+export default class extends OOElement {
+	render() {
 		return html`
 		<style>
 			@import '../../style/_vars-color-yellow.css';
@@ -32,9 +28,5 @@ export default class extends HTMLElement {
 			<slot name=item></slot>
 		</footer>
 		`
-	}
-
-	render() {
-		render(this.html(), this)
 	}
 }
