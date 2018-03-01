@@ -1,6 +1,6 @@
-import OOElement from '../../lib/classes/oo-element'
+import {OOElement} from '../oo-element'
 import {repeat} from 'lit-html/lib/repeat'
-import {html, render} from '../../lib/html'
+import {html} from '../../lib/html'
 import getProjectMessages from '../../lib/oo-api-get-project-messages'
 import getMessage from '../../lib/oo-api-get-message'
 import toMap from '../../lib/extensions-to-map'
@@ -15,14 +15,6 @@ import weakMap from '../../lib/weak-map'
 define('oo-atoms-message', ooMessage)
 define('oo-atoms-user-name', ooUserName)
 define('oo-atoms-button', ooButton)
-
-interface Options {
-	iam: string,
-	project: string,
-	messages: MapedOOMessages,
-	itemCount: number,
-	limit: number
-}
 
 const ATTR = {
 	DATA_IAM: 'data-iam',
@@ -72,7 +64,7 @@ export default class extends OOElement {
 				break
 		}
 		if (this.connected) {
-			this.render()
+			this.update()
 		}
 	}
 
@@ -81,12 +73,13 @@ export default class extends OOElement {
 		this.fetchMessages(projectUid.get(this))
 	}
 
-	disconnectedCallback() {
-		super.disconnectedCallback()
-	}
-
-	html(opts: Options) {
-		const {iam: user, messages: mess, project, itemCount: count} = opts
+	render() {
+		const {user, mess, project, count} = {
+			user: iam.get(this),
+			project: projectUid.get(this),
+			mess: messages.get(this),
+			count: itemCount.get(this)
+		}
 		if (mess.length === 0) {
 			return html``
 		}
@@ -133,17 +126,6 @@ export default class extends OOElement {
 		`
 	}
 
-	render() {
-		const opts = {
-			iam: iam.get(this),
-			project: projectUid.get(this),
-			messages: messages.get(this),
-			itemCount: itemCount.get(this),
-			limit: stateLimit.get(this)
-		}
-		render(this.html(opts), this)
-	}
-
 	async fetchMessages(uid: string, time?: number) {
 		if (typeof uid !== 'string') {
 			return
@@ -159,7 +141,7 @@ export default class extends OOElement {
 			const items = this.mapMessages(response)
 			messages.set(this, this.mergeMessages(items.reverse()))
 		}
-		this.render()
+		this.update()
 	}
 
 	mapMessages(mess: Array<OOMessage>): MapedOOMessages {
@@ -193,7 +175,7 @@ export default class extends OOElement {
 		}
 		if (items.length > 0) {
 			messages.set(this, this.mergeMessages(items, 'after'))
-			this.render()
+			this.update()
 		}
 	}
 }
