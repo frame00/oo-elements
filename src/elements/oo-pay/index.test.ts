@@ -97,13 +97,13 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	describe('Check payment status', () => {
 		it('Fetch payment status of "data-payment-uid" attribute value', async () => {
 			const element: any = insertElement(ELEMENT, new Map(requiredOptions.concat([['data-payment-uid', 'Mdo59S1a3i']])))
-			await sleep(100)
+			await sleep(300)
 			expect(element.paid).to.be.ok()
 		})
 
 		it('Hide "Pay" button when paid', async () => {
 			const element: any = insertElement(ELEMENT, new Map(requiredOptions.concat([['data-payment-uid', 'Mdo59S1a3i']])))
-			await sleep(100)
+			await sleep(300)
 			expect(element.paid).to.be.ok()
 			const slotBody: HTMLSlotElement = element.shadowRoot.querySelector('oo-atoms-message').shadowRoot.querySelector('slot[name=body]')
 			const [assigned] = slotBody.assignedNodes()
@@ -115,7 +115,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 		it('Display "Pay" button when unpaid', async () => {
 			const element: any = insertElement(ELEMENT, new Map(requiredOptions.concat([['data-payment-uid', 'wA7du485qP']])))
-			await sleep(100)
+			await sleep(300)
 			expect(element.paid).to.not.be.ok()
 			const slotBody: HTMLSlotElement = element.shadowRoot.querySelector('oo-atoms-message').shadowRoot.querySelector('slot[name=body]')
 			const [assigned] = slotBody.assignedNodes()
