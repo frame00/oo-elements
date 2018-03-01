@@ -1,5 +1,5 @@
-import OOElement from '../../lib/classes/oo-element'
-import {html, render} from '../../lib/html'
+import {OOElement} from '../oo-element'
+import {html} from '../../lib/html'
 import weakMap from '../../lib/weak-map'
 import {NotificationType} from '../../type/event'
 
@@ -34,19 +34,12 @@ export default class extends OOElement {
 		}
 		stateType.set(this, asType(next))
 		if (this.connected) {
-			this.render()
+			this.update()
 		}
 	}
 
-	connectedCallback() {
-		super.connectedCallback()
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback()
-	}
-
-	html(type: Type) {
+	render() {
+		const type = stateType.get(this)
 		return html`
 		<style>
 			@import '../../style/_vars-input.css';
@@ -87,9 +80,5 @@ export default class extends OOElement {
 			<slot name=body></slot>
 		</main>
 		`
-	}
-
-	render() {
-		render(this.html(stateType.get(this)), this)
 	}
 }
