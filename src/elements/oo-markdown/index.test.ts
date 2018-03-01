@@ -16,6 +16,24 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(getElement(ELEMENT)[0]).to.be.ok()
 	})
 
+	describe('Parse textContent with markdown', () => {
+		it ('Convert to HTML', () => {
+			removeElement(ELEMENT)
+			const element = document.createElement(ELEMENT)
+			element.textContent = `
+Line 1
+
+Line 2
+\`\`\`js
+	console.log(window)
+\`\`\`
+			`
+			document.body.appendChild(element)
+
+			expect(element.shadowRoot.querySelector('pre.hljs code')).to.be.ok()
+		})
+	})
+
 	after(() => {
 		removeElement(ELEMENT)
 	})

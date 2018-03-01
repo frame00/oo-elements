@@ -29,10 +29,6 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const userName = item.parentElement.querySelector('oo-atoms-user-name').getAttribute('data-iam')
 			expect(userName).to.be('test')
 		})
-		Array.prototype.forEach.call(slotBodyAssigned.childNodes, item => {
-			const textContent = item.parentElement.querySelector('p').textContent
-			expect(textContent).to.be('test')
-		})
 	})
 
 	after(() => {
