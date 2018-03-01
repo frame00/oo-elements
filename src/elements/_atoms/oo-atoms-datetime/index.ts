@@ -21,6 +21,10 @@ export default class extends OOElement {
 		this.update()
 	}
 
+	connectedCallback() {
+		super.connectedCallback(false)
+	}
+
 	render() {
 		const UTC = 'UTC'
 		let tz
