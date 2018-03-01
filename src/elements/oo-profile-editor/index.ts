@@ -1,5 +1,6 @@
+import {OOElement} from '../oo-element'
 import {repeat} from 'lit-html/lib/repeat'
-import {html, render} from '../../lib/html'
+import {html} from '../../lib/html'
 import getSign from '../../lib/oo-api-get-user-sign'
 import getUser from '../../lib/oo-api-get-user'
 import toMap from '../../lib/extensions-to-map'
@@ -14,16 +15,6 @@ define('oo-connect-stripe', connectStripe)
 interface HTMLElementEvent<T extends HTMLElement> extends Event {
 	target: T
 }
-interface Options {
-	iam: string,
-	name: string,
-	bio: string,
-	email: string,
-	stripeUser: string,
-	buttonState: string,
-	notificationEMail: boolean,
-	notificationEMailServiceInformation: boolean
-}
 
 const stateIam = weakMap<string>()
 const stateName = weakMap<string>()
@@ -34,7 +25,7 @@ const stateNotificationEMail = weakMap<boolean>()
 const stateNotificationEMailServiceInformation = weakMap<boolean>()
 const stateButton = weakMap<string>()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	constructor() {
 		super()
 		this.fetchUserSign()
@@ -45,8 +36,21 @@ export default class extends HTMLElement {
 		return stateIam.get(this)
 	}
 
-	html(opts: Options) {
-		const {iam, name, bio, email, stripeUser, notificationEMail, notificationEMailServiceInformation, buttonState} = opts
+	connectedCallback() {
+		super.connectedCallback(false)
+	}
+
+	render() {
+		const {iam, name, bio, email, stripeUser, notificationEMail, notificationEMailServiceInformation, buttonState} = {
+			iam: stateIam.get(this),
+			name: stateName.get(this),
+			bio: stateBio.get(this),
+			email: stateEMail.get(this),
+			stripeUser: stateStripeUser.get(this),
+			notificationEMail: stateNotificationEMail.get(this),
+			notificationEMailServiceInformation: stateNotificationEMailServiceInformation.get(this),
+			buttonState: stateButton.get(this)
+		}
 		if (typeof iam !== 'string') {
 			return html``
 		}
@@ -139,20 +143,6 @@ export default class extends HTMLElement {
 		`
 	}
 
-	render() {
-		const opts = {
-			iam: stateIam.get(this),
-			name: stateName.get(this),
-			bio: stateBio.get(this),
-			email: stateEMail.get(this),
-			stripeUser: stateStripeUser.get(this),
-			notificationEMail: stateNotificationEMail.get(this),
-			notificationEMailServiceInformation: stateNotificationEMailServiceInformation.get(this),
-			buttonState: stateButton.get(this)
-		}
-		render(this.html(opts), this)
-	}
-
 	async fetchUserSign() {
 		const res = await getSign()
 		const {response} = res
@@ -163,7 +153,7 @@ export default class extends HTMLElement {
 		} else {
 			stateIam.delete(this)
 			dispatch({message: 'You are not signed in.', type: 'error'})
-			this.render()
+			this.update()
 		}
 	}
 
@@ -180,9 +170,9 @@ export default class extends HTMLElement {
 			stateStripeUser.set(this, ext.get('stripe_user_id'))
 			stateNotificationEMail.set(this, ext.get('notifications_opt_email'))
 			stateNotificationEMailServiceInformation.set(this, ext.get('notifications_opt_email_service_information'))
-			this.render()
+			this.update()
 		} else {
-			this.render()
+			this.update()
 			dispatch({message: 'Could not get user.', type: 'error'})
 		}
 	}
@@ -216,7 +206,7 @@ export default class extends HTMLElement {
 	async onSubmit(e: Event) {
 		e.preventDefault()
 		stateButton.set(this, 'progress')
-		this.render()
+		this.update()
 		const extensions = {
 			name: stateName.get(this),
 			bio: stateBio.get(this),
@@ -232,6 +222,6 @@ export default class extends HTMLElement {
 			stateButton.set(this, 'rejected')
 			dispatch({message: 'User update failed. Please try again.', type: 'error'})
 		}
-		this.render()
+		this.update()
 	}
 }
