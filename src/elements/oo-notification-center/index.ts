@@ -20,8 +20,8 @@ export default class extends OOElement {
 	private callback = e => this.notificationListener(e)
 
 	connectedCallback() {
-		super.connectedCallback()
 		notificationList.set(this, [])
+		super.connectedCallback()
 		document.addEventListener('oonotification', this.callback)
 	}
 
