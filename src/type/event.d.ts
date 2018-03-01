@@ -102,6 +102,7 @@ export interface HTMLElementEventChangeScope<T extends HTMLElement> extends Chan
 
 export interface ChangeAskDetail {
 	scope: Scope,
+	title: string,
 	message: string,
 	currency?: Currency
 }

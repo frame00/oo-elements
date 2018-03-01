@@ -1,11 +1,13 @@
+import {OOElement} from '../oo-element'
 import {repeat} from 'lit-html/lib/repeat'
-import {html, render} from '../../lib/html'
+import {html} from '../../lib/html'
 import define from '../../lib/define'
 import projectStatus from '../oo-project-status'
 import {OOProject} from '../../type/oo-project'
 import getPublicProjects from '../../lib/oo-api-get-public-projects'
 import getUserProjects from '../../lib/oo-api-get-user-projects'
 import weakMap from '../../lib/weak-map'
+import markdown from '../oo-markdown'
 import message from '../_atoms/oo-atoms-message'
 import button from '../_atoms/oo-atoms-button'
 import userName from '../_atoms/oo-atoms-user-name'
@@ -13,6 +15,7 @@ import empty from '../oo-empty'
 import toMap from '../../lib/extensions-to-map'
 const {location} = window
 
+define('oo-markdown', markdown)
 define('oo-atoms-message', message)
 define('oo-atoms-button', button)
 define('oo-atoms-user-name', userName)
@@ -27,7 +30,7 @@ const stateIam = weakMap<string>()
 const stateProjects = weakMap<Array<OOProject>>()
 const stateItemCount = weakMap<number>()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_IAM]
 	}
@@ -40,13 +43,6 @@ export default class extends HTMLElement {
 		return stateProjects.get(this)
 	}
 
-	connectedCallback() {
-		if (this.hasAttribute(ATTR.DATA_IAM) === false) {
-			stateProjects.set(this, [])
-			this.fetchProjects(this.iam)
-		}
-	}
-
 	attributeChangedCallback(attr, prev, next) {
 		if (prev === next) {
 			return
@@ -56,7 +52,18 @@ export default class extends HTMLElement {
 		this.fetchProjects(this.iam)
 	}
 
-	html(iam: string, projects: Array<OOProject>, count: number) {
+	connectedCallback() {
+		super.connectedCallback(false)
+		if (this.hasAttribute(ATTR.DATA_IAM) === false) {
+			stateProjects.set(this, [])
+			this.fetchProjects(this.iam)
+		}
+	}
+
+	render() {
+		const iam = this.iam
+		const projects = this.projects
+		const count = stateItemCount.get(this)
 		if (projects.length === 0) {
 			return html`
 			<oo-empty data-type=will-be-find></oo-empty>
@@ -95,14 +102,17 @@ export default class extends HTMLElement {
 			${repeat(projects, project => {
 				const {uid} = project
 				const exts = toMap(project)
+				const title = exts.has('title') ? exts.get('title') : ''
 				const body = exts.has('body') ? exts.get('body') : ''
-				const offerer =exts.has('author') ? exts.get('author') : ''
+				const offerer = exts.has('author') ? exts.get('author') : ''
+				const titleHTML = title ? html`<h1>${title}</h1>` : html``
 				return html`
 				<oo-atoms-message>
 					<section slot=body>
 						<oo-project-status data-uid$='${uid}'></oo-project-status>
+						${titleHTML}
 						<div class=body>
-							${body}
+							<oo-markdown>${body}</oo-markdown>
 						</div>
 						<oo-atoms-button on-clicked='${() => this.moveToDetail(uid)}'>Detail</oo-atoms-button>
 					</section>
@@ -115,10 +125,6 @@ export default class extends HTMLElement {
 			${more}
 		</main>
 		`
-	}
-
-	render() {
-		render(this.html(this.iam, this.projects, stateItemCount.get(this)), this)
 	}
 
 	async fetchProjects(iam: string | null, time?: number) {
@@ -134,7 +140,7 @@ export default class extends HTMLElement {
 			const current = this.projects
 			stateProjects.set(this, [...current, ...response])
 		}
-		this.render()
+		this.update()
 	}
 
 	moveToDetail(uid: string) {

@@ -1,5 +1,5 @@
-import OOElement from '../../../lib/classes/oo-element'
-import {html, render} from '../../../lib/html'
+import {OOElement} from '../../oo-element'
+import {html} from '../../../lib/html'
 
 type Size = 'small' | 'medium'
 
@@ -31,19 +31,12 @@ export default class extends OOElement {
 		}
 		size.set(this, asValidString(next))
 		if (this.connected) {
-			this.render()
+			this.update()
 		}
 	}
 
-	connectedCallback() {
-		super.connectedCallback()
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback()
-	}
-
-	html(s: Size) {
+	render() {
+		const s = size.get(this)
 		const prefix = 'oo-atoms-badge'
 		return html`
 		<style>
@@ -101,9 +94,5 @@ export default class extends OOElement {
 			<div class$='${prefix}-circle ${prefix}-right'></div>
 		</div>
 		`
-	}
-
-	render() {
-		render(this.html(size.get(this)), this)
 	}
 }

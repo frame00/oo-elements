@@ -1,5 +1,5 @@
-import OOElement from '../../lib/classes/oo-element'
-import {html, render} from '../../lib/html'
+import {OOElement} from '../oo-element'
+import {html} from '../../lib/html'
 import weakMap from '../../lib/weak-map'
 import {Currency} from '../../type/currency'
 import ooMessage from '../_atoms/oo-atoms-message'
@@ -50,6 +50,7 @@ const statePaymentPaid = weakMap<boolean>()
 const stateChargeSuccessed = weakMap<boolean>()
 const stateUser = weakMap<OOUserWithMapedExtensions>()
 const statePaymentFetching = weakMap<boolean>()
+const stateProgress = weakMap<boolean>()
 const testData = {
 	client_ip: 'x',
 	created: 1,
@@ -133,19 +134,26 @@ export default class extends OOElement {
 				break
 		}
 		if (this.connected) {
-			this.render()
+			this.update()
 		}
 	}
 
-	connectedCallback() {
-		super.connectedCallback()
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback()
-	}
-
-	html(opts: Options, progress?: boolean) {
+	render() {
+		if (this.hasAttribute(ATTR.DATA_PAYMENT_UID) && this.paid === undefined) {
+			// Wait for Payment API
+			return
+		}
+		const opts = {
+			iam: stateIam.get(this),
+			uid: stateUid.get(this),
+			dest: stateDest.get(this),
+			amount: stateAmount.get(this),
+			currency: stateCurrency.get(this),
+			paymentUid: statePaymentUid.get(this),
+			paymentPaid: this.paid,
+			chargeSuccessed: stateChargeSuccessed.get(this)
+		}
+		const progress = stateProgress.get(this)
 		if(isFullFilledRequiredStates(opts) === false) {
 			return html``
 		}
@@ -214,24 +222,6 @@ export default class extends OOElement {
 		`
 	}
 
-	render(progress?: boolean) {
-		if (this.hasAttribute(ATTR.DATA_PAYMENT_UID) && this.paid === undefined) {
-			// Wait for Payment API
-			return
-		}
-		const opts = {
-			iam: stateIam.get(this),
-			uid: stateUid.get(this),
-			dest: stateDest.get(this),
-			amount: stateAmount.get(this),
-			currency: stateCurrency.get(this),
-			paymentUid: statePaymentUid.get(this),
-			paymentPaid: this.paid,
-			chargeSuccessed: stateChargeSuccessed.get(this)
-		}
-		render(this.html(opts, progress), this)
-	}
-
 	async fetchUser(iam: string) {
 		const user = await clientGetUser(iam)
 		if (typeof user === 'boolean') {
@@ -252,7 +242,8 @@ export default class extends OOElement {
 		}
 		const beforeCallback = () => {
 			statePaymentFetching.set(this, true)
-			this.render(true)
+			stateProgress.set(this, true)
+			this.update()
 		}
 		const afterCallback = (err, results) => {
 			if (err) {
@@ -270,7 +261,8 @@ export default class extends OOElement {
 					dispatch({message: response.message, type: 'error'})
 				}
 			}
-			this.render()
+			stateProgress.delete(this)
+			this.update()
 			statePaymentFetching.set(this, false)
 			this.onBeforeunload(true)
 		}
@@ -314,7 +306,7 @@ export default class extends OOElement {
 		const uid = statePaymentUid.get(this)
 		if (validUid(uid) === false) {
 			statePaymentPaid.set(this, false)
-			this.render()
+			this.update()
 			return
 		}
 		try {
@@ -332,6 +324,6 @@ export default class extends OOElement {
 		} catch(err) {
 			console.error(err)
 		}
-		this.render()
+		this.update()
 	}
 }

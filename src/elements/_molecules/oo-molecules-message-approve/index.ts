@@ -1,4 +1,5 @@
-import {html, render} from '../../../lib/html'
+import {OOElement} from '../../oo-element'
+import {html} from '../../../lib/html'
 import weakMap from '../../../lib/weak-map'
 import ooMessage from '../../_atoms/oo-atoms-message'
 import button from '../../_atoms/oo-atoms-button'
@@ -22,7 +23,7 @@ const stateapprove = weakMap<boolean>()
 const stateOfferer = weakMap<string>()
 const stateProgress = weakMap<boolean>()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_PROJECT_UID]
 	}
@@ -40,7 +41,15 @@ export default class extends HTMLElement {
 		this.fetchProject(next)
 	}
 
-	html(uid: string, offerer: string, perm: boolean, progress: boolean) {
+	connectedCallback() {
+		super.connectedCallback(false)
+	}
+
+	render() {
+		const uid = stateUid.get(this)
+		const offerer = stateOfferer.get(this)
+		const perm = stateapprove.get(this)
+		const progress = stateProgress.get(this)
 		const header = () => {
 			if (perm === true) {
 				return 'Accepted'
@@ -99,16 +108,12 @@ export default class extends HTMLElement {
 		`
 	}
 
-	render() {
-		render(this.html(stateUid.get(this), stateOfferer.get(this), stateapprove.get(this), stateProgress.get(this)), this)
-	}
-
 	async projectApprove(ans: boolean) {
 		if (ans === undefined) {
 			return
 		}
 		stateProgress.set(this, ans)
-		this.render()
+		this.update()
 		const result = await patchProject({
 			uid: stateProjectUid.get(this),
 			approve: Boolean(ans)
@@ -118,7 +123,7 @@ export default class extends HTMLElement {
 			stateapprove.set(this, ans)
 		}
 		stateProgress.delete(this)
-		this.render()
+		this.update()
 	}
 
 	async fetchProject(uid: string) {
@@ -130,6 +135,6 @@ export default class extends HTMLElement {
 			stateapprove.set(this, mapedExtensions.get('approve'))
 			stateOfferer.set(this, mapedExtensions.get('author'))
 		}
-		this.render()
+		this.update()
 	}
 }

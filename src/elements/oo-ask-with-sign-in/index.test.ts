@@ -23,6 +23,18 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(element.shadowRoot.querySelector('oo-ask-form').getAttribute('data-iam')).to.be('test')
 	})
 
+	it('Display the "Ask" in the button if exists "data-iam" attribute', async () => {
+		const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+		await sleep(300)
+		expect(element.shadowRoot.querySelector('button.submit').textContent).to.be('Ask')
+	})
+
+	it('Display the "Post" in the button if not exists "data-iam" attribute', async () => {
+		const element = insertElement(ELEMENT)
+		await sleep(300)
+		expect(element.shadowRoot.querySelector('button.submit').textContent).to.be('Post')
+	})
+
 	it('Pass "data-sign-in-flow" attribute to <oo-organisms-ask-step-sign-in>', async () => {
 		const element = insertElement(ELEMENT, new Map([['data-iam', 'test'], ['data-sign-in-flow', 'redirect']]))
 		await sleep(300)

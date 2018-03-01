@@ -25,7 +25,8 @@ import {
 	ooFooter,
 	ooVersion,
 	ooEmpty,
-	ooDeleteAccount
+	ooDeleteAccount,
+	ooMarkdown
 } from './index'
 
 define('oo-button', ooButton)
@@ -54,3 +55,4 @@ define('oo-footer', ooFooter)
 define('oo-version', ooVersion)
 define('oo-empty', ooEmpty)
 define('oo-delete-account', ooDeleteAccount)
+define('oo-markdown', ooMarkdown)

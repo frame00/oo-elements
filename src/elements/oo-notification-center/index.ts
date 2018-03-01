@@ -1,5 +1,6 @@
+import {OOElement} from '../oo-element'
 import {repeat} from 'lit-html/lib/repeat'
-import {html, render} from '../../lib/html'
+import {html} from '../../lib/html'
 import weakMap from '../../lib/weak-map'
 import define from '../../lib/define'
 import notification from '../oo-notification'
@@ -15,19 +16,22 @@ type NotificationList = Array<{
 
 const notificationList = weakMap<NotificationList>()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	private callback = e => this.notificationListener(e)
 
 	connectedCallback() {
 		notificationList.set(this, [])
+		super.connectedCallback()
 		document.addEventListener('oonotification', this.callback)
 	}
 
 	disconnectedCallback() {
+		super.disconnectedCallback()
 		document.removeEventListener('oonotification', this.callback)
 	}
 
-	html(items: NotificationList) {
+	render() {
+		const items = notificationList.get(this)
 		return html`
 		<style>
 			div {
@@ -56,10 +60,6 @@ export default class extends HTMLElement {
 		`
 	}
 
-	render() {
-		render(this.html(notificationList.get(this)), this)
-	}
-
 	notificationListener(e: DocumentNotificationEvent) {
 		const current = notificationList.get(this)
 		const {detail} = e
@@ -69,13 +69,13 @@ export default class extends HTMLElement {
 			type
 		})
 		notificationList.set(this, current)
-		this.render()
+		this.update()
 	}
 
 	closeNotification(index: number) {
 		const current = notificationList.get(this)
 		current.splice(index, 1)
 		notificationList.set(this, current)
-		this.render()
+		this.update()
 	}
 }

@@ -1,4 +1,5 @@
-import {html, render} from '../../lib/html'
+import {OOElement} from '../oo-element'
+import {html} from '../../lib/html'
 import define from '../../lib/define'
 import summary from '../oo-project-summary'
 import messages from '../oo-project-messages'
@@ -6,7 +7,6 @@ import button from '../_atoms/oo-atoms-button'
 import empty from '../oo-empty'
 import form from '../oo-message-form'
 import store from '../../lib/local-storage'
-import {OOExtensionsLikeObject} from '../../type/oo-extension'
 import {HTMLElementEventMessageSent} from '../../type/event'
 import getProject from '../../lib/oo-api-get-project'
 import toMap from '../../lib/extensions-to-map'
@@ -21,16 +21,6 @@ define('oo-project-messages', messages)
 define('oo-message-form', form)
 define('oo-empty', empty)
 define('oo-atoms-button', button)
-
-interface Options {
-	found: boolean,
-	user: string,
-	uid: string,
-	accepted: boolean,
-	scope: Scope,
-	assignee: string,
-	extensions: OOExtensionsLikeObject
-}
 
 const ATTR = {
 	DATA_UID: 'data-uid'
@@ -48,7 +38,7 @@ const projectScope = weakMap<Scope>()
 const projectAssignee = weakMap<string>()
 const messageForm = weakMap<messages>()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_UID]
 	}
@@ -61,8 +51,24 @@ export default class extends HTMLElement {
 		this.fetchProject(projectUid.get(this))
 	}
 
-	html(opts: Options) {
-		const {found, extensions, uid, user, scope, accepted, assignee} = opts
+	connectedCallback() {
+		super.connectedCallback(false)
+	}
+
+	render() {
+		const {found, extensions, uid, user, scope, accepted, assignee} = {
+			found: projectFound.get(this),
+			user: store.uid,
+			uid: projectUid.get(this),
+			accepted: projectAccepted.get(this),
+			scope: projectScope.get(this),
+			assignee: projectAssignee.get(this),
+			extensions: {
+				project: projectUid.get(this),
+				author: store.uid,
+				users: [store.uid, projectOfferer.get(this)]
+			}
+		}
 		if (found === false) {
 			return html`
 			<oo-empty></oo-empty>
@@ -88,30 +94,14 @@ export default class extends HTMLElement {
 		${(() => {
 			if (user && !assignee) {
 				return html`
-				<oo-atoms-button class=fork on-clicked='${() => this.createFork()}'>Answer with fork</oo-atoms-button>
+				<oo-atoms-button class=fork on-clicked='${() => this.createFork()}'>Comment with fork</oo-atoms-button>
 				`
 			}
 		})()}
 		`
 	}
 
-	render() {
-		const user = store.uid
-		const extensions = {
-			project: projectUid.get(this),
-			author: user,
-			users: [user, projectOfferer.get(this)]
-		}
-		const options = {
-			found: projectFound.get(this),
-			user: store.uid,
-			uid: projectUid.get(this),
-			accepted: projectAccepted.get(this),
-			scope: projectScope.get(this),
-			assignee: projectAssignee.get(this),
-			extensions
-		}
-		render(this.html(options), this)
+	renderedCallback() {
 		if (messageForm.has(this) === false) {
 			messageForm.set(this, this.shadowRoot.querySelector('oo-project-messages'))
 		}
@@ -141,7 +131,7 @@ export default class extends HTMLElement {
 			projectOfferer.delete(this)
 			projectAccepted.delete(this)
 		}
-		this.render()
+		this.update()
 	}
 
 	async createFork() {

@@ -101,16 +101,16 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	})
 
 	describe('Fork project', () => {
-		it('Show "Answer with fork" button', async () => {
+		it('Show "Comment with fork" button', async () => {
 			store.uid = 'test-user'
 			const element = insertElement(ELEMENT, new Map([['data-uid', 'kdRmT7eb8D']]))
 			await sleep(300)
 			const fork = element.shadowRoot.querySelector('.fork')
 			expect(fork).to.be.ok()
-			expect(fork.textContent).to.be('Answer with fork')
+			expect(fork.textContent).to.be('Comment with fork')
 		})
 
-		it('Create fork project when click "Answer with fork" button', done => {
+		it('Create fork project when click "Comment with fork" button', done => {
 			const element = insertElement(ELEMENT, new Map([['data-uid', 'kdRmT7eb8D']]))
 			setTimeout(() => {
 				const fork = element.shadowRoot.querySelector('.fork')

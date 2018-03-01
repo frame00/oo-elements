@@ -1,5 +1,5 @@
-import OOElement from './oo-element'
-import {html, render} from '../html'
+import {OOElement} from '../../elements/oo-element'
+import {html} from '../html'
 import {AuthProvider} from '../../type/auth-provider.d'
 import store from '../local-storage'
 import {SignedInDetail, SignedIn, SignedInError, SignedInErrorDetail} from '../../type/event'
@@ -45,21 +45,18 @@ export default class extends OOElement {
 		this.checkSignInStatus()
 	}
 
-	disconnectedCallback() {
-		super.disconnectedCallback()
-	}
-
 	attributeChangedCallback(attr, prev, next) {
 		if (prev === next) {
 			return
 		}
 		provider.set(this, asValidString(next))
 		if (this.connected) {
-			this.render()
+			this.update()
 		}
 	}
 
-	html(prov: AuthProvider) {
+	render() {
+		const prov = provider.get(this)
 		let label: string = prov
 		switch (prov) {
 			case 'google':
@@ -127,11 +124,7 @@ export default class extends OOElement {
 		`
 	}
 
-	render() {
-		render(this.html(provider.get(this)), this)
-	}
-
-	async signIn() {
+	protected async signIn() {
 		// Sign in
 	}
 

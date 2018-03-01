@@ -39,13 +39,6 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			expect(content.classList.toString()).to.contain('forked')
 		})
 
-		it('Unassigned projects', async () => {
-			const element = insertElement(ELEMENT, new Map([['data-uid', '9fhXYtQQy8']]))
-			await sleep(300)
-			const content = element.shadowRoot.querySelector('span')
-			expect(content.textContent).to.contain('unassigned')
-		})
-
 		it('Not found projects', async () => {
 			const element = insertElement(ELEMENT, new Map([['data-uid', 'xxx']]))
 			await sleep(300)

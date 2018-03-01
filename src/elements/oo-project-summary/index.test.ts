@@ -21,17 +21,11 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		const element = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
 		await sleep(100)
 		const slotFooter: HTMLSlotElement = element.shadowRoot.querySelector('oo-atoms-message').shadowRoot.querySelector('slot[name=footer]')
-		const slotBody: HTMLSlotElement = element.shadowRoot.querySelector('oo-atoms-message').shadowRoot.querySelector('slot[name=body]')
 		const [slotFooterAssigned] = slotFooter.assignedNodes()
-		const [slotBodyAssigned] = slotBody.assignedNodes()
 
 		Array.prototype.forEach.call(slotFooterAssigned.childNodes, item => {
 			const userName = item.parentElement.querySelector('oo-atoms-user-name').getAttribute('data-iam')
 			expect(userName).to.be('test')
-		})
-		Array.prototype.forEach.call(slotBodyAssigned.childNodes, item => {
-			const textContent = item.parentElement.querySelector('p').textContent
-			expect(textContent).to.be('test')
 		})
 	})
 

@@ -6,6 +6,7 @@
       "dom"
     ],
     "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
     "plugins": [
       {
         "name": "typescript-lit-html-plugin"

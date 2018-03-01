@@ -1,4 +1,4 @@
-import OOElement from '../../lib/classes/oo-element'
+import {OOElement} from '../oo-element'
 import {html, render} from '../../lib/html'
 import askWithSiginIn from '../oo-ask-with-sign-in'
 import created from '../_organisms/oo-organisms-ask-created'
@@ -13,12 +13,6 @@ define('oo-profile', profile)
 define('oo-ask-with-sign-in', askWithSiginIn)
 define('oo-organisms-ask-created', created)
 define('oo-empty', empty)
-
-interface Options {
-	found: boolean,
-	uid: string,
-	flow: SignInFlow
-}
 
 type SignInFlow = 'popup' | 'redirect'
 
@@ -61,7 +55,7 @@ export default class extends OOElement {
 			case ATTR.DATA_SIGN_IN_FLOW:
 				signInFlow.set(this, asSignInFlow(next))
 				if (this.connected) {
-					this.render()
+					this.update()
 				}
 				break
 			default:
@@ -69,16 +63,10 @@ export default class extends OOElement {
 		}
 	}
 
-	connectedCallback() {
-		super.connectedCallback()
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback()
-	}
-
-	html(opts: Options) {
-		const {found, uid, flow} = opts
+	render() {
+		const found = userFound.get(this)
+		const uid = iam.get(this)
+		const flow = signInFlow.get(this)
 		if (found === false) {
 			return html`
 			<oo-empty></oo-empty>
@@ -145,14 +133,6 @@ export default class extends OOElement {
 		`
 	}
 
-	render() {
-		render(this.html({
-			found: userFound.get(this),
-			uid: iam.get(this),
-			flow: signInFlow.get(this)
-		}), this)
-	}
-
 	onProjectCreated(e: HTMLElementEventProjectCreated<askWithSiginIn>) {
 		const {detail} = e
 		const {response} = detail
@@ -170,7 +150,7 @@ export default class extends OOElement {
 		} else {
 			userFound.set(this, false)
 		}
-		this.render()
+		this.update()
 	}
 
 }

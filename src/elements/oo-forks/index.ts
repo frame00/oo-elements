@@ -1,5 +1,6 @@
+import {OOElement} from '../oo-element'
 import {repeat} from 'lit-html/lib/repeat'
-import {html, render} from '../../lib/html'
+import {html} from '../../lib/html'
 import define from '../../lib/define'
 import {OOProject} from '../../type/oo-project'
 import getProjectForks from '../../lib/oo-api-get-projects-forks'
@@ -19,7 +20,7 @@ const stateUid = weakMap<string>()
 const stateItemCount = weakMap<number>()
 const stateProjects = weakMap<Array<OOProject>>()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_UID]
 	}
@@ -41,7 +42,16 @@ export default class extends HTMLElement {
 		this.fetchProjects(this.uid)
 	}
 
-	html(iam: string, projects: Array<OOProject>, count: number) {
+	connectedCallback() {
+		super.connectedCallback(false)
+	}
+
+	render() {
+		const {iam, projects, count} = {
+			iam: this.uid,
+			projects: this.projects,
+			count: stateItemCount.get(this)
+		}
 		const paging = projects[projects.length - 1].created - 1
 		const more = count > projects.length ? html`
 		<div class=paging>
@@ -83,10 +93,6 @@ export default class extends HTMLElement {
 		`
 	}
 
-	render() {
-		render(this.html(this.uid, this.projects, stateItemCount.get(this)), this)
-	}
-
 	async fetchProjects(uid: string, time?: number) {
 		const api = await getProjectForks(uid, time)
 		const {response, headers} = api
@@ -95,7 +101,7 @@ export default class extends HTMLElement {
 			const current = this.projects
 			stateProjects.set(this, [...current, ...response])
 		}
-		this.render()
+		this.update()
 	}
 
 	moveToDetail(uid: string) {

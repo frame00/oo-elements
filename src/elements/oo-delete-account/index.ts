@@ -1,10 +1,12 @@
-import {html, render} from '../../lib/html'
+import {OOElement} from '../oo-element'
+import {html} from '../../lib/html'
 import define from '../../lib/define'
 import button from '../_atoms/oo-atoms-button'
 import {attach, dispatch} from '../../lib/notification'
 import store from '../../lib/local-storage'
 import deleteUser from '../../lib/oo-api-delete-user'
 import customEvent from '../../lib/custom-event'
+import weakMap from '../../lib/weak-map'
 
 define('oo-atoms-button', button)
 
@@ -12,17 +14,24 @@ const EVENT = {
 	DELETED: customEvent('deleted')
 }
 
-export default class extends HTMLElement {
+const stateProgress = weakMap<boolean>()
+
+export default class extends OOElement {
 	constructor() {
 		super()
 		attach()
 		const {uid} = store
 		if (typeof uid === 'string' && uid !== '') {
-			this.render()
+			this.update()
 		}
 	}
 
-	html(progress: boolean) {
+	connectedCallback() {
+		super.connectedCallback(false)
+	}
+
+	render() {
+		const progress = stateProgress.get(this)
 		return html`
 		<style>
 		</style>
@@ -32,12 +41,9 @@ export default class extends HTMLElement {
 		`
 	}
 
-	render(progress: boolean = false) {
-		render(this.html(progress), this)
-	}
-
 	async deleteAccount() {
-		this.render(true)
+		stateProgress.set(this, true)
+		this.update()
 		const {uid} = store
 		const del = await deleteUser(uid)
 		const {response} = del
@@ -53,6 +59,7 @@ export default class extends HTMLElement {
 				type: 'error'
 			})
 		}
-		this.render(false)
+		stateProgress.delete(this)
+		this.update()
 	}
 }

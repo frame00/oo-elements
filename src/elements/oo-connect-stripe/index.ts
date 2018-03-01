@@ -1,4 +1,5 @@
-import {html, render} from '../../lib/html'
+import {OOElement} from '../oo-element'
+import {html} from '../../lib/html'
 import weakMap from '../../lib/weak-map'
 import define from '../../lib/define'
 import button from '../_atoms/oo-atoms-button'
@@ -28,7 +29,7 @@ const stateUid = weakMap<string>()
 const stateConnection = weakMap<Connecntion>()
 const stripeWindow = weakMap<Window>()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	get stripeWindow() {
 		return stripeWindow.get(this)
 	}
@@ -44,14 +45,20 @@ export default class extends HTMLElement {
 		if (URI_PARAMS.CODE in params && URI_PARAMS.STATE in params) {
 			this.onRedirected(params)
 			stateConnection.set(this, 'connecting')
-			this.render()
+			this.update()
 		} else {
 			stateConnection.set(this, 'none')
-			this.render()
+			this.update()
 		}
 	}
 
-	html(uid: string, connection: Connecntion) {
+	connectedCallback() {
+		super.connectedCallback(false)
+	}
+
+	render() {
+		const uid = stateUid.get(this)
+		const connection = stateConnection.get(this)
 		return html`
 		<style>
 		</style>
@@ -70,14 +77,10 @@ export default class extends HTMLElement {
 		`
 	}
 
-	render() {
-		render(this.html(stateUid.get(this), stateConnection.get(this)), this)
-	}
-
 	connectStripe() {
 		stripeWindow.set(this, openStripeOauth())
 		stateConnection.set(this, 'connecting')
-		this.render()
+		this.update()
 	}
 
 	async onRedirected(params: {
@@ -90,14 +93,14 @@ export default class extends HTMLElement {
 			if (Array.isArray(response)) {
 				const [uidAndStripe] = response
 				stateConnection.set(this, 'connected')
-				this.render()
+				this.update()
 				this.dispatchEvent(EVENT.CONNECTED(uidAndStripe))
 			} else {
 				throw connect
 			}
 		} catch(err) {
 			stateConnection.set(this, 'failed')
-			this.render()
+			this.update()
 			this.dispatchEvent(EVENT.CONNECTION_FAILED(err))
 		}
 	}

@@ -1,5 +1,6 @@
+import {OOElement} from '../oo-element'
 import {repeat} from 'lit-html/lib/repeat'
-import {html, render} from '../../lib/html'
+import {html} from '../../lib/html'
 import getUser from '../../lib/oo-api-get-user'
 import isSuccess from '../../lib/is-api-success'
 import toMap from '../../lib/extensions-to-map'
@@ -24,7 +25,7 @@ const picture = weakMap<string>()
 const bio = weakMap<string>()
 const found = weakMap<boolean>()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_IAM]
 	}
@@ -37,7 +38,17 @@ export default class extends HTMLElement {
 		this.fetchUserData()
 	}
 
-	html(f: boolean, uid: string, n: string, p: string, b: string) {
+	connectedCallback() {
+		super.connectedCallback(false)
+	}
+
+	render() {
+		const {f, n, p, b} = {
+			f: found.get(this),
+			n: name.get(this),
+			p: picture.get(this),
+			b: bio.get(this)
+		}
 		if (f === false) {
 			return html`
 			<oo-empty></oo-empty>
@@ -118,10 +129,6 @@ export default class extends HTMLElement {
 		`
 	}
 
-	render() {
-		render(this.html(found.get(this), iam.get(this), name.get(this), picture.get(this), bio.get(this)), this)
-	}
-
 	async fetchUserData() {
 		const res = await getUser(iam.get(this))
 		if (isSuccess(res.status) && Array.isArray(res.response)) {
@@ -131,14 +138,13 @@ export default class extends HTMLElement {
 			name.set(this, ext.get('name'))
 			picture.set(this, ext.get('picture'))
 			bio.set(this, ext.get('bio'))
-			this.render()
 		} else {
 			found.set(this, false)
 			name.set(this, '')
 			picture.set(this, '')
 			bio.set(this, '')
-			this.render()
 		}
+		this.update()
 		this.dispatchEvent(EVENT.USER_UPDATED)
 	}
 }

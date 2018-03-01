@@ -1,17 +1,11 @@
+import {OOElement} from '../oo-element'
 import {repeat} from 'lit-html/lib/repeat'
 import {TemplateResult} from 'lit-html'
-import {html, render} from '../../lib/html'
+import {html} from '../../lib/html'
 import getProject from '../../lib/oo-api-get-project'
 import toMap from '../../lib/extensions-to-map'
 import weakMap from '../../lib/weak-map'
 import {Scope} from '../../type/scope'
-
-interface HTMLOptions {
-	found: boolean,
-	scope: Scope,
-	assignee: string,
-	fork: string
-}
 
 const ATTR = {
 	DATA_UID: 'data-uid'
@@ -20,10 +14,9 @@ const ATTR = {
 const projectFound = weakMap<boolean>()
 const projectUid = weakMap<string>()
 const projectScope = weakMap<Scope>()
-const projectAssignee = weakMap<string>()
 const projectForked = weakMap<string>()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_UID]
 	}
@@ -36,17 +29,22 @@ export default class extends HTMLElement {
 		this.fetchProject(projectUid.get(this))
 	}
 
-	html(opts: HTMLOptions) {
-		const {found, scope, assignee, fork} = opts
+	connectedCallback() {
+		super.connectedCallback(false)
+	}
+
+	render() {
+		const {found, scope, fork} = {
+			found: projectFound.get(this),
+			scope: projectScope.get(this),
+			fork: projectForked.get(this)
+		}
 		if (found === false) {
 			return html``
 		}
 		const labels: Array<TemplateResult> = []
 		if (fork) {
 			labels.push(html`<a class=forked href$='/project/${fork}'>↩ fork</a>`)
-		}
-		if (!assignee) {
-			labels.push(html`<span class=unassigned>unassigned</span>`)
 		}
 		if (scope) {
 			labels.push(html`<span class$='${scope}'>${scope}</span>`)
@@ -88,15 +86,6 @@ export default class extends HTMLElement {
 		`
 	}
 
-	render() {
-		render(this.html({
-			found: projectFound.get(this),
-			scope: projectScope.get(this),
-			assignee: projectAssignee.get(this),
-			fork: projectForked.get(this)
-		}), this)
-	}
-
 	async fetchProject(uid: string) {
 		const api = await getProject(uid)
 		const {response} = api
@@ -105,11 +94,10 @@ export default class extends HTMLElement {
 			const mapedExtensions = toMap(item)
 			projectFound.set(this, true)
 			projectScope.set(this, mapedExtensions.get('scope'))
-			projectAssignee.set(this, mapedExtensions.get('assignee'))
 			projectForked.set(this, mapedExtensions.get('fork'))
 		} else {
 			projectFound.set(this, false)
 		}
-		this.render()
+		this.update()
 	}
 }

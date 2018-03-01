@@ -1,5 +1,5 @@
-import OOElement from '../../lib/classes/oo-element'
-import {html, render} from '../../lib/html'
+import {OOElement} from '../oo-element'
+import {html} from '../../lib/html'
 import stepSignIn from '../_organisms/oo-organisms-ask-step-sign-in'
 import askForm from '../oo-ask-form'
 import define from '../../lib/define'
@@ -15,13 +15,6 @@ define('oo-ask-form', askForm)
 
 type SignInFlow = 'popup' | 'redirect'
 
-interface Options {
-	uid: string,
-	auth: boolean,
-	sender: string,
-	flow: SignInFlow
-}
-
 const ATTR = {
 	DATA_IAM: 'data-iam',
 	DATA_SIGN_IN_FLOW: 'data-sign-in-flow'
@@ -32,6 +25,7 @@ const EVENT = {
 }
 
 const stateIam = weakMap<string>()
+const stateTitle = weakMap<string>()
 const stateMessage = weakMap<string>()
 const stateOfferer = weakMap<string>()
 const stateScope = weakMap<Scope>()
@@ -39,6 +33,7 @@ const stateCurrency = weakMap<Currency>()
 const stateAuthorized = weakMap<boolean>()
 const stateSignInFlow = weakMap<SignInFlow>()
 const statePrevActiveStep = weakMap<Element>()
+const stateProgress = weakMap<boolean>()
 
 const validation = (el: HTMLElement): boolean => {
 	const body = stateMessage.get(el)
@@ -91,20 +86,18 @@ export default class extends OOElement {
 				break
 		}
 		if (this.connected) {
-			this.render()
+			this.update()
 		}
 	}
 
-	connectedCallback() {
-		super.connectedCallback()
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback()
-	}
-
-	html(opts: Options, progress: boolean) {
-		const {uid, auth, sender, flow} = opts
+	render() {
+		const {uid, auth, sender, flow, progress} = {
+			uid: stateIam.get(this),
+			auth: stateAuthorized.get(this),
+			sender: stateOfferer.get(this),
+			flow: stateSignInFlow.get(this),
+			progress: stateProgress.get(this)
+		}
 		const step = (() => {
 			if (sender !== undefined && sender !== '') {
 				return 'submit'
@@ -197,22 +190,11 @@ export default class extends OOElement {
 					<oo-organisms-ask-step-sign-in class=signin data-flow$='${flow}' on-signedin='${e => this.onSignedIn(e)}'></oo-organisms-ask-step-sign-in>
 				</li>
 				<li class=step active?='${step === 'submit'}'>
-					<button class=submit disabled?='${progress}' on-click='${() => this.createProject()}'>Ask</button>
-					<p class=description>Just send it!</p>
+					<button class=submit disabled?='${progress}' on-click='${() => this.createProject()}'>${uid ? 'Ask' : 'Post'}</button>
 				</li>
 			</ul>
 		</div>
 		`
-	}
-
-	render(progress: boolean = false) {
-		render(this.html({
-			uid: stateIam.get(this),
-			auth: stateAuthorized.get(this),
-			sender: stateOfferer.get(this),
-			flow: stateSignInFlow.get(this)
-		}, progress), this)
-		this.renderedCallback()
 	}
 
 	async renderedCallback() {
@@ -234,7 +216,8 @@ export default class extends OOElement {
 
 	onAskChanged(e: HTMLElementEventChangeAsk<HTMLElement>) {
 		const {detail} = e
-		const {message: m, scope, currency} = detail
+		const {title, message: m, scope, currency} = detail
+		stateTitle.set(this, title)
 		stateMessage.set(this, m)
 		stateScope.set(this, scope)
 		stateCurrency.set(this, currency)
@@ -242,23 +225,25 @@ export default class extends OOElement {
 
 	onAuthorization() {
 		stateAuthorized.set(this, true)
-		this.render()
+		this.update()
 	}
 
 	onSignedIn(e: CustomEvent) {
 		const {detail} = e
 		const {uid} = detail
 		stateOfferer.set(this, uid)
-		this.render()
+		this.update()
 	}
 
 	async createProject() {
 		if (validation(this) === false) {
 			return
 		}
-		this.render(true)
+		stateProgress.set(this, true)
+		this.update()
 		const iam = stateIam.get(this)
 		const offerer = stateOfferer.get(this)
+		const title = stateTitle.get(this)
 		const body = stateMessage.get(this)
 		const author = stateOfferer.get(this)
 		const scope = stateScope.get(this)
@@ -267,6 +252,7 @@ export default class extends OOElement {
 			body: string,
 			author: string,
 			scope: Scope,
+			title?: string,
 			users?: Array<string>,
 			currency?: Currency,
 			assignee?: string
@@ -274,6 +260,9 @@ export default class extends OOElement {
 			body,
 			author,
 			scope
+		}
+		if (typeof title === 'string') {
+			opts.title = title
 		}
 		if (typeof currency === 'string') {
 			opts.currency = currency
@@ -294,6 +283,7 @@ export default class extends OOElement {
 		} else {
 			this.dispatchEvent(EVENT.PROJECT_CREATION_FAILED(project))
 		}
-		this.render()
+		stateProgress.set(this, false)
+		this.update()
 	}
 }

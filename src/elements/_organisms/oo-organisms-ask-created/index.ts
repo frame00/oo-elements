@@ -1,4 +1,5 @@
-import {html, render} from '../../../lib/html'
+import {OOElement} from '../../oo-element'
+import {html} from '../../../lib/html'
 
 const ATTR = {
 	DATA_UID: 'data-uid'
@@ -6,7 +7,7 @@ const ATTR = {
 
 const projectUid: WeakMap<object, string> = new WeakMap()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_UID]
 	}
@@ -16,10 +17,15 @@ export default class extends HTMLElement {
 			return
 		}
 		projectUid.set(this, next)
-		this.render()
+		this.update()
 	}
 
-	html(uid: string) {
+	connectedCallback() {
+		super.connectedCallback(false)
+	}
+
+	render() {
+		const uid = projectUid.get(this)
 		return html`
 		<style>
 			@import '../../../style/_vars-font-family.css';
@@ -53,9 +59,5 @@ export default class extends HTMLElement {
 			</p>
 		</main>
 		`
-	}
-
-	render() {
-		render(this.html(projectUid.get(this)), this)
 	}
 }

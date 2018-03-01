@@ -7,6 +7,7 @@ type Key = 'oo:signing-in' | 'oo:previous-ask'
 
 interface PreviousAsk {
 	iam: string,
+	title: string,
 	body: string,
 	scope: Scope,
 	currency: Currency

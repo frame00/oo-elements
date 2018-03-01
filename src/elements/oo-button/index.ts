@@ -1,5 +1,5 @@
-import OOElement from '../../lib/classes/oo-element'
-import {html, render} from '../../lib/html'
+import {OOElement} from '../oo-element'
+import {html} from '../../lib/html'
 import badge from '../_atoms/oo-atoms-badge'
 import offerModal from '../_organisms/oo-organisms-ask-modal'
 import define from '../../lib/define'
@@ -65,19 +65,20 @@ export default class extends OOElement {
 				break
 		}
 		if (this.connected) {
-			this.render()
+			this.update()
 		}
 	}
 
-	connectedCallback() {
-		super.connectedCallback()
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback()
-	}
-
-	html(s: string, i: string, o: boolean, t: Type) {
+	render() {
+		if (!iam.get(this)) {
+			return
+		}
+		const {s, i, o, t} = {
+			s: size.get(this),
+			i: iam.get(this),
+			o: open.get(this),
+			t: type.get(this)
+		}
 		const label = `${t} me`
 
 		return html`
@@ -136,20 +137,13 @@ export default class extends OOElement {
 		`
 	}
 
-	render() {
-		if (!iam.get(this)) {
-			return
-		}
-		render(this.html(size.get(this), iam.get(this), open.get(this), type.get(this)), this)
-	}
-
 	onClickButton() {
 		open.set(this, !open.get(this))
-		this.render()
+		this.update()
 	}
 
 	onModalClose() {
 		open.set(this, false)
-		this.render()
+		this.update()
 	}
 }

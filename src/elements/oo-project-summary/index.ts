@@ -1,36 +1,32 @@
-import {repeat} from 'lit-html/lib/repeat'
-import {html, render} from '../../lib/html'
+import {OOElement} from '../oo-element'
+import {html} from '../../lib/html'
 import getProject from '../../lib/oo-api-get-project'
 import toMap from '../../lib/extensions-to-map'
 import define from '../../lib/define'
+import markdown from '../oo-markdown'
 import message from '../_atoms/oo-atoms-message'
 import userName from '../_atoms/oo-atoms-user-name'
-import lineBreak from '../../lib/line-break'
 import datetime from '../_atoms/oo-atoms-datetime'
 import projectStatus from '../oo-project-status'
+import weakMap from '../../lib/weak-map'
 
+define('oo-markdown', markdown)
 define('oo-atoms-message', message)
 define('oo-atoms-user-name', userName)
 define('oo-atoms-datetime', datetime)
 define('oo-project-status', projectStatus)
 
-interface HTMLOptions {
-	uid: string,
-	created: number,
-	body: string,
-	author: string
-}
-
 const ATTR = {
 	DATA_UID: 'data-uid'
 }
 
-const projectUid: WeakMap<object, string> = new WeakMap()
-const projectBody: WeakMap<object, string> = new WeakMap()
-const projectAuthor: WeakMap<object, string> = new WeakMap()
-const projectCreated: WeakMap<object, number> = new WeakMap()
+const projectUid = weakMap<string>()
+const projectTitle = weakMap<string>()
+const projectBody = weakMap<string>()
+const projectAuthor = weakMap<string>()
+const projectCreated = weakMap<number>()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_UID]
 	}
@@ -43,9 +39,18 @@ export default class extends HTMLElement {
 		this.fetchProject(projectUid.get(this))
 	}
 
-	html(opts: HTMLOptions) {
-		const {uid, created, body, author} = opts
-		const lines = lineBreak(body)
+	connectedCallback() {
+		super.connectedCallback(false)
+	}
+
+	render() {
+		const {uid, created, title, body, author} = {
+			uid: projectUid.get(this),
+			created: projectCreated.get(this),
+			title: projectTitle.get(this),
+			body: projectBody.get(this),
+			author: projectAuthor.get(this)
+		}
 		return html`
 		<style>
 			@import '../../style/_vars-font-family.css';
@@ -85,6 +90,12 @@ export default class extends HTMLElement {
 			oo-project-status {
 				margin-bottom: 0.5rem;
 			}
+			h1 {
+				font-family: var(--font-family);
+			}
+			oo-atoms-user-name {
+				margin-bottom: 1rem;
+			}
 			.amount {
 				text-transform: uppercase;
 			}
@@ -93,24 +104,21 @@ export default class extends HTMLElement {
 			<oo-atoms-message data-tooltip-position=left>
 				<section slot=body>
 					<oo-project-status data-uid$='${uid}'></oo-project-status>
-					${repeat(lines, line => html`<p>${line}</p>`)}
+					${(() => {
+						if (title) {
+							return html`<h1>${title}</h1>`
+						}
+						return html``
+					})()}
+					<oo-markdown>${body}</oo-markdown>
 				</section>
 				<footer slot=footer>
 					<oo-atoms-user-name data-iam$='${author}' data-size=small></oo-atoms-user-name>
-					<oo-atoms-datetime data-unixtime='${created}'></oo-atoms-datetime>
+					<oo-atoms-datetime data-unixtime$='${created}'></oo-atoms-datetime>
 				</footer>
 			</oo-atoms-message>
 		</main>
 		`
-	}
-
-	render() {
-		render(this.html({
-			uid: projectUid.get(this),
-			created: projectCreated.get(this),
-			body: projectBody.get(this),
-			author: projectAuthor.get(this)
-		}), this)
 	}
 
 	async fetchProject(uid: string) {
@@ -120,12 +128,13 @@ export default class extends HTMLElement {
 			const [item] = response
 			const mapedExtensions = toMap(item)
 			projectCreated.set(this, item.created)
+			projectTitle.set(this, mapedExtensions.get('title'))
 			projectBody.set(this, mapedExtensions.get('body'))
 			projectAuthor.set(this, mapedExtensions.get('author'))
 		} else {
 			projectBody.delete(this)
 			projectAuthor.delete(this)
 		}
-		this.render()
+		this.update()
 	}
 }

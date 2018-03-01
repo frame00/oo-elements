@@ -1,5 +1,5 @@
-import OOElement from '../../lib/classes/oo-element'
-import {html, render} from '../../lib/html'
+import {OOElement} from '../oo-element'
+import {html} from '../../lib/html'
 import define from '../../lib/define'
 import userName from '../_atoms/oo-atoms-user-name'
 import datetime from '../_atoms/oo-atoms-datetime'
@@ -80,19 +80,16 @@ export default class extends OOElement {
 		}
 		this.setMessage()
 		if (this.connected) {
-			this.render()
+			this.update()
 		}
 	}
 
-	connectedCallback() {
-		super.connectedCallback()
-	}
-
-	disconnectedCallback() {
-		super.connectedCallback()
-	}
-
-	html(isFetching: boolean, isSuccess: boolean, open: boolean) {
+	render() {
+		const {isFetching, isSuccess, open} = {
+			isFetching: fetching.get(this),
+			isSuccess: success.get(this),
+			open: tipsOpen.get(this)
+		}
 		const state = ((): string => {
 			if (isFetching === false && isSuccess !== undefined) {
 				return isSuccess ? 'resolved' : 'rejected'
@@ -157,14 +154,10 @@ export default class extends OOElement {
 		`
 	}
 
-	render() {
-		render(this.html(fetching.get(this), success.get(this), tipsOpen.get(this)), this)
-	}
-
 	toggleTips(e: HTMLElementEvent<HTMLButtonElement>) {
 		e.preventDefault()
 		tipsOpen.set(this, !Boolean(tipsOpen.get(this)))
-		this.render()
+		this.update()
 	}
 
 	setMessage() {
@@ -199,7 +192,7 @@ export default class extends OOElement {
 		}
 		fetching.set(this, true)
 		success.delete(this)
-		this.render()
+		this.update()
 		this.messageSend()
 	}
 
@@ -215,6 +208,6 @@ export default class extends OOElement {
 			this.dispatchEvent(EVENT.MESSAGE_CREATION_FAILED(response))
 		}
 		fetching.set(this, false)
-		this.render()
+		this.update()
 	}
 }
