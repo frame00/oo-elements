@@ -7,6 +7,7 @@ import {OOProject} from '../../type/oo-project'
 import getPublicProjects from '../../lib/oo-api-get-public-projects'
 import getUserProjects from '../../lib/oo-api-get-user-projects'
 import weakMap from '../../lib/weak-map'
+import markdown from '../oo-markdown'
 import message from '../_atoms/oo-atoms-message'
 import button from '../_atoms/oo-atoms-button'
 import userName from '../_atoms/oo-atoms-user-name'
@@ -14,6 +15,7 @@ import empty from '../oo-empty'
 import toMap from '../../lib/extensions-to-map'
 const {location} = window
 
+define('oo-markdown', markdown)
 define('oo-atoms-message', message)
 define('oo-atoms-button', button)
 define('oo-atoms-user-name', userName)
@@ -107,7 +109,7 @@ export default class extends OOElement {
 					<section slot=body>
 						<oo-project-status data-uid$='${uid}'></oo-project-status>
 						<div class=body>
-							${body}
+							<oo-markdown>${body}</oo-markdown>
 						</div>
 						<oo-atoms-button on-clicked='${() => this.moveToDetail(uid)}'>Detail</oo-atoms-button>
 					</section>
