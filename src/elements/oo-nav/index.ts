@@ -1,5 +1,5 @@
-import OOElement from '../../lib/classes/oo-element'
-import {html, render} from '../../lib/html'
+import {OOElement} from '../oo-element'
+import {html} from '../../lib/html'
 import weakMap from '../../lib/weak-map'
 
 type State = 'open' | 'close'
@@ -36,19 +36,15 @@ export default class extends OOElement {
 		}
 		direction.set(this, asDirection(next))
 		if (this.connected) {
-			this.render()
+			this.update()
 		}
 	}
 
-	connectedCallback() {
-		super.connectedCallback()
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback()
-	}
-
-	html(stte: State, dir: Direction) {
+	render() {
+		const {stte, dir} = {
+			stte: state.get(this),
+			dir: direction.get(this)
+		}
 		return html`
 		<style>
 			@import '../../style/_reset-button.css';
@@ -160,12 +156,8 @@ export default class extends OOElement {
 		`
 	}
 
-	render() {
-		render(this.html(state.get(this), direction.get(this)), this)
-	}
-
 	onHandleClick() {
 		state.set(this, state.get(this) === 'close' ? 'open' : 'close')
-		this.render()
+		this.update()
 	}
 }
