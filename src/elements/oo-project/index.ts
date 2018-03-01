@@ -94,7 +94,7 @@ export default class extends OOElement {
 		${(() => {
 			if (user && !assignee) {
 				return html`
-				<oo-atoms-button class=fork on-clicked='${() => this.createFork()}'>Answer with fork</oo-atoms-button>
+				<oo-atoms-button class=fork on-clicked='${() => this.createFork()}'>Comment with fork</oo-atoms-button>
 				`
 			}
 		})()}
