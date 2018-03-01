@@ -1,5 +1,6 @@
+import {OOElement} from '../oo-element'
 import {repeat} from 'lit-html/lib/repeat'
-import {html, render} from '../../lib/html'
+import {html} from '../../lib/html'
 import define from '../../lib/define'
 import projectStatus from '../oo-project-status'
 import {OOProject} from '../../type/oo-project'
@@ -27,7 +28,7 @@ const stateIam = weakMap<string>()
 const stateProjects = weakMap<Array<OOProject>>()
 const stateItemCount = weakMap<number>()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_IAM]
 	}
@@ -40,13 +41,6 @@ export default class extends HTMLElement {
 		return stateProjects.get(this)
 	}
 
-	connectedCallback() {
-		if (this.hasAttribute(ATTR.DATA_IAM) === false) {
-			stateProjects.set(this, [])
-			this.fetchProjects(this.iam)
-		}
-	}
-
 	attributeChangedCallback(attr, prev, next) {
 		if (prev === next) {
 			return
@@ -56,7 +50,18 @@ export default class extends HTMLElement {
 		this.fetchProjects(this.iam)
 	}
 
-	html(iam: string, projects: Array<OOProject>, count: number) {
+	connectedCallback() {
+		super.connectedCallback(false)
+		if (this.hasAttribute(ATTR.DATA_IAM) === false) {
+			stateProjects.set(this, [])
+			this.fetchProjects(this.iam)
+		}
+	}
+
+	render() {
+		const iam = this.iam
+		const projects = this.projects
+		const count = stateItemCount.get(this)
 		if (projects.length === 0) {
 			return html`
 			<oo-empty data-type=will-be-find></oo-empty>
@@ -117,10 +122,6 @@ export default class extends HTMLElement {
 		`
 	}
 
-	render() {
-		render(this.html(this.iam, this.projects, stateItemCount.get(this)), this)
-	}
-
 	async fetchProjects(iam: string | null, time?: number) {
 		const api = await (() => {
 			if (typeof iam === 'string' && iam !== '') {
@@ -134,7 +135,7 @@ export default class extends HTMLElement {
 			const current = this.projects
 			stateProjects.set(this, [...current, ...response])
 		}
-		this.render()
+		this.update()
 	}
 
 	moveToDetail(uid: string) {
