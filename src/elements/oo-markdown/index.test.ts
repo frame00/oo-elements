@@ -17,7 +17,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	})
 
 	describe('Parse textContent with markdown', () => {
-		it ('Convert to HTML', () => {
+		it('Convert to HTML', () => {
 			removeElement(ELEMENT)
 			const element = document.createElement(ELEMENT)
 			element.textContent = `
