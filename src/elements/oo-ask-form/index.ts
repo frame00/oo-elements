@@ -9,6 +9,7 @@ import {Currency} from '../../type/currency'
 import session from '../../lib/session-storage'
 import customEvent from '../../lib/custom-event'
 import autosize from 'autosize'
+import taboverride from 'taboverride'
 
 define('oo-atoms-select-scope', selectScope)
 
@@ -92,8 +93,10 @@ export default class extends OOElement {
 
 	disconnectedCallback() {
 		super.disconnectedCallback()
-		if (stateTextareaElement.get(this)) {
-			autosize.destroy(stateTextareaElement.get(this))
+		const textarea = stateTextareaElement.get(this)
+		if (textarea) {
+			autosize.destroy(textarea)
+			taboverride.utils.removeListeners(textarea)
 			stateTextareaElement.delete(this)
 		}
 	}
@@ -174,6 +177,7 @@ export default class extends OOElement {
 			if (textarea) {
 				stateTextareaElement.set(this, textarea)
 				autosize(stateTextareaElement.get(this))
+				taboverride.set(textarea)
 			}
 		}
 	}
