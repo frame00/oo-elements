@@ -25,6 +25,7 @@ const EVENT = {
 }
 
 const stateIam = weakMap<string>()
+const stateTitle = weakMap<string>()
 const stateMessage = weakMap<string>()
 const stateOfferer = weakMap<string>()
 const stateScope = weakMap<Scope>()
@@ -216,7 +217,8 @@ export default class extends OOElement {
 
 	onAskChanged(e: HTMLElementEventChangeAsk<HTMLElement>) {
 		const {detail} = e
-		const {message: m, scope, currency} = detail
+		const {title, message: m, scope, currency} = detail
+		stateTitle.set(this, title)
 		stateMessage.set(this, m)
 		stateScope.set(this, scope)
 		stateCurrency.set(this, currency)
@@ -242,6 +244,7 @@ export default class extends OOElement {
 		this.update()
 		const iam = stateIam.get(this)
 		const offerer = stateOfferer.get(this)
+		const title = stateTitle.get(this)
 		const body = stateMessage.get(this)
 		const author = stateOfferer.get(this)
 		const scope = stateScope.get(this)
@@ -250,6 +253,7 @@ export default class extends OOElement {
 			body: string,
 			author: string,
 			scope: Scope,
+			title?: string,
 			users?: Array<string>,
 			currency?: Currency,
 			assignee?: string
@@ -257,6 +261,9 @@ export default class extends OOElement {
 			body,
 			author,
 			scope
+		}
+		if (typeof title === 'string') {
+			opts.title = title
 		}
 		if (typeof currency === 'string') {
 			opts.currency = currency

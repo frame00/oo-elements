@@ -10,6 +10,7 @@ interface ProjectOptionsPost {
 	body: string,
 	author: OOUserUID,
 	scope: Scope,
+	title?: string,
 	users?: Array<OOUserUID>,
 	assignee?: OOUserUID,
 	currency?: Currency
