@@ -36,6 +36,7 @@
   "homepage": "https://github.com/frame00/oo-elements#readme",
   "dependencies": {
     "firebase": "^4.9.1",
+    "highlight.js": "^9.12.0",
     "lit-html": "^0.9.0",
     "markdown-it": "^8.4.1",
     "query-string": "^5.1.0",
@@ -44,6 +45,7 @@
   },
   "devDependencies": {
     "@types/expect.js": "^0.3.29",
+    "@types/highlight.js": "^9.12.2",
     "@types/markdown-it": "0.0.4",
     "@types/mocha": "^2.2.48",
     "@types/node": "^9.4.0",

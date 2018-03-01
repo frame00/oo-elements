@@ -18,6 +18,7 @@ const pkg = require('./package.json')
 const {BUILD_MODE, TRAVIS_BRANCH} = process.env
 const [, , name] = process.argv
 const postcssOptions = {
+	exclude: ['node_modules/**'],
 	plugins: [cssimport, cssnested, mixins, cssnext({features: {
 		rem: {replace: true}
 	}})]
