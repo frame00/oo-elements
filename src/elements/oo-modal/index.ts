@@ -1,5 +1,5 @@
-import OOElement from '../../lib/classes/oo-element'
-import {html, render} from '../../lib/html'
+import {OOElement} from '../oo-element'
+import {html} from '../../lib/html'
 import customEvent from '../../lib/custom-event'
 
 const ATTR = {
@@ -41,19 +41,12 @@ export default class extends OOElement {
 		}
 		open.set(this, asBoolean(next))
 		if (this.connected) {
-			this.render()
+			this.update()
 		}
 	}
 
-	connectedCallback() {
-		super.connectedCallback()
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback()
-	}
-
-	html(state: boolean) {
+	render() {
+		const state = open.get(this)
 		return html`
 		<style>
 			@import '../../style/_reset-button.css';
@@ -163,10 +156,6 @@ export default class extends OOElement {
 			</div>
 		</div>
 		`
-	}
-
-	render() {
-		render(this.html(open.get(this)), this)
 	}
 
 	onClickClose() {
