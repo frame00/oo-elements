@@ -14,7 +14,6 @@ const ATTR = {
 const projectFound = weakMap<boolean>()
 const projectUid = weakMap<string>()
 const projectScope = weakMap<Scope>()
-const projectAssignee = weakMap<string>()
 const projectForked = weakMap<string>()
 
 export default class extends OOElement {
@@ -35,10 +34,9 @@ export default class extends OOElement {
 	}
 
 	render() {
-		const {found, scope, assignee, fork} = {
+		const {found, scope, fork} = {
 			found: projectFound.get(this),
 			scope: projectScope.get(this),
-			assignee: projectAssignee.get(this),
 			fork: projectForked.get(this)
 		}
 		if (found === false) {
@@ -47,9 +45,6 @@ export default class extends OOElement {
 		const labels: Array<TemplateResult> = []
 		if (fork) {
 			labels.push(html`<a class=forked href$='/project/${fork}'>↩ fork</a>`)
-		}
-		if (!assignee) {
-			labels.push(html`<span class=unassigned>unassigned</span>`)
 		}
 		if (scope) {
 			labels.push(html`<span class$='${scope}'>${scope}</span>`)
@@ -99,7 +94,6 @@ export default class extends OOElement {
 			const mapedExtensions = toMap(item)
 			projectFound.set(this, true)
 			projectScope.set(this, mapedExtensions.get('scope'))
-			projectAssignee.set(this, mapedExtensions.get('assignee'))
 			projectForked.set(this, mapedExtensions.get('fork'))
 		} else {
 			projectFound.set(this, false)
