@@ -190,8 +190,7 @@ export default class extends OOElement {
 					<oo-organisms-ask-step-sign-in class=signin data-flow$='${flow}' on-signedin='${e => this.onSignedIn(e)}'></oo-organisms-ask-step-sign-in>
 				</li>
 				<li class=step active?='${step === 'submit'}'>
-					<button class=submit disabled?='${progress}' on-click='${() => this.createProject()}'>Ask</button>
-					<p class=description>Just send it!</p>
+					<button class=submit disabled?='${progress}' on-click='${() => this.createProject()}'>${uid ? 'Ask' : 'Post'}</button>
 				</li>
 			</ul>
 		</div>
