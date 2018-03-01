@@ -93,6 +93,9 @@ if (!TRAVIS_BRANCH) {
 	plugins.push(progress())
 } else {
 	plugins.push(uglify(uglifyOptions))
+	plugins.push(progress({
+		clearLine: false
+	}))
 }
 Promise.all(filteredEntries.map(entry => {
 	return Promise.all(entry.build.map(bld => {
