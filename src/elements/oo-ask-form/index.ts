@@ -8,6 +8,7 @@ import {ChangeAskDetail, ChangeAsk, HTMLElementEventChangeScope} from '../../typ
 import {Currency} from '../../type/currency'
 import session from '../../lib/session-storage'
 import customEvent from '../../lib/custom-event'
+import autosize from 'autosize'
 
 define('oo-atoms-select-scope', selectScope)
 
@@ -24,10 +25,13 @@ const EVENT = {
 
 const iam = weakMap<string>()
 const message = weakMap<string>()
+const stateTitle = weakMap<string>()
 const stateScope = weakMap<Scope>()
 const stateCurrency = weakMap<Currency>()
+const stateTextareaElement = weakMap<HTMLTextAreaElement>()
 const stateInitialData = weakMap<{
 	iam: string,
+	title: string,
 	body: string,
 	scope: Scope,
 	currency: Currency
@@ -40,6 +44,7 @@ export default class extends OOElement {
 
 	constructor() {
 		super()
+		stateTitle.set(this, '')
 		message.set(this, '')
 		stateScope.set(this, 'public')
 	}
@@ -69,6 +74,7 @@ export default class extends OOElement {
 		if (prevAsk) {
 			if (prevAsk.iam === iam.get(this)) {
 				stateInitialData.set(this, prevAsk)
+				stateTitle.set(this, prevAsk.title)
 				message.set(this, prevAsk.body)
 				stateScope.set(this, prevAsk.scope)
 				stateCurrency.set(this, prevAsk.currency)
@@ -84,20 +90,32 @@ export default class extends OOElement {
 		this.dispatchChanged()
 	}
 
+	disconnectedCallback() {
+		super.disconnectedCallback()
+		if (stateTextareaElement.get(this)) {
+			autosize.destroy(stateTextareaElement.get(this))
+			stateTextareaElement.delete(this)
+		}
+	}
+
 	render() {
 		const dontAssign = this.dontAssign
 		const init = stateInitialData.get(this)
-		const {body = '', scope = '', currency = ''} = init || {}
+		const {title = '', body = '', scope = '', currency = ''} = init || {}
 		const scopeSelector = dontAssign ? '' : html`
 		<oo-atoms-select-scope data-scope$='${scope}' data-currency$='${currency}' on-changescope='${e => this.onScopeChange(e)}'></oo-atoms-select-scope>
 		`
 
 		return html`
 		<style>
+			@import '../../style/_vars-font-family.css';
+			@import '../../style/_reset-input.css';
 			@import '../../style/_reset-textare.css';
-			@import '../../style/_mixin-textarea.css';
 			:host {
 				display: block;
+			}
+			:root {
+				--placeholder-color: #00000045;
 			}
 			.amount {
 				margin: 1rem 0;
@@ -114,20 +132,56 @@ export default class extends OOElement {
 				border-radius: 5px;
 				margin-bottom: 1rem;
 			}
+			main {
+				padding: 1rem;
+				border-radius: 5px;
+				border: 2px solid #607d8b21;
+			}
+			input,
 			textarea {
-				@mixin textarea;
+				display: block;
+				width: 100%;
+				font-size: 1.2rem;
+				resize: none;
+				color: inherit;
+				&:not(:last-child) {
+					margin-bottom: 1.2rem;
+				}
+				&::placeholder {
+					font-family: var(--font-family);
+					color: var(--placeholder-color);
+				}
+				&:focus {
+					outline: none;
+				}
+			}
+			textarea {
+				font-family: monospace;
+				min-height: 4rem;
 			}
 		</style>
 		${scopeSelector}
-		<form on-change='${e => this.onMessageChange(e)}' on-submit='${e => this.onMessageChange(e)}'>
-			<textarea name=message placeholder='What do you like to ask?'>${body}</textarea>
-		</form>
+		<main>
+			<input type=text value$='${title}' placeholder='Title (optional)' on-change='${e => this.onTitleChange(e)}'></input>
+			<textarea placeholder='Your text here' on-change='${e => this.onMessageChange(e)}'>${body}</textarea>
+		</main>
 		`
+	}
+
+	renderedCallback() {
+		if (!stateTextareaElement.get(this)) {
+			const textarea = this.shadowRoot.querySelector('textarea')
+			if (textarea) {
+				stateTextareaElement.set(this, textarea)
+				autosize(stateTextareaElement.get(this))
+			}
+		}
 	}
 
 	updateSession() {
 		session.previousAsk = {
 			iam: iam.get(this),
+			title: stateTitle.get(this),
 			body: this.message,
 			scope: this.scope,
 			currency: this.currency
@@ -147,17 +201,23 @@ export default class extends OOElement {
 		this.dispatchChanged()
 	}
 
-	onMessageChange(e: HTMLElementEvent<HTMLFormElement>) {
+	onTitleChange(e: HTMLElementEvent<HTMLInputElement>) {
 		const {target} = e
 		const {value} = target
-		if (value) {
-			message.set(this, value)
-			this.dispatchChanged()
-		}
+		stateTitle.set(this, value || '')
+		this.dispatchChanged()
+	}
+
+	onMessageChange(e: HTMLElementEvent<HTMLTextAreaElement>) {
+		const {target} = e
+		const {value} = target
+		message.set(this, value || '')
+		this.dispatchChanged()
 	}
 
 	dispatchChanged() {
 		const detail = {
+			title: stateTitle.get(this),
 			message: this.message,
 			scope: this.scope,
 			currency: this.currency

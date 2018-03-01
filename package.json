@@ -35,6 +35,7 @@
   },
   "homepage": "https://github.com/frame00/oo-elements#readme",
   "dependencies": {
+    "autosize": "^4.0.0",
     "firebase": "^4.9.1",
     "highlight.js": "^9.12.0",
     "lit-html": "^0.9.0",
@@ -44,6 +45,7 @@
     "typescript": "^2.7.1"
   },
   "devDependencies": {
+    "@types/autosize": "^3.0.6",
     "@types/expect.js": "^0.3.29",
     "@types/highlight.js": "^9.12.2",
     "@types/markdown-it": "0.0.4",

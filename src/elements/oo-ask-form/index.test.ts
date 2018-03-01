@@ -55,6 +55,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			event(scopeSelector, 'changescope', {scope: 'private', currency: 'jpy'})
 			expect(session.previousAsk).to.eql({
 				iam: 'test',
+				title: '',
 				body: '',
 				scope: 'private',
 				currency: 'jpy'
@@ -63,12 +64,16 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 		it('Change message', () => {
 			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+			const input = element.shadowRoot.querySelector('input')
+			input.value = 'xxx'
+			input.dispatchEvent(new Event('change', {bubbles: true}))
 			const textarea = element.shadowRoot.querySelector('textarea')
-			textarea.value = 'xxx'
+			textarea.value = 'yyy'
 			textarea.dispatchEvent(new Event('change', {bubbles: true}))
 			expect(session.previousAsk).to.eql({
 				iam: 'test',
-				body: 'xxx',
+				title: 'xxx',
+				body: 'yyy',
 				scope: 'private',
 				currency: 'jpy'
 			})
@@ -81,7 +86,8 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
 			element.addEventListener('changed', e => {
 				expect(e.detail).to.be.eql({
-					message: 'xxx',
+					title: 'xxx',
+					message: 'yyy',
 					scope: 'private',
 					currency: 'jpy'
 				})
@@ -95,6 +101,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'xxx']]))
 			element.addEventListener('changed', e => {
 				expect(e.detail).to.be.eql({
+					title: '',
 					message: '',
 					scope: 'public',
 					currency: undefined
