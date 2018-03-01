@@ -1,5 +1,6 @@
+import {OOElement} from '../oo-element'
 import {repeat} from 'lit-html/lib/repeat'
-import {html, render} from '../../lib/html'
+import {html} from '../../lib/html'
 import getProject from '../../lib/oo-api-get-project'
 import toMap from '../../lib/extensions-to-map'
 import define from '../../lib/define'
@@ -14,13 +15,6 @@ define('oo-atoms-user-name', userName)
 define('oo-atoms-datetime', datetime)
 define('oo-project-status', projectStatus)
 
-interface HTMLOptions {
-	uid: string,
-	created: number,
-	body: string,
-	author: string
-}
-
 const ATTR = {
 	DATA_UID: 'data-uid'
 }
@@ -30,7 +24,7 @@ const projectBody: WeakMap<object, string> = new WeakMap()
 const projectAuthor: WeakMap<object, string> = new WeakMap()
 const projectCreated: WeakMap<object, number> = new WeakMap()
 
-export default class extends HTMLElement {
+export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_UID]
 	}
@@ -43,8 +37,17 @@ export default class extends HTMLElement {
 		this.fetchProject(projectUid.get(this))
 	}
 
-	html(opts: HTMLOptions) {
-		const {uid, created, body, author} = opts
+	connectedCallback() {
+		super.connectedCallback(false)
+	}
+
+	render() {
+		const {uid, created, body, author} = {
+			uid: projectUid.get(this),
+			created: projectCreated.get(this),
+			body: projectBody.get(this),
+			author: projectAuthor.get(this)
+		}
 		const lines = lineBreak(body)
 		return html`
 		<style>
@@ -104,15 +107,6 @@ export default class extends HTMLElement {
 		`
 	}
 
-	render() {
-		render(this.html({
-			uid: projectUid.get(this),
-			created: projectCreated.get(this),
-			body: projectBody.get(this),
-			author: projectAuthor.get(this)
-		}), this)
-	}
-
 	async fetchProject(uid: string) {
 		const api = await getProject(uid)
 		const {response} = api
@@ -126,6 +120,6 @@ export default class extends HTMLElement {
 			projectBody.delete(this)
 			projectAuthor.delete(this)
 		}
-		this.render()
+		this.update()
 	}
 }
