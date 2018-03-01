@@ -27,6 +27,10 @@ export default class extends OOElement {
 		}
 	}
 
+	connectedCallback() {
+		super.connectedCallback(false)
+	}
+
 	render() {
 		const progress = stateProggres.get(this)
 		return html`
