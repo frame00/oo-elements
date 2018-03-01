@@ -388,5 +388,20 @@
         "dest": "dist/oo-delete-account.mjs"
       }
     ]
+  },
+  {
+    "name": "oo-markdowm",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-markdown/define.ts",
+        "dest": "dist/oo-markdown.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-markdown/index.ts",
+        "dest": "dist/oo-markdown.mjs"
+      }
+    ]
   }
 ]

@@ -24,6 +24,7 @@ import ooFooter from './elements/oo-footer'
 import ooVersion from './elements/oo-version'
 import ooEmpty from './elements/oo-empty'
 import ooDeleteAccount from './elements/oo-delete-account'
+import ooMarkdown from './elements/oo-markdown'
 
 export {
 	ooButton,
@@ -51,5 +52,6 @@ export {
 	ooFooter,
 	ooVersion,
 	ooEmpty,
-	ooDeleteAccount
+	ooDeleteAccount,
+	ooMarkdown
 }

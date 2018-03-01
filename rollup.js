@@ -7,6 +7,7 @@ const postcss = require('rollup-plugin-transform-postcss')
 const replace = require('rollup-plugin-replace')
 const uglify = require('rollup-plugin-uglify')
 const progress = require('rollup-plugin-progress')
+const json = require('rollup-plugin-json')
 const cssimport = require('postcss-import')
 const cssnext = require('postcss-cssnext')
 const cssnested = require('postcss-nested')
@@ -23,7 +24,8 @@ const postcssOptions = {
 }
 const resolveOptions = {
 	browser: true,
-	jsnext: true
+	jsnext: true,
+	preferBuiltins: false
 }
 const commonjsOptions = {
 	include: 'node_modules/**',
@@ -58,7 +60,8 @@ const plugins = [
 	resolve(resolveOptions),
 	commonjs(commonjsOptions),
 	typescript(typescriptOptions),
-	replace(replaceOptions)
+	replace(replaceOptions),
+	json()
 ]
 
 const build = async (rollupOptions, writeOptions) => {

@@ -1,15 +1,15 @@
 import {OOElement} from '../oo-element'
-import {repeat} from 'lit-html/lib/repeat'
 import {html} from '../../lib/html'
 import getProject from '../../lib/oo-api-get-project'
 import toMap from '../../lib/extensions-to-map'
 import define from '../../lib/define'
+import markdown from '../oo-markdown'
 import message from '../_atoms/oo-atoms-message'
 import userName from '../_atoms/oo-atoms-user-name'
-import lineBreak from '../../lib/line-break'
 import datetime from '../_atoms/oo-atoms-datetime'
 import projectStatus from '../oo-project-status'
 
+define('oo-markdown', markdown)
 define('oo-atoms-message', message)
 define('oo-atoms-user-name', userName)
 define('oo-atoms-datetime', datetime)
@@ -48,7 +48,6 @@ export default class extends OOElement {
 			body: projectBody.get(this),
 			author: projectAuthor.get(this)
 		}
-		const lines = lineBreak(body)
 		return html`
 		<style>
 			@import '../../style/_vars-font-family.css';
@@ -96,7 +95,7 @@ export default class extends OOElement {
 			<oo-atoms-message data-tooltip-position=left>
 				<section slot=body>
 					<oo-project-status data-uid$='${uid}'></oo-project-status>
-					${repeat(lines, line => html`<p>${line}</p>`)}
+					<oo-markdown>${body}</oo-markdown>
 				</section>
 				<footer slot=footer>
 					<oo-atoms-user-name data-iam$='${author}' data-size=small></oo-atoms-user-name>
