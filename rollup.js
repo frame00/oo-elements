@@ -93,9 +93,6 @@ if (!TRAVIS_BRANCH) {
 	plugins.push(progress())
 } else {
 	plugins.push(uglify(uglifyOptions))
-	plugins.push(progress({
-		clearLine: false
-	}))
 }
 
 (async () => {
