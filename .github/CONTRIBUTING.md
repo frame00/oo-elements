@@ -24,6 +24,24 @@ npm install
 
 Preview with your browser:
 
+1. Add `.html` directory and create HTML file for preview. ( e.g. `.html/index.html` )
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Preview</title>
+</head>
+<body>
+	<script src="../dist/oo-elements.js"></script>
+	<oo-commands></oo-commands>
+</body>
+</html>
+```
+
+2. Start up the server and browse `.html`
 ```bash
 npm start
 ```

@@ -1,11 +1,11 @@
 {
   "name": "oo-elements",
-  "version": "0.0.5-beta.2",
+  "version": "0.0.5-beta.3",
   "description": "Web Components for OO",
   "main": "dist/oo-elements.js",
   "module": "dist/oo-elements.mjs",
   "scripts": {
-    "start": "serve example",
+    "start": "serve",
     "test": "node test.js",
     "mock": "micro mock.js",
     "deploy": "node deploy.js",
