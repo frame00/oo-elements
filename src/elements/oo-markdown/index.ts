@@ -3,6 +3,7 @@ import {html} from '../../lib/html'
 import {unsafeHTML} from 'lit-html/lib/unsafe-html'
 import markdownIt from 'markdown-it'
 import hljs from 'highlight.js'
+import weakMap from '../../lib/weak-map'
 
 const md = markdownIt({
 	linkify: true,
@@ -18,7 +19,29 @@ const md = markdownIt({
 	}
 })
 
+const stateObserver = weakMap<MutationObserver>()
+
 export default class extends OOElement {
+	connectedCallback() {
+		super.connectedCallback()
+		const observer = new MutationObserver(() => {
+			if (this.connected) {
+				this.update()
+			}
+		})
+		observer.observe(this, {characterData: true, childList: true})
+		stateObserver.set(this, observer)
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback()
+		const observer = stateObserver.get(this)
+		if (observer) {
+			observer.disconnect()
+			stateObserver.delete(this)
+		}
+	}
+
 	render() {
 		const markedBody = md.render(this.textContent)
 		return html`

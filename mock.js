@@ -20,6 +20,7 @@ module.exports = (req, res) => {
 				res.setHeader(k, v)
 			}
 		}
+		res.setHeader('Access-Control-Allow-Origin', 'http://localhost:9876')
 
 		send(res, 200, body)
 	} catch(err) {
