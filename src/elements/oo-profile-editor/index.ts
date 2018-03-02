@@ -56,7 +56,7 @@ export default class extends OOElement {
 		}
 		const options = [
 			{name: 'name', title: 'Display name', template: html`<input name=name type=text value$='${name}' on-change='${e => this.onChange(e, 'name')}' required></input>`},
-			{name: 'bio', title: 'Bio', template: html`<textarea name=bio on-change='${e => this.onChange(e, 'bio')}'>${bio}</textarea>`},
+			{name: 'bio', title: 'Profile', template: html`<textarea name=bio on-change='${e => this.onChange(e, 'bio')}'>${bio}</textarea>`},
 			{name: 'stripe', title: 'Stripe', template: html`<oo-connect-stripe data-iam$='${iam}'></oo-connect-stripe>
 			${(() => {
 				if (typeof stripeUser === 'string') {

@@ -32,6 +32,19 @@ Line 2
 
 			expect(element.shadowRoot.querySelector('pre.hljs code')).to.be.ok()
 		})
+
+		it('Update content when text node changes', done => {
+			removeElement(ELEMENT)
+			const element = document.createElement(ELEMENT)
+			element.textContent = `test 1`
+			document.body.appendChild(element)
+			element.textContent = `test 2`
+
+			setTimeout(() => {
+				expect(element.shadowRoot.querySelector('main p').textContent).to.be('test 2')
+				done()
+			}, 100)
+		})
 	})
 
 	after(() => {
