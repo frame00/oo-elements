@@ -97,15 +97,19 @@ if (!TRAVIS_BRANCH) {
 		clearLine: false
 	}))
 }
-Promise.all(filteredEntries.map(entry => {
-	return Promise.all(entry.build.map(bld => {
-		return build({
-			input: bld.file,
-			plugins
-		}, {
-			name: entry.name,
-			format: bld.format,
-			file: bld.dest
-		})
-	}))
-}))
+
+(async () => {
+	for(const entry of filteredEntries) {
+		await Promise.all(entry.build.map(bld => {
+			console.log(`Building ${bld.file}`)
+			return build({
+				input: bld.file,
+				plugins
+			}, {
+				name: entry.name,
+				format: bld.format,
+				file: bld.dest
+			})
+		}))
+	}
+})()
