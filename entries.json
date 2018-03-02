@@ -390,7 +390,7 @@
     ]
   },
   {
-    "name": "oo-markdowm",
+    "name": "oo-markdown",
     "build": [
       {
         "format": "umd",
