@@ -14,4 +14,7 @@
 		box-shadow: var(--focused-shadow);
 		background: var(--focused-background);
 	}
+	&[disabled] {
+		border: 0;
+	}
 }
