@@ -55,6 +55,7 @@ export default class extends OOElement {
 			return html``
 		}
 		const options = [
+			{name: 'uid', title: 'Your ID', template: html`<input name=iam type=text value$='${iam}' disabled></input>`},
 			{name: 'name', title: 'Display name', template: html`<input name=name type=text value$='${name}' on-change='${e => this.onChange(e, 'name')}' required></input>`},
 			{name: 'bio', title: 'Profile', template: html`<textarea name=bio on-change='${e => this.onChange(e, 'bio')}'>${bio}</textarea>`},
 			{name: 'stripe', title: 'Stripe', template: html`<oo-connect-stripe data-iam$='${iam}'></oo-connect-stripe>
