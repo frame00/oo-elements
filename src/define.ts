@@ -19,6 +19,7 @@ import {
 	ooPay,
 	ooProjects,
 	ooProfileEditor,
+	ooUserNameEditor,
 	ooNotification,
 	ooNotificationCenter,
 	ooNav,
@@ -48,6 +49,7 @@ define('oo-connect-stripe', ooConnectStripe)
 define('oo-pay', ooPay)
 define('oo-projects', ooProjects)
 define('oo-profile-editor', ooProfileEditor)
+define('oo-user-name-editor', ooUserNameEditor)
 define('oo-notification', ooNotification)
 define('oo-notification-center', ooNotificationCenter)
 define('oo-nav', ooNav)

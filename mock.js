@@ -24,6 +24,11 @@ module.exports = (req, res) => {
 
 		send(res, 200, body)
 	} catch(err) {
-		send(res, 500, err)
+		res.setHeader('Access-Control-Allow-Origin', 'http://localhost:9876')
+		if (err.message.includes('no such file or directory')) {
+			send(res, 404, err)
+		} else {
+			send(res, 500, err)
+		}
 	}
 }
