@@ -75,7 +75,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 				expect(button.textContent).to.be('Connection failed')
 
 				const {detail} = e
-				expect(detail.status).to.be(400)
+				expect(detail.status).to.be(404)
 				done()
 			})
 			element.onRedirected({code: 'xxx', state: 'test'}, false)
