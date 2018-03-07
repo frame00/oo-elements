@@ -43,7 +43,6 @@
     "query-string": "^5.1.0",
     "taboverride": "^4.0.3",
     "toml": "^2.3.3",
-    "ts-keycode-enum": "^1.0.4",
     "typescript": "^2.7.1"
   },
   "devDependencies": {
