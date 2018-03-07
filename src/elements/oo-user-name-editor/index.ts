@@ -1,8 +1,6 @@
-import {Key} from 'ts-keycode-enum'
 import {OOElement} from '../oo-element'
 import {html} from '../../lib/html'
 import weakMap from '../../lib/weak-map'
-import isSluggableString from '../../lib/is-sluggable-string'
 import {permalinks, usable, put} from './lib/fetch-permalink'
 
 interface HTMLElementEvent<T extends HTMLElement> extends KeyboardEvent {
@@ -19,8 +17,6 @@ const stateProgress = weakMap<boolean>()
 const stateUsable = weakMap<boolean>()
 const stateSaved = weakMap<boolean>()
 const stateSaveSuccess = weakMap<boolean>()
-const stateShift = weakMap<boolean>()
-const stateNeedsUpdate = weakMap<boolean>()
 const stateThrottleTimer = weakMap<NodeJS.Timer>()
 
 export default class extends OOElement {
@@ -49,7 +45,7 @@ export default class extends OOElement {
 			ss: stateSaveSuccess.get(this)
 		}
 		const cls = p ? 'progress' : u === false ? 'not-usable' : u && s ? 'usable' : ''
-		const btn = html`<button class$='${cls} ${sd && 'saved'} ${ss ? 'success' : 'error'}' disabled?='${!u || p}' on-click='${() => this.putPermalink()}'>save</button>`
+		const btn = html`<button class$='${cls}${sd ? ' saved' : ''}${ss ? ' success' : ss === false ? ' error' : ''}' disabled?='${!u || p}' on-click='${() => this.putPermalink()}'>save</button>`
 
 		return html`
 		<style>
@@ -100,7 +96,6 @@ export default class extends OOElement {
 			<input type=text
 				maxlength=36
 				value$='${s || ''}'
-				on-keydown='${e => this.onKeydown(e)}'
 				on-keyup='${e => this.onKeyup(e)}'>
 			</input>
 			${btn}
@@ -144,36 +139,16 @@ export default class extends OOElement {
 		this.update()
 	}
 
-	onKeydown(e: HTMLElementEvent<HTMLInputElement>) {
-		const {which} = e
-		const bsDelete = which === Key.Backspace || which === Key.Delete
-		const leftRight = which === Key.LeftArrow || which === Key.RightArrow
-		const shift = which === Key.Shift
-		const cancel = !isSluggableString(which, stateShift.get(this)) && !bsDelete && !leftRight
-		if (shift) {
-			stateShift.set(this, shift)
-		}
-		if (cancel) {
-			e.preventDefault()
-		}
-		stateNeedsUpdate.set(this, !cancel)
-	}
-
 	onKeyup(e: HTMLElementEvent<HTMLInputElement>) {
-		const {which, target} = e
-		if (which === Key.Shift) {
-			stateShift.delete(this)
+		const {target} = e
+		const {value} = target
+		statePermalink.set(this, value)
+		const timer = stateThrottleTimer.get(this)
+		if (timer) {
+			clearTimeout(timer)
 		}
-		if (stateNeedsUpdate.get(this)) {
-			const {value} = target
-			statePermalink.set(this, value)
-			const timer = stateThrottleTimer.get(this)
-			if (timer) {
-				clearTimeout(timer)
-			}
-			stateThrottleTimer.set(this, setTimeout(() => {
-				this.validatePermalink(statePermalink.get(this))
-			}, 500))
-		}
+		stateThrottleTimer.set(this, setTimeout(() => {
+			this.validatePermalink(statePermalink.get(this))
+		}, 300))
 	}
 }
