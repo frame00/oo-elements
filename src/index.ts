@@ -17,6 +17,7 @@ import ooConnectStripe from './elements/oo-connect-stripe'
 import ooPay from './elements/oo-pay'
 import ooProjects from './elements/oo-projects'
 import ooProfileEditor from './elements/oo-profile-editor'
+import ooUserNameEditor from './elements/oo-user-name-editor'
 import ooNotification from './elements/oo-notification'
 import ooNotificationCenter from './elements/oo-notification-center'
 import ooNav from './elements/oo-nav'
@@ -46,6 +47,7 @@ export {
 	ooPay,
 	ooProjects,
 	ooProfileEditor,
+	ooUserNameEditor,
 	ooNotification,
 	ooNotificationCenter,
 	ooNav,
