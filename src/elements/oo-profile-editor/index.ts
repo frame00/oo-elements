@@ -7,10 +7,12 @@ import toMap from '../../lib/extensions-to-map'
 import weakMap from '../../lib/weak-map'
 import define from '../../lib/define'
 import connectStripe from '../oo-connect-stripe'
+import userNameEditor from '../oo-user-name-editor'
 import patchUser from '../../lib/oo-api-patch-user'
 import {attach, dispatch} from '../../lib/notification'
 
 define('oo-connect-stripe', connectStripe)
+define('oo-user-name-editor', userNameEditor)
 
 interface HTMLElementEvent<T extends HTMLElement> extends Event {
 	target: T
@@ -56,6 +58,7 @@ export default class extends OOElement {
 		}
 		const options = [
 			{name: 'uid', title: 'Your ID', template: html`<input name=iam type=text value$='${iam}' disabled></input>`},
+			{name: 'permalink', title: 'User name', template: html`<oo-user-name-editor data-iam$='${iam}'></oo-user-name-editor>`},
 			{name: 'name', title: 'Display name', template: html`<input name=name type=text value$='${name}' on-change='${e => this.onChange(e, 'name')}' required></input>`},
 			{name: 'bio', title: 'Profile', template: html`<textarea name=bio on-change='${e => this.onChange(e, 'bio')}'>${bio}</textarea>`},
 			{name: 'stripe', title: 'Stripe', template: html`<oo-connect-stripe data-iam$='${iam}'></oo-connect-stripe>
