@@ -1,5 +1,6 @@
 import {OOElement} from '../oo-element'
 import {html} from '../../lib/html'
+import {repeat} from 'lit-html/lib/repeat'
 import getProject from '../../lib/oo-api-get-project'
 import toMap from '../../lib/extensions-to-map'
 import define from '../../lib/define'
@@ -27,6 +28,7 @@ const ATTR = {
 const projectUid = weakMap<string>()
 const projectTitle = weakMap<string>()
 const projectBody = weakMap<string>()
+const projectTags = weakMap<Array<string>>()
 const projectAuthor = weakMap<string>()
 const projectCreated = weakMap<number>()
 const stateOpenEditor = weakMap<boolean>()
@@ -49,13 +51,20 @@ export default class extends OOElement {
 	}
 
 	render() {
-		const {uid, created, title, body, author, editor} = {
+		const {uid, created, title, body, tags, author, editor} = {
 			uid: projectUid.get(this),
 			created: projectCreated.get(this),
 			title: projectTitle.get(this),
 			body: projectBody.get(this),
+			tags: projectTags.get(this),
 			author: projectAuthor.get(this),
 			editor: stateOpenEditor.get(this)
+		}
+		const modalBody = (show: boolean) => {
+			if (show) {
+				return html`<oo-project-editor slot=body data-uid$='${uid}' on-updated='${() => this.onProjectUpdated()}'></oo-project-editor>`
+			}
+			return html``
 		}
 		return html`
 		<style>
@@ -110,8 +119,23 @@ export default class extends OOElement {
 				align-items: baseline;
 				justify-content: space-between;
 			}
-			oo-modal {
+			oo-project-editor {
 				padding: 1rem;
+			}
+			oo-modal {
+				[slot=header] {
+					background: whitesmoke;
+					padding: 2rem;
+					h2 {
+						margin: 0;
+					}
+				}
+			}
+			.tags {
+				span {
+					display: inline-block;
+					margin: 0 1rem;
+				}
 			}
 		</style>
 		<main>
@@ -128,6 +152,9 @@ export default class extends OOElement {
 						return html``
 					})()}
 					<oo-markdown>${body}</oo-markdown>
+					<div class=tags>
+						${repeat(tags, tag => html`<span>${tag}</span>`)}
+					</div>
 				</section>
 				<footer slot=footer>
 					<oo-atoms-user-name data-iam$='${author}' data-size=small></oo-atoms-user-name>
@@ -136,7 +163,8 @@ export default class extends OOElement {
 			</oo-atoms-message>
 		</main>
 		<oo-modal data-open$='${editor ? 'enabled' : 'disabled'}' on-close='${() => this.closedEditor()}'>
-			<oo-project-editor slot=body data-uid$='${uid}'></oo-project-editor>
+			<div slot=header><h2>Edit post</h2></div>
+			${modalBody(editor)}
 		</oo-modal>
 		`
 	}
@@ -151,6 +179,11 @@ export default class extends OOElement {
 		this.update()
 	}
 
+	onProjectUpdated() {
+		this.closedEditor()
+		this.fetchProject(projectUid.get(this))
+	}
+
 	async fetchProject(uid: string) {
 		const api = await getProject(uid)
 		const {response} = api
@@ -160,6 +193,7 @@ export default class extends OOElement {
 			projectCreated.set(this, item.created)
 			projectTitle.set(this, mapedExtensions.get('title'))
 			projectBody.set(this, mapedExtensions.get('body'))
+			projectTags.set(this, mapedExtensions.get('tags') || [])
 			projectAuthor.set(this, mapedExtensions.get('author'))
 		} else {
 			projectBody.delete(this)

@@ -80,6 +80,14 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 	})
 
+	describe('Declarative initialization', () => {
+		it('Set "data-title" attribute value to title')
+
+		it('Set "data-tags" attribute value to tags')
+
+		it('Set self textContent to body')
+	})
+
 	describe('Restoration from session', () => {
 		it('Restore scope, message, currency', done => {
 			removeElement(ELEMENT)

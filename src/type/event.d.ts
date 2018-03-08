@@ -104,6 +104,7 @@ export interface ChangeAskDetail {
 	scope: Scope,
 	title: string,
 	message: string,
+	tags?: Array<string>,
 	currency?: Currency
 }
 
