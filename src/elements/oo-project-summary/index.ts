@@ -4,9 +4,11 @@ import getProject from '../../lib/oo-api-get-project'
 import toMap from '../../lib/extensions-to-map'
 import define from '../../lib/define'
 import markdown from '../oo-markdown'
+import projectEditor from '../oo-project-editor'
 import message from '../_atoms/oo-atoms-message'
 import userName from '../_atoms/oo-atoms-user-name'
 import datetime from '../_atoms/oo-atoms-datetime'
+import modal from '../oo-modal'
 import projectStatus from '../oo-project-status'
 import weakMap from '../../lib/weak-map'
 
@@ -15,6 +17,8 @@ define('oo-atoms-message', message)
 define('oo-atoms-user-name', userName)
 define('oo-atoms-datetime', datetime)
 define('oo-project-status', projectStatus)
+define('oo-project-editor', projectEditor)
+define('oo-modal', modal)
 
 const ATTR = {
 	DATA_UID: 'data-uid'
@@ -25,6 +29,7 @@ const projectTitle = weakMap<string>()
 const projectBody = weakMap<string>()
 const projectAuthor = weakMap<string>()
 const projectCreated = weakMap<number>()
+const stateOpenEditor = weakMap<boolean>()
 
 export default class extends OOElement {
 	static get observedAttributes() {
@@ -44,12 +49,13 @@ export default class extends OOElement {
 	}
 
 	render() {
-		const {uid, created, title, body, author} = {
+		const {uid, created, title, body, author, editor} = {
 			uid: projectUid.get(this),
 			created: projectCreated.get(this),
 			title: projectTitle.get(this),
 			body: projectBody.get(this),
-			author: projectAuthor.get(this)
+			author: projectAuthor.get(this),
+			editor: stateOpenEditor.get(this)
 		}
 		return html`
 		<style>
@@ -99,11 +105,22 @@ export default class extends OOElement {
 			.amount {
 				text-transform: uppercase;
 			}
+			aside {
+				display: flex;
+				align-items: baseline;
+				justify-content: space-between;
+			}
+			oo-modal {
+				padding: 1rem;
+			}
 		</style>
 		<main>
 			<oo-atoms-message data-tooltip-position=left>
 				<section slot=body>
-					<oo-project-status data-uid$='${uid}'></oo-project-status>
+					<aside>
+						<oo-project-status data-uid$='${uid}'></oo-project-status>
+						<button on-click='${() => this.openEditor()}'>Edit</button>
+					</aside>
 					${(() => {
 						if (title) {
 							return html`<h1>${title}</h1>`
@@ -118,7 +135,20 @@ export default class extends OOElement {
 				</footer>
 			</oo-atoms-message>
 		</main>
+		<oo-modal data-open$='${editor ? 'enabled' : 'disabled'}' on-close='${() => this.closedEditor()}'>
+			<oo-project-editor slot=body data-uid$='${uid}'></oo-project-editor>
+		</oo-modal>
 		`
+	}
+
+	openEditor() {
+		stateOpenEditor.set(this, true)
+		this.update()
+	}
+
+	closedEditor() {
+		stateOpenEditor.delete(this)
+		this.update()
 	}
 
 	async fetchProject(uid: string) {
