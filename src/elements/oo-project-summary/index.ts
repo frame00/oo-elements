@@ -206,6 +206,7 @@ export default class extends OOElement {
 			projectBody.set(this, mapedExtensions.get('body'))
 			projectTags.set(this, mapedExtensions.get('tags') || [])
 			projectAuthor.set(this, mapedExtensions.get('author'))
+			stateProjectUpdated.delete(this)
 		} else {
 			projectBody.delete(this)
 			projectAuthor.delete(this)
