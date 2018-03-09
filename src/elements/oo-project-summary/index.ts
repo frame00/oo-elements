@@ -1,5 +1,5 @@
 import {OOElement} from '../oo-element'
-import {html} from '../../lib/html'
+import {html, render} from '../../lib/html'
 import {repeat} from 'lit-html/lib/repeat'
 import getProject from '../../lib/oo-api-get-project'
 import toMap from '../../lib/extensions-to-map'
@@ -196,6 +196,37 @@ export default class extends OOElement {
 		`
 	}
 
+	progress() {
+		const template = html`
+		<style>
+			@import '../../style/_mixin-button-progress.css';
+			main {
+				padding: 1rem;
+			}
+			div {
+				height: 2rem;
+				border-radius: 5px;
+				margin-bottom: 1rem;
+				@mixin progress;
+			}
+			.header {
+				width: 100%;
+			}
+			.content {
+				width: 80%;
+			}
+		</style>
+		<oo-atoms-message>
+			<main slot=body>
+				<div class=header></div>
+				<div class=content></div>
+				<div class=content></div>
+			<main>
+		</oo-atoms-message>
+		`
+		render(template, this)
+	}
+
 	openEditor() {
 		stateOpenEditor.set(this, true)
 		this.update()
@@ -213,6 +244,7 @@ export default class extends OOElement {
 	}
 
 	async fetchProject(uid: string) {
+		this.progress()
 		const api = await getProject(uid)
 		const {response} = api
 		if (Array.isArray(response)) {

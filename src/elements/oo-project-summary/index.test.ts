@@ -19,6 +19,13 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(getElement(ELEMENT)[0]).to.be.ok()
 	})
 
+	it('Display dummy element while fetch is in progress', async () => {
+		const element = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
+		expect(element.shadowRoot.querySelector('oo-atoms-message main')).to.be.ok()
+		await sleep(300)
+		expect(element.shadowRoot.querySelector('oo-atoms-message main')).to.not.be.ok()
+	})
+
 	it('Display project data of UID specified by "data-uid" attribute', async () => {
 		const element = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
 		await sleep(300)
