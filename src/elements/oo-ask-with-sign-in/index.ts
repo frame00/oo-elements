@@ -29,6 +29,7 @@ const stateTitle = weakMap<string>()
 const stateMessage = weakMap<string>()
 const stateOfferer = weakMap<string>()
 const stateScope = weakMap<Scope>()
+const stateTags = weakMap<Array<string>>()
 const stateCurrency = weakMap<Currency>()
 const stateAuthorized = weakMap<boolean>()
 const stateSignInFlow = weakMap<SignInFlow>()
@@ -216,9 +217,10 @@ export default class extends OOElement {
 
 	onAskChanged(e: HTMLElementEventChangeAsk<HTMLElement>) {
 		const {detail} = e
-		const {title, message: m, scope, currency} = detail
+		const {title, message: m, tags, scope, currency} = detail
 		stateTitle.set(this, title)
 		stateMessage.set(this, m)
+		stateTags.set(this, tags)
 		stateScope.set(this, scope)
 		stateCurrency.set(this, currency)
 	}
@@ -245,6 +247,7 @@ export default class extends OOElement {
 		const offerer = stateOfferer.get(this)
 		const title = stateTitle.get(this)
 		const body = stateMessage.get(this)
+		const tags = stateTags.get(this)
 		const author = stateOfferer.get(this)
 		const scope = stateScope.get(this)
 		const currency = stateCurrency.get(this)
@@ -254,6 +257,7 @@ export default class extends OOElement {
 			scope: Scope,
 			title?: string,
 			users?: Array<string>,
+			tags?: Array<string>,
 			currency?: Currency,
 			assignee?: string
 		} = {
@@ -272,6 +276,9 @@ export default class extends OOElement {
 			if (typeof offerer === 'string' && offerer !== '') {
 				opts.users = [iam, offerer]
 			}
+		}
+		if (Array.isArray(tags)) {
+			opts.tags = tags
 		}
 		if (typeof currency === 'string') {
 			opts.currency = currency
