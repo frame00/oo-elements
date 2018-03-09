@@ -20,12 +20,9 @@ const EVENT = {
 define('oo-ask-form', askForm)
 
 const projectUid = weakMap<string>()
-const projectTitle = weakMap<string>()
-const projectBody = weakMap<string>()
-const projectTags = weakMap<Array<string>>()
 const stateProgress = weakMap<boolean>()
 const stateSuccess = weakMap<boolean>()
-const stateChangedValues = weakMap<{
+const stateProject = weakMap<{
 	title?: string,
 	body?: string,
 	tags?: Array<string>
@@ -34,6 +31,10 @@ const stateChangedValues = weakMap<{
 export default class extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_UID]
+	}
+
+	get project() {
+		return stateProject.get(this)
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -50,10 +51,8 @@ export default class extends OOElement {
 	}
 
 	render() {
-		const {title, body, tags, progress, success} = {
-			title: projectTitle.get(this),
-			body: projectBody.get(this),
-			tags: projectTags.get(this),
+		const {title, body, tags} = this.project
+		const {progress, success} = {
 			progress: stateProgress.get(this),
 			success: stateSuccess.get(this)
 		}
@@ -88,9 +87,11 @@ export default class extends OOElement {
 		if (Array.isArray(response)) {
 			const [item] = response
 			const mapedExtensions = toMap(item)
-			projectTitle.set(this, mapedExtensions.get('title'))
-			projectBody.set(this, mapedExtensions.get('body'))
-			projectTags.set(this, mapedExtensions.get('tags') || [])
+			stateProject.set(this, {
+				title: mapedExtensions.get('title'),
+				body: mapedExtensions.get('body'),
+				tags: mapedExtensions.get('tags') || []
+			})
 		}
 		this.update()
 	}
@@ -101,16 +102,18 @@ export default class extends OOElement {
 
 		const options = {...{
 			uid: projectUid.get(this)
-		}, ...stateChangedValues.get(this)}
+		}, ...this.project}
 
 		const api = await patchProject(options)
 		const {response} = api
 		if (Array.isArray(response)) {
 			const [item] = response
 			const mapedExtensions = toMap(item)
-			projectTitle.set(this, mapedExtensions.get('title'))
-			projectBody.set(this, mapedExtensions.get('body'))
-			projectTags.set(this, mapedExtensions.get('tags') || [])
+			stateProject.set(this, {
+				title: mapedExtensions.get('title'),
+				body: mapedExtensions.get('body'),
+				tags: mapedExtensions.get('tags') || []
+			})
 			stateSuccess.set(this, true)
 			this.dispatchEvent(EVENT.UPDATED)
 		} else {
@@ -126,8 +129,8 @@ export default class extends OOElement {
 	onChanged(e: HTMLElementEventChangeAsk<HTMLElement>) {
 		const {detail} = e
 		const {title, message: body, tags} = detail
-		const old = stateChangedValues.get(this) || {}
-		stateChangedValues.set(this, {...old, ...{title, body, tags}})
-		console.log(stateChangedValues.get(this))
+		const old = this.project || {}
+		stateProject.set(this, {...old, ...{title, body, tags}})
+		console.log(this.project)
 	}
 }
