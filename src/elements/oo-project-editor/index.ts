@@ -131,6 +131,5 @@ export default class extends OOElement {
 		const {title, message: body, tags} = detail
 		const old = this.project || {}
 		stateProject.set(this, {...old, ...{title, body, tags}})
-		console.log(this.project)
 	}
 }

@@ -16,6 +16,20 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(getElement(ELEMENT)[0]).to.be.ok()
 	})
 
+	describe('Pass project information to "oo-ask-form"', () => {
+		it('Fetch a project using value of "data-uid" attribute')
+	})
+
+	describe('Update project information', () => {
+		it('When "oo-ask-form" dispatches a "changed" event, it updates project information')
+	})
+
+	describe('Patch project', () => {
+		it('Patch the project when clicking "Save" button')
+
+		it('When the patch succeeds it dispatches "updated" event')
+	})
+
 	after(() => {
 		removeElement(ELEMENT)
 	})
