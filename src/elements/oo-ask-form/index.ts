@@ -18,7 +18,9 @@ interface HTMLElementEvent<T extends HTMLElement> extends Event {
 }
 
 const ATTR = {
-	DATA_IAM: 'data-iam'
+	DATA_IAM: 'data-iam',
+	DATA_TITLE: 'data-title',
+	DATA_TAGS: 'data-tags'
 }
 const EVENT = {
 	CHANGED: (detail: ChangeAskDetail): ChangeAsk => customEvent('changed', detail)
@@ -29,14 +31,34 @@ const message = weakMap<string>()
 const stateTitle = weakMap<string>()
 const stateScope = weakMap<Scope>()
 const stateCurrency = weakMap<Currency>()
+const stateTags = weakMap<Array<string>>()
 const stateTextareaElement = weakMap<HTMLTextAreaElement>()
 const stateInitialData = weakMap<{
-	iam: string,
-	title: string,
-	body: string,
-	scope: Scope,
-	currency: Currency
+	iam?: string,
+	title?: string,
+	body?: string,
+	tags?: Array<string>,
+	scope?: Scope,
+	currency?: Currency
 }>()
+const asTags = (d: string) => {
+	if (typeof d === 'string') {
+		return (d || '').split(/\s/) || []
+	}
+	return []
+}
+const initialization = (el: HTMLElement) => {
+	if (el.textContent || el.hasAttribute(ATTR.DATA_TITLE) || el.hasAttribute(ATTR.DATA_TAGS)) {
+		message.set(el, el.textContent || '')
+		stateTitle.set(el, el.getAttribute(ATTR.DATA_TITLE) || '')
+		stateTags.set(el, asTags(el.getAttribute(ATTR.DATA_TAGS)))
+		stateInitialData.set(el, {
+			title: stateTitle.get(el),
+			body: message.get(el),
+			tags: stateTags.get(el)
+		})
+	}
+}
 
 export default class extends OOElement {
 	static get observedAttributes() {
@@ -45,13 +67,16 @@ export default class extends OOElement {
 
 	constructor() {
 		super()
-		stateTitle.set(this, '')
 		message.set(this, '')
 		stateScope.set(this, 'public')
 	}
 
 	get message() {
-		return message.get(this)
+		return message.get(this) || ''
+	}
+
+	get tags() {
+		return stateTags.get(this) || []
 	}
 
 	get scope() {
@@ -87,6 +112,7 @@ export default class extends OOElement {
 	}
 
 	connectedCallback() {
+		initialization(this)
 		super.connectedCallback()
 		this.dispatchChanged()
 	}
@@ -104,7 +130,7 @@ export default class extends OOElement {
 	render() {
 		const dontAssign = this.dontAssign
 		const init = stateInitialData.get(this)
-		const {title = '', body = '', scope = '', currency = ''} = init || {}
+		const {title = '', body = '', tags = [], scope = '', currency = ''} = init || {}
 		const scopeSelector = dontAssign ? '' : html`
 		<oo-atoms-select-scope data-scope$='${scope}' data-currency$='${currency}' on-changescope='${e => this.onScopeChange(e)}'></oo-atoms-select-scope>
 		`
@@ -162,11 +188,18 @@ export default class extends OOElement {
 				font-family: monospace;
 				min-height: 4rem;
 			}
+			input {
+				&[name=tags] {
+					font-size: 0.8rem;
+					font-family: monospace;
+				}
+			}
 		</style>
 		${scopeSelector}
 		<main>
-			<input type=text value$='${title}' placeholder='Title (optional)' on-change='${e => this.onTitleChange(e)}'></input>
-			<textarea placeholder='Your text here' on-change='${e => this.onMessageChange(e)}'>${body}</textarea>
+			<input name=title type=text value$='${title}' placeholder='Title (optional)' on-change='${e => this.onTitleChange(e)}'></input>
+			<textarea name=body placeholder='Your text here' on-change='${e => this.onMessageChange(e)}'>${body}</textarea>
+			<input name=tags type=text value$='${tags.join(' ')}' placeholder='#Tags separated by spaces (optional)' on-change='${e => this.onTagsChange(e)}'></input>
 		</main>
 		`
 	}
@@ -176,7 +209,7 @@ export default class extends OOElement {
 			const textarea = this.shadowRoot.querySelector('textarea')
 			if (textarea) {
 				stateTextareaElement.set(this, textarea)
-				autosize(stateTextareaElement.get(this))
+				autosize(textarea)
 				taboverride.set(textarea)
 			}
 		}
@@ -185,7 +218,7 @@ export default class extends OOElement {
 	updateSession() {
 		session.previousAsk = {
 			iam: iam.get(this),
-			title: stateTitle.get(this),
+			title: stateTitle.get(this) || '',
 			body: this.message,
 			scope: this.scope,
 			currency: this.currency
@@ -219,10 +252,18 @@ export default class extends OOElement {
 		this.dispatchChanged()
 	}
 
+	onTagsChange(e: HTMLElementEvent<HTMLInputElement>) {
+		const {target} = e
+		const {value} = target
+		stateTags.set(this, asTags(value))
+		this.dispatchChanged()
+	}
+
 	dispatchChanged() {
 		const detail = {
-			title: stateTitle.get(this),
+			title: stateTitle.get(this) || '',
 			message: this.message,
+			tags: this.tags,
 			scope: this.scope,
 			currency: this.currency
 		}
