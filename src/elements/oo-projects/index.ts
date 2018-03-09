@@ -13,6 +13,7 @@ import button from '../_atoms/oo-atoms-button'
 import userName from '../_atoms/oo-atoms-user-name'
 import empty from '../oo-empty'
 import toMap from '../../lib/extensions-to-map'
+import {template as tagsTemplate} from '../../lib/tags'
 const {location} = window
 
 define('oo-markdown', markdown)
@@ -78,6 +79,7 @@ export default class extends OOElement {
 
 		return html`
 		<style>
+			@import '../../style/_mixin-tags.css';
 			:host {
 				display: block;
 			}
@@ -97,6 +99,15 @@ export default class extends OOElement {
 					align-self: flex-end;
 				}
 			}
+			aside {
+				display: flex;
+				align-items: baseline;
+				justify-content: space-between;
+			}
+			.tags {
+				@mixin tags;
+				margin-top: 0;
+			}
 		</style>
 		<main>
 			${repeat(projects, project => {
@@ -105,6 +116,7 @@ export default class extends OOElement {
 				const title = exts.has('title') ? exts.get('title') : ''
 				const body = exts.has('body') ? exts.get('body') : ''
 				const offerer = exts.has('author') ? exts.get('author') : ''
+				const tags = exts.has('tags') ? exts.get('tags') : []
 				const titleHTML = title ? html`<h1>${title}</h1>` : html``
 				return html`
 				<oo-atoms-message>
@@ -114,7 +126,10 @@ export default class extends OOElement {
 						<div class=body>
 							<oo-markdown>${body}</oo-markdown>
 						</div>
-						<oo-atoms-button on-clicked='${() => this.moveToDetail(uid)}'>Detail</oo-atoms-button>
+						<aside>
+							${tagsTemplate(tags)}
+							<oo-atoms-button on-clicked='${() => this.moveToDetail(uid)}'>Detail</oo-atoms-button>
+						</aside>
 					</section>
 					<footer slot=footer>
 						<oo-atoms-user-name data-iam$='${offerer}' data-size=small></oo-atoms-user-name>
