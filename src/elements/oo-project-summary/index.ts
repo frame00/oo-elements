@@ -144,9 +144,22 @@ export default class extends OOElement {
 				}
 			}
 			.tags {
+				font-family: var(--font-family);
+				&:not(:empty) {
+					margin-top: 3rem;
+				}
 				span {
-					display: inline-block;
-					margin: 0 1rem;
+					font-size: 1rem;
+					letter-spacing: 0.02rem;
+					&:not(:first-child) {
+						margin-left: 1rem;
+					}
+					a {
+						color: #2196f3;
+						&::before {
+							content: '#';
+						}
+					}
 				}
 			}
 		</style>
@@ -168,7 +181,7 @@ export default class extends OOElement {
 					})()}
 					<oo-markdown>${body}</oo-markdown>
 					<div class=tags>
-						${repeat(tags, tag => html`<span>${tag}</span>`)}
+						${repeat(tags, tag => html`<span><a href$='/projects/tag/${tag}'>${tag}</a></span>`)}
 					</div>
 				</section>
 				<footer slot=footer>
