@@ -14,7 +14,6 @@ import userName from '../_atoms/oo-atoms-user-name'
 import empty from '../oo-empty'
 import toMap from '../../lib/extensions-to-map'
 import {template as tagsTemplate} from '../../lib/tags'
-const {location} = window
 
 define('oo-markdown', markdown)
 define('oo-atoms-message', message)
@@ -83,6 +82,9 @@ export default class extends OOElement {
 			:host {
 				display: block;
 			}
+			:root {
+				--detail-btn: #3F51B5;
+			}
 			oo-atoms-message {
 				&:not(:last-child) {
 					margin-bottom: 3rem;
@@ -103,10 +105,30 @@ export default class extends OOElement {
 				display: flex;
 				align-items: baseline;
 				justify-content: space-between;
+				.detail {
+					padding: 0.6rem 1rem;
+					max-width: 3rem;
+					min-width: 3rem;
+					margin-left: 1rem;
+					text-align: center;
+					font-size: 1rem;
+					text-decoration: none;
+					background: white;
+					border: 0.5px solid;
+					color: var(--detail-btn);
+					border-radius: 5px;
+					&:hover {
+						color: white;
+						background: var(--detail-btn);
+					}
+				}
 			}
 			.tags {
 				@mixin tags;
 				margin-top: 0;
+				&:empty {
+					display: block;
+				}
 			}
 		</style>
 		<main>
@@ -128,7 +150,7 @@ export default class extends OOElement {
 						</div>
 						<aside>
 							${tagsTemplate(tags)}
-							<oo-atoms-button on-clicked='${() => this.moveToDetail(uid)}'>Detail</oo-atoms-button>
+							<a class=detail href$='/project/${uid}'>Detail</a>
 						</aside>
 					</section>
 					<footer slot=footer>
@@ -156,9 +178,5 @@ export default class extends OOElement {
 			stateProjects.set(this, [...current, ...response])
 		}
 		this.update()
-	}
-
-	moveToDetail(uid: string) {
-		location.href = `/project/${uid}`
 	}
 }
