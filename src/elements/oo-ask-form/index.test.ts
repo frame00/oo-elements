@@ -66,10 +66,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
 			const input = element.shadowRoot.querySelector('input')
 			input.value = 'xxx'
-			input.dispatchEvent(new Event('change', {bubbles: true}))
+			event(input, 'change', {bubbles: true})
 			const textarea = element.shadowRoot.querySelector('textarea')
 			textarea.value = 'yyy'
-			textarea.dispatchEvent(new Event('change', {bubbles: true}))
+			event(textarea, 'change', {bubbles: true})
 			expect(session.previousAsk).to.eql({
 				iam: 'test',
 				title: 'xxx',
@@ -81,14 +81,42 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	})
 
 	describe('Declarative initialization', () => {
-		it('Set "data-title" attribute value to title')
+		it('Set "data-title" attribute value to title', () => {
+			session.clear()
+			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test'], ['data-title', 'xxx']]))
+			const input = element.shadowRoot.querySelector('input[name=title]')
+			expect(input.value).to.be('xxx')
+		})
 
-		it('Set "data-tags" attribute value to tags')
+		it('Set "data-tags" attribute value to tags', () => {
+			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test'], ['data-tags', '1 2 3']]))
+			const input = element.shadowRoot.querySelector('input[name=tags]')
+			expect(input.value).to.be('1 2 3')
+			expect(element.tags).to.be.eql([1, 2, 3])
+		})
 
-		it('Set self textContent to body')
+		it('Set self textContent to body', () => {
+			document.body.insertAdjacentHTML('afterbegin', `<${ELEMENT}>The Content</${ELEMENT}>`)
+			const element: any = getElement(ELEMENT)[0]
+			const textarea = element.shadowRoot.querySelector('textarea')
+			expect(textarea.value).to.be('The Content')
+			expect(element.message).to.be('The Content')
+		})
 	})
 
 	describe('Restoration from session', () => {
+		before(() => {
+			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+			const input = element.shadowRoot.querySelector('input')
+			const textarea = element.shadowRoot.querySelector('textarea')
+			const scopeSelector = element.shadowRoot.querySelector('oo-atoms-select-scope')
+			input.value = 'xxx'
+			textarea.value = 'yyy'
+			event(input, 'change', {bubbles: true})
+			event(textarea, 'change', {bubbles: true})
+			event(scopeSelector, 'changescope', {scope: 'private', currency: 'jpy'})
+		})
+
 		it('Restore scope, message, currency', done => {
 			removeElement(ELEMENT)
 			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
@@ -96,6 +124,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 				expect(e.detail).to.be.eql({
 					title: 'xxx',
 					message: 'yyy',
+					tags: [],
 					scope: 'private',
 					currency: 'jpy'
 				})
@@ -111,6 +140,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 				expect(e.detail).to.be.eql({
 					title: '',
 					message: '',
+					tags: [],
 					scope: 'public',
 					currency: undefined
 				})

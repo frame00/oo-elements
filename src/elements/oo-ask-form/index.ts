@@ -48,12 +48,13 @@ const asTags = (d: string) => {
 	return []
 }
 const initialization = (el: HTMLElement) => {
-	if (el.hasAttribute(ATTR.DATA_TITLE) || el.hasAttribute(ATTR.DATA_TAGS)) {
+	if (el.textContent || el.hasAttribute(ATTR.DATA_TITLE) || el.hasAttribute(ATTR.DATA_TAGS)) {
+		message.set(el, el.textContent || '')
 		stateTitle.set(el, el.getAttribute(ATTR.DATA_TITLE) || '')
 		stateTags.set(el, asTags(el.getAttribute(ATTR.DATA_TAGS)))
 		stateInitialData.set(el, {
 			title: stateTitle.get(el),
-			body: el.textContent,
+			body: message.get(el),
 			tags: stateTags.get(el)
 		})
 	}
@@ -71,11 +72,11 @@ export default class extends OOElement {
 	}
 
 	get message() {
-		return message.get(this)
+		return message.get(this) || ''
 	}
 
 	get tags() {
-		return stateTags.get(this)
+		return stateTags.get(this) || []
 	}
 
 	get scope() {
@@ -217,7 +218,7 @@ export default class extends OOElement {
 	updateSession() {
 		session.previousAsk = {
 			iam: iam.get(this),
-			title: stateTitle.get(this),
+			title: stateTitle.get(this) || '',
 			body: this.message,
 			scope: this.scope,
 			currency: this.currency
@@ -260,7 +261,7 @@ export default class extends OOElement {
 
 	dispatchChanged() {
 		const detail = {
-			title: stateTitle.get(this),
+			title: stateTitle.get(this) || '',
 			message: this.message,
 			tags: this.tags,
 			scope: this.scope,
