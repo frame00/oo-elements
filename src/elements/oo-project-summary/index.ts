@@ -31,6 +31,7 @@ const projectBody = weakMap<string>()
 const projectTags = weakMap<Array<string>>()
 const projectAuthor = weakMap<string>()
 const projectCreated = weakMap<number>()
+const stateProjectUpdated = weakMap<boolean>()
 const stateOpenEditor = weakMap<boolean>()
 
 export default class extends OOElement {
@@ -51,14 +52,20 @@ export default class extends OOElement {
 	}
 
 	render() {
-		const {uid, created, title, body, tags, author, editor} = {
-			uid: projectUid.get(this),
-			created: projectCreated.get(this),
-			title: projectTitle.get(this),
-			body: projectBody.get(this),
-			tags: projectTags.get(this),
-			author: projectAuthor.get(this),
-			editor: stateOpenEditor.get(this)
+		const uid = projectUid.get(this)
+		const created = projectCreated.get(this)
+		const title = projectTitle.get(this)
+		const body = projectBody.get(this)
+		const tags = projectTags.get(this)
+		const author = projectAuthor.get(this)
+		const editor = stateOpenEditor.get(this)
+		const projectUpdated = stateProjectUpdated.get(this)
+		const reloadButton = (show: boolean) => {
+			// This is a plan to delete. No need for testing.
+			if (show) {
+				return html`<button on-click='${() => this.fetchProject(uid)}'>Reload</button>`
+			}
+			return html``
 		}
 		const modalBody = (show: boolean) => {
 			if (show) {
@@ -143,7 +150,10 @@ export default class extends OOElement {
 				<section slot=body>
 					<aside>
 						<oo-project-status data-uid$='${uid}'></oo-project-status>
-						<button on-click='${() => this.openEditor()}'>Edit</button>
+						<div>
+							${reloadButton(projectUpdated)}
+							<button on-click='${() => this.openEditor()}'>Edit</button>
+						</div>
 					</aside>
 					${(() => {
 						if (title) {
@@ -181,7 +191,8 @@ export default class extends OOElement {
 
 	onProjectUpdated() {
 		this.closedEditor()
-		this.fetchProject(projectUid.get(this))
+		stateProjectUpdated.set(this, true)
+		this.update()
 	}
 
 	async fetchProject(uid: string) {
