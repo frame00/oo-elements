@@ -89,42 +89,18 @@ export default class extends OOElement {
 					}
 				}
 			}
+			h1 {
+				font-family: var(--font-family);
+			}
 			h2 {
 				@mixin heading;
 				font-family: var(--font-family);
 			}
-			dl {
-				margin: 0 0 1rem;
-				font-family: var(--font-family);
-				display: flex;
-				flex-wrap: wrap;
-				font-size: 0.9rem;
-				dt {
-					width: 30%;
-					margin-bottom: 0.2rem;
-					font-weight: 300;
-				}
-				dd {
-					margin: 0;
-					width: 70%;
-				}
-			}
 			oo-project-status {
 				margin-bottom: 0.5rem;
 			}
-			h1 {
-				font-family: var(--font-family);
-			}
 			oo-atoms-user-name {
 				margin-bottom: 1rem;
-			}
-			.amount {
-				text-transform: uppercase;
-			}
-			aside {
-				display: flex;
-				align-items: baseline;
-				justify-content: space-between;
 			}
 			oo-project-editor {
 				padding: 1rem;
@@ -137,6 +113,11 @@ export default class extends OOElement {
 						margin: 0;
 					}
 				}
+			}
+			aside {
+				display: flex;
+				align-items: baseline;
+				justify-content: space-between;
 			}
 			.tags {
 				span {
