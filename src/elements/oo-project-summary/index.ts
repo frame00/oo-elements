@@ -145,8 +145,9 @@ export default class extends OOElement {
 			}
 			.tags {
 				font-family: var(--font-family);
-				&:not(:empty) {
-					margin-top: 3rem;
+				margin-top: 3rem;
+				&:empty {
+					display: none;
 				}
 				span {
 					font-size: 1rem;
@@ -180,9 +181,7 @@ export default class extends OOElement {
 						return html``
 					})()}
 					<oo-markdown>${body}</oo-markdown>
-					<div class=tags>
-						${repeat(tags, tag => html`<span><a href$='/projects/tag/${tag}'>${tag}</a></span>`)}
-					</div>
+					<div class=tags>${repeat(tags, tag => html`<span><a href$='/projects/tag/${tag}'>${tag}</a></span>`)}</div>
 				</section>
 				<footer slot=footer>
 					<oo-atoms-user-name data-iam$='${author}' data-size=small></oo-atoms-user-name>
