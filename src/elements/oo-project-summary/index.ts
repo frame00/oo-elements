@@ -1,6 +1,5 @@
 import {OOElement} from '../oo-element'
 import {html, render} from '../../lib/html'
-import {repeat} from 'lit-html/lib/repeat'
 import getProject from '../../lib/oo-api-get-project'
 import toMap from '../../lib/extensions-to-map'
 import define from '../../lib/define'
@@ -13,6 +12,7 @@ import modal from '../oo-modal'
 import projectStatus from '../oo-project-status'
 import weakMap from '../../lib/weak-map'
 import store from '../../lib/local-storage'
+import {template as tagsTemplate} from '../../lib/tags'
 
 define('oo-markdown', markdown)
 define('oo-atoms-message', message)
@@ -87,6 +87,7 @@ export default class extends OOElement {
 			@import '../../style/_vars-font-family.css';
 			@import '../../style/_mixin-heading.css';
 			@import '../../style/_reset-button.css';
+			@import '../../style/_mixin-tags.css';
 			:host {
 				display: block;
 			}
@@ -144,24 +145,7 @@ export default class extends OOElement {
 				}
 			}
 			.tags {
-				font-family: var(--font-family);
-				margin-top: 3rem;
-				&:empty {
-					display: none;
-				}
-				span {
-					font-size: 1rem;
-					letter-spacing: 0.02rem;
-					&:not(:first-child) {
-						margin-left: 1rem;
-					}
-					a {
-						color: #2196f3;
-						&::before {
-							content: '#';
-						}
-					}
-				}
+				@mixin tags;
 			}
 		</style>
 		<main>
@@ -181,7 +165,7 @@ export default class extends OOElement {
 						return html``
 					})()}
 					<oo-markdown>${body}</oo-markdown>
-					<div class=tags>${repeat(tags, tag => html`<span><a href$='/projects/tag/${tag}'>${tag}</a></span>`)}</div>
+					${tagsTemplate(tags)}
 				</section>
 				<footer slot=footer>
 					<oo-atoms-user-name data-iam$='${author}' data-size=small></oo-atoms-user-name>

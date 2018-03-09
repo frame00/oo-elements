@@ -13,7 +13,7 @@ import button from '../_atoms/oo-atoms-button'
 import userName from '../_atoms/oo-atoms-user-name'
 import empty from '../oo-empty'
 import toMap from '../../lib/extensions-to-map'
-const {location} = window
+import {template as tagsTemplate} from '../../lib/tags'
 
 define('oo-markdown', markdown)
 define('oo-atoms-message', message)
@@ -78,8 +78,12 @@ export default class extends OOElement {
 
 		return html`
 		<style>
+			@import '../../style/_mixin-tags.css';
 			:host {
 				display: block;
+			}
+			:root {
+				--detail-btn: #3F51B5;
 			}
 			oo-atoms-message {
 				&:not(:last-child) {
@@ -97,6 +101,35 @@ export default class extends OOElement {
 					align-self: flex-end;
 				}
 			}
+			aside {
+				display: flex;
+				align-items: baseline;
+				justify-content: space-between;
+				.detail {
+					padding: 0.6rem 1rem;
+					max-width: 3rem;
+					min-width: 3rem;
+					margin-left: 1rem;
+					text-align: center;
+					font-size: 1rem;
+					text-decoration: none;
+					background: white;
+					border: 0.5px solid;
+					color: var(--detail-btn);
+					border-radius: 5px;
+					&:hover {
+						color: white;
+						background: var(--detail-btn);
+					}
+				}
+			}
+			.tags {
+				@mixin tags;
+				margin-top: 0;
+				&:empty {
+					display: block;
+				}
+			}
 		</style>
 		<main>
 			${repeat(projects, project => {
@@ -105,6 +138,7 @@ export default class extends OOElement {
 				const title = exts.has('title') ? exts.get('title') : ''
 				const body = exts.has('body') ? exts.get('body') : ''
 				const offerer = exts.has('author') ? exts.get('author') : ''
+				const tags = exts.has('tags') ? exts.get('tags') : []
 				const titleHTML = title ? html`<h1>${title}</h1>` : html``
 				return html`
 				<oo-atoms-message>
@@ -114,7 +148,10 @@ export default class extends OOElement {
 						<div class=body>
 							<oo-markdown>${body}</oo-markdown>
 						</div>
-						<oo-atoms-button on-clicked='${() => this.moveToDetail(uid)}'>Detail</oo-atoms-button>
+						<aside>
+							${tagsTemplate(tags)}
+							<a class=detail href$='/project/${uid}'>Detail</a>
+						</aside>
 					</section>
 					<footer slot=footer>
 						<oo-atoms-user-name data-iam$='${offerer}' data-size=small></oo-atoms-user-name>
@@ -141,9 +178,5 @@ export default class extends OOElement {
 			stateProjects.set(this, [...current, ...response])
 		}
 		this.update()
-	}
-
-	moveToDetail(uid: string) {
-		location.href = `/project/${uid}`
 	}
 }
