@@ -37,6 +37,10 @@ export default class extends OOElement {
 		return stateProject.get(this)
 	}
 
+	get progress() {
+		return stateProgress.get(this)
+	}
+
 	attributeChangedCallback(attr, prev, next) {
 		if (prev === next || !next) {
 			return
@@ -102,7 +106,7 @@ export default class extends OOElement {
 
 		const options = {...{
 			uid: projectUid.get(this)
-		}, ...this.project}
+		}, ...this.project || {}}
 
 		const api = await patchProject(options)
 		const {response} = api
