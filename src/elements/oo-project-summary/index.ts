@@ -12,6 +12,7 @@ import datetime from '../_atoms/oo-atoms-datetime'
 import modal from '../oo-modal'
 import projectStatus from '../oo-project-status'
 import weakMap from '../../lib/weak-map'
+import store from '../../lib/local-storage'
 
 define('oo-markdown', markdown)
 define('oo-atoms-message', message)
@@ -60,10 +61,18 @@ export default class extends OOElement {
 		const author = projectAuthor.get(this)
 		const editor = stateOpenEditor.get(this)
 		const projectUpdated = stateProjectUpdated.get(this)
+		const isPostOwner = store.uid === author
+
 		const reloadButton = (show: boolean) => {
 			// This is a plan to delete. No need for testing.
 			if (show) {
 				return html`<button on-click='${() => this.fetchProject(uid)}'>Reload</button>`
+			}
+			return html``
+		}
+		const editButton = (show: boolean) => {
+			if (show) {
+				return html`<button on-click='${() => this.openEditor()}'>Edit</button>`
 			}
 			return html``
 		}
@@ -148,7 +157,7 @@ export default class extends OOElement {
 						<oo-project-status data-uid$='${uid}'></oo-project-status>
 						<div>
 							${reloadButton(projectUpdated)}
-							<button on-click='${() => this.openEditor()}'>Edit</button>
+							${editButton(isPostOwner)}
 						</div>
 					</aside>
 					${(() => {

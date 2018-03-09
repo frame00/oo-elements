@@ -29,6 +29,26 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 	})
 
+	describe('Editing post', () => {
+		it('Display "Edit" button when user who is signed in is contributor')
+
+		it('Clicking the sign-in button makes "oo-project-editor" a "oo-modal" body slot')
+
+		describe('When "oo-project-editor" dispatches "updated" event', () => {
+			it('Close "oo-modal"')
+
+			it('Remove "oo-project-editor"')
+
+			it('Display "Reload" button')
+		})
+
+		describe('Condition that "Edit" button is not displayed', () => {
+			it('Not signed in')
+
+			it('Different from contributor')
+		})
+	})
+
 	after(() => {
 		removeElement(ELEMENT)
 	})
