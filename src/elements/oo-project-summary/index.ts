@@ -77,6 +77,7 @@ export default class extends OOElement {
 		<style>
 			@import '../../style/_vars-font-family.css';
 			@import '../../style/_mixin-heading.css';
+			@import '../../style/_reset-button.css';
 			:host {
 				display: block;
 			}
@@ -118,6 +119,20 @@ export default class extends OOElement {
 				display: flex;
 				align-items: baseline;
 				justify-content: space-between;
+			}
+			button {
+				padding: 0.2rem 0.6rem;
+				border: 1px solid;
+				border-radius: 5px;
+				font-size: 0.8rem;
+				color: #607d8b;
+				&:hover {
+					background: #607d8b;
+					color: white;
+				}
+				&:not(:first-child) {
+					margin-left: 0.5rem;
+				}
 			}
 			.tags {
 				span {
