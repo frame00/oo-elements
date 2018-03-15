@@ -65,7 +65,7 @@ export default class extends OOElement {
 			.button {
 				margin: 1rem 0;
 				width: 100%;
-				height: 5rem;
+				height: 3.5rem;
 				&:first-child {
 					margin-top: 0;
 				}
@@ -73,9 +73,18 @@ export default class extends OOElement {
 					margin-bottom: 0;
 				}
 			}
+			p {
+				&,
+				a {
+					font-size: 0.8rem;
+					color: gray;
+					margin: 0;
+				}
+			}
 		</style>
 		<div>
 			${buttons(flow)}
+			<p>By clicking the 'Sign in with [Google, Facebook or GitHub]' button, you are agreeing to the <a href=https://ooapp.co/articles/terms target=_blank rel=noopener>Terms of service</a>.</p>
 		</div>
 		`
 	}
