@@ -3,6 +3,7 @@ import define from '../../lib/define'
 import insertElement from '../../lib/test/insert-element'
 import getElement from '../../lib/test/get-element'
 import removeElement from '../../lib/test/remove-element'
+import sleep from '../../lib/test/sleep'
 
 const ELEMENT = 'oo-profile'
 
@@ -16,30 +17,26 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(getElement(ELEMENT)[0]).to.be.ok()
 	})
 
-	it('Display OO user information specified by "data-iam" attribute', done => {
-		removeElement(ELEMENT)
-		const callback = () => {
-			const element = getElement(ELEMENT)[0]
-			expect(element.shadowRoot.querySelector('.name').textContent).to.be('test')
-			expect(element.shadowRoot.querySelector('.picture').getAttribute('style')).to.be('background-image: url(https://example.com/img.jpg)')
-			Array.prototype.forEach.call(element.shadowRoot.querySelectorAll('.bio > p'), i => {
-				expect(i.textContent).to.be('test')
-			})
-			element.removeEventListener('userupdated', callback)
-			done()
-		}
-		insertElement(ELEMENT, new Map([['data-iam', 'test']])).addEventListener('userupdated', callback)
+	it('Pass "data-iam" attribute to <oo-atoms-user-name>', async () => {
+		const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+		await sleep(300)
+		expect(element.shadowRoot.querySelector('oo-atoms-user-name').getAttribute('data-iam')).to.be('test')
 	})
 
-	it('Display <oo-empty> when there is a User UID that does not exist', done => {
+	it('Display OO user bio specified by "data-iam" attribute', async () => {
 		removeElement(ELEMENT)
-		const callback = () => {
-			const element = getElement(ELEMENT)[0]
-			expect(element.shadowRoot.querySelector('oo-empty')).to.be.ok()
-			element.removeEventListener('userupdated', callback)
-			done()
-		}
-		insertElement(ELEMENT, new Map([['data-iam', 'xxx']])).addEventListener('userupdated', callback)
+		const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+		await sleep(300)
+		Array.prototype.forEach.call(element.shadowRoot.querySelectorAll('.bio > p'), i => {
+			expect(i.textContent).to.be('test')
+		})
+	})
+
+	it('Display <oo-empty> when there is a User UID that does not exist', async () => {
+		removeElement(ELEMENT)
+		const element = insertElement(ELEMENT, new Map([['data-iam', 'xxx']]))
+		await sleep(300)
+		expect(element.shadowRoot.querySelector('oo-empty')).to.be.ok()
 	})
 
 	it('Update when "data-iam" attribute is changed', done => {
