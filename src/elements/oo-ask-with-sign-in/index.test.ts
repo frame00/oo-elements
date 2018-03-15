@@ -23,6 +23,12 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(element.shadowRoot.querySelector('oo-ask-form').getAttribute('data-iam')).to.be('test')
 	})
 
+	it('Pass "data-scope" attribute to <oo-ask-form>', async () => {
+		const element = insertElement(ELEMENT, new Map([['data-scope', 'public']]))
+		await sleep(300)
+		expect(element.shadowRoot.querySelector('oo-ask-form').getAttribute('data-scope')).to.be('public')
+	})
+
 	it('Display the "Ask" in the button if exists "data-iam" attribute', async () => {
 		const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
 		await sleep(300)

@@ -16,6 +16,7 @@ type SignInFlow = 'popup' | 'redirect'
 
 const ATTR = {
 	DATA_IAM: 'data-iam',
+	DATA_SCOPE: 'data-scope',
 	DATA_SIGN_IN_FLOW: 'data-sign-in-flow'
 }
 const EVENT = {
@@ -51,6 +52,12 @@ const asSignInFlow = (d: string): SignInFlow => {
 	}
 	return 'popup'
 }
+const asScope = (d: string): Scope => {
+	if (d === 'public' || d === 'private') {
+		return d
+	}
+	return 'public'
+}
 const fitHeight = (el: HTMLElement, target: HTMLElement): boolean => {
 	const height = el.offsetHeight
 	if (height > 0) {
@@ -62,7 +69,7 @@ const fitHeight = (el: HTMLElement, target: HTMLElement): boolean => {
 
 export default class extends OOElement {
 	static get observedAttributes() {
-		return [ATTR.DATA_IAM, ATTR.DATA_SIGN_IN_FLOW]
+		return [ATTR.DATA_IAM, ATTR.DATA_SCOPE, ATTR.DATA_SIGN_IN_FLOW]
 	}
 
 	constructor() {
@@ -78,6 +85,9 @@ export default class extends OOElement {
 			case ATTR.DATA_IAM:
 				stateIam.set(this, next)
 				break
+			case ATTR.DATA_SCOPE:
+				stateScope.set(this, asScope(next))
+				break
 			case ATTR.DATA_SIGN_IN_FLOW:
 				stateSignInFlow.set(this, asSignInFlow(next))
 				break
@@ -90,12 +100,13 @@ export default class extends OOElement {
 	}
 
 	render() {
-		const {uid, auth, sender, flow, progress} = {
+		const {uid, auth, sender, flow, progress, scope} = {
 			uid: stateIam.get(this),
 			auth: stateAuthorized.get(this),
 			sender: stateOfferer.get(this),
 			flow: stateSignInFlow.get(this),
-			progress: stateProgress.get(this)
+			progress: stateProgress.get(this),
+			scope: stateScope.get(this)
 		}
 		const step = (() => {
 			if (sender !== undefined && sender !== '') {
@@ -178,7 +189,7 @@ export default class extends OOElement {
 				font-family: var(--font-family);
 			}
 		</style>
-		<oo-ask-form data-iam$='${uid ? uid : ''}' on-changed='${e => this.onAskChanged(e)}'></oo-ask-form>
+		<oo-ask-form data-iam$='${uid ? uid : ''}' data-scope$='${scope}' on-changed='${e => this.onAskChanged(e)}'></oo-ask-form>
 		<div class=steps>
 			<ul class$='${step}'>
 				<li class=step active?='${step === 'ask'}'>

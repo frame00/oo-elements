@@ -8,6 +8,7 @@ import empty from '../oo-empty'
 import weakMap from '../../lib/weak-map'
 import getUser from '../../lib/oo-api-get-user'
 import {HTMLElementEventProjectCreated} from '../../type/event'
+import {Scope} from '../../type/scope'
 
 define('oo-profile', profile)
 define('oo-ask-with-sign-in', askWithSiginIn)
@@ -18,12 +19,14 @@ type SignInFlow = 'popup' | 'redirect'
 
 const ATTR = {
 	DATA_IAM: 'data-iam',
+	DATA_SCOPE: 'data-scope',
 	DATA_SIGN_IN_FLOW: 'data-sign-in-flow'
 }
 
 const iam = weakMap<string>()
 const authorization = weakMap<boolean>()
 const userFound = weakMap<boolean>()
+const stateScope = weakMap<Scope>()
 const signInFlow = weakMap<SignInFlow>()
 
 const asSignInFlow = (d: string): SignInFlow => {
@@ -32,10 +35,16 @@ const asSignInFlow = (d: string): SignInFlow => {
 	}
 	return 'popup'
 }
+const asScope = (d: string): Scope => {
+	if (d === 'public' || d === 'private') {
+		return d
+	}
+	return 'public'
+}
 
 export default class extends OOElement {
 	static get observedAttributes() {
-		return [ATTR.DATA_IAM, ATTR.DATA_SIGN_IN_FLOW]
+		return [ATTR.DATA_IAM, ATTR.DATA_SCOPE, ATTR.DATA_SIGN_IN_FLOW]
 	}
 
 	constructor() {
@@ -52,6 +61,9 @@ export default class extends OOElement {
 				iam.set(this, next)
 				this.fetchUserData()
 				break
+			case ATTR.DATA_SCOPE:
+				stateScope.set(this, asScope(next))
+				break
 			case ATTR.DATA_SIGN_IN_FLOW:
 				signInFlow.set(this, asSignInFlow(next))
 				if (this.connected) {
@@ -66,6 +78,7 @@ export default class extends OOElement {
 	render() {
 		const found = userFound.get(this)
 		const uid = iam.get(this)
+		const scope = stateScope.get(this)
 		const flow = signInFlow.get(this)
 		if (found === false) {
 			return html`
@@ -110,6 +123,7 @@ export default class extends OOElement {
 			<div class='column form'>
 				<oo-ask-with-sign-in
 					data-iam$='${uid}'
+					data-scope$='${scope}'
 					data-sign-in-flow$='${flow}'
 					on-projectcreated='${e => this.onProjectCreated(e)}'
 				></oo-ask-with-sign-in>
