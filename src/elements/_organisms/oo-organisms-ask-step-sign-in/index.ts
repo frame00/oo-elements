@@ -5,20 +5,14 @@ import signIn from '../../oo-sign-in'
 import signInWithRedirect from '../../oo-sign-in-with-redirect'
 import define from '../../../lib/define'
 import weakMap from '../../../lib/weak-map'
-
-type SignInFlow = 'popup' | 'redirect'
+import {asSignInFlow} from '../../../lib/as'
+import {SignInFlow} from '../../../type/sign-in-flow'
 
 define('oo-sign-in', signIn)
 define('oo-sign-in-with-redirect', signInWithRedirect)
 
 const ATTR = {
 	DATA_FLOW: 'data-flow'
-}
-const asSignInFlow = (d: string): SignInFlow => {
-	if (d === 'popup' || d === 'redirect') {
-		return d
-	}
-	return 'popup'
 }
 
 const stateSignInFlow = weakMap<SignInFlow>()

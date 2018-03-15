@@ -9,13 +9,13 @@ import weakMap from '../../lib/weak-map'
 import getUser from '../../lib/oo-api-get-user'
 import {HTMLElementEventProjectCreated} from '../../type/event'
 import {Scope} from '../../type/scope'
+import {asScope, asSignInFlow} from '../../lib/as'
+import {SignInFlow} from '../../type/sign-in-flow'
 
 define('oo-profile', profile)
 define('oo-ask-with-sign-in', askWithSiginIn)
 define('oo-organisms-ask-created', created)
 define('oo-empty', empty)
-
-type SignInFlow = 'popup' | 'redirect'
 
 const ATTR = {
 	DATA_IAM: 'data-iam',
@@ -28,19 +28,6 @@ const authorization = weakMap<boolean>()
 const userFound = weakMap<boolean>()
 const stateScope = weakMap<Scope>()
 const signInFlow = weakMap<SignInFlow>()
-
-const asSignInFlow = (d: string): SignInFlow => {
-	if (d === 'popup' || d === 'redirect') {
-		return d
-	}
-	return 'popup'
-}
-const asScope = (d: string): Scope => {
-	if (d === 'public' || d === 'private') {
-		return d
-	}
-	return 'public'
-}
 
 export default class extends OOElement {
 	static get observedAttributes() {

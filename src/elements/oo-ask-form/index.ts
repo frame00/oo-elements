@@ -7,6 +7,7 @@ import session from '../../lib/session-storage'
 import customEvent from '../../lib/custom-event'
 import autosize from 'autosize'
 import taboverride from 'taboverride'
+import {asScope} from '../../lib/as'
 
 interface HTMLElementEvent<T extends HTMLElement> extends Event {
 	target: T
@@ -40,12 +41,6 @@ const asTags = (d: string) => {
 		return (d || '').split(/\s/) || []
 	}
 	return []
-}
-const asScope = (d: string): Scope => {
-	if (d === 'public' || d === 'private') {
-		return d
-	}
-	return 'public'
 }
 const initialization = (el: HTMLElement) => {
 	if (el.textContent || el.hasAttribute(ATTR.DATA_TITLE) || el.hasAttribute(ATTR.DATA_TAGS) || el.hasAttribute(ATTR.DATA_SCOPE)) {

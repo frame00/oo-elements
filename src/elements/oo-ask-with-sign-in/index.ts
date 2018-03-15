@@ -8,11 +8,11 @@ import weakMap from '../../lib/weak-map'
 import {HTMLElementEventChangeAsk, ProjectCreatedDetail, ProjectCreated} from '../../type/event'
 import {Scope} from '../../type/scope'
 import customEvent from '../../lib/custom-event'
+import {asScope, asSignInFlow} from '../../lib/as'
+import {SignInFlow} from '../../type/sign-in-flow'
 
 define('oo-organisms-ask-step-sign-in', stepSignIn)
 define('oo-ask-form', askForm)
-
-type SignInFlow = 'popup' | 'redirect'
 
 const ATTR = {
 	DATA_IAM: 'data-iam',
@@ -45,18 +45,6 @@ const validation = (el: HTMLElement): boolean => {
 		return false
 	}
 	return true
-}
-const asSignInFlow = (d: string): SignInFlow => {
-	if (d === 'popup' || d === 'redirect') {
-		return d
-	}
-	return 'popup'
-}
-const asScope = (d: string): Scope => {
-	if (d === 'public' || d === 'private') {
-		return d
-	}
-	return 'public'
 }
 const fitHeight = (el: HTMLElement, target: HTMLElement): boolean => {
 	const height = el.offsetHeight
