@@ -123,14 +123,13 @@ export default class extends OOElement {
 				}
 				&.medium {
 					.name {
-						width: 80%;
 						font-size: 1.8rem;
 						line-height: 1.8rem;
 						margin-left: 1rem;
 						font-weight: 700;
 					}
 					.picture {
-						width: 20%;
+						min-width: 85px;
 						border-radius: 10px;
 					}
 				}
