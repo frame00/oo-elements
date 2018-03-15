@@ -133,7 +133,14 @@ export default class extends OOElement {
 			<oo-atoms-badge data-size$='${s}'></oo-atoms-badge>
 			<div class=text>${label}</div>
 		</button>
-		<oo-organisms-ask-modal data-iam$='${i}' data-open$='${o ? 'enabled' : 'disabled'}' on-close='${() => this.onModalClose()}'></oo-organisms-ask-modal>
+		${(() => {
+			if (o) {
+				return html`
+				<oo-organisms-ask-modal data-iam$='${i}' data-open$='${o ? 'enabled' : 'disabled'}' on-close='${() => this.onModalClose()}'></oo-organisms-ask-modal>
+				`
+			}
+			return html``
+		})()}
 		`
 	}
 

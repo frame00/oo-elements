@@ -35,13 +35,6 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(element.clientHeight).to.be(50)
 	})
 
-	it('Display modal by this element click', () => {
-		const element = getElement(ELEMENT)[0]
-		event(element.shadowRoot.querySelector('button'), 'click')
-		const modal = element.shadowRoot.querySelector('oo-organisms-ask-modal')
-		expect(modal.getAttribute('data-open')).to.be('enabled')
-	})
-
 	it('Mount with "ask" type', () => {
 		const element = getElement(ELEMENT)[0]
 		element.setAttribute('data-type', 'ask')
@@ -58,6 +51,30 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		const element = getElement(ELEMENT)[0]
 		element.removeAttribute('data-type')
 		expect(element.shadowRoot.querySelector('button').textContent.trim()).to.be('ask me')
+	})
+
+	describe('Modal control', () => {
+		it('At first, the modal is not mounted', () => {
+			const element = getElement(ELEMENT)[0]
+			expect(element.shadowRoot.querySelector('oo-organisms-ask-modal')).to.not.be.ok()
+		})
+
+		it('Mount modal by this element click', () => {
+			const element = getElement(ELEMENT)[0]
+			event(element.shadowRoot.querySelector('button'), 'click')
+			const modal = element.shadowRoot.querySelector('oo-organisms-ask-modal')
+			expect(modal.getAttribute('data-open')).to.be('enabled')
+		})
+
+		it('Unmount modal when modal closed', () => {
+			removeElement(ELEMENT)
+			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+			event(element.shadowRoot.querySelector('button'), 'click')
+			const modal = element.shadowRoot.querySelector('oo-organisms-ask-modal')
+			expect(modal.getAttribute('data-open')).to.be('enabled')
+			modal.setAttribute('data-open', 'disabled')
+			expect(element.shadowRoot.querySelector('oo-organisms-ask-modal')).to.not.be.ok()
+		})
 	})
 
 	after(() => {
