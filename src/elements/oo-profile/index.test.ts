@@ -49,6 +49,13 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		element.setAttribute('data-iam', 'yyy')
 	})
 
+	it('Display dummy element while fetch is in progress', async () => {
+		const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+		expect(element.shadowRoot.querySelector('main')).to.be.ok()
+		await sleep(300)
+		expect(element.shadowRoot.querySelector('main')).to.not.be.ok()
+	})
+
 	after(() => {
 		removeElement(ELEMENT)
 	})

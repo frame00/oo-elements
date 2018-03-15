@@ -1,6 +1,6 @@
 import {OOElement} from '../oo-element'
 import {repeat} from 'lit-html/lib/repeat'
-import {html} from '../../lib/html'
+import {html, render} from '../../lib/html'
 import getUser from '../../lib/oo-api-get-user'
 import isSuccess from '../../lib/is-api-success'
 import toMap from '../../lib/extensions-to-map'
@@ -34,6 +34,7 @@ export default class extends OOElement {
 			return
 		}
 		iam.set(this, next)
+		this.progress()
 		this.fetchUserData()
 	}
 
@@ -89,6 +90,50 @@ export default class extends OOElement {
 			</div>
 		</div>
 		`
+	}
+
+	progress() {
+		const template = html`
+		<style>
+			@import '../../style/_mixin-button-progress.css';
+			main {
+				padding: 1rem;
+			}
+			div {
+				height: 2rem;
+				border-radius: 5px;
+				margin-bottom: 1rem;
+				@mixin progress;
+			}
+			section {
+				display: flex;
+				align-items: center;
+				.picture {
+					width: 85px;
+					height: 85px;
+					border-radius: 10px;
+				}
+				.content {
+					margin-left: 1rem;
+				}
+			}
+			.content {
+				&:last-child {
+					width: 80%;
+				}
+			}
+		</style>
+		<main>
+			<section>
+				<div class=picture></div>
+				<div class=content></div>
+			</section>
+			<div class=content></div>
+			<div class=content></div>
+			<div class=content></div>
+		<main>
+		`
+		render(template, this)
 	}
 
 	async fetchUserData() {
