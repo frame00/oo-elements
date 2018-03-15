@@ -25,43 +25,44 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	it('Dispatch the message by "changed" event', done => {
 		const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
 		element.addEventListener('changed', (e: CustomEvent) => {
-			expect(e.detail.message).to.be('')
-			expect(e.detail.scope).to.be('private')
+			expect(e.detail.message).to.be('test')
 			done()
 		})
-		const scopeSelector = element.shadowRoot.querySelector('oo-atoms-select-scope')
-		event(scopeSelector, 'changescope', {scope: 'private'})
+		const textarea = element.shadowRoot.querySelector('textarea')
+		textarea.value = 'test'
+		textarea.innerText = 'test'
+		event(textarea, 'change')
 	})
 
-	describe('Show <oo-atoms-select-scope>', () => {
-		it('Show <oo-atoms-select-scope> when exsits "data-iam" attribute', () => {
-			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
-			const scopeSelector = element.shadowRoot.querySelector('oo-atoms-select-scope')
-			expect(scopeSelector).to.be.ok()
+	describe('Show scope', () => {
+		it('Default scope is public', () => {
+			const element = insertElement(ELEMENT)
+			const scope = element.shadowRoot.querySelector('span.scope')
+			expect(scope.classList.toString()).to.contain('public')
 		})
 
-		it('Dont show <oo-atoms-select-scope> when not exsits "data-iam" attribute', () => {
-			const element = insertElement(ELEMENT)
-			const scopeSelector = element.shadowRoot.querySelector('oo-atoms-select-scope')
-			expect(scopeSelector).to.not.be.ok()
+		describe('Show scope from "data-scope" attribute value', () => {
+			it('Public', () => {
+				const element = insertElement(ELEMENT, new Map([['data-scope', 'public']]))
+				const scope = element.shadowRoot.querySelector('span.scope')
+				expect(scope.classList.toString()).to.contain('public')
+			})
+
+			it('Private', () => {
+				const element = insertElement(ELEMENT, new Map([['data-scope', 'private']]))
+				const scope = element.shadowRoot.querySelector('span.scope')
+				expect(scope.classList.toString()).to.contain('private')
+			})
+
+			it('Other', () => {
+				const element = insertElement(ELEMENT, new Map([['data-scope', 'xxx']]))
+				const scope = element.shadowRoot.querySelector('span.scope')
+				expect(scope.classList.toString()).to.contain('public')
+			})
 		})
 	})
 
 	describe('Record to session', () => {
-		it('Change scope and currency', () => {
-			session.clear()
-			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
-			const scopeSelector = element.shadowRoot.querySelector('oo-atoms-select-scope')
-			event(scopeSelector, 'changescope', {scope: 'private', currency: 'jpy'})
-			expect(session.previousAsk).to.eql({
-				iam: 'test',
-				title: '',
-				body: '',
-				scope: 'private',
-				currency: 'jpy'
-			})
-		})
-
 		it('Change message', () => {
 			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
 			const input = element.shadowRoot.querySelector('input')
@@ -74,8 +75,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 				iam: 'test',
 				title: 'xxx',
 				body: 'yyy',
-				scope: 'private',
-				currency: 'jpy'
+				scope: 'public'
 			})
 		})
 	})
@@ -109,15 +109,13 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
 			const input = element.shadowRoot.querySelector('input')
 			const textarea = element.shadowRoot.querySelector('textarea')
-			const scopeSelector = element.shadowRoot.querySelector('oo-atoms-select-scope')
 			input.value = 'xxx'
 			textarea.value = 'yyy'
 			event(input, 'change', {bubbles: true})
 			event(textarea, 'change', {bubbles: true})
-			event(scopeSelector, 'changescope', {scope: 'private', currency: 'jpy'})
 		})
 
-		it('Restore scope, message, currency', done => {
+		it('Restore scope, message', done => {
 			removeElement(ELEMENT)
 			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
 			element.addEventListener('changed', e => {
@@ -125,8 +123,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 					title: 'xxx',
 					message: 'yyy',
 					tags: [],
-					scope: 'private',
-					currency: 'jpy'
+					scope: 'public'
 				})
 				done()
 			})
@@ -141,8 +138,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 					title: '',
 					message: '',
 					tags: [],
-					scope: 'public',
-					currency: undefined
+					scope: 'public'
 				})
 				done()
 			})

@@ -1,5 +1,4 @@
 import {Scope} from '../type/scope'
-import {Currency} from '../type/currency'
 
 const {sessionStorage} = window
 
@@ -9,8 +8,7 @@ interface PreviousAsk {
 	iam: string,
 	title: string,
 	body: string,
-	scope: Scope,
-	currency: Currency
+	scope: Scope
 }
 
 const get = (key: Key): string => {

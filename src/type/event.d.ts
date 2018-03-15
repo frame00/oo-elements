@@ -88,8 +88,7 @@ export interface HTMLElementEventSignedInError<T extends HTMLElement> extends Si
 }
 
 export interface ChangeScopeDetail {
-	scope: Scope,
-	currency: Currency
+	scope: Scope
 }
 
 export interface ChangeScope extends CustomEvent {
@@ -104,8 +103,7 @@ export interface ChangeAskDetail {
 	scope: Scope,
 	title: string,
 	message: string,
-	tags?: Array<string>,
-	currency?: Currency
+	tags?: Array<string>
 }
 
 export interface ChangeAsk extends CustomEvent {

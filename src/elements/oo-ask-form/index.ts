@@ -1,17 +1,12 @@
 import {OOElement} from '../oo-element'
 import {html} from '../../lib/html'
-import selectScope from '../_atoms/oo-atoms-select-scope'
-import define from '../../lib/define'
 import weakMap from '../../lib/weak-map'
 import {Scope} from '../../type/scope'
-import {ChangeAskDetail, ChangeAsk, HTMLElementEventChangeScope} from '../../type/event'
-import {Currency} from '../../type/currency'
+import {ChangeAskDetail, ChangeAsk} from '../../type/event'
 import session from '../../lib/session-storage'
 import customEvent from '../../lib/custom-event'
 import autosize from 'autosize'
 import taboverride from 'taboverride'
-
-define('oo-atoms-select-scope', selectScope)
 
 interface HTMLElementEvent<T extends HTMLElement> extends Event {
 	target: T
@@ -20,7 +15,8 @@ interface HTMLElementEvent<T extends HTMLElement> extends Event {
 const ATTR = {
 	DATA_IAM: 'data-iam',
 	DATA_TITLE: 'data-title',
-	DATA_TAGS: 'data-tags'
+	DATA_TAGS: 'data-tags',
+	DATA_SCOPE: 'data-scope'
 }
 const EVENT = {
 	CHANGED: (detail: ChangeAskDetail): ChangeAsk => customEvent('changed', detail)
@@ -30,7 +26,6 @@ const iam = weakMap<string>()
 const message = weakMap<string>()
 const stateTitle = weakMap<string>()
 const stateScope = weakMap<Scope>()
-const stateCurrency = weakMap<Currency>()
 const stateTags = weakMap<Array<string>>()
 const stateTextareaElement = weakMap<HTMLTextAreaElement>()
 const stateInitialData = weakMap<{
@@ -38,8 +33,7 @@ const stateInitialData = weakMap<{
 	title?: string,
 	body?: string,
 	tags?: Array<string>,
-	scope?: Scope,
-	currency?: Currency
+	scope?: Scope
 }>()
 const asTags = (d: string) => {
 	if (typeof d === 'string') {
@@ -47,15 +41,23 @@ const asTags = (d: string) => {
 	}
 	return []
 }
+const asScope = (d: string): Scope => {
+	if (d === 'public' || d === 'private') {
+		return d
+	}
+	return 'public'
+}
 const initialization = (el: HTMLElement) => {
-	if (el.textContent || el.hasAttribute(ATTR.DATA_TITLE) || el.hasAttribute(ATTR.DATA_TAGS)) {
+	if (el.textContent || el.hasAttribute(ATTR.DATA_TITLE) || el.hasAttribute(ATTR.DATA_TAGS) || el.hasAttribute(ATTR.DATA_SCOPE)) {
 		message.set(el, el.textContent || '')
 		stateTitle.set(el, el.getAttribute(ATTR.DATA_TITLE) || '')
 		stateTags.set(el, asTags(el.getAttribute(ATTR.DATA_TAGS)))
+		stateScope.set(el, asScope(el.getAttribute(ATTR.DATA_SCOPE)))
 		stateInitialData.set(el, {
 			title: stateTitle.get(el),
 			body: message.get(el),
-			tags: stateTags.get(el)
+			tags: stateTags.get(el),
+			scope: stateScope.get(el)
 		})
 	}
 }
@@ -83,10 +85,6 @@ export default class extends OOElement {
 		return stateScope.get(this)
 	}
 
-	get currency() {
-		return stateCurrency.get(this)
-	}
-
 	get dontAssign() {
 		return !Boolean(iam.get(this))
 	}
@@ -103,7 +101,6 @@ export default class extends OOElement {
 				stateTitle.set(this, prevAsk.title)
 				message.set(this, prevAsk.body)
 				stateScope.set(this, prevAsk.scope)
-				stateCurrency.set(this, prevAsk.currency)
 			}
 		}
 		if (this.connected) {
@@ -128,12 +125,8 @@ export default class extends OOElement {
 	}
 
 	render() {
-		const dontAssign = this.dontAssign
 		const init = stateInitialData.get(this)
-		const {title = '', body = '', tags = [], scope = '', currency = ''} = init || {}
-		const scopeSelector = dontAssign ? '' : html`
-		<oo-atoms-select-scope data-scope$='${scope}' data-currency$='${currency}' on-changescope='${e => this.onScopeChange(e)}'></oo-atoms-select-scope>
-		`
+		const {title = '', body = '', tags = [], scope = 'public'} = init || {}
 
 		return html`
 		<style>
@@ -152,14 +145,6 @@ export default class extends OOElement {
 				font-size: 1.6rem;
 				font-weight: 300;
 				text-align: center;
-			}
-			.currency {
-				font-weight: 100;
-			}
-			oo-atoms-select-scope {
-				overflow: hidden;
-				border-radius: 5px;
-				margin-bottom: 1rem;
 			}
 			main {
 				padding: 1rem;
@@ -194,8 +179,28 @@ export default class extends OOElement {
 					font-family: monospace;
 				}
 			}
+			.scope {
+				padding: 0.3rem 0.5rem;
+				border-radius: 5px;
+				&::before {
+					content: '';
+					text-transform: capitalize;
+				}
+				&.public {
+					background: #4CAF50;
+					&::before {
+						content: 'public message';
+					}
+				}
+				&.private {
+					background: #607D8B;
+					&::before {
+						content: 'private message';
+					}
+				}
+			}
 		</style>
-		${scopeSelector}
+		<span class$='scope ${scope}'></span>
 		<main>
 			<input name=title type=text value$='${title}' placeholder='Title (optional)' on-change='${e => this.onTitleChange(e)}'></input>
 			<textarea name=body placeholder='Your text here' on-change='${e => this.onMessageChange(e)}'>${body}</textarea>
@@ -220,22 +225,12 @@ export default class extends OOElement {
 			iam: iam.get(this),
 			title: stateTitle.get(this) || '',
 			body: this.message,
-			scope: this.scope,
-			currency: this.currency
+			scope: this.scope
 		}
 	}
 
 	removeSession() {
 		session.remove('oo:previous-ask')
-	}
-
-	onScopeChange(e: HTMLElementEventChangeScope<HTMLElement>) {
-		const {detail} = e
-		const {scope, currency} = detail
-		stateScope.set(this, scope)
-		stateCurrency.set(this, currency)
-		this.update()
-		this.dispatchChanged()
 	}
 
 	onTitleChange(e: HTMLElementEvent<HTMLInputElement>) {
@@ -264,8 +259,7 @@ export default class extends OOElement {
 			title: stateTitle.get(this) || '',
 			message: this.message,
 			tags: this.tags,
-			scope: this.scope,
-			currency: this.currency
+			scope: this.scope
 		}
 		this.updateSession()
 		this.dispatchEvent(EVENT.CHANGED(detail))

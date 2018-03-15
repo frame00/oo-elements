@@ -7,7 +7,6 @@ import createProject from '../../lib/oo-api-create-project'
 import weakMap from '../../lib/weak-map'
 import {HTMLElementEventChangeAsk, ProjectCreatedDetail, ProjectCreated} from '../../type/event'
 import {Scope} from '../../type/scope'
-import {Currency} from '../../type/currency'
 import customEvent from '../../lib/custom-event'
 
 define('oo-organisms-ask-step-sign-in', stepSignIn)
@@ -30,7 +29,6 @@ const stateMessage = weakMap<string>()
 const stateOfferer = weakMap<string>()
 const stateScope = weakMap<Scope>()
 const stateTags = weakMap<Array<string>>()
-const stateCurrency = weakMap<Currency>()
 const stateAuthorized = weakMap<boolean>()
 const stateSignInFlow = weakMap<SignInFlow>()
 const statePrevActiveStep = weakMap<Element>()
@@ -217,12 +215,11 @@ export default class extends OOElement {
 
 	onAskChanged(e: HTMLElementEventChangeAsk<HTMLElement>) {
 		const {detail} = e
-		const {title, message: m, tags, scope, currency} = detail
+		const {title, message: m, tags, scope} = detail
 		stateTitle.set(this, title)
 		stateMessage.set(this, m)
 		stateTags.set(this, tags)
 		stateScope.set(this, scope)
-		stateCurrency.set(this, currency)
 	}
 
 	onAuthorization() {
@@ -250,7 +247,6 @@ export default class extends OOElement {
 		const tags = stateTags.get(this)
 		const author = stateOfferer.get(this)
 		const scope = stateScope.get(this)
-		const currency = stateCurrency.get(this)
 		const opts: {
 			body: string,
 			author: string,
@@ -258,7 +254,6 @@ export default class extends OOElement {
 			title?: string,
 			users?: Array<string>,
 			tags?: Array<string>,
-			currency?: Currency,
 			assignee?: string
 		} = {
 			body,
@@ -268,9 +263,6 @@ export default class extends OOElement {
 		if (typeof title === 'string') {
 			opts.title = title
 		}
-		if (typeof currency === 'string') {
-			opts.currency = currency
-		}
 		if (typeof iam === 'string' && iam !== '') {
 			opts.assignee = iam
 			if (typeof offerer === 'string' && offerer !== '') {
@@ -279,9 +271,6 @@ export default class extends OOElement {
 		}
 		if (Array.isArray(tags)) {
 			opts.tags = tags
-		}
-		if (typeof currency === 'string') {
-			opts.currency = currency
 		}
 		const project = await createProject(opts)
 		const {response} = project
