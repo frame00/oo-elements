@@ -182,6 +182,10 @@ export default class extends OOElement {
 			.scope {
 				padding: 0.3rem 0.5rem;
 				border-radius: 5px;
+				font-size: 0.8rem;
+				color: white;
+				margin-bottom: 1rem;
+				display: inline-block;
 				&::before {
 					content: '';
 					text-transform: capitalize;
