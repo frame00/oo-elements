@@ -188,13 +188,13 @@ export default class extends OOElement {
 				&.public {
 					background: #4CAF50;
 					&::before {
-						content: 'public message';
+						content: 'public';
 					}
 				}
 				&.private {
 					background: #607D8B;
 					&::before {
-						content: 'private message';
+						content: 'private';
 					}
 				}
 			}
