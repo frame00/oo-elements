@@ -37,7 +37,7 @@ const stateInitialData = weakMap<{
 	tags?: Array<string>,
 	scope?: Scope
 }>()
-const initialization = (el: HTMLElement) => {
+const initialization = (el: OOElement) => {
 	if (el.textContent || el.hasAttribute(ATTR.DATA_TITLE) || el.hasAttribute(ATTR.DATA_SCOPE)) {
 		message.set(el, el.textContent || '')
 		stateTitle.set(el, el.getAttribute(ATTR.DATA_TITLE) || '')
@@ -49,13 +49,27 @@ const initialization = (el: HTMLElement) => {
 		})
 	}
 }
-const cleanUpTagsInput = (el: OOElement) => {
+const removeTagsInput = (el: OOElement) => {
 	const tagsEl = el.shadowRoot && el.shadowRoot.querySelector('.tags-input')
 	if (tagsEl) {
 		tagsEl.parentElement.removeChild(tagsEl)
-		if (el.connected) {
-			render(html``, el)
-		}
+	}
+}
+const removeVendorElements = (el: OOElement): boolean => {
+	try {
+		removeTagsInput(el)
+		return true
+	} catch(err) {
+		return false
+	}
+}
+const cleanUp = (el: OOElement): boolean => {
+	try {
+		removeVendorElements(el)
+		render(html``, el)
+		return true
+	} catch(err) {
+		return false
 	}
 }
 
@@ -110,7 +124,7 @@ export default class extends OOElement {
 				break
 		}
 		if (this.connected) {
-			cleanUpTagsInput(this)
+			cleanUp(this)
 			this.update()
 		}
 	}
