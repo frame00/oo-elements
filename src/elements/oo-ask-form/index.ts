@@ -234,9 +234,11 @@ export default class extends OOElement {
 				width: 1px;
 				height: 1px;
 				opacity: 0.01;
+
 				+ .tags-input {
 					display: flex;
 					flex-wrap: wrap;
+					align-items: baseline;
 					.tag {
 						padding: .3rem;
 						background: #00000066;
@@ -246,6 +248,7 @@ export default class extends OOElement {
 						user-select: none;
 						cursor: pointer;
 						border-radius: 5px;
+						line-height: 100%;
 						&:not(:last-child) {
 							margin: 0 .3rem .3rem;
 							margin-left: 0;
