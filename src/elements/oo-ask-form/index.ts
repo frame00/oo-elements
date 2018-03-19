@@ -37,15 +37,13 @@ const stateInitialData = weakMap<{
 	scope?: Scope
 }>()
 const initialization = (el: HTMLElement) => {
-	if (el.textContent || el.hasAttribute(ATTR.DATA_TITLE) || el.hasAttribute(ATTR.DATA_TAGS) || el.hasAttribute(ATTR.DATA_SCOPE)) {
+	if (el.textContent || el.hasAttribute(ATTR.DATA_TITLE) || el.hasAttribute(ATTR.DATA_SCOPE)) {
 		message.set(el, el.textContent || '')
 		stateTitle.set(el, el.getAttribute(ATTR.DATA_TITLE) || '')
-		stateTags.set(el, asTags(el.getAttribute(ATTR.DATA_TAGS)))
 		stateScope.set(el, asScope(el.getAttribute(ATTR.DATA_SCOPE)))
 		stateInitialData.set(el, {
 			title: stateTitle.get(el),
 			body: message.get(el),
-			tags: stateTags.get(el),
 			scope: stateScope.get(el)
 		})
 	}
@@ -53,7 +51,7 @@ const initialization = (el: HTMLElement) => {
 
 export default class extends OOElement {
 	static get observedAttributes() {
-		return [ATTR.DATA_IAM]
+		return [ATTR.DATA_IAM, ATTR.DATA_TAGS]
 	}
 
 	constructor() {
@@ -82,15 +80,24 @@ export default class extends OOElement {
 		if (prev === next) {
 			return
 		}
-		iam.set(this, next)
-		const prevAsk = session.previousAsk
-		if (prevAsk) {
-			if (prevAsk.iam === iam.get(this)) {
-				stateInitialData.set(this, prevAsk)
-				stateTitle.set(this, prevAsk.title)
-				message.set(this, prevAsk.body)
-				stateScope.set(this, prevAsk.scope)
-			}
+		switch (attr) {
+			case ATTR.DATA_IAM:
+				iam.set(this, next)
+				const prevAsk = session.previousAsk
+				if (prevAsk) {
+					if (prevAsk.iam === iam.get(this)) {
+						stateInitialData.set(this, prevAsk)
+						stateTitle.set(this, prevAsk.title)
+						message.set(this, prevAsk.body)
+						stateScope.set(this, prevAsk.scope)
+					}
+				}
+				break
+			case ATTR.DATA_TAGS:
+				stateTags.set(this, asTags(next))
+				break
+			default:
+				break
 		}
 		if (this.connected) {
 			this.update()
@@ -115,7 +122,12 @@ export default class extends OOElement {
 
 	render() {
 		const init = stateInitialData.get(this)
-		const {title = '', body = '', tags = [], scope = 'public'} = init || {}
+		const {
+			title = '',
+			body = '',
+			scope = 'public'
+		} = init || {}
+		const tags = stateTags.get(this) || []
 
 		return html`
 		<style>

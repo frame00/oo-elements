@@ -75,6 +75,13 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			modal.setAttribute('data-open', 'disabled')
 			expect(element.shadowRoot.querySelector('oo-organisms-ask-modal')).to.not.be.ok()
 		})
+
+		it('Pass "data-tags" attribute to <oo-organisms-ask-modal>', () => {
+			const element = insertElement(ELEMENT, new Map([['data-iam', 'test'], ['data-tags', 'tag1 tag2 tag3']]))
+			event(element.shadowRoot.querySelector('button'), 'click')
+			const modal = element.shadowRoot.querySelector('oo-organisms-ask-modal')
+			expect(modal.getAttribute('data-tags')).to.be('tag1 tag2 tag3')
+		})
 	})
 
 	after(() => {

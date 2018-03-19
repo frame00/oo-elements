@@ -4,6 +4,7 @@ import insertElement from '../../../lib/test/insert-element'
 import getElement from '../../../lib/test/get-element'
 import removeElement from '../../../lib/test/remove-element'
 import event from '../../../lib/test/event'
+import querySlotSelector from '../../../lib/test/query-slot-selector'
 
 const ELEMENT = 'oo-organisms-ask-modal'
 
@@ -15,6 +16,12 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	it('Mount on document', () => {
 		insertElement(ELEMENT)
 		expect(getElement(ELEMENT)[0]).to.be.ok()
+	})
+
+	it('Pass "data-tags" attribute to <oo-ask>', async () => {
+		const element = insertElement(ELEMENT, new Map([['data-tags', 'tag1 tag2 tag3']]))
+		const ask = querySlotSelector(element, 'oo-modal', 'slot[name=body]', 'oo-ask')
+		expect(ask.getAttribute('data-tags')).to.be('tag1 tag2 tag3')
 	})
 
 	it('Open this modal', () => {

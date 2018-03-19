@@ -3,6 +3,8 @@ import {html} from '../../lib/html'
 import badge from '../_atoms/oo-atoms-badge'
 import offerModal from '../_organisms/oo-organisms-ask-modal'
 import define from '../../lib/define'
+import weakMap from '../../lib/weak-map'
+import {asTags} from '../../lib/as'
 
 define('oo-atoms-badge', badge)
 define('oo-organisms-ask-modal', offerModal)
@@ -13,6 +15,7 @@ type Type = 'ask' | 'offer'
 const ATTR = {
 	DATA_SIZE: 'data-size',
 	DATA_IAM: 'data-iam',
+	DATA_TAGS: 'data-tags',
 	DATA_TYPE: 'data-type'
 }
 const asSize = (data: string): Size => {
@@ -28,14 +31,15 @@ const asType = (data: string): Type => {
 	return 'ask'
 }
 
-const iam: WeakMap<object, string> = new WeakMap()
-const size: WeakMap<object, Size> = new WeakMap()
-const open: WeakMap<object, boolean> = new WeakMap()
-const type: WeakMap<object, Type> = new WeakMap()
+const iam = weakMap<string>()
+const size = weakMap<Size>()
+const open = weakMap<boolean>()
+const type = weakMap<Type>()
+const tags = weakMap<Array<string>>()
 
 export default class extends OOElement {
 	static get observedAttributes() {
-		return [ATTR.DATA_SIZE, ATTR.DATA_IAM, ATTR.DATA_TYPE]
+		return [ATTR.DATA_SIZE, ATTR.DATA_IAM, ATTR.DATA_TAGS, ATTR.DATA_TYPE]
 	}
 
 	constructor() {
@@ -58,6 +62,9 @@ export default class extends OOElement {
 				}
 				iam.set(this, next)
 				break
+			case ATTR.DATA_TAGS:
+				tags.set(this, asTags(next))
+				break
 			case ATTR.DATA_TYPE:
 				type.set(this, asType(next))
 				break
@@ -73,11 +80,12 @@ export default class extends OOElement {
 		if (!iam.get(this)) {
 			return
 		}
-		const {s, i, o, t} = {
+		const {s, i, o, t, g = []} = {
 			s: size.get(this),
 			i: iam.get(this),
 			o: open.get(this),
-			t: type.get(this)
+			t: type.get(this),
+			g: tags.get(this)
 		}
 		const label = `${t} me`
 
@@ -136,7 +144,7 @@ export default class extends OOElement {
 		${(() => {
 			if (o) {
 				return html`
-				<oo-organisms-ask-modal data-iam$='${i}' data-open$='${o ? 'enabled' : 'disabled'}' on-close='${() => this.onModalClose()}'></oo-organisms-ask-modal>
+				<oo-organisms-ask-modal data-iam$='${i}' data-tags$='${g.join(' ')}' data-open$='${o ? 'enabled' : 'disabled'}' on-close='${() => this.onModalClose()}'></oo-organisms-ask-modal>
 				`
 			}
 			return html``
