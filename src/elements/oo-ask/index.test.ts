@@ -50,6 +50,12 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(element.shadowRoot.querySelector('oo-ask-with-sign-in').getAttribute('data-scope')).to.be('public')
 	})
 
+	it('Pass "data-tags" attribute to <oo-ask-with-sign-in>', async () => {
+		const element = insertElement(ELEMENT, new Map([['data-tags', 'tag1 tag2 tag3']]))
+		await sleep(300)
+		expect(element.shadowRoot.querySelector('oo-ask-with-sign-in').getAttribute('data-tags')).to.be('tag1 tag2 tag3')
+	})
+
 	it('Pass "data-sign-in-flow" attribute to <oo-ask-with-sign-in>', async () => {
 		const element = insertElement(ELEMENT, new Map([['data-iam', 'test'], ['data-sign-in-flow', 'redirect']]))
 		await sleep(300)

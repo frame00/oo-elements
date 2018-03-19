@@ -8,7 +8,7 @@ import weakMap from '../../lib/weak-map'
 import {HTMLElementEventChangeAsk, ProjectCreatedDetail, ProjectCreated} from '../../type/event'
 import {Scope} from '../../type/scope'
 import customEvent from '../../lib/custom-event'
-import {asScope, asSignInFlow} from '../../lib/as'
+import {asTags, asScope, asSignInFlow} from '../../lib/as'
 import {SignInFlow} from '../../type/sign-in-flow'
 
 define('oo-organisms-ask-step-sign-in', stepSignIn)
@@ -16,6 +16,7 @@ define('oo-ask-form', askForm)
 
 const ATTR = {
 	DATA_IAM: 'data-iam',
+	DATA_TAGS: 'data-tags',
 	DATA_SCOPE: 'data-scope',
 	DATA_SIGN_IN_FLOW: 'data-sign-in-flow'
 }
@@ -57,7 +58,7 @@ const fitHeight = (el: HTMLElement, target: HTMLElement): boolean => {
 
 export default class extends OOElement {
 	static get observedAttributes() {
-		return [ATTR.DATA_IAM, ATTR.DATA_SCOPE, ATTR.DATA_SIGN_IN_FLOW]
+		return [ATTR.DATA_IAM, ATTR.DATA_SCOPE, ATTR.DATA_TAGS, ATTR.DATA_SIGN_IN_FLOW]
 	}
 
 	constructor() {
@@ -72,6 +73,9 @@ export default class extends OOElement {
 		switch(attr) {
 			case ATTR.DATA_IAM:
 				stateIam.set(this, next)
+				break
+			case ATTR.DATA_TAGS:
+				stateTags.set(this, asTags(next))
 				break
 			case ATTR.DATA_SCOPE:
 				stateScope.set(this, asScope(next))
@@ -88,14 +92,13 @@ export default class extends OOElement {
 	}
 
 	render() {
-		const {uid, auth, sender, flow, progress, scope} = {
-			uid: stateIam.get(this),
-			auth: stateAuthorized.get(this),
-			sender: stateOfferer.get(this),
-			flow: stateSignInFlow.get(this),
-			progress: stateProgress.get(this),
-			scope: stateScope.get(this)
-		}
+		const uid = stateIam.get(this)
+		const auth = stateAuthorized.get(this)
+		const sender = stateOfferer.get(this)
+		const flow = stateSignInFlow.get(this)
+		const progress = stateProgress.get(this)
+		const scope = stateScope.get(this)
+		const tags = stateTags.get(this) || []
 		const step = (() => {
 			if (sender !== undefined && sender !== '') {
 				return 'submit'
@@ -177,7 +180,7 @@ export default class extends OOElement {
 				font-family: var(--font-family);
 			}
 		</style>
-		<oo-ask-form data-iam$='${uid ? uid : ''}' data-scope$='${scope}' on-changed='${e => this.onAskChanged(e)}'></oo-ask-form>
+		<oo-ask-form data-iam$='${uid ? uid : ''}' data-tags$='${tags.join(' ')}' data-scope$='${scope}' on-changed='${e => this.onAskChanged(e)}'></oo-ask-form>
 		<div class=steps>
 			<ul class$='${step}'>
 				<li class=step active?='${step === 'ask'}'>

@@ -14,3 +14,10 @@ export const asSignInFlow = (d: string): SignInFlow => {
 	}
 	return 'popup'
 }
+
+export const asTags = (d: string): Array<string> => {
+	if (typeof d === 'string') {
+		return (d || '').split(/\s/) || []
+	}
+	return []
+}
