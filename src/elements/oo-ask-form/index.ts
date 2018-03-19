@@ -1,5 +1,5 @@
 import {OOElement} from '../oo-element'
-import {html} from '../../lib/html'
+import {html, render} from '../../lib/html'
 import weakMap from '../../lib/weak-map'
 import {Scope} from '../../type/scope'
 import {ChangeAskDetail, ChangeAsk} from '../../type/event'
@@ -47,6 +47,15 @@ const initialization = (el: HTMLElement) => {
 			body: message.get(el),
 			scope: stateScope.get(el)
 		})
+	}
+}
+const cleanUpTagsInput = (el: OOElement) => {
+	const tagsEl = el.shadowRoot && el.shadowRoot.querySelector('.tags-input')
+	if (tagsEl) {
+		tagsEl.parentElement.removeChild(tagsEl)
+		if (el.connected) {
+			render(html``, el)
+		}
 	}
 }
 
@@ -101,6 +110,7 @@ export default class extends OOElement {
 				break
 		}
 		if (this.connected) {
+			cleanUpTagsInput(this)
 			this.update()
 		}
 	}
@@ -214,7 +224,7 @@ export default class extends OOElement {
 					display: flex;
 					flex-wrap: wrap;
 					.tag {
-						padding: 0 0.3rem;
+						padding: .3rem;
 						background: #00000066;
 						color: white;
 						border-radius: 5px;
@@ -245,7 +255,7 @@ export default class extends OOElement {
 		<main>
 			<input name=title type=text value$='${title}' placeholder='Title (optional)' on-change='${e => this.onTitleChange(e)}'></input>
 			<textarea name=body placeholder='Your text here' on-change='${e => this.onMessageChange(e)}'>${body}</textarea>
-			<input name=tags type=tags value$='${tags.join(', ')}' placeholder='#Tags (optional/comma separated)' on-change='${e => this.onTagsChange(e)}'></input>
+			<input name=tags type=tags value$='${tags.join(',')}' placeholder='#Tags (optional/comma separated)' on-change='${e => this.onTagsChange(e)}'></input>
 		</main>
 		`
 	}

@@ -91,7 +91,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		it('Set "data-tags" attribute value to tags', () => {
 			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test'], ['data-tags', '1 2 3']]))
 			const input = element.shadowRoot.querySelector('input[name=tags]')
-			expect(input.value).to.be('1 2 3')
+			expect(input.value).to.be('1,2,3')
 			expect(element.tags).to.be.eql([1, 2, 3])
 		})
 
