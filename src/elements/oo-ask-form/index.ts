@@ -8,6 +8,7 @@ import customEvent from '../../lib/custom-event'
 import autosize from 'autosize'
 import taboverride from 'taboverride'
 import {asTags, asScope} from '../../lib/as'
+import tagsInput from 'tags-input'
 
 interface HTMLElementEvent<T extends HTMLElement> extends Event {
 	target: T
@@ -174,12 +175,6 @@ export default class extends OOElement {
 				font-family: monospace;
 				min-height: 4rem;
 			}
-			input {
-				&[name=tags] {
-					font-size: 0.8rem;
-					font-family: monospace;
-				}
-			}
 			.scope {
 				padding: 0.3rem 0.5rem;
 				border-radius: 5px;
@@ -204,12 +199,53 @@ export default class extends OOElement {
 					}
 				}
 			}
+
+			/*
+			 * For tagsInput
+			 */
+			input[name=tags] {
+				position: absolute;
+				left: 0px;
+				top: -99px;
+				width: 1px;
+				height: 1px;
+				opacity: 0.01;
+				+ .tags-input {
+					display: flex;
+					flex-wrap: wrap;
+					.tag {
+						padding: 0 0.3rem;
+						background: #00000066;
+						color: white;
+						border-radius: 5px;
+						font-family: monospace;
+						user-select: none;
+						cursor: pointer;
+						border-radius: 5px;
+						&:not(:last-child) {
+							margin: 0 .3rem .3rem;
+							margin-left: 0;
+						}
+						&.selected {
+							background: #000000ab;
+						}
+					}
+					.tag,
+					input {
+						display: inline-block;
+						font-size: 0.8rem;
+					}
+					input {
+						flex-grow: 1;
+					}
+				}
+			}
 		</style>
 		<span class$='scope ${scope}'></span>
 		<main>
 			<input name=title type=text value$='${title}' placeholder='Title (optional)' on-change='${e => this.onTitleChange(e)}'></input>
 			<textarea name=body placeholder='Your text here' on-change='${e => this.onMessageChange(e)}'>${body}</textarea>
-			<input name=tags type=text value$='${tags.join(' ')}' placeholder='#Tags separated by spaces (optional)' on-change='${e => this.onTagsChange(e)}'></input>
+			<input name=tags type=tags value$='${tags.join(', ')}' placeholder='#Tags (optional/comma separated)' on-change='${e => this.onTagsChange(e)}'></input>
 		</main>
 		`
 	}
@@ -222,6 +258,10 @@ export default class extends OOElement {
 				autosize(textarea)
 				taboverride.set(textarea)
 			}
+		}
+		const input = this.shadowRoot.querySelector('input[name=tags]')
+		if (input) {
+			tagsInput(input)
 		}
 	}
 

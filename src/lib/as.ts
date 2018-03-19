@@ -17,7 +17,7 @@ export const asSignInFlow = (d: string): SignInFlow => {
 
 export const asTags = (d: string): Array<string> => {
 	if (typeof d === 'string') {
-		const tags = (d || '').split(/\s/) || []
+		const tags = (d || '').split(/\s|,/) || []
 		const tagsSet = Array.from(new Set(tags))
 		return tagsSet
 	}
