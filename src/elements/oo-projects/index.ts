@@ -14,6 +14,7 @@ import userName from '../_atoms/oo-atoms-user-name'
 import empty from '../oo-empty'
 import toMap from '../../lib/extensions-to-map'
 import {template as tagsTemplate} from '../../lib/tags'
+import {href} from '../../lib/href'
 
 define('oo-markdown', markdown)
 define('oo-atoms-message', message)
@@ -150,7 +151,7 @@ export default class extends OOElement {
 						</div>
 						<aside>
 							${tagsTemplate(tags)}
-							<a class=detail href$='/project/${uid}'>Detail</a>
+							<a class=detail href$='${href(`/project/${uid}`)}'>Detail</a>
 						</aside>
 					</section>
 					<footer slot=footer>

@@ -7,6 +7,7 @@ import getProjectForks from '../../lib/oo-api-get-projects-forks'
 import weakMap from '../../lib/weak-map'
 import button from '../_atoms/oo-atoms-button'
 import messages from '../oo-project-messages'
+import {href} from '../../lib/href'
 const {location} = window
 
 define('oo-atoms-button', button)
@@ -83,7 +84,7 @@ export default class extends OOElement {
 				const {uid} = project
 				return html`
 				<article>
-					<a href$='/project/${uid}'>Fork #${uid}</a>
+					<a href$='${href(`/project/${uid}`)}'>Fork #${uid}</a>
 					<oo-project-messages data-uid$='${uid}' data-limit=2></oo-project-messages>
 				</article>
 				`

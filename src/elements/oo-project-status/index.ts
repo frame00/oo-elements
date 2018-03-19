@@ -6,6 +6,7 @@ import getProject from '../../lib/oo-api-get-project'
 import toMap from '../../lib/extensions-to-map'
 import weakMap from '../../lib/weak-map'
 import {Scope} from '../../type/scope'
+import {href} from '../../lib/href'
 
 const ATTR = {
 	DATA_UID: 'data-uid'
@@ -44,7 +45,7 @@ export default class extends OOElement {
 		}
 		const labels: Array<TemplateResult> = []
 		if (fork) {
-			labels.push(html`<a class=forked href$='/project/${fork}'>↩ fork</a>`)
+			labels.push(html`<a class=forked href$='${href(`/project/${fork}`)}'>↩ fork</a>`)
 		}
 		if (scope) {
 			labels.push(html`<span class$='${scope}'>${scope}</span>`)

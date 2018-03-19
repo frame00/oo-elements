@@ -3,6 +3,7 @@ import {html} from '../../../lib/html'
 import getUser from '../../../lib/oo-api-get-user'
 import toMap from '../../../lib/extensions-to-map'
 import getPicture from '../../../lib/get-picture'
+import {href} from '../../../lib/href'
 
 type Size = 'small' | 'medium'
 interface HTMLOptions {
@@ -136,7 +137,7 @@ export default class extends OOElement {
 			}
 		</style>
 		<header class$='${s}'>
-			<a href$='/${uid}'>
+			<a href$='${href(`/${uid}`)}'>
 				<div class=picture style$='background-image: url(${getPicture(img)})'></div>
 				<p class$='name ${n ? '' : 'empty'}'>${n}</p>
 			</a>
