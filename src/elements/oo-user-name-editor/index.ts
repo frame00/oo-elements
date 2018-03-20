@@ -44,6 +44,7 @@ export default class extends OOElement {
 			sd: stateSaved.get(this),
 			ss: stateSaveSuccess.get(this)
 		}
+		const iam = stateIam.get(this)
 		const cls = p ? 'progress' : u === false ? 'not-usable' : u && s ? 'usable' : ''
 		const btn = html`<button class$='${cls}${sd ? ' saved' : ''}${ss ? ' success' : ss === false ? ' error' : ''}' disabled?='${!u || p}' on-click='${() => this.putPermalink()}'>save</button>`
 
@@ -91,6 +92,12 @@ export default class extends OOElement {
 					}
 				}
 			}
+			span {
+				font-size: 0.8rem;
+				span {
+					color: gray;
+				}
+			}
 		</style>
 		<div>
 			<input type=text
@@ -100,6 +107,7 @@ export default class extends OOElement {
 			</input>
 			${btn}
 		</div>
+		<span><span>https://ooapp.co/</span>${s || iam}</span>
 		`
 	}
 
