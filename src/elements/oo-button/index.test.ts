@@ -82,6 +82,13 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const modal = element.shadowRoot.querySelector('oo-organisms-ask-modal')
 			expect(modal.getAttribute('data-tags')).to.be('tag1 tag2 tag3')
 		})
+
+		it('Pass "data-scope" attribute to <oo-organisms-ask-modal>', () => {
+			const element = insertElement(ELEMENT, new Map([['data-iam', 'test'], ['data-scope', 'private']]))
+			event(element.shadowRoot.querySelector('button'), 'click')
+			const modal = element.shadowRoot.querySelector('oo-organisms-ask-modal')
+			expect(modal.getAttribute('data-scope')).to.be('private')
+		})
 	})
 
 	after(() => {

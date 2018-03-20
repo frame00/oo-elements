@@ -38,14 +38,12 @@ const stateInitialData = weakMap<{
 	scope?: Scope
 }>()
 const initialization = (el: OOElement) => {
-	if (el.textContent || el.hasAttribute(ATTR.DATA_TITLE) || el.hasAttribute(ATTR.DATA_SCOPE)) {
+	if (el.textContent || el.hasAttribute(ATTR.DATA_TITLE)) {
 		message.set(el, el.textContent || '')
 		stateTitle.set(el, el.getAttribute(ATTR.DATA_TITLE) || '')
-		stateScope.set(el, asScope(el.getAttribute(ATTR.DATA_SCOPE)))
 		stateInitialData.set(el, {
 			title: stateTitle.get(el),
-			body: message.get(el),
-			scope: stateScope.get(el)
+			body: message.get(el)
 		})
 	}
 }
@@ -75,7 +73,7 @@ const cleanUp = (el: OOElement): boolean => {
 
 export default class extends OOElement {
 	static get observedAttributes() {
-		return [ATTR.DATA_IAM, ATTR.DATA_TAGS]
+		return [ATTR.DATA_IAM, ATTR.DATA_TAGS, ATTR.DATA_SCOPE]
 	}
 
 	constructor() {
@@ -93,7 +91,7 @@ export default class extends OOElement {
 	}
 
 	get scope() {
-		return stateScope.get(this)
+		return asScope(stateScope.get(this))
 	}
 
 	get dontAssign() {
@@ -113,12 +111,14 @@ export default class extends OOElement {
 						stateInitialData.set(this, prevAsk)
 						stateTitle.set(this, prevAsk.title)
 						message.set(this, prevAsk.body)
-						stateScope.set(this, prevAsk.scope)
 					}
 				}
 				break
 			case ATTR.DATA_TAGS:
 				stateTags.set(this, asTags(next))
+				break
+			case ATTR.DATA_SCOPE:
+				stateScope.set(this, asScope(next))
 				break
 			default:
 				break
@@ -149,10 +149,9 @@ export default class extends OOElement {
 		const init = stateInitialData.get(this)
 		const {
 			title = '',
-			body = '',
-			scope = 'public'
+			body = ''
 		} = init || {}
-		const tags = stateTags.get(this) || []
+		const {tags, scope} = this
 
 		return html`
 		<style>
@@ -296,8 +295,7 @@ export default class extends OOElement {
 		session.previousAsk = {
 			iam: iam.get(this),
 			title: stateTitle.get(this) || '',
-			body: this.message,
-			scope: this.scope
+			body: this.message
 		}
 	}
 

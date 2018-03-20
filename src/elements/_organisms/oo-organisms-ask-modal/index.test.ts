@@ -24,6 +24,12 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		expect(ask.getAttribute('data-tags')).to.be('tag1 tag2 tag3')
 	})
 
+	it('Pass "data-scope" attribute to <oo-ask>', async () => {
+		const element = insertElement(ELEMENT, new Map([['data-scope', 'private']]))
+		const ask = querySlotSelector(element, 'oo-modal', 'slot[name=body]', 'oo-ask')
+		expect(ask.getAttribute('data-scope')).to.be('private')
+	})
+
 	it('Open this modal', () => {
 		const element = getElement(ELEMENT)[0]
 		element.setAttribute('data-open', 'enabled')

@@ -1,4 +1,3 @@
-import {Scope} from '../type/scope'
 
 const {sessionStorage} = window
 
@@ -7,8 +6,7 @@ type Key = 'oo:signing-in' | 'oo:previous-ask'
 interface PreviousAsk {
 	iam: string,
 	title: string,
-	body: string,
-	scope: Scope
+	body: string
 }
 
 const get = (key: Key): string => {

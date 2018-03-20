@@ -74,8 +74,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			expect(session.previousAsk).to.eql({
 				iam: 'test',
 				title: 'xxx',
-				body: 'yyy',
-				scope: 'public'
+				body: 'yyy'
 			})
 		})
 	})
@@ -115,7 +114,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			event(textarea, 'change', {bubbles: true})
 		})
 
-		it('Restore scope, message', done => {
+		it('Restore message', done => {
 			removeElement(ELEMENT)
 			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
 			element.addEventListener('changed', e => {
