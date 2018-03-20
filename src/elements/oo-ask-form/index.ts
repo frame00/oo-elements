@@ -9,6 +9,10 @@ import autosize from 'autosize'
 import taboverride from 'taboverride'
 import {asTags, asScope} from '../../lib/as'
 import tagsInput from 'tags-input'
+import {currencyToSign} from '../../lib/get-price-per-hour'
+import getInitPrice from '../../lib/get-init-price'
+import {Currency} from '../../type/currency'
+import getCurrency from '../../lib/get-currency'
 
 interface HTMLElementEvent<T extends HTMLElement> extends Event {
 	target: T
@@ -29,6 +33,7 @@ const message = weakMap<string>()
 const stateTitle = weakMap<string>()
 const stateScope = weakMap<Scope>()
 const stateTags = weakMap<Array<string>>()
+const stateCurrency = weakMap<Currency>()
 const stateTextareaElement = weakMap<HTMLTextAreaElement>()
 const stateInitialData = weakMap<{
 	iam?: string,
@@ -80,6 +85,7 @@ export default class extends OOElement {
 		super()
 		message.set(this, '')
 		stateScope.set(this, 'public')
+		stateCurrency.set(this, getCurrency())
 	}
 
 	get message() {
@@ -152,6 +158,17 @@ export default class extends OOElement {
 			body = ''
 		} = init || {}
 		const {tags, scope} = this
+		const currency = stateCurrency.get(this)
+		const price = getInitPrice(currency)
+		const {amount} = price
+		const sign = currencyToSign(currency)
+		const cost = `${currency.toUpperCase()} ${sign}${amount}`
+		const showCost = (s: Scope) => {
+			if (s === 'private') {
+				return html`<small>Pay ${cost} later</small>`
+			}
+			return html``
+		}
 
 		return html`
 		<style>
@@ -268,6 +285,7 @@ export default class extends OOElement {
 			}
 		</style>
 		<span class$='scope ${scope}'></span>
+		${showCost(scope)}
 		<main>
 			<input name=title type=text value$='${title}' placeholder='Title (optional)' on-change='${e => this.onTitleChange(e)}'></input>
 			<textarea name=body placeholder='Your text here' on-change='${e => this.onMessageChange(e)}'>${body}</textarea>
@@ -329,7 +347,8 @@ export default class extends OOElement {
 			title: stateTitle.get(this) || '',
 			message: this.message,
 			tags: this.tags,
-			scope: this.scope
+			scope: this.scope,
+			currency: stateCurrency.get(this)
 		}
 		this.updateSession()
 		this.dispatchEvent(EVENT.CHANGED(detail))

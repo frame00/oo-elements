@@ -54,6 +54,12 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 				expect(scope.classList.toString()).to.contain('private')
 			})
 
+			it('Display the cost when scope is private', () => {
+				const element = insertElement(ELEMENT, new Map([['data-scope', 'private']]))
+				const cost = element.shadowRoot.querySelector('small')
+				expect(cost.textContent).to.be('Pay USD $5 later')
+			})
+
 			it('Other', () => {
 				const element = insertElement(ELEMENT, new Map([['data-scope', 'xxx']]))
 				const scope = element.shadowRoot.querySelector('span.scope')
@@ -122,7 +128,8 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 					title: 'xxx',
 					message: 'yyy',
 					tags: [],
-					scope: 'public'
+					scope: 'public',
+					currency: 'usd'
 				})
 				done()
 			})
@@ -137,7 +144,8 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 					title: '',
 					message: '',
 					tags: [],
-					scope: 'public'
+					scope: 'public',
+					currency: 'usd'
 				})
 				done()
 			})

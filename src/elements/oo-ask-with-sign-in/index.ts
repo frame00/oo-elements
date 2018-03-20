@@ -10,6 +10,7 @@ import {Scope} from '../../type/scope'
 import customEvent from '../../lib/custom-event'
 import {asTags, asScope, asSignInFlow} from '../../lib/as'
 import {SignInFlow} from '../../type/sign-in-flow'
+import {Currency} from '../../type/currency'
 
 define('oo-organisms-ask-step-sign-in', stepSignIn)
 define('oo-ask-form', askForm)
@@ -30,6 +31,7 @@ const stateTitle = weakMap<string>()
 const stateMessage = weakMap<string>()
 const stateOfferer = weakMap<string>()
 const stateScope = weakMap<Scope>()
+const stateCurrency = weakMap<Currency>()
 const stateTags = weakMap<Array<string>>()
 const stateAuthorized = weakMap<boolean>()
 const stateSignInFlow = weakMap<SignInFlow>()
@@ -217,11 +219,12 @@ export default class extends OOElement {
 
 	onAskChanged(e: HTMLElementEventChangeAsk<HTMLElement>) {
 		const {detail} = e
-		const {title, message: m, tags, scope} = detail
+		const {title, message: m, tags, scope, currency} = detail
 		stateTitle.set(this, title)
 		stateMessage.set(this, m)
 		stateTags.set(this, tags)
 		stateScope.set(this, scope)
+		stateCurrency.set(this, currency)
 	}
 
 	onAuthorization() {
@@ -247,6 +250,7 @@ export default class extends OOElement {
 		const title = stateTitle.get(this)
 		const body = stateMessage.get(this)
 		const tags = stateTags.get(this)
+		const currency = stateCurrency.get(this)
 		const author = stateOfferer.get(this)
 		const scope = stateScope.get(this)
 		const opts: {
@@ -256,7 +260,8 @@ export default class extends OOElement {
 			title?: string,
 			users?: Array<string>,
 			tags?: Array<string>,
-			assignee?: string
+			assignee?: string,
+			currency?: Currency
 		} = {
 			body,
 			author,
@@ -273,6 +278,9 @@ export default class extends OOElement {
 		}
 		if (Array.isArray(tags)) {
 			opts.tags = tags
+		}
+		if (currency) {
+			opts.currency = currency
 		}
 		const project = await createProject(opts)
 		const {response} = project
