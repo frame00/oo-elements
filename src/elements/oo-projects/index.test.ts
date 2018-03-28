@@ -40,6 +40,16 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			expect(more).to.be.ok()
 		})
 
+		it('Fetch tagged public projects when exists "data-tag" attribute and not exists "data-iam" attribute value', async () => {
+			const element = insertElement(ELEMENT, new Map([['data-tag', 'test']]))
+			await sleep(300)
+			const items = element.shadowRoot.querySelectorAll('oo-atoms-message')
+			expect(items).to.have.length(2)
+
+			const more = element.shadowRoot.querySelector('.paging > oo-atoms-button')
+			expect(more).to.be.ok()
+		})
+
 		it('Show <oo-empty> when no projects exists', async () => {
 			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'xxx']]))
 			await sleep(300)
