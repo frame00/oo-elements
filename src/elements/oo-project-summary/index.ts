@@ -6,7 +6,7 @@ import define from '../../lib/define'
 import markdown from '../oo-markdown'
 import projectEditor from '../oo-project-editor'
 import message from '../_atoms/oo-atoms-message'
-import userName from '../_atoms/oo-atoms-user-name'
+import users from '../_molecules/oo-molecules-project-users'
 import datetime from '../_atoms/oo-atoms-datetime'
 import modal from '../oo-modal'
 import projectStatus from '../oo-project-status'
@@ -16,7 +16,7 @@ import {template as tagsTemplate} from '../../lib/tags'
 
 define('oo-markdown', markdown)
 define('oo-atoms-message', message)
-define('oo-atoms-user-name', userName)
+define('oo-molecules-project-users', users)
 define('oo-atoms-datetime', datetime)
 define('oo-project-status', projectStatus)
 define('oo-project-editor', projectEditor)
@@ -31,6 +31,7 @@ const projectTitle = weakMap<string>()
 const projectBody = weakMap<string>()
 const projectTags = weakMap<Array<string>>()
 const projectAuthor = weakMap<string>()
+const projectAssignee = weakMap<string>()
 const projectCreated = weakMap<number>()
 const stateProjectUpdated = weakMap<boolean>()
 const stateOpenEditor = weakMap<boolean>()
@@ -59,6 +60,7 @@ export default class extends OOElement {
 		const body = projectBody.get(this)
 		const tags = projectTags.get(this)
 		const author = projectAuthor.get(this)
+		const assignee = projectAssignee.get(this)
 		const editor = stateOpenEditor.get(this)
 		const projectUpdated = stateProjectUpdated.get(this)
 		const isPostOwner = store.uid === author
@@ -110,7 +112,7 @@ export default class extends OOElement {
 			oo-project-status {
 				margin-bottom: 0.5rem;
 			}
-			oo-atoms-user-name {
+			oo-molecules-project-users {
 				margin-bottom: 1rem;
 			}
 			oo-project-editor {
@@ -168,7 +170,7 @@ export default class extends OOElement {
 					${tagsTemplate(tags)}
 				</section>
 				<footer slot=footer>
-					<oo-atoms-user-name data-iam$='${author}' data-size=small></oo-atoms-user-name>
+					<oo-molecules-project-users data-author$='${author}' data-assignee$='${assignee}'></oo-molecules-project-users>
 					<oo-atoms-datetime data-unixtime$='${created}'></oo-atoms-datetime>
 				</footer>
 			</oo-atoms-message>
@@ -239,6 +241,7 @@ export default class extends OOElement {
 			projectBody.set(this, mapedExtensions.get('body'))
 			projectTags.set(this, mapedExtensions.get('tags') || [])
 			projectAuthor.set(this, mapedExtensions.get('author'))
+			projectAssignee.set(this, mapedExtensions.get('assignee'))
 			stateProjectUpdated.delete(this)
 		} else {
 			projectBody.delete(this)

@@ -10,7 +10,7 @@ import weakMap from '../../lib/weak-map'
 import markdown from '../oo-markdown'
 import message from '../_atoms/oo-atoms-message'
 import button from '../_atoms/oo-atoms-button'
-import userName from '../_atoms/oo-atoms-user-name'
+import users from '../_molecules/oo-molecules-project-users'
 import empty from '../oo-empty'
 import toMap from '../../lib/extensions-to-map'
 import {template as tagsTemplate} from '../../lib/tags'
@@ -19,7 +19,7 @@ import {href} from '../../lib/href'
 define('oo-markdown', markdown)
 define('oo-atoms-message', message)
 define('oo-atoms-button', button)
-define('oo-atoms-user-name', userName)
+define('oo-molecules-project-users', users)
 define('oo-empty', empty)
 define('oo-project-status', projectStatus)
 
@@ -153,6 +153,7 @@ export default class extends OOElement {
 				const title = exts.has('title') ? exts.get('title') : ''
 				const body = exts.has('body') ? exts.get('body') : ''
 				const offerer = exts.has('author') ? exts.get('author') : ''
+				const assignee = exts.has('assignee') ? exts.get('assignee') : ''
 				const tags = exts.has('tags') ? exts.get('tags') : []
 				const titleHTML = title ? html`<h1>${title}</h1>` : html``
 				return html`
@@ -169,7 +170,7 @@ export default class extends OOElement {
 						</aside>
 					</section>
 					<footer slot=footer>
-						<oo-atoms-user-name data-iam$='${offerer}' data-size=small></oo-atoms-user-name>
+						<oo-molecules-project-users data-author$='${offerer}' data-assignee$='${assignee}'></oo-molecules-project-users>
 					</footer>
 				</oo-atoms-message>
 				`

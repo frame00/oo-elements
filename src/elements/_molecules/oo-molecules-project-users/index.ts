@@ -46,6 +46,9 @@ export default class extends OOElement {
 
 		return html`
 		<style>
+			:host {
+				display: block;
+			}
 			div {
 				display: flex;
 			}

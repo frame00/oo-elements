@@ -33,7 +33,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		const [slotFooterAssigned] = slotFooter.assignedNodes()
 
 		Array.prototype.forEach.call(slotFooterAssigned.childNodes, item => {
-			const userName = item.parentElement.querySelector('oo-atoms-user-name').getAttribute('data-iam')
+			const userName = item.parentElement.querySelector('oo-molecules-project-users').getAttribute('data-assignee')
 			expect(userName).to.be('test')
 		})
 	})
