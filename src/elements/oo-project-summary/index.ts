@@ -95,6 +95,7 @@ export default class extends OOElement {
 			}
 			section {
 				padding: 1.5rem;
+				background: white;
 				p {
 					margin: 0;
 					&:not(:last-child) {
