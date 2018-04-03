@@ -88,6 +88,7 @@ export default class extends OOElement {
 				.close-button {
 					position: absolute;
 					width: 40px;
+					min-height: 2rem;
 					top: 0;
 					bottom: 0;
 					right: 0;
