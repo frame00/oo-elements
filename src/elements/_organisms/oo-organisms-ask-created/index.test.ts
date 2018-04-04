@@ -20,8 +20,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		removeElement(ELEMENT)
 		const element = insertElement(ELEMENT, new Map([['data-uid', 'test']]))
 		const project = element.shadowRoot.querySelector('.project')
-		const a = project.querySelector('a')
-		expect(a.getAttribute('href')).to.be('https://ooapp.co/project/test')
+		expect(project.getAttribute('href')).to.be('https://ooapp.co/project/test')
 	})
 
 	after(() => {

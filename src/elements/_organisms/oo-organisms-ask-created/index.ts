@@ -1,5 +1,9 @@
 import {OOElement} from '../../oo-element'
 import {html} from '../../../lib/html'
+import summary from '../../oo-project-summary'
+import define from '../../../lib/define'
+
+define('oo-project-summary', summary)
 
 const ATTR = {
 	DATA_UID: 'data-uid'
@@ -26,9 +30,11 @@ export default class extends OOElement {
 
 	render() {
 		const uid = projectUid.get(this)
+		const projectUrl = `https://ooapp.co/project/${uid}`
 		return html`
 		<style>
 			@import '../../../style/_vars-font-family.css';
+			@import '../../../style/_mixin-button.css';
 			:host {
 				display: block;
 				height: 100%;
@@ -41,22 +47,29 @@ export default class extends OOElement {
 				flex-direction: column;
 				justify-content: center;
 			}
+			section {
+				max-width: 640px;
+			}
 			a {
+				@mixin button;
+				display: block;
+				margin-bottom: 1rem;
 				text-decoration: none;
 				color: inherit;
 			}
-			.project {
-				font-size: 2rem;
+			small {
+				font-size: 0.8rem;
+				font-weight: 700;
 			}
-			.profile {}
 		</style>
 		<main>
-			<p class=project>
-				<a href$='https://ooapp.co/project/${uid}' target=_blank rel=noopener>Created project</a>
-			</p>
-			<p class=profile>
-				<a href='https://ooapp.co/dashboard' target=_blank rel=noopener>View your profile</a>
-			</p>
+			<section>
+				<oo-project-summary data-uid$='${uid}'></oo-project-summary>
+				<small>Sharing URL</small>
+				<a class=project href$='${projectUrl}' target=_blank rel=noopener>${projectUrl}</a>
+				<small>Edit profile</small>
+				<a class=profile href='https://ooapp.co/dashboard' target=_blank rel=noopener>Change your profile</a>
+			</section>
 		</main>
 		`
 	}
