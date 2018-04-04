@@ -1,6 +1,6 @@
 const {navigator} = window
 
-export default (): Array<string> => {
+export default (): ReadonlyArray<string> => {
 	const {languages} = navigator
 	return languages
 }
