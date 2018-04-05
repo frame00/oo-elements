@@ -155,7 +155,6 @@ export default class extends OOElement {
 			this.fetchUserData(uid)
 		} else {
 			stateIam.delete(this)
-			dispatch({message: 'You are not signed in.', type: 'error'})
 			this.update()
 		}
 	}
