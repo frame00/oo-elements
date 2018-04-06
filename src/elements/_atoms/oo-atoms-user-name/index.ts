@@ -110,6 +110,9 @@ export default class extends OOElement {
 					text-decoration: none;
 					color: inherit;
 				}
+				.picture {
+					border-radius: 50%;
+				}
 				&.small {
 					.name {
 						font-size: 1.2rem;
@@ -119,7 +122,6 @@ export default class extends OOElement {
 					}
 					.picture {
 						width: 45px;
-						border-radius: 5px;
 					}
 				}
 				&.medium {
@@ -131,7 +133,6 @@ export default class extends OOElement {
 					}
 					.picture {
 						min-width: 85px;
-						border-radius: 10px;
 					}
 				}
 			}
