@@ -75,7 +75,6 @@ export default class extends OOElement {
 		return html`
 		<style>
 			@import '../../style/_mixin-tags.css';
-			@import '../../style/_vars-color-yellow.css';
 			@import '../../style/_reset-button.css';
 			:host {
 				display: block;
@@ -104,7 +103,8 @@ export default class extends OOElement {
 				padding: 1rem;
 				display: flex;
 				flex-direction: column;
-				background: var(--yellow);
+				background: #1976D2;
+				color: white;
 				.body {
 					max-height: 180px;
 					overflow: hidden;

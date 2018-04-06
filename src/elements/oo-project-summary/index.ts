@@ -90,13 +90,13 @@ export default class extends OOElement {
 			@import '../../style/_mixin-heading.css';
 			@import '../../style/_reset-button.css';
 			@import '../../style/_mixin-tags.css';
-			@import '../../style/_vars-color-yellow.css';
 			:host {
 				display: block;
 			}
 			section {
 				padding: 1.5rem;
-				background: var(--yellow);
+				background: #1976D2;
+				color: white;
 				p {
 					margin: 0;
 					&:not(:last-child) {

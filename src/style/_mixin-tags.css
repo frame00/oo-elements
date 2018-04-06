@@ -14,7 +14,12 @@
 				margin-left: 1rem;
 			}
 			a {
-				color: inherit;
+				display: inline-block;
+				padding: 0.5rem 1rem;
+				background: #0000004d;
+				border-radius: 99px;
+				text-decoration: none;
+				color: white;
 				&::before {
 					content: '#';
 				}
