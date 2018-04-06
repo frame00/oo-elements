@@ -60,10 +60,10 @@ export default class extends OOElement {
 				max-width: 100%;
 			}
 			a {
-				color: #2196f3;
+				color: inherit;
 			}
 			code {
-				background: #ECEFF1;
+				background: #00000011;
 				padding: 0.2rem 0.4rem;
 				border-radius: 3px;
 			}

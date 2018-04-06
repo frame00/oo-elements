@@ -72,7 +72,6 @@ export default class extends OOElement {
 				overflow: hidden;
 			}
 			section {
-				border: 0.5px solid #ccc;
 				border-radius: 18px;
 				word-break: break-all;
 			}

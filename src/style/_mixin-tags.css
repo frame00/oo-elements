@@ -14,7 +14,7 @@
 				margin-left: 1rem;
 			}
 			a {
-				color: #2196f3;
+				color: inherit;
 				&::before {
 					content: '#';
 				}
