@@ -195,6 +195,21 @@
     ]
   },
   {
+    "name": "oo-project-card",
+    "build": [
+      {
+        "format": "umd",
+        "file": "src/elements/oo-project-card/define.ts",
+        "dest": "dist/oo-project-card.js"
+      },
+      {
+        "format": "es",
+        "file": "src/elements/oo-project-card/index.ts",
+        "dest": "dist/oo-project-card.mjs"
+      }
+    ]
+  },
+  {
     "name": "oo-project-messages",
     "build": [
       {

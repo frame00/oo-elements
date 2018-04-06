@@ -13,6 +13,7 @@ import {
 	ooProjectSummary,
 	ooProjectMessages,
 	ooProjectStatus,
+	ooProjectCard,
 	ooForks,
 	ooMessageForm,
 	ooConnectStripe,
@@ -43,6 +44,7 @@ define('oo-project', ooProject)
 define('oo-project-summary', ooProjectSummary)
 define('oo-project-messages', ooProjectMessages)
 define('oo-project-status', ooProjectStatus)
+define('oo-project-card', ooProjectCard)
 define('oo-forks', ooForks)
 define('oo-message-form', ooMessageForm)
 define('oo-connect-stripe', ooConnectStripe)
