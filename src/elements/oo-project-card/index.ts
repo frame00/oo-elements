@@ -27,6 +27,7 @@ const ATTR = {
 
 const stateUid = weakMap<string>()
 const stateProject = weakMap<OOProject>()
+const stateIsUnbeheldBody = weakMap<boolean>()
 
 export default class extends OOElement {
 	static get observedAttributes() {
@@ -50,6 +51,7 @@ export default class extends OOElement {
 		super.disconnectedCallback()
 		stateUid.delete(this)
 		stateProject.delete(this)
+		stateIsUnbeheldBody.delete(this)
 	}
 
 	render() {
@@ -68,11 +70,13 @@ export default class extends OOElement {
 		const assignee = exts.has('assignee') ? exts.get('assignee') : ''
 		const tags = exts.has('tags') ? exts.get('tags') : []
 		const titleHTML = title ? html`<h1>${title}</h1>` : html``
+		const isUnbeheldBody = stateIsUnbeheldBody.get(this)
 
 		return html`
 		<style>
 			@import '../../style/_mixin-tags.css';
 			@import '../../style/_vars-color-yellow.css';
+			@import '../../style/_reset-button.css';
 			:host {
 				display: block;
 			}
@@ -102,11 +106,28 @@ export default class extends OOElement {
 				flex-direction: column;
 				background: var(--yellow);
 				.body {
-					max-height: 200px;
+					max-height: 180px;
 					overflow: hidden;
+					&.collapse {
+						margin-bottom: 1rem;
+						box-shadow: 0 1px 0 0 #0000000f;
+					}
 				}
 				oo-atoms-button {
 					align-self: flex-end;
+				}
+			}
+			button {
+				display: none;
+				&.shown {
+					display: inline-block;
+					padding: .8rem 1.8rem;
+					border-radius: 99px;
+					align-self: center;
+					font-size: 1.2rem;
+					font-weight: 600;
+					box-shadow: 0 5px 20px 0 #00000024;
+					background: white;
 				}
 			}
 			aside {
@@ -132,9 +153,10 @@ export default class extends OOElement {
 					<section slot=body>
 						<oo-project-status data-uid$='${uid}'></oo-project-status>
 						${titleHTML}
-						<div class=body>
+						<div class$='body ${isUnbeheldBody ? 'collapse' : ''}'>
 							<oo-markdown>${body}</oo-markdown>
 						</div>
+						<button class$='${isUnbeheldBody ? 'shown' : ''}'>See all</button>
 						<aside class$='${tags.length > 0 ? 'shown' : ''}'>
 							${tagsTemplate(tags)}
 						</aside>
@@ -146,6 +168,20 @@ export default class extends OOElement {
 			</a>
 		</main>
 		`
+	}
+
+	renderedCallback() {
+		if (stateIsUnbeheldBody.has(this)) {
+			return
+		}
+		const body = this.shadowRoot.querySelector('.body')
+		const md = this.shadowRoot.querySelector('oo-markdown')
+		if (body && md) {
+			const bH = body.clientHeight
+			const mH = md.clientHeight
+			stateIsUnbeheldBody.set(this, bH < mH)
+			this.update()
+		}
 	}
 
 	async fetchProjects(uid: string) {
