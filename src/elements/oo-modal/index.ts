@@ -109,10 +109,10 @@ export default class extends OOElement {
 			}
 			@media (min-width: 768px) {
 				.modal {
-					margin: 3rem auto;
 					padding: 0;
 				}
 				.dialog {
+					margin: 3rem auto;
 					max-width: 740px;
 				}
 			}
