@@ -100,6 +100,7 @@ export default class extends OOElement {
 				padding: 1rem;
 				marign-bottom: 0.5rem;
 				font-family: var(--font-family);
+				background: #ECEFF1;
 			}
 			.paging {
 				margin-bottom: 2rem;

@@ -2,7 +2,6 @@
 
 @define-mixin tags {
 	font-family: var(--font-family);
-	margin-top: 3rem;
 	& {
 		&:empty {
 			display: none;

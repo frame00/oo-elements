@@ -129,23 +129,31 @@ export default class extends OOElement {
 					}
 				}
 			}
-			aside {
-				display: flex;
-				align-items: baseline;
-				justify-content: space-between;
-			}
 			button {
 				padding: 0.2rem 0.6rem;
 				border: 1px solid;
-				border-radius: 5px;
+				border-radius: 99px;
 				font-size: 0.8rem;
-				color: #607d8b;
+				color: white;
 				&:hover {
-					background: #607d8b;
-					color: white;
+					background: #ffffff1a;
 				}
 				&:not(:first-child) {
 					margin-left: 0.5rem;
+				}
+			}
+			aside {
+				display: none;
+				align-items: baseline;
+				justify-content: space-between;
+				&.tag {
+					margin: -2rem;
+					margin-top: 1rem;
+					padding: 2rem;
+					background: #00000020;
+				}
+				&.shown {
+					display: flex;
 				}
 			}
 			.tags {
@@ -155,7 +163,7 @@ export default class extends OOElement {
 		<main>
 			<oo-atoms-message data-tooltip-position=left>
 				<section slot=body>
-					<aside>
+					<aside class=shown>
 						<oo-project-status data-uid$='${uid}'></oo-project-status>
 						<div>
 							${reloadButton(projectUpdated)}
@@ -169,7 +177,9 @@ export default class extends OOElement {
 						return html``
 					})()}
 					<oo-markdown>${body}</oo-markdown>
-					${tagsTemplate(tags)}
+					<aside class$='tag ${tags.length > 0 ? 'shown' : ''}'>
+						${tagsTemplate(tags)}
+					</aside>
 				</section>
 				<footer slot=footer>
 					<oo-molecules-project-users data-author$='${author}' data-assignee$='${assignee}'></oo-molecules-project-users>
