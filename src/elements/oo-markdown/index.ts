@@ -48,6 +48,9 @@ export default class extends OOElement {
 		<style>
 			@import '../../style/_vars-font-family.css';
 			@import '../../../node_modules/highlight.js/styles/atom-one-dark.css';
+			:host {
+				display: block;
+			}
 			main {
 				font-family: var(--font-family);
 			}

@@ -94,11 +94,18 @@ export default class extends OOElement {
 		return html`
 		<style>
 			@import '../../style/_mixin-tags.css';
+			@import '../../style/_vars-color-yellow.css';
 			:host {
 				display: block;
 			}
 			:root {
 				--detail-btn: #3F51B5;
+			}
+			main {
+				> a {
+					display: block;
+					margin-bottom: 5rem;
+				}
 			}
 			oo-atoms-message {
 				&:not(:last-child) {
@@ -108,42 +115,37 @@ export default class extends OOElement {
 			oo-project-status {
 				margin-bottom: 0.5rem;
 			}
+			a {
+				color: inherit;
+			}
 			section {
 				padding: 1rem;
 				display: flex;
 				flex-direction: column;
+				background: var(--yellow);
+				.body {
+					max-height: 200px;
+					overflow: hidden;
+				}
 				oo-atoms-button {
 					align-self: flex-end;
 				}
 			}
 			aside {
-				display: flex;
+				display: none;
+				margin: -1rem;
+				margin-top: 1rem;
+				padding: 1rem;
+				background: #00000020;
 				align-items: baseline;
 				justify-content: space-between;
-				.detail {
-					padding: 0.6rem 1rem;
-					max-width: 3rem;
-					min-width: 3rem;
-					margin-left: 1rem;
-					text-align: center;
-					font-size: 1rem;
-					text-decoration: none;
-					background: white;
-					border: 0.5px solid;
-					color: var(--detail-btn);
-					border-radius: 5px;
-					&:hover {
-						color: white;
-						background: var(--detail-btn);
-					}
+				&.shown {
+					display: flex;
 				}
 			}
 			.tags {
 				@mixin tags;
 				margin-top: 0;
-				&:empty {
-					display: block;
-				}
 			}
 		</style>
 		<main>
@@ -157,22 +159,23 @@ export default class extends OOElement {
 				const tags = exts.has('tags') ? exts.get('tags') : []
 				const titleHTML = title ? html`<h1>${title}</h1>` : html``
 				return html`
-				<oo-atoms-message>
-					<section slot=body>
-						<oo-project-status data-uid$='${uid}'></oo-project-status>
-						${titleHTML}
-						<div class=body>
-							<oo-markdown>${body}</oo-markdown>
-						</div>
-						<aside>
-							${tagsTemplate(tags)}
-							<a class=detail href$='${href(`/project/${uid}`)}'>Detail</a>
-						</aside>
-					</section>
-					<footer slot=footer>
-						<oo-molecules-project-users data-author$='${offerer}' data-assignee$='${assignee}'></oo-molecules-project-users>
-					</footer>
-				</oo-atoms-message>
+				<a href$='${href(`/project/${uid}`)}'>
+					<oo-atoms-message>
+						<section slot=body>
+							<oo-project-status data-uid$='${uid}'></oo-project-status>
+							${titleHTML}
+							<div class=body>
+								<oo-markdown>${body}</oo-markdown>
+							</div>
+							<aside class$='${tags.length > 0 ? 'shown' : ''}'>
+								${tagsTemplate(tags)}
+							</aside>
+						</section>
+						<footer slot=footer>
+							<oo-molecules-project-users data-author$='${offerer}' data-assignee$='${assignee}'></oo-molecules-project-users>
+						</footer>
+					</oo-atoms-message>
+				</a>
 				`
 			})}
 			${more}
