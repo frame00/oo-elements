@@ -123,7 +123,7 @@ export default class extends OOElement {
 				padding: 1rem;
 				background: whitesmoke;
 				font-size: 0.8rem;
-				border-radius: 5px;
+				border-radius: 10px;
 			}
 			button {
 				text-transform: capitalize;

@@ -130,7 +130,7 @@ export default class extends OOElement {
 				width: 100%;
 				padding: 1rem;
 				font-size: 1.2rem;
-				border-radius: 5px;
+				border-radius: 99px;
 			}
 			.steps {
 				width: 100%;
@@ -157,7 +157,7 @@ export default class extends OOElement {
 			.step {
 				width: 100%;
 				.authorization {
-					border: 0.5px solid #ccc;
+					border: 2px solid #00000022;
 					background: var(--authorization);
 					&:hover {
 						background: color(var(--authorization) blackness(+10%));
@@ -165,7 +165,7 @@ export default class extends OOElement {
 				}
 				.signin {}
 				.submit {
-					border: 0.5px solid color(var(--submit) blackness(+10%));
+					border: none;
 					background: var(--submit);
 					&:hover {
 						background: color(var(--submit) blackness(+10%));

@@ -1,10 +1,10 @@
 :root {
 	--default-background: whitesmoke;
 	--focused-shadow: 0 0 0 3px #0000ff4d;
-	--focused-border: 0.5px solid blue;
+	--focused-border: 2px solid blue;
 	--focused-background: white;
 	--resolved-background: #00cd30;
-	--resolved-border: 0.5px solid color(#00cd30 blackness(+20%));
+	--resolved-border: 2px solid color(#00cd30 blackness(+20%));
 	--rejected-background: #ff3400;
-	--rejected-border: 0.5px solid color(#ff3400 blackness(+20%));
+	--rejected-border: 2px solid color(#ff3400 blackness(+20%));
 }

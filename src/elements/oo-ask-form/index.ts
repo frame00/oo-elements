@@ -190,7 +190,7 @@ export default class extends OOElement {
 			}
 			main {
 				padding: 1rem;
-				border-radius: 5px;
+				border-radius: 10px;
 				border: 2px solid #607d8b21;
 			}
 			input,
@@ -216,8 +216,8 @@ export default class extends OOElement {
 				min-height: 4rem;
 			}
 			.scope {
-				padding: 0.3rem 0.5rem;
-				border-radius: 5px;
+				padding: 0.3rem 0.8rem;
+				border-radius: 99px;
 				font-size: 0.8rem;
 				color: white;
 				margin-bottom: 1rem;
@@ -256,14 +256,13 @@ export default class extends OOElement {
 					flex-wrap: wrap;
 					align-items: baseline;
 					.tag {
-						padding: .3rem;
+						padding: 0.3rem 0.6rem;
 						background: #00000066;
 						color: white;
-						border-radius: 5px;
 						font-family: monospace;
 						user-select: none;
 						cursor: pointer;
-						border-radius: 5px;
+						border-radius: 99px;
 						line-height: 100%;
 						&:not(:last-child) {
 							margin: 0 .3rem .3rem;

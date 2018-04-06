@@ -114,7 +114,7 @@ export default class extends OOElement {
 			.state {
 				display: inline-block;
 				padding: 0.2rem 0.4rem;
-				border-radius: 2px;
+				border-radius: 99px;
 				font-size: 0.8rem;
 				color: white;
 				&.error {

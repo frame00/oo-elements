@@ -53,7 +53,7 @@ export default class extends OOElement {
 				animation-name: showNotification;
 				animation-duration: 0.3s;
 				animation-fill-mode: forwards;
-				border-radius: 5px;
+				border-radius: 10px;
 				background: whitesmoke;
 				font-family: var(--font-family);
 				&.success {

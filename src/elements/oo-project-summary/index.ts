@@ -203,7 +203,7 @@ export default class extends OOElement {
 			}
 			div {
 				height: 2rem;
-				border-radius: 5px;
+				border-radius: 10px;
 				margin-bottom: 1rem;
 				@mixin progress;
 			}

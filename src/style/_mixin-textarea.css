@@ -3,12 +3,13 @@
 @define-mixin textarea {
 	width: 100%;
 	padding: 0.5rem;
-	border: 0.5px solid #ccc;
-	border-radius: 5px;
+	border: 2px solid #00000022;
+	border-radius: 10px;
 	box-sizing: border-box;
 	height: 6rem;
 	font-size: 1rem;
 	background: var(--default-background);
+	outline: none;
 	&:focus {
 		border: var(--focused-border);
 		box-shadow: var(--focused-shadow);

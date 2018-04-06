@@ -107,7 +107,7 @@ export default class extends OOElement {
 			button {
 				display: flex;
 				align-items: stretch;
-				border-radius: 6px;
+				border-radius: 11px;
 				overflow: hidden;
 				transition-property: box-shadow;
 				transition-duration: 0.2s;

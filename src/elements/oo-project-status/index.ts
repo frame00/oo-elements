@@ -60,8 +60,8 @@ export default class extends OOElement {
 			span,
 			a {
 				display: inline-block;
-				padding: 0.2rem 0.6rem;
-				border-radius: 5px;
+				padding: 0.2rem 0.8rem;
+				border-radius: 99px;
 				color: white;
 				font-size: 0.8rem;
 				text-transform: capitalize;

@@ -87,7 +87,7 @@ export default class extends OOElement {
 				width: inherit;
 				height: inherit;
 				padding: 0.8rem 1rem;
-				border-radius: 5px;
+				border-radius: 99px;
 				color: white;
 				font-family: var(--font-family);
 				transition: background 0.2s, transform 0.2s;

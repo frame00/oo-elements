@@ -66,7 +66,7 @@ export default class extends OOElement {
 				display: flex;
 				border: 2px solid;
 				padding: 0 1rem;
-				border-radius: 5px;
+				border-radius: 10px;
 				text-transform: capitalize;
 				margin-left: 1rem;
 				&[disabled] {

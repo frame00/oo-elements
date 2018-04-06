@@ -4,10 +4,10 @@
 @import './_vars-font-family.css';
 
 @define-mixin button {
-	padding: 1rem;
+	padding: 0.8rem 2rem;
 	font-size: 1.2rem;
-	border-radius: 5px;
-	border: 0.5px solid #ccc;
+	border-radius: 99px;
+	border: 2px solid #00000022;
 	background: white;
 	font-family: var(--font-family);
 	&:hover:not(.progress):not(.resolved):not(.rejected) {
