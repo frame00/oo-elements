@@ -207,9 +207,6 @@ export default class extends OOElement {
 					font-family: var(--font-family);
 					color: var(--placeholder-color);
 				}
-				&:focus {
-					outline: none;
-				}
 			}
 			textarea {
 				font-family: monospace;
