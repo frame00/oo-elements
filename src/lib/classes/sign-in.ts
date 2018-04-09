@@ -75,6 +75,7 @@ export default class extends OOElement {
 		<style>
 			@import '../../style/_reset-button.css';
 			@import '../../style/_vars-font-family.css';
+			@import '../../style/_vars-input.css';
 			:host {
 				display: inline-block;
 			}
@@ -94,6 +95,10 @@ export default class extends OOElement {
 				&:active {
 					position: relative;
 					transform: translateY(2px);
+				}
+				&:focus {
+					border: var(--focused-border);
+					border-color: black;
 				}
 			}
 			.google {

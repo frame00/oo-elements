@@ -107,13 +107,15 @@ export default class extends OOElement {
 			}
 			return auth ? 'signin' : 'ask'
 		})()
+		const doOverflowHidden = step === 'ask' || step === 'signin'
 
 		return html`
 		<style>
-			@import '../../style/_reset-button.css';
 			@import '../../style/_vars-font-family.css';
 			@import '../../style/_vars-color-yellow.css';
+			@import '../../style/_mixin-button.css';
 			@import '../../style/_mixin-button-progress.css';
+			@import '../../style/_vars-input.css';
 			:host {
 				display: block;
 			}
@@ -127,14 +129,15 @@ export default class extends OOElement {
 				box-sizing: border-box;
 			}
 			button {
+				@mixin button;
 				width: 100%;
-				padding: 1rem;
 				font-size: 1.2rem;
-				border-radius: 99px;
 			}
 			.steps {
 				width: 100%;
-				overflow: hidden;
+				&.hidden {
+					overflow: hidden;
+				}
 				ul {
 					width: 300%;
 					display: flex;
@@ -156,6 +159,13 @@ export default class extends OOElement {
 			}
 			.step {
 				width: 100%;
+				padding: 5px;
+				box-sizing: border-box;
+				&:not([active]) {
+					* {
+						display: none;
+					}
+				}
 				.authorization {
 					border: 2px solid #00000022;
 					background: var(--authorization);
@@ -163,10 +173,11 @@ export default class extends OOElement {
 						background: color(var(--authorization) blackness(+10%));
 					}
 				}
-				.signin {}
 				.submit {
 					border: none;
-					background: var(--submit);
+					&:not(.disabled) {
+						background: var(--submit);
+					}
 					&:hover {
 						background: color(var(--submit) blackness(+10%));
 					}
@@ -183,7 +194,7 @@ export default class extends OOElement {
 			}
 		</style>
 		<oo-ask-form data-iam$='${uid ? uid : ''}' data-tags$='${tags.join(' ')}' data-scope$='${scope}' on-changed='${e => this.onAskChanged(e)}'></oo-ask-form>
-		<div class=steps>
+		<div class$='steps ${doOverflowHidden ? 'hidden' : ''}'>
 			<ul class$='${step}'>
 				<li class=step active?='${step === 'ask'}'>
 					<button class=authorization on-click='${() => this.onAuthorization()}'>Authenticate</button>
