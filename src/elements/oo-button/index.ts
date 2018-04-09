@@ -144,7 +144,7 @@ export default class extends OOElement {
 				}
 			}
 		</style>
-		<button title='Click to send me an offer' class$='${s}' on-click='${() => this.onClickButton()}'>
+		<button class$='${s}' on-click='${() => this.onClickButton()}'>
 			<oo-atoms-badge data-size$='${s}'></oo-atoms-badge>
 			<div class=text>${label}</div>
 		</button>
