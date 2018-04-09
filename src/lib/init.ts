@@ -4,8 +4,8 @@ import unsupported from './unsupported-banner'
 
 export default (elementName: string, el: Function) => {
 	if (stop() === false) {
-		define(name, el)
+		define(elementName, el)
 	} else {
-		unsupported(name)
+		unsupported(elementName)
 	}
 }
