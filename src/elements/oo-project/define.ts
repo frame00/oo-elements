@@ -1,7 +1,4 @@
-import stop from '../../lib/stop-when-unsupported'
-import define from '../../lib/define'
+import init from '../../lib/init'
 import el from './index'
 
-if (stop() === false) {
-	define('oo-project', el)
-}
+init('oo-project', el)

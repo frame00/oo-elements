@@ -1,7 +1,4 @@
-import stop from '../../lib/stop-when-unsupported'
-import define from '../../lib/define'
+import init from '../../lib/init'
 import el from './index'
 
-if (stop() === false) {
-	define('oo-ask-with-sign-in', el)
-}
+init('oo-ask-with-sign-in', el)
