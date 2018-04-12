@@ -1,17 +1,17 @@
 import {OOElement} from '../oo-element'
-import {repeat} from 'lit-html/lib/repeat'
 import {html, render} from '../../lib/html'
 import getUser from '../../lib/oo-api-get-user'
 import isSuccess from '../../lib/is-api-success'
 import toMap from '../../lib/extensions-to-map'
-import lineBreak from '../../lib/line-break'
 import empty from '../oo-empty'
 import userName from '../_atoms/oo-atoms-user-name'
+import markdown from '../oo-markdown'
 import define from '../../lib/define'
 import weakMap from '../../lib/weak-map'
 
 define('oo-empty', empty)
 define('oo-atoms-user-name', userName)
+define('oo-markdown', markdown)
 
 const ATTR = {
 	DATA_IAM: 'data-iam'
@@ -53,7 +53,6 @@ export default class extends OOElement {
 			<oo-empty></oo-empty>
 			`
 		}
-		const bi = lineBreak(b)
 		return html`
 		<style>
 			@import '../../style/_vars-font-family.css';
@@ -69,14 +68,6 @@ export default class extends OOElement {
 			article {
 				margin-bottom: 1rem;
 			}
-			.bio {
-				font-family: var(--font-family);
-				p {
-					margin-bottom: 1rem;
-					font-size: 1rem;
-					line-height: 1.4rem;
-				}
-			}
 			header {
 				margin-bottom: 1rem;
 			}
@@ -85,9 +76,7 @@ export default class extends OOElement {
 			<header>
 				<oo-atoms-user-name data-iam$='${i}'></oo-atoms-user-name>
 			</header>
-			<div class=bio>
-				${repeat(bi, bios => html`<p>${bios}</p>`)}
-			</div>
+			<oo-markdown>${b}</oo-markdown>
 		</div>
 		`
 	}

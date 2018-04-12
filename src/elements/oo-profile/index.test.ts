@@ -27,9 +27,8 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		removeElement(ELEMENT)
 		const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
 		await sleep(300)
-		Array.prototype.forEach.call(element.shadowRoot.querySelectorAll('.bio > p'), i => {
-			expect(i.textContent).to.be('test')
-		})
+		const bio = element.shadowRoot.querySelector('oo-markdown').innerHTML
+		expect(bio).to.be('test\ntest\ntest')
 	})
 
 	it('Display <oo-empty> when there is a User UID that does not exist', async () => {
