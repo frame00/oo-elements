@@ -194,7 +194,7 @@ export default class extends OOElement {
 		`
 	}
 
-	progress() {
+	placeholder() {
 		const template = html`
 		<style>
 			@import '../../style/_mixin-button-progress.css';
@@ -242,7 +242,7 @@ export default class extends OOElement {
 	}
 
 	async fetchProject(uid: string) {
-		this.progress()
+		this.placeholder()
 		const api = await getProject(uid)
 		const {response} = api
 		if (Array.isArray(response)) {

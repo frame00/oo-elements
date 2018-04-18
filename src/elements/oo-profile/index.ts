@@ -34,7 +34,7 @@ export default class extends OOElement {
 			return
 		}
 		iam.set(this, next)
-		this.progress()
+		this.placeholder()
 		this.fetchUserData()
 	}
 
@@ -81,7 +81,7 @@ export default class extends OOElement {
 		`
 	}
 
-	progress() {
+	placeholder() {
 		const template = html`
 		<style>
 			@import '../../style/_mixin-button-progress.css';
