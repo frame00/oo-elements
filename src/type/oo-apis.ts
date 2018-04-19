@@ -26,4 +26,3 @@ export interface OOAPIRequestBodyPayments {
 export interface OOAPIRequestBody {
 	Extensions?: OOExtensions
 }
-

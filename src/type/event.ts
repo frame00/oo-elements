@@ -1,11 +1,9 @@
 import {OOMessage} from './oo-message'
 import {OOUserConnectStripe} from './oo-user'
-import { OOAPIResponseError } from './oo-api-response';
-import { OOAPIResult } from './oo-api';
-import { Scope } from './scope';
-import currency from '../conf/currency';
-import { Currency } from './currency';
-import { OOProject } from './oo-project';
+import {OOAPIResult} from './oo-api'
+import {Scope} from './scope'
+import {Currency} from './currency'
+import {OOProject} from './oo-project'
 
 export interface MessageVariationErrorDetail {
 	message: 'body required'

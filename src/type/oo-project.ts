@@ -5,3 +5,5 @@ export interface OOProject {
 	created: number,
 	Extensions?: OOExtensions
 }
+
+export type ProjectType = 'post' | 'ask' | 'skill'
