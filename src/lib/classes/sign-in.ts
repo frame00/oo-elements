@@ -1,6 +1,6 @@
 import {OOElement} from '../../elements/oo-element'
 import {html} from '../html'
-import {AuthProvider} from '../../type/auth-provider.d'
+import {AuthProvider} from '../../type/auth-provider'
 import store from '../local-storage'
 import {SignedInDetail, SignedIn, SignedInError, SignedInErrorDetail} from '../../type/event'
 import {attach, dispatch} from '../notification'
