@@ -5,6 +5,7 @@ import {OOProject} from '../type/oo-project'
 import {Scope} from '../type/scope'
 import createExtensions from '../lib/create-extensions'
 import {Currency} from '../type/currency'
+import calculateProjectType from './calculate-project-type-with-extensions'
 
 interface ProjectOptionsPost {
 	body: string,
@@ -18,12 +19,14 @@ interface ProjectOptionsPost {
 
 export default async (options: ProjectOptionsPost): Promise<OOAPIResult<OOProject>> => {
 	const extensions = createExtensions(options)
+	const type = calculateProjectType(extensions)
+	const typeContainedExtensions = [...extensions, ...createExtensions({type})]
 
 	const ooapiRes = await api<OOProject>({
 		resource: 'projects',
 		method: 'POST',
 		body: {
-			Extensions: extensions
+			Extensions: typeContainedExtensions
 		}
 	})
 
