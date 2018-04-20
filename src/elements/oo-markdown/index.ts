@@ -74,6 +74,7 @@ export default class extends OOElement {
 				&.hljs {
 					padding: 1.5rem;
 					border-radius: 5px;
+					background: black;
 				}
 				code {
 					background: none;
