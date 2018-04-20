@@ -5,7 +5,7 @@ import {OOProject} from '../type/oo-project'
 import {Scope} from '../type/scope'
 import createExtensions from '../lib/create-extensions'
 import {Currency} from '../type/currency'
-import calculateProjectType from './calculate-project-type-with-extensions'
+import calculateProjectType from './calculate-project-type'
 
 interface ProjectOptionsPost {
 	body: string,
