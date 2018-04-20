@@ -28,8 +28,8 @@ e.g. Use stable mjs
 
 ```html
 <script type="module">
-  import {ooButton} from 'https://elements.ooapp.co/stable/oo-elements.mjs'
-  window.customElements.define('oo-button', ooButton)
+  import {OOButton} from 'https://elements.ooapp.co/stable/oo-elements.mjs'
+  window.customElements.define('oo-button', OOButton)
 </script>
 
 <oo-button data-iam="{Your Double O UID}"></oo-button>
@@ -70,7 +70,7 @@ import 'oo-elements'
 Import ES Module
 
 ```js
-import {ooButton} from 'oo-elements/dist/oo-elements.mjs'
+import {OOButton} from 'oo-elements/dist/oo-elements.mjs'
 ```
 
 # Development
