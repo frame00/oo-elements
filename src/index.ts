@@ -27,6 +27,7 @@ import OOVersion from './elements/oo-version'
 import OOEmpty from './elements/oo-empty'
 import OODeleteAccount from './elements/oo-delete-account'
 import OOMarkdown from './elements/oo-markdown'
+import OOReaction from './elements/oo-reaction'
 
 export {
 	OOButton,
@@ -57,5 +58,6 @@ export {
 	OOVersion,
 	OOEmpty,
 	OODeleteAccount,
-	OOMarkdown
+	OOMarkdown,
+	OOReaction
 }

@@ -28,7 +28,8 @@ import {
 	OOVersion,
 	OOEmpty,
 	OODeleteAccount,
-	OOMarkdown
+	OOMarkdown,
+	OOReaction
 } from './index'
 
 init('oo-button', OOButton)
@@ -60,3 +61,4 @@ init('oo-version', OOVersion)
 init('oo-empty', OOEmpty)
 init('oo-delete-account', OODeleteAccount)
 init('oo-markdown', OOMarkdown)
+init('oo-reaction', OOReaction)
