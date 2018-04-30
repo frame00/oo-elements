@@ -1,8 +1,10 @@
-type Picture = string | {
-	data: {
-		url: string
-	}
-}
+type Picture =
+	| string
+	| {
+			data: {
+				url: string
+			}
+	  }
 
 export default (picture: Picture): string => {
 	if (picture === undefined || picture === null) {

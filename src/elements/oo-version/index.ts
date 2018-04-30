@@ -1,6 +1,6 @@
-import {html, render} from 'lit-html'
+import { html, render } from 'lit-html'
 
-const {PACKAGE_VERSION: version} = process.env
+const { PACKAGE_VERSION: version } = process.env
 
 export default class extends HTMLElement {
 	connectedCallback() {

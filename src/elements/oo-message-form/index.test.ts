@@ -24,19 +24,26 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Make the message', () => {
 		it('Message sender set to "data-iam" attribute value', () => {
-			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+			const element: any = insertElement(
+				ELEMENT,
+				new Map([['data-iam', 'test']])
+			)
 			expect(element.message.author).to.be('test')
 		})
 
 		it('Message value for extensions set to "data-extensions" attribute value', () => {
-			const element: any = insertElement(ELEMENT,
-				new Map([['data-extensions', JSON.stringify({users: ['test']})]])
+			const element: any = insertElement(
+				ELEMENT,
+				new Map([['data-extensions', JSON.stringify({ users: ['test'] })]])
 			)
 			expect(element.message.users).to.eql(['test'])
 		})
 
-		it('textarea\'s value set to message body', done => {
-			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+		it("textarea's value set to message body", done => {
+			const element: any = insertElement(
+				ELEMENT,
+				new Map([['data-iam', 'test']])
+			)
 			const textarea = element.shadowRoot.querySelector('textarea')
 			textarea.value = 'Body'
 			textarea.dispatchEvent(new Event('change'))
@@ -48,7 +55,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 		describe('Specify allowed extension by TOML format', () => {
 			it('type, amount, and currency', async () => {
-				const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+				const element: any = insertElement(
+					ELEMENT,
+					new Map([['data-iam', 'test']])
+				)
 				const textarea = element.shadowRoot.querySelector('textarea')
 				textarea.value = `
 				+++
@@ -66,22 +76,32 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 			describe('"amounts" and "currency" are required when "type" is "pay"', () => {
 				it('amount is not found', done => {
-					const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+					const element: any = insertElement(
+						ELEMENT,
+						new Map([['data-iam', 'test']])
+					)
 					const textarea = element.shadowRoot.querySelector('textarea')
 					textarea.value = `
 					+++
 					type = 'pay'
 					+++
 					`
-					document.addEventListener('oonotification', (e: CustomEvent) => {
-						expect(e.detail.message).to.contain('Invalid body')
-						done()
-					}, {once: true})
+					document.addEventListener(
+						'oonotification',
+						(e: CustomEvent) => {
+							expect(e.detail.message).to.contain('Invalid body')
+							done()
+						},
+						{ once: true }
+					)
 					event(textarea, 'change')
 				})
 
 				it('amount is invalid type', done => {
-					const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+					const element: any = insertElement(
+						ELEMENT,
+						new Map([['data-iam', 'test']])
+					)
 					const textarea = element.shadowRoot.querySelector('textarea')
 					textarea.value = `
 					+++
@@ -89,15 +109,22 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 					amount = 'xxx'
 					+++
 					`
-					document.addEventListener('oonotification', (e: CustomEvent) => {
-						expect(e.detail.message).to.contain('Invalid body')
-						done()
-					}, {once: true})
+					document.addEventListener(
+						'oonotification',
+						(e: CustomEvent) => {
+							expect(e.detail.message).to.contain('Invalid body')
+							done()
+						},
+						{ once: true }
+					)
 					event(textarea, 'change')
 				})
 
 				it('currency is not found', done => {
-					const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+					const element: any = insertElement(
+						ELEMENT,
+						new Map([['data-iam', 'test']])
+					)
 					const textarea = element.shadowRoot.querySelector('textarea')
 					textarea.value = `
 					+++
@@ -105,15 +132,22 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 					amount = 10
 					+++
 					`
-					document.addEventListener('oonotification', (e: CustomEvent) => {
-						expect(e.detail.message).to.contain('Invalid body')
-						done()
-					}, {once: true})
+					document.addEventListener(
+						'oonotification',
+						(e: CustomEvent) => {
+							expect(e.detail.message).to.contain('Invalid body')
+							done()
+						},
+						{ once: true }
+					)
 					event(textarea, 'change')
 				})
 
 				it('currency is invalid type', done => {
-					const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+					const element: any = insertElement(
+						ELEMENT,
+						new Map([['data-iam', 'test']])
+					)
 					const textarea = element.shadowRoot.querySelector('textarea')
 					textarea.value = `
 					+++
@@ -122,10 +156,14 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 					currency = ''
 					+++
 					`
-					document.addEventListener('oonotification', (e: CustomEvent) => {
-						expect(e.detail.message).to.contain('Invalid body')
-						done()
-					}, {once: true})
+					document.addEventListener(
+						'oonotification',
+						(e: CustomEvent) => {
+							expect(e.detail.message).to.contain('Invalid body')
+							done()
+						},
+						{ once: true }
+					)
 					event(textarea, 'change')
 				})
 			})
@@ -134,19 +172,25 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Send message', () => {
 		it('Send a message when click <oo-atoms-button>', done => {
-			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+			const element: any = insertElement(
+				ELEMENT,
+				new Map([['data-iam', 'test']])
+			)
 			const button = element.shadowRoot.querySelector('oo-atoms-button')
 			element.addEventListener('messagesent', () => {
 				done()
 			})
-			element.onMessageChange({target: {value: 'Body'}})
+			element.onMessageChange({ target: { value: 'Body' } })
 			button.dispatchEvent(new Event('clicked'))
 		})
 	})
 
 	describe('Dispatch events', () => {
 		it('Dispatch "messagesent" event when sent message', done => {
-			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+			const element: any = insertElement(
+				ELEMENT,
+				new Map([['data-iam', 'test']])
+			)
 			element.addEventListener('messagesent', () => {
 				done()
 			})
@@ -162,7 +206,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 
 		it('Dispatch "messagevariationerror" event when fail in validating message', done => {
-			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+			const element: any = insertElement(
+				ELEMENT,
+				new Map([['data-iam', 'test']])
+			)
 			element.addEventListener('messagevariationerror', () => {
 				done()
 			})
@@ -172,11 +219,14 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Validating message', () => {
 		it('empty body', done => {
-			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+			const element: any = insertElement(
+				ELEMENT,
+				new Map([['data-iam', 'test']])
+			)
 			element.addEventListener('messagevariationerror', () => {
 				done()
 			})
-			element.onMessageChange({target: {value: ''}})
+			element.onMessageChange({ target: { value: '' } })
 			element.sendMessage()
 		})
 	})

@@ -1,5 +1,5 @@
-import {OOElement} from '../oo-element'
-import {html, render} from '../../lib/html'
+import { OOElement } from '../oo-element'
+import { html, render } from '../../lib/html'
 import getProject from '../../lib/oo-api-get-project'
 import toMap from '../../lib/extensions-to-map'
 import define from '../../lib/define'
@@ -12,7 +12,7 @@ import modal from '../oo-modal'
 import projectStatus from '../oo-project-status'
 import weakMap from '../../lib/weak-map'
 import store from '../../lib/local-storage'
-import {template as tagsTemplate} from '../../lib/tags'
+import { template as tagsTemplate } from '../../lib/tags'
 
 define('oo-markdown', markdown)
 define('oo-atoms-message', message)
@@ -29,7 +29,7 @@ const ATTR = {
 const projectUid = weakMap<string>()
 const projectTitle = weakMap<string>()
 const projectBody = weakMap<string>()
-const projectTags = weakMap<Array<string>>()
+const projectTags = weakMap<string[]>()
 const projectAuthor = weakMap<string>()
 const projectAssignee = weakMap<string>()
 const projectCreated = weakMap<number>()
@@ -68,7 +68,8 @@ export default class extends OOElement {
 		const reloadButton = (show: boolean) => {
 			// This is a plan to delete. No need for testing.
 			if (show) {
-				return html`<button on-click='${() => this.fetchProject(uid)}'>Reload</button>`
+				return html`<button on-click='${() =>
+					this.fetchProject(uid)}'>Reload</button>`
 			}
 			return html``
 		}
@@ -80,7 +81,8 @@ export default class extends OOElement {
 		}
 		const modalBody = (show: boolean) => {
 			if (show) {
-				return html`<oo-project-editor slot=body data-uid$='${uid}' on-updated='${() => this.onProjectUpdated()}'></oo-project-editor>`
+				return html`<oo-project-editor slot=body data-uid$='${uid}' on-updated='${() =>
+					this.onProjectUpdated()}'></oo-project-editor>`
 			}
 			return html``
 		}
@@ -187,7 +189,8 @@ export default class extends OOElement {
 				</footer>
 			</oo-atoms-message>
 		</main>
-		<oo-modal data-open$='${editor ? 'enabled' : 'disabled'}' on-close='${() => this.closedEditor()}'>
+		<oo-modal data-open$='${editor ? 'enabled' : 'disabled'}' on-close='${() =>
+			this.closedEditor()}'>
 			<div slot=header><h2>Edit post</h2></div>
 			${modalBody(editor)}
 		</oo-modal>
@@ -244,7 +247,7 @@ export default class extends OOElement {
 	async fetchProject(uid: string) {
 		this.placeholder()
 		const api = await getProject(uid)
-		const {response} = api
+		const { response } = api
 		if (Array.isArray(response)) {
 			const [item] = response
 			const mapedExtensions = toMap(item)

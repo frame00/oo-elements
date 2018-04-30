@@ -4,7 +4,7 @@ import insertElement from '../../lib/test/insert-element'
 import getElement from '../../lib/test/get-element'
 import removeElement from '../../lib/test/remove-element'
 import event from '../../lib/test/event'
-const {document} = window
+const { document } = window
 
 const ELEMENT = 'oo-nav'
 
@@ -24,14 +24,17 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Show slot', () => {
 		it('Show "item" slot as nav inner contents', () => {
-			document.body.insertAdjacentHTML('afterbegin', `
+			document.body.insertAdjacentHTML(
+				'afterbegin',
+				`
 			<oo-nav>
 				<a slot=item>1</a>
 				<a slot=item>2</a>
 				<a slot=item>3</a>
-			</oo-nav>`)
+			</oo-nav>`
+			)
 			const element = getElement(ELEMENT)[0]
-			const slotHeader: HTMLSlotElement = element.shadowRoot.querySelector('nav slot[name=item]')
+			const slotHeader = element.shadowRoot.querySelector('nav slot[name=item]')
 			const assigned = slotHeader.assignedNodes()
 			expect(assigned[0].textContent).to.be('1')
 			expect(assigned[1].textContent).to.be('2')
@@ -39,23 +42,33 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 
 		it('Show "brand" slot as nav inner contents', () => {
-			document.body.insertAdjacentHTML('afterbegin', `
+			document.body.insertAdjacentHTML(
+				'afterbegin',
+				`
 			<oo-nav>
 				<div slot=brand>The Brand</div>
-			</oo-nav>`)
+			</oo-nav>`
+			)
 			const element = getElement(ELEMENT)[0]
-			const slotHeader: HTMLSlotElement = element.shadowRoot.querySelector('nav slot[name=brand]')
+			const slotHeader = element.shadowRoot.querySelector(
+				'nav slot[name=brand]'
+			)
 			const assigned = slotHeader.assignedNodes()
 			expect(assigned[0].textContent).to.be('The Brand')
 		})
 
 		it('Show "footer" slot as nav inner contents', () => {
-			document.body.insertAdjacentHTML('afterbegin', `
+			document.body.insertAdjacentHTML(
+				'afterbegin',
+				`
 			<oo-nav>
 				<div slot=footer>Footer</div>
-			</oo-nav>`)
+			</oo-nav>`
+			)
 			const element = getElement(ELEMENT)[0]
-			const slotHeader: HTMLSlotElement = element.shadowRoot.querySelector('nav slot[name=footer]')
+			const slotHeader = element.shadowRoot.querySelector(
+				'nav slot[name=footer]'
+			)
 			const assigned = slotHeader.assignedNodes()
 			expect(assigned[0].textContent).to.be('Footer')
 		})
@@ -63,13 +76,19 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Attribuets', () => {
 		it('Pass the value of "data-direction" to the <nav> element', () => {
-			const element = insertElement(ELEMENT, new Map([['data-direction', 'column']]))
+			const element = insertElement(
+				ELEMENT,
+				new Map([['data-direction', 'column']])
+			)
 			const nav = element.shadowRoot.querySelector('nav')
 			expect(nav.classList.toString()).to.contain('column')
 		})
 
 		it('If "data-direction" is other than "column", pass "column"', () => {
-			const element = insertElement(ELEMENT, new Map([['data-direction', 'xxx']]))
+			const element = insertElement(
+				ELEMENT,
+				new Map([['data-direction', 'xxx']])
+			)
 			const nav = element.shadowRoot.querySelector('nav')
 			expect(nav.classList.toString()).to.contain('column')
 

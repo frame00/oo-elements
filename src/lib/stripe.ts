@@ -1,5 +1,5 @@
-import {cdn} from '../conf/stripe'
-const {document} = window
+import { cdn } from '../conf/stripe'
+const { document } = window
 
 declare global {
 	interface Window {

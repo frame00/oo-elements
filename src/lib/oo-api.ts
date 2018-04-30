@@ -1,22 +1,40 @@
-import {stringify} from 'query-string'
-import {OOAPIResponse, OOAPIResponseError} from '../type/oo-api-response'
-import {OOAPIResource, OOAPIVersion, OOAPIRequestBody, OOAPIRequestBodyUsers, OOAPIRequestBodyPayments, OOAPIRequestUsersConnectStripe} from '../type/oo-apis'
-import {OOAPIResult} from '../type/oo-api'
+import { stringify } from 'query-string'
+import { OOAPIResponse, OOAPIResponseError } from '../type/oo-api-response'
+import {
+	OOAPIResource,
+	OOAPIVersion,
+	OOAPIRequestBody,
+	OOAPIRequestBodyUsers,
+	OOAPIRequestBodyPayments,
+	OOAPIRequestUsersConnectStripe
+} from '../type/oo-apis'
+import { OOAPIResult } from '../type/oo-api'
 import state from './state'
 import store from './local-storage'
-import {url, version as _version} from '../conf/api'
-const {fetch} = window
+import { url, version as _version } from '../conf/api'
+const { fetch } = window
 
-const endpoints = (resource: OOAPIResource, pathParameter?: string, query?: any, version: OOAPIVersion = _version): string => {
-	return `${url}/${version}/${resource}${pathParameter ? `/${pathParameter}` : ''}${query ? `?${stringify(query)}` : ''}`
-}
-
-interface Options {
+const endpoints = (
 	resource: OOAPIResource,
 	pathParameter?: string,
 	query?: any,
-	method?: string,
-	body?: OOAPIRequestBody | OOAPIRequestBodyUsers | OOAPIRequestUsersConnectStripe | OOAPIRequestBodyPayments,
+	version: OOAPIVersion = _version
+): string => {
+	return `${url}/${version}/${resource}${
+		pathParameter ? `/${pathParameter}` : ''
+	}${query ? `?${stringify(query)}` : ''}`
+}
+
+interface Options {
+	resource: OOAPIResource
+	pathParameter?: string
+	query?: any
+	method?: string
+	body?:
+		| OOAPIRequestBody
+		| OOAPIRequestBodyUsers
+		| OOAPIRequestUsersConnectStripe
+		| OOAPIRequestBodyPayments
 	version?: OOAPIVersion
 }
 
@@ -49,7 +67,7 @@ export default async <T>(options: Options): Promise<OOAPIResult<T>> => {
 
 	try {
 		const result = await fetch(endpoint, init)
-		const {ok, status, headers} = result
+		const { ok, status, headers } = result
 		const response: OOAPIResponse<T> | OOAPIResponseError = await result.json()
 		if (ok === false && !response) {
 			throw new Error()
@@ -59,11 +77,11 @@ export default async <T>(options: Options): Promise<OOAPIResult<T>> => {
 			headers,
 			status
 		}
-	} catch(err) {
+	} catch (err) {
 		console.error(err, err.stack)
 	}
 	return {
-		response: {message: ''},
+		response: { message: '' },
 		headers: new Headers(),
 		status: 400
 	}

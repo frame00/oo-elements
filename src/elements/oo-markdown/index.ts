@@ -1,6 +1,6 @@
-import {OOElement} from '../oo-element'
-import {html} from '../../lib/html'
-import {unsafeHTML} from 'lit-html/lib/unsafe-html'
+import { OOElement } from '../oo-element'
+import { html } from '../../lib/html'
+import { unsafeHTML } from 'lit-html/lib/unsafe-html'
 import markdownIt from 'markdown-it'
 import hljs from 'highlight.js'
 import weakMap from '../../lib/weak-map'
@@ -10,7 +10,9 @@ const md = markdownIt({
 	highlight(str, lang) {
 		if (lang && hljs.getLanguage(lang)) {
 			try {
-				return `<pre class=hljs><code>${hljs.highlight(lang, str, true).value}</code></pre>`
+				return `<pre class=hljs><code>${
+					hljs.highlight(lang, str, true).value
+				}</code></pre>`
 			} catch (err) {
 				// Empty
 			}
@@ -29,7 +31,7 @@ export default class extends OOElement {
 				this.update()
 			}
 		})
-		observer.observe(this, {characterData: true, childList: true})
+		observer.observe(this, { characterData: true, childList: true })
 		stateObserver.set(this, observer)
 	}
 

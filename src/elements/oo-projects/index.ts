@@ -1,8 +1,8 @@
-import {OOElement} from '../oo-element'
-import {repeat} from 'lit-html/lib/repeat'
-import {html} from '../../lib/html'
+import { OOElement } from '../oo-element'
+import { repeat } from 'lit-html/lib/repeat'
+import { html } from '../../lib/html'
 import define from '../../lib/define'
-import {OOProject} from '../../type/oo-project'
+import { OOProject } from '../../type/oo-project'
 import getPublicProjects from '../../lib/oo-api-get-public-projects'
 import getUserProjects from '../../lib/oo-api-get-user-projects'
 import weakMap from '../../lib/weak-map'
@@ -21,7 +21,7 @@ const ATTR = {
 
 const stateIam = weakMap<string>()
 const stateTag = weakMap<string>()
-const stateProjects = weakMap<Array<OOProject>>()
+const stateProjects = weakMap<OOProject[]>()
 const stateItemCount = weakMap<number>()
 
 export default class extends OOElement {
@@ -76,11 +76,15 @@ export default class extends OOElement {
 			`
 		}
 		const paging = projects[projects.length - 1].created - 1
-		const more = count > projects.length ? html`
+		const more =
+			count > projects.length
+				? html`
 		<div class=paging>
-			<oo-atoms-button on-clicked='${() => this.fetchProjects(iam, tag, paging)}'>More</oo-atoms-button>
+			<oo-atoms-button on-clicked='${() =>
+				this.fetchProjects(iam, tag, paging)}'>More</oo-atoms-button>
 		</div>
-		` : html``
+		`
+				: html``
 
 		return html`
 		<style>
@@ -90,7 +94,7 @@ export default class extends OOElement {
 		</style>
 		<main>
 			${repeat(projects, project => {
-				const {uid} = project
+				const { uid } = project
 				return html`
 				<oo-project-card data-uid$='${uid}'></oo-project-card>
 				`
@@ -112,7 +116,7 @@ export default class extends OOElement {
 			}
 			return getPublicProjects(tag, time)
 		})()
-		const {response, headers} = api
+		const { response, headers } = api
 		stateItemCount.set(this, Number(headers.get('x-oo-count')))
 		if (Array.isArray(response)) {
 			const current = this.projects

@@ -20,7 +20,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Fetch project data', () => {
 		it('Display project data of UID specified by "data-uid" attribute', async () => {
-			const element = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
+			const element = insertElement(
+				ELEMENT,
+				new Map([['data-uid', '79zGMA1b6q']])
+			)
 			await sleep(300)
 			const a = element.shadowRoot.querySelector('a')
 			expect(a.href).to.be('http://ooapp.co/project/79zGMA1b6q')
@@ -35,19 +38,35 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Body collapse', () => {
 		it('If the body is short, body is not collapsed', async () => {
-			const element = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
+			const element = insertElement(
+				ELEMENT,
+				new Map([['data-uid', '79zGMA1b6q']])
+			)
 			await sleep(300)
 			const body = slot(element, 'oo-atoms-message', 'slot[name=body]', '.body')
-			const button = slot(element, 'oo-atoms-message', 'slot[name=body]', 'button')
+			const button = slot(
+				element,
+				'oo-atoms-message',
+				'slot[name=body]',
+				'button'
+			)
 			expect(body.classList.toString()).to.not.contain('collapse')
 			expect(button.clientHeight).to.be(0)
 		})
 
 		it('If the body is long, body is collapsed', async () => {
-			const element = insertElement(ELEMENT, new Map([['data-uid', 'a2C5nnKDu6']]))
+			const element = insertElement(
+				ELEMENT,
+				new Map([['data-uid', 'a2C5nnKDu6']])
+			)
 			await sleep(300)
 			const body = slot(element, 'oo-atoms-message', 'slot[name=body]', '.body')
-			const button = slot(element, 'oo-atoms-message', 'slot[name=body]', 'button')
+			const button = slot(
+				element,
+				'oo-atoms-message',
+				'slot[name=body]',
+				'button'
+			)
 			expect(body.classList.toString()).to.contain('collapse')
 			expect(button.clientHeight).to.be.above(0)
 		})

@@ -1,5 +1,5 @@
-import {OOElement} from '../oo-element'
-import {html, render} from '../../lib/html'
+import { OOElement } from '../oo-element'
+import { html, render } from '../../lib/html'
 import askWithSiginIn from '../oo-ask-with-sign-in'
 import created from '../_organisms/oo-organisms-ask-created'
 import profile from '../oo-profile'
@@ -7,10 +7,10 @@ import define from '../../lib/define'
 import empty from '../oo-empty'
 import weakMap from '../../lib/weak-map'
 import getUser from '../../lib/oo-api-get-user'
-import {HTMLElementEventProjectCreated} from '../../type/event'
-import {Scope} from '../../type/scope'
-import {asTags, asScope, asSignInFlow} from '../../lib/as'
-import {SignInFlow} from '../../type/sign-in-flow'
+import { HTMLElementEventProjectCreated } from '../../type/event'
+import { Scope } from '../../type/scope'
+import { asTags, asScope, asSignInFlow } from '../../lib/as'
+import { SignInFlow } from '../../type/sign-in-flow'
 
 define('oo-profile', profile)
 define('oo-ask-with-sign-in', askWithSiginIn)
@@ -28,12 +28,17 @@ const iam = weakMap<string>()
 const authorization = weakMap<boolean>()
 const userFound = weakMap<boolean>()
 const stateScope = weakMap<Scope>()
-const stateTags = weakMap<Array<string>>()
+const stateTags = weakMap<string[]>()
 const signInFlow = weakMap<SignInFlow>()
 
 export default class extends OOElement {
 	static get observedAttributes() {
-		return [ATTR.DATA_IAM, ATTR.DATA_SCOPE, ATTR.DATA_TAGS, ATTR.DATA_SIGN_IN_FLOW]
+		return [
+			ATTR.DATA_IAM,
+			ATTR.DATA_SCOPE,
+			ATTR.DATA_TAGS,
+			ATTR.DATA_SIGN_IN_FLOW
+		]
 	}
 
 	constructor() {
@@ -45,7 +50,7 @@ export default class extends OOElement {
 		if (prev === next || !next) {
 			return
 		}
-		switch(attr) {
+		switch (attr) {
 			case ATTR.DATA_IAM:
 				iam.set(this, next)
 				this.fetchUserData()
@@ -142,8 +147,8 @@ export default class extends OOElement {
 	}
 
 	onProjectCreated(e: HTMLElementEventProjectCreated<askWithSiginIn>) {
-		const {detail} = e
-		const {response} = detail
+		const { detail } = e
+		const { response } = detail
 		if (Array.isArray(response)) {
 			const [project] = response
 			render(this.htmlForProjectCreated(project.uid), this)
@@ -152,7 +157,7 @@ export default class extends OOElement {
 
 	async fetchUserData() {
 		const api = await getUser(iam.get(this))
-		const {response} = api
+		const { response } = api
 		if (Array.isArray(response)) {
 			userFound.set(this, true)
 		} else {
@@ -160,5 +165,4 @@ export default class extends OOElement {
 		}
 		this.update()
 	}
-
 }

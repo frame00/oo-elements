@@ -1,4 +1,4 @@
-import {OOExtensionsLikeObject, OOExtensions} from '../type/oo-extension'
+import { OOExtensionsLikeObject, OOExtensions } from '../type/oo-extension'
 
 export default (exts: OOExtensionsLikeObject): OOExtensions => {
 	const extensions: OOExtensions = []

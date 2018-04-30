@@ -19,21 +19,30 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Display Project status', () => {
 		it('Public projects', async () => {
-			const element = insertElement(ELEMENT, new Map([['data-uid', '97kmBTRJ4K']]))
+			const element = insertElement(
+				ELEMENT,
+				new Map([['data-uid', '97kmBTRJ4K']])
+			)
 			await sleep(300)
 			const content = element.shadowRoot.querySelector('span')
 			expect(content.textContent).to.be('public')
 		})
 
 		it('Private projects', async () => {
-			const element = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
+			const element = insertElement(
+				ELEMENT,
+				new Map([['data-uid', '79zGMA1b6q']])
+			)
 			await sleep(300)
 			const content = element.shadowRoot.querySelector('span')
 			expect(content.textContent).to.be('private')
 		})
 
 		it('Forked projects', async () => {
-			const element = insertElement(ELEMENT, new Map([['data-uid', '9fhXYtQQy8']]))
+			const element = insertElement(
+				ELEMENT,
+				new Map([['data-uid', '9fhXYtQQy8']])
+			)
 			await sleep(300)
 			const content = element.shadowRoot.querySelector('a')
 			expect(content.classList.toString()).to.contain('forked')

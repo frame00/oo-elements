@@ -1,13 +1,13 @@
-import {OOElement} from '../oo-element'
-import {html} from '../../lib/html'
+import { OOElement } from '../oo-element'
+import { html } from '../../lib/html'
 import getProject from '../../lib/oo-api-get-project'
 import patchProject from '../../lib/oo-api-patch-project'
 import askForm from '../oo-ask-form'
 import define from '../../lib/define'
 import toMap from '../../lib/extensions-to-map'
 import weakMap from '../../lib/weak-map'
-import {HTMLElementEventChangeAsk} from '../../type/event'
-import {attach, dispatch} from '../../lib/notification'
+import { HTMLElementEventChangeAsk } from '../../type/event'
+import { attach, dispatch } from '../../lib/notification'
 import customEvent from '../../lib/custom-event'
 
 const ATTR = {
@@ -23,9 +23,9 @@ const projectUid = weakMap<string>()
 const stateProgress = weakMap<boolean>()
 const stateSuccess = weakMap<boolean>()
 const stateProject = weakMap<{
-	title?: string,
-	body?: string,
-	tags?: Array<string>
+	title?: string
+	body?: string
+	tags?: string[]
 }>()
 
 export default class extends OOElement {
@@ -55,8 +55,8 @@ export default class extends OOElement {
 	}
 
 	render() {
-		const {title, body, tags} = this.project
-		const {progress, success} = {
+		const { title, body, tags } = this.project
+		const { progress, success } = {
 			progress: stateProgress.get(this),
 			success: stateSuccess.get(this)
 		}
@@ -79,15 +79,19 @@ export default class extends OOElement {
 			}
 		</style>
 		<main>
-			<oo-ask-form data-title$='${title}' data-tags$='${tags.join(' ')}' on-changed='${e => this.onChanged(e)}'>${body}</oo-ask-form>
-			<button class$='${progress ? 'progress' : success ? 'resolved' : ''}' on-click='${() => this.patchProject()}'>Save</button>
+			<oo-ask-form data-title$='${title}' data-tags$='${tags.join(
+			' '
+		)}' on-changed='${e => this.onChanged(e)}'>${body}</oo-ask-form>
+			<button class$='${
+				progress ? 'progress' : success ? 'resolved' : ''
+			}' on-click='${() => this.patchProject()}'>Save</button>
 		</main>
 		`
 	}
 
 	async fetchProject(uid: string) {
 		const api = await getProject(uid)
-		const {response} = api
+		const { response } = api
 		if (Array.isArray(response)) {
 			const [item] = response
 			const mapedExtensions = toMap(item)
@@ -104,12 +108,15 @@ export default class extends OOElement {
 		stateProgress.set(this, true)
 		this.update()
 
-		const options = {...{
-			uid: projectUid.get(this)
-		}, ...this.project || {}}
+		const options = {
+			...{
+				uid: projectUid.get(this)
+			},
+			...(this.project || {})
+		}
 
 		const api = await patchProject(options)
-		const {response} = api
+		const { response } = api
 		if (Array.isArray(response)) {
 			const [item] = response
 			const mapedExtensions = toMap(item)
@@ -131,9 +138,9 @@ export default class extends OOElement {
 	}
 
 	onChanged(e: HTMLElementEventChangeAsk<HTMLElement>) {
-		const {detail} = e
-		const {title, message: body, tags} = detail
+		const { detail } = e
+		const { title, message: body, tags } = detail
 		const old = this.project || {}
-		stateProject.set(this, {...old, ...{title, body, tags}})
+		stateProject.set(this, { ...old, ...{ title, body, tags } })
 	}
 }

@@ -1,4 +1,4 @@
-const {localStorage} = window
+const { localStorage } = window
 
 type Key = 'oo:token' | 'oo:uid'
 

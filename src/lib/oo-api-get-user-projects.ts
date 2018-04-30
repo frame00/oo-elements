@@ -1,8 +1,11 @@
 import api from '../lib/oo-api'
-import {OOAPIResult} from '../type/oo-api'
-import {OOProject} from '../type/oo-project'
+import { OOAPIResult } from '../type/oo-api'
+import { OOProject } from '../type/oo-project'
 
-export default async (uid: string, time?: number): Promise<OOAPIResult<OOProject>> => {
+export default async (
+	uid: string,
+	time?: number
+): Promise<OOAPIResult<OOProject>> => {
 	const ooapiRes = await api<OOProject>({
 		resource: 'users',
 		pathParameter: `${uid}/projects${time ? `/${time}` : ''}`,

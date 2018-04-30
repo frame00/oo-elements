@@ -1,8 +1,8 @@
-import {OOElement} from '../oo-element'
-import {html} from '../../lib/html'
+import { OOElement } from '../oo-element'
+import { html } from '../../lib/html'
 import define from '../../lib/define'
 import button from '../_atoms/oo-atoms-button'
-import {attach, dispatch} from '../../lib/notification'
+import { attach, dispatch } from '../../lib/notification'
 import store from '../../lib/local-storage'
 import deleteToken from '../../lib/oo-api-delete-token'
 import isSuccess from '../../lib/is-api-success'
@@ -21,7 +21,7 @@ export default class extends OOElement {
 	constructor() {
 		super()
 		attach()
-		const {uid} = store
+		const { uid } = store
 		if (typeof uid === 'string' && uid !== '') {
 			this.update()
 		}
@@ -46,7 +46,7 @@ export default class extends OOElement {
 		stateProggres.set(this, true)
 		this.update()
 		const del = await deleteToken()
-		const {status} = del
+		const { status } = del
 		if (isSuccess(status)) {
 			store.clear()
 			dispatch({

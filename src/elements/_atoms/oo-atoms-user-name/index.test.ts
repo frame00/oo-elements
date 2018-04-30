@@ -34,7 +34,9 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		it('profile picture', () => {
 			const element = getElement(ELEMENT)[0]
 			const picture = element.shadowRoot.querySelector('.picture')
-			expect(picture.getAttribute('style')).to.be('background-image: url(https://example.com/img.jpg)')
+			expect(picture.getAttribute('style')).to.be(
+				'background-image: url(https://example.com/img.jpg)'
+			)
 		})
 
 		it('link to profile', () => {

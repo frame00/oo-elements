@@ -1,4 +1,4 @@
 export interface ExtensionPricePerHour {
-	usd?: number,
+	usd?: number
 	jpy?: number
 }

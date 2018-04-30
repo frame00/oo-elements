@@ -1,4 +1,4 @@
-const {location} = window
+const { location } = window
 
 const HOST_BASE = 'ooapp.co'
 

@@ -5,7 +5,7 @@ import getElement from '../../lib/test/get-element'
 import removeElement from '../../lib/test/remove-element'
 import sleep from '../../lib/test/sleep'
 import event from '../../lib/test/event'
-const {document} = window
+const { document } = window
 
 const ELEMENT = 'oo-pay'
 
@@ -30,10 +30,14 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	describe('Forword attributes', () => {
 		it('Forward "data-iam" attribute to <oo-atoms-user-name>', () => {
 			const element = insertElement(ELEMENT, new Map(requiredOptions))
-			const slotBody: HTMLSlotElement = element.shadowRoot.querySelector('oo-atoms-message').shadowRoot.querySelector('slot[name=body]')
+			const slotBody = element.shadowRoot
+				.querySelector('oo-atoms-message')
+				.shadowRoot.querySelector('slot[name=body]')
 			const [assigned] = slotBody.assignedNodes()
 			Array.prototype.forEach.call(assigned.childNodes, (item: Node) => {
-				const userName = item.parentElement.querySelector('oo-atoms-user-name').getAttribute('data-iam')
+				const userName = item.parentElement
+					.querySelector('oo-atoms-user-name')
+					.getAttribute('data-iam')
 				expect(userName).to.be('test')
 			})
 		})
@@ -42,7 +46,9 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	describe('Output contents', () => {
 		it('Display amount from "data-amount" and "data-currency" attribute', () => {
 			const element = insertElement(ELEMENT, new Map(requiredOptions))
-			const slotBody: HTMLSlotElement = element.shadowRoot.querySelector('oo-atoms-message').shadowRoot.querySelector('slot[name=body]')
+			const slotBody = element.shadowRoot
+				.querySelector('oo-atoms-message')
+				.shadowRoot.querySelector('slot[name=body]')
 			const [assigned] = slotBody.assignedNodes()
 			Array.prototype.forEach.call(assigned.childNodes, (item: Node) => {
 				const label = item.parentElement.querySelector('header').textContent
@@ -52,7 +58,9 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 		it('Display the "Pay" button when there is no "data-payment-uid" attribute', () => {
 			const element = insertElement(ELEMENT, new Map(requiredOptions))
-			const slotBody: HTMLSlotElement = element.shadowRoot.querySelector('oo-atoms-message').shadowRoot.querySelector('slot[name=body]')
+			const slotBody = element.shadowRoot
+				.querySelector('oo-atoms-message')
+				.shadowRoot.querySelector('slot[name=body]')
 			const [assigned] = slotBody.assignedNodes()
 			Array.prototype.forEach.call(assigned.childNodes, (item: Node) => {
 				const button = item.parentElement.querySelector('oo-atoms-button')
@@ -67,7 +75,9 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 		it('"body" slot show as <section> inner', () => {
 			removeElement(ELEMENT)
-			document.body.insertAdjacentHTML('afterbegin', `
+			document.body.insertAdjacentHTML(
+				'afterbegin',
+				`
 			<${ELEMENT}
 				data-iam='test'
 				data-dest='test'
@@ -76,9 +86,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 				data-uid='x'
 			>
 				<div slot=body>Body</div>
-			</${ELEMENT}>`)
+			</${ELEMENT}>`
+			)
 			const element = getElement(ELEMENT)[0]
-			const slot: HTMLSlotElement = element.shadowRoot.querySelector('slot[name="body"]')
+			const slot = element.shadowRoot.querySelector('slot[name="body"]')
 			const assigned = slot.assignedNodes()
 			expect(assigned[0].textContent).to.be('Body')
 		})
@@ -90,22 +101,32 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			await sleep(300)
 			expect(element.user.MapedExtensions).to.be.ok()
 			expect(element.user.MapedExtensions.get('name')).to.be('test')
-			expect(element.user.MapedExtensions.get('picture')).to.be('https://example.com/img.jpg')
+			expect(element.user.MapedExtensions.get('picture')).to.be(
+				'https://example.com/img.jpg'
+			)
 		})
 	})
 
 	describe('Check payment status', () => {
 		it('Fetch payment status of "data-payment-uid" attribute value', async () => {
-			const element: any = insertElement(ELEMENT, new Map(requiredOptions.concat([['data-payment-uid', 'Mdo59S1a3i']])))
+			const element: any = insertElement(
+				ELEMENT,
+				new Map(requiredOptions.concat([['data-payment-uid', 'Mdo59S1a3i']]))
+			)
 			await sleep(300)
 			expect(element.paid).to.be.ok()
 		})
 
 		it('Hide "Pay" button when paid', async () => {
-			const element: any = insertElement(ELEMENT, new Map(requiredOptions.concat([['data-payment-uid', 'Mdo59S1a3i']])))
+			const element: any = insertElement(
+				ELEMENT,
+				new Map(requiredOptions.concat([['data-payment-uid', 'Mdo59S1a3i']]))
+			)
 			await sleep(300)
 			expect(element.paid).to.be.ok()
-			const slotBody: HTMLSlotElement = element.shadowRoot.querySelector('oo-atoms-message').shadowRoot.querySelector('slot[name=body]')
+			const slotBody: HTMLSlotElement = element.shadowRoot
+				.querySelector('oo-atoms-message')
+				.shadowRoot.querySelector('slot[name=body]')
 			const [assigned] = slotBody.assignedNodes()
 			Array.prototype.forEach.call(assigned.childNodes, (item: Node) => {
 				const button = item.parentElement.querySelector('oo-atoms-button')
@@ -114,10 +135,15 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 
 		it('Display "Pay" button when unpaid', async () => {
-			const element: any = insertElement(ELEMENT, new Map(requiredOptions.concat([['data-payment-uid', 'wA7du485qP']])))
+			const element: any = insertElement(
+				ELEMENT,
+				new Map(requiredOptions.concat([['data-payment-uid', 'wA7du485qP']]))
+			)
 			await sleep(300)
 			expect(element.paid).to.not.be.ok()
-			const slotBody: HTMLSlotElement = element.shadowRoot.querySelector('oo-atoms-message').shadowRoot.querySelector('slot[name=body]')
+			const slotBody: HTMLSlotElement = element.shadowRoot
+				.querySelector('oo-atoms-message')
+				.shadowRoot.querySelector('slot[name=body]')
 			const [assigned] = slotBody.assignedNodes()
 			Array.prototype.forEach.call(assigned.childNodes, (item: Node) => {
 				const button = item.parentElement.querySelector('oo-atoms-button')
@@ -129,7 +155,9 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	describe('Pay with Stripe', () => {
 		it('Open Stripe Checkout when clicked "Pay" button', async () => {
 			const element = insertElement(ELEMENT, new Map(requiredOptions))
-			const slotBody: HTMLSlotElement = element.shadowRoot.querySelector('oo-atoms-message').shadowRoot.querySelector('slot[name=body]')
+			const slotBody = element.shadowRoot
+				.querySelector('oo-atoms-message')
+				.shadowRoot.querySelector('slot[name=body]')
 			const [assigned] = slotBody.assignedNodes()
 			Array.prototype.forEach.call(assigned.childNodes, (item: Node) => {
 				const button = item.parentElement.querySelector('oo-atoms-button')
@@ -137,7 +165,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			})
 			const iframe = await new Promise<Element>(resolve => {
 				const observer = new MutationObserver(mutationsList => {
-					for(const mutation of mutationsList) {
+					for (const mutation of mutationsList) {
 						const ifrm = mutation.target.parentElement.querySelector('iframe')
 						if (ifrm) {
 							resolve(ifrm)
@@ -145,7 +173,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 						}
 					}
 				})
-				observer.observe(document.body, {childList: true})
+				observer.observe(document.body, { childList: true })
 			})
 			const src = iframe.getAttribute('src')
 			expect(src).to.contain('https://checkout.stripe.com')

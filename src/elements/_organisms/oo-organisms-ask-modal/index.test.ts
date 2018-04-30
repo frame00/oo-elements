@@ -19,28 +19,45 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	})
 
 	it('Pass "data-tags" attribute to <oo-ask>', async () => {
-		const element = insertElement(ELEMENT, new Map([['data-tags', 'tag1 tag2 tag3']]))
-		const ask = querySlotSelector(element, 'oo-modal', 'slot[name=body]', 'oo-ask')
+		const element = insertElement(
+			ELEMENT,
+			new Map([['data-tags', 'tag1 tag2 tag3']])
+		)
+		const ask = querySlotSelector(
+			element,
+			'oo-modal',
+			'slot[name=body]',
+			'oo-ask'
+		)
 		expect(ask.getAttribute('data-tags')).to.be('tag1 tag2 tag3')
 	})
 
 	it('Pass "data-scope" attribute to <oo-ask>', async () => {
 		const element = insertElement(ELEMENT, new Map([['data-scope', 'private']]))
-		const ask = querySlotSelector(element, 'oo-modal', 'slot[name=body]', 'oo-ask')
+		const ask = querySlotSelector(
+			element,
+			'oo-modal',
+			'slot[name=body]',
+			'oo-ask'
+		)
 		expect(ask.getAttribute('data-scope')).to.be('private')
 	})
 
 	it('Open this modal', () => {
 		const element = getElement(ELEMENT)[0]
 		element.setAttribute('data-open', 'enabled')
-		const modal = element.shadowRoot.querySelector('oo-modal').shadowRoot.querySelector('.modal')
+		const modal = element.shadowRoot
+			.querySelector('oo-modal')
+			.shadowRoot.querySelector('.modal')
 		expect(modal.clientHeight).to.be.above(0)
 	})
 
 	it('Close this modal', () => {
 		const element = getElement(ELEMENT)[0]
 		element.setAttribute('data-open', 'disabled')
-		const modal = element.shadowRoot.querySelector('oo-modal').shadowRoot.querySelector('.modal')
+		const modal = element.shadowRoot
+			.querySelector('oo-modal')
+			.shadowRoot.querySelector('.modal')
 		expect(modal.clientHeight).to.be(0)
 	})
 

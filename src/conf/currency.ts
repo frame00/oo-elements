@@ -1,7 +1,7 @@
-import {Usd, Jpy} from '../type/currency'
+import { Usd, Jpy } from '../type/currency'
 
-const USD: Usd = 'usd'
-const JPY: Jpy = 'jpy'
+const USD = 'usd'
+const JPY = 'jpy'
 
 export default new Map([
 	['en-US', USD],

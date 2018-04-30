@@ -1,15 +1,15 @@
-import {OOElement} from '../../oo-element'
-import {html} from '../../../lib/html'
+import { OOElement } from '../../oo-element'
+import { html } from '../../../lib/html'
 import getUser from '../../../lib/oo-api-get-user'
 import toMap from '../../../lib/extensions-to-map'
 import getPicture from '../../../lib/get-picture'
-import {href} from '../../../lib/href'
+import { href } from '../../../lib/href'
 
 type Size = 'small' | 'medium'
 interface HTMLOptions {
-	iam: string,
-	name: string,
-	picture: string,
+	iam: string
+	name: string
+	picture: string
 	size: Size
 }
 
@@ -24,7 +24,7 @@ const picture: WeakMap<object, string> = new WeakMap()
 const size: WeakMap<object, Size> = new WeakMap()
 
 const asValidSize = (data: string): Size => {
-	if(data === 'small' || data === 'medium') {
+	if (data === 'small' || data === 'medium') {
 		return data
 	}
 	return 'medium'
@@ -44,7 +44,7 @@ export default class extends OOElement {
 		if (prev === next) {
 			return
 		}
-		switch(attr) {
+		switch (attr) {
 			case ATTR.DATA_IAM:
 				if (!next) {
 					return
@@ -74,7 +74,7 @@ export default class extends OOElement {
 			picture: picture.get(this),
 			size: size.get(this)
 		}
-		const {iam: uid, name: n, picture: img, size: s} = options
+		const { iam: uid, name: n, picture: img, size: s } = options
 		return html`
 		<style>
 			@import '../../../style/_vars-font-family.css';

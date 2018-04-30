@@ -1,9 +1,14 @@
-import {OOElement} from '../../elements/oo-element'
-import {html} from '../html'
-import {AuthProvider} from '../../type/auth-provider'
+import { OOElement } from '../../elements/oo-element'
+import { html } from '../html'
+import { AuthProvider } from '../../type/auth-provider'
 import store from '../local-storage'
-import {SignedInDetail, SignedIn, SignedInError, SignedInErrorDetail} from '../../type/event'
-import {attach, dispatch} from '../notification'
+import {
+	SignedInDetail,
+	SignedIn,
+	SignedInError,
+	SignedInErrorDetail
+} from '../../type/event'
+import { attach, dispatch } from '../notification'
 import weakMap from '../weak-map'
 import customEvent from '../../lib/custom-event'
 
@@ -12,8 +17,10 @@ const ATTR = {
 	DATA_INIT_NOTIFICATION: 'data-init-notification'
 }
 const EVENT = {
-	SIGNED_IN: (detail: SignedInDetail): SignedIn => customEvent('signedin', detail),
-	SIGNED_IN_ERROR: (detail: SignedInErrorDetail): SignedInError => customEvent('signedinerror', detail)
+	SIGNED_IN: (detail: SignedInDetail): SignedIn =>
+		customEvent('signedin', detail),
+	SIGNED_IN_ERROR: (detail: SignedInErrorDetail): SignedInError =>
+		customEvent('signedinerror', detail)
 }
 
 const asValidString = (data: string): AuthProvider => {
@@ -57,7 +64,7 @@ export default class extends OOElement {
 
 	render() {
 		const prov = provider.get(this)
-		let label: string = prov
+		let label = prov
 		switch (prov) {
 			case 'google':
 				label = 'Google'

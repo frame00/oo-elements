@@ -7,7 +7,7 @@ export default (name: string): boolean => {
 			el.parentNode.removeChild(el)
 		})
 		return true
-	} catch(err) {
+	} catch (err) {
 		console.error(err)
 	}
 	return false

@@ -1,5 +1,5 @@
-import {OOElement} from '../oo-element'
-import {html, render} from '../../lib/html'
+import { OOElement } from '../oo-element'
+import { html, render } from '../../lib/html'
 import getUser from '../../lib/oo-api-get-user'
 import isSuccess from '../../lib/is-api-success'
 import toMap from '../../lib/extensions-to-map'
@@ -43,7 +43,7 @@ export default class extends OOElement {
 	}
 
 	render() {
-		const {i, f, b} = {
+		const { i, f, b } = {
 			i: iam.get(this),
 			f: found.get(this),
 			b: bio.get(this)

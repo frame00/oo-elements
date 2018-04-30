@@ -1,5 +1,5 @@
-import {OOElement} from '../../oo-element'
-import {html} from '../../../lib/html'
+import { OOElement } from '../../oo-element'
+import { html } from '../../../lib/html'
 import getLangs from '../../../lib/get-langs'
 
 const ATTR = {
@@ -29,15 +29,21 @@ export default class extends OOElement {
 		const UTC = 'UTC'
 		let tz
 		try {
-			tz = new Intl.DateTimeFormat('en-US', {timeZoneName: 'long'}).resolvedOptions().timeZone
-		} catch(err) {
+			tz = new Intl.DateTimeFormat('en-US', {
+				timeZoneName: 'long'
+			}).resolvedOptions().timeZone
+		} catch (err) {
 			tz = UTC
 		}
 		const unix = unixtime.get(this)
 		const date = new Date(unix)
 		const options = {
-			year: 'numeric', month: 'numeric', day: 'numeric',
-			hour: 'numeric', minute: 'numeric', second: 'numeric',
+			year: 'numeric',
+			month: 'numeric',
+			day: 'numeric',
+			hour: 'numeric',
+			minute: 'numeric',
+			second: 'numeric',
 			hour12: false,
 			timeZone: tz
 		}

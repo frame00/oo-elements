@@ -1,5 +1,5 @@
-import {OOElement} from '../oo-element'
-import {html} from '../../lib/html'
+import { OOElement } from '../oo-element'
+import { html } from '../../lib/html'
 import define from '../../lib/define'
 import summary from '../oo-project-summary'
 import messages from '../oo-project-messages'
@@ -7,13 +7,13 @@ import button from '../_atoms/oo-atoms-button'
 import empty from '../oo-empty'
 import form from '../oo-message-form'
 import store from '../../lib/local-storage'
-import {HTMLElementEventMessageSent} from '../../type/event'
+import { HTMLElementEventMessageSent } from '../../type/event'
 import getProject from '../../lib/oo-api-get-project'
 import toMap from '../../lib/extensions-to-map'
 import weakMap from '../../lib/weak-map'
-import {Scope} from '../../type/scope'
+import { Scope } from '../../type/scope'
 import createProjectForks from '../../lib/oo-api-create-project-forks'
-import {ProjectCreatedDetail, ProjectCreated} from '../../type/event'
+import { ProjectCreatedDetail, ProjectCreated } from '../../type/event'
 import customEvent from '../../lib/custom-event'
 
 define('oo-project-summary', summary)
@@ -26,8 +26,10 @@ const ATTR = {
 	DATA_UID: 'data-uid'
 }
 const EVENT = {
-	PROJECT_CREATED: (detail: ProjectCreatedDetail): ProjectCreated => customEvent('projectcreated', detail),
-	PROJECT_CREATION_FAILED: detail => customEvent('projectcreationfailed', detail)
+	PROJECT_CREATED: (detail: ProjectCreatedDetail): ProjectCreated =>
+		customEvent('projectcreated', detail),
+	PROJECT_CREATION_FAILED: detail =>
+		customEvent('projectcreationfailed', detail)
 }
 
 const projectUid = weakMap<string>()
@@ -56,7 +58,7 @@ export default class extends OOElement {
 	}
 
 	render() {
-		const {found, extensions, uid, user, scope, accepted, assignee} = {
+		const { found, extensions, uid, user, scope, accepted, assignee } = {
 			found: projectFound.get(this),
 			user: store.uid,
 			uid: projectUid.get(this),
@@ -83,18 +85,22 @@ export default class extends OOElement {
 			}
 		</style>
 		<oo-project-summary data-uid$='${uid}'></oo-project-summary>
-		<oo-project-messages data-iam$='${user ? user : ''}' data-uid$='${uid}'></oo-project-messages>
+		<oo-project-messages data-iam$='${
+			user ? user : ''
+		}' data-uid$='${uid}'></oo-project-messages>
 		${(() => {
 			if (user && assignee && (scope === 'public' || accepted === true)) {
 				return html`
-				<oo-message-form data-iam$='${user}' data-extensions$='${strExts}' on-messagesent='${e => this.onMessagesent(e)}'></oo-message-form>
+				<oo-message-form data-iam$='${user}' data-extensions$='${strExts}' on-messagesent='${e =>
+					this.onMessagesent(e)}'></oo-message-form>
 				`
 			}
 		})()}
 		${(() => {
 			if (user && !assignee) {
 				return html`
-				<oo-atoms-button class=fork on-clicked='${() => this.createFork()}'>Comment with fork</oo-atoms-button>
+				<oo-atoms-button class=fork on-clicked='${() =>
+					this.createFork()}'>Comment with fork</oo-atoms-button>
 				`
 			}
 		})()}
@@ -103,13 +109,16 @@ export default class extends OOElement {
 
 	renderedCallback() {
 		if (messageForm.has(this) === false) {
-			messageForm.set(this, this.shadowRoot.querySelector('oo-project-messages'))
+			messageForm.set(
+				this,
+				this.shadowRoot.querySelector('oo-project-messages')
+			)
 		}
 	}
 
 	onMessagesent(e: HTMLElementEventMessageSent<form>) {
-		const {detail} = e
-		const {uid} = detail
+		const { detail } = e
+		const { uid } = detail
 		if (messageForm.has(this) !== false) {
 			messageForm.get(this).injectMessages([uid])
 		}
@@ -117,7 +126,7 @@ export default class extends OOElement {
 
 	async fetchProject(uid: string) {
 		const api = await getProject(uid)
-		const {response} = api
+		const { response } = api
 		if (Array.isArray(response)) {
 			const [item] = response
 			const mapedExtensions = toMap(item)
@@ -137,7 +146,7 @@ export default class extends OOElement {
 	async createFork() {
 		const uid = projectUid.get(this)
 		const project = await createProjectForks(uid)
-		const {response} = project
+		const { response } = project
 		if (Array.isArray(response)) {
 			this.dispatchEvent(EVENT.PROJECT_CREATED(project))
 		} else {

@@ -1,7 +1,8 @@
-import {OOExtensions} from '../type/oo-extension'
-import {ProjectType} from '../type/oo-project'
+import { OOExtensions } from '../type/oo-extension'
+import { ProjectType } from '../type/oo-project'
 
-const find = (exts: OOExtensions, cond: string) => exts.some(ext => ext.key === cond)
+const find = (exts: OOExtensions, cond: string) =>
+	exts.some(ext => ext.key === cond)
 
 const hasType = (exts: OOExtensions) => find(exts, 'type')
 const hasAssignee = (exts: OOExtensions) => find(exts, 'assignee')

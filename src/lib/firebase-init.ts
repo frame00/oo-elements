@@ -1,4 +1,4 @@
-import {initializeApp} from 'firebase'
+import { initializeApp } from 'firebase'
 import config from '../conf/firebase'
 
 const state: Map<'initialized', boolean> = new Map()

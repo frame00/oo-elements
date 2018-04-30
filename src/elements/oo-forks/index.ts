@@ -1,14 +1,14 @@
-import {OOElement} from '../oo-element'
-import {repeat} from 'lit-html/lib/repeat'
-import {html} from '../../lib/html'
+import { OOElement } from '../oo-element'
+import { repeat } from 'lit-html/lib/repeat'
+import { html } from '../../lib/html'
 import define from '../../lib/define'
-import {OOProject} from '../../type/oo-project'
+import { OOProject } from '../../type/oo-project'
 import getProjectForks from '../../lib/oo-api-get-projects-forks'
 import weakMap from '../../lib/weak-map'
 import button from '../_atoms/oo-atoms-button'
 import messages from '../oo-project-messages'
-import {href} from '../../lib/href'
-const {location} = window
+import { href } from '../../lib/href'
+const { location } = window
 
 define('oo-atoms-button', button)
 define('oo-project-messages', messages)
@@ -19,7 +19,7 @@ const ATTR = {
 
 const stateUid = weakMap<string>()
 const stateItemCount = weakMap<number>()
-const stateProjects = weakMap<Array<OOProject>>()
+const stateProjects = weakMap<OOProject[]>()
 
 export default class extends OOElement {
 	static get observedAttributes() {
@@ -48,17 +48,21 @@ export default class extends OOElement {
 	}
 
 	render() {
-		const {iam, projects, count} = {
+		const { iam, projects, count } = {
 			iam: this.uid,
 			projects: this.projects,
 			count: stateItemCount.get(this)
 		}
 		const paging = projects[projects.length - 1].created - 1
-		const more = count > projects.length ? html`
+		const more =
+			count > projects.length
+				? html`
 		<div class=paging>
-			<oo-atoms-button on-clicked='${() => this.fetchProjects(iam, paging)}'>More</oo-atoms-button>
+			<oo-atoms-button on-clicked='${() =>
+				this.fetchProjects(iam, paging)}'>More</oo-atoms-button>
 		</div>
-		` : html``
+		`
+				: html``
 
 		return html`
 		<style>
@@ -81,7 +85,7 @@ export default class extends OOElement {
 		</style>
 		<main>
 			${repeat(projects, project => {
-				const {uid} = project
+				const { uid } = project
 				return html`
 				<article>
 					<a href$='${href(`/project/${uid}`)}'>Fork #${uid}</a>
@@ -96,7 +100,7 @@ export default class extends OOElement {
 
 	async fetchProjects(uid: string, time?: number) {
 		const api = await getProjectForks(uid, time)
-		const {response, headers} = api
+		const { response, headers } = api
 		stateItemCount.set(this, Number(headers.get('x-oo-count')))
 		if (Array.isArray(response)) {
 			const current = this.projects

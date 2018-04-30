@@ -1,7 +1,7 @@
-import {OOElement} from '../oo-element'
-import {html} from '../../lib/html'
+import { OOElement } from '../oo-element'
+import { html } from '../../lib/html'
 import weakMap from '../../lib/weak-map'
-import {permalinks, usable, put} from './lib/fetch-permalink'
+import { permalinks, usable, put } from './lib/fetch-permalink'
 
 interface HTMLElementEvent<T extends HTMLElement> extends KeyboardEvent {
 	target: T
@@ -37,7 +37,7 @@ export default class extends OOElement {
 	}
 
 	render() {
-		const {p, s, u, sd, ss} = {
+		const { p, s, u, sd, ss } = {
 			p: stateProgress.get(this),
 			s: statePermalink.get(this),
 			u: stateUsable.get(this),
@@ -45,8 +45,17 @@ export default class extends OOElement {
 			ss: stateSaveSuccess.get(this)
 		}
 		const iam = stateIam.get(this)
-		const cls = p ? 'progress' : u === false ? 'not-usable' : u && s ? 'usable' : ''
-		const btn = html`<button class$='${cls}${sd ? ' saved' : ''}${ss ? ' success' : ss === false ? ' error' : ''}' disabled?='${!u || p}' on-click='${() => this.putPermalink()}'>save</button>`
+		const cls = p
+			? 'progress'
+			: u === false
+				? 'not-usable'
+				: u && s
+					? 'usable'
+					: ''
+		const btn = html`<button class$='${cls}${sd ? ' saved' : ''}${
+			ss ? ' success' : ss === false ? ' error' : ''
+		}' disabled?='${!u || p}' on-click='${() =>
+			this.putPermalink()}'>save</button>`
 
 		return html`
 		<style>
@@ -117,7 +126,7 @@ export default class extends OOElement {
 
 		const permalink = await permalinks(stateIam.get(this))
 		if (typeof permalink !== 'boolean') {
-			const {slug} = permalink
+			const { slug } = permalink
 			statePermalink.set(this, slug)
 		}
 		stateProgress.delete(this)
@@ -148,15 +157,18 @@ export default class extends OOElement {
 	}
 
 	onKeyup(e: HTMLElementEvent<HTMLInputElement>) {
-		const {target} = e
-		const {value} = target
+		const { target } = e
+		const { value } = target
 		statePermalink.set(this, value)
 		const timer = stateThrottleTimer.get(this)
 		if (timer) {
 			clearTimeout(timer)
 		}
-		stateThrottleTimer.set(this, setTimeout(() => {
-			this.validatePermalink(statePermalink.get(this))
-		}, 300))
+		stateThrottleTimer.set(
+			this,
+			setTimeout(() => {
+				this.validatePermalink(statePermalink.get(this))
+			}, 300)
+		)
 	}
 }

@@ -1,9 +1,9 @@
-import {OOMessage} from './oo-message'
-import {OOUserConnectStripe} from './oo-user'
-import {OOAPIResult} from './oo-api'
-import {Scope} from './scope'
-import {Currency} from './currency'
-import {OOProject} from './oo-project'
+import { OOMessage } from './oo-message'
+import { OOUserConnectStripe } from './oo-user'
+import { OOAPIResult } from './oo-api'
+import { Scope } from './scope'
+import { Currency } from './currency'
+import { OOProject } from './oo-project'
 
 export interface MessageVariationErrorDetail {
 	message: 'body required'
@@ -13,7 +13,8 @@ export interface MessageVariationError extends CustomEvent {
 	detail: MessageVariationErrorDetail
 }
 
-export interface HTMLElementEventMessageVariationError<T extends HTMLElement> extends MessageVariationError {
+export interface HTMLElementEventMessageVariationError<T extends HTMLElement>
+	extends MessageVariationError {
 	target: T
 }
 
@@ -23,7 +24,8 @@ export interface MessageSent extends CustomEvent {
 	detail: MessageSentDetail
 }
 
-export interface HTMLElementEventMessageSent<T extends HTMLElement> extends MessageSent {
+export interface HTMLElementEventMessageSent<T extends HTMLElement>
+	extends MessageSent {
 	target: T
 }
 
@@ -33,7 +35,8 @@ export interface StripeConnected extends CustomEvent {
 	detail: StripeConnectedDetail
 }
 
-export interface HTMLElementEventStripeConnected<T extends HTMLElement> extends StripeConnected {
+export interface HTMLElementEventStripeConnected<T extends HTMLElement>
+	extends StripeConnected {
 	target: T
 }
 
@@ -43,14 +46,15 @@ export interface StripeConnectionFailed extends CustomEvent {
 	detail: StripeConnectionFailedDetail
 }
 
-export interface HTMLElementEventStripeConnectionFailed<T extends HTMLElement> extends StripeConnectionFailed {
+export interface HTMLElementEventStripeConnectionFailed<T extends HTMLElement>
+	extends StripeConnectionFailed {
 	target: T
 }
 
 export type NotificationType = 'error' | 'success'
 
 export interface NotificationDetail {
-	message: string,
+	message: string
 	type?: NotificationType
 }
 
@@ -63,7 +67,7 @@ export interface DocumentNotificationEvent extends Notification {
 }
 
 export interface SignedInDetail {
-	uid: string,
+	uid: string
 	token: string
 }
 
@@ -71,7 +75,8 @@ export interface SignedIn extends CustomEvent {
 	detail: SignedInDetail
 }
 
-export interface HTMLElementEventSignedIn<T extends HTMLElement> extends SignedIn {
+export interface HTMLElementEventSignedIn<T extends HTMLElement>
+	extends SignedIn {
 	target: T
 }
 
@@ -81,7 +86,8 @@ export interface SignedInError extends CustomEvent {
 	detail: SignedInErrorDetail
 }
 
-export interface HTMLElementEventSignedInError<T extends HTMLElement> extends SignedInError {
+export interface HTMLElementEventSignedInError<T extends HTMLElement>
+	extends SignedInError {
 	target: T
 }
 
@@ -93,15 +99,16 @@ export interface ChangeScope extends CustomEvent {
 	detail: ChangeScopeDetail
 }
 
-export interface HTMLElementEventChangeScope<T extends HTMLElement> extends ChangeScope {
+export interface HTMLElementEventChangeScope<T extends HTMLElement>
+	extends ChangeScope {
 	target: T
 }
 
 export interface ChangeAskDetail {
-	scope: Scope,
-	title: string,
-	message: string,
-	tags?: Array<string>,
+	scope: Scope
+	title: string
+	message: string
+	tags?: string[]
 	currency?: Currency
 }
 
@@ -109,7 +116,8 @@ export interface ChangeAsk extends CustomEvent {
 	detail: ChangeAskDetail
 }
 
-export interface HTMLElementEventChangeAsk<T extends HTMLElement> extends ChangeAsk {
+export interface HTMLElementEventChangeAsk<T extends HTMLElement>
+	extends ChangeAsk {
 	target: T
 }
 
@@ -119,6 +127,7 @@ export interface ProjectCreated extends CustomEvent {
 	detail: ProjectCreatedDetail
 }
 
-export interface HTMLElementEventProjectCreated<T extends HTMLElement> extends ProjectCreated {
+export interface HTMLElementEventProjectCreated<T extends HTMLElement>
+	extends ProjectCreated {
 	target: T
 }

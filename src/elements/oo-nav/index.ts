@@ -1,5 +1,5 @@
-import {OOElement} from '../oo-element'
-import {html} from '../../lib/html'
+import { OOElement } from '../oo-element'
+import { html } from '../../lib/html'
 import weakMap from '../../lib/weak-map'
 
 type State = 'open' | 'close'
@@ -41,7 +41,7 @@ export default class extends OOElement {
 	}
 
 	render() {
-		const {stte, dir} = {
+		const { stte, dir } = {
 			stte: state.get(this),
 			dir: direction.get(this)
 		}

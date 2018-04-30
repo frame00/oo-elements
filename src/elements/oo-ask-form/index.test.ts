@@ -43,19 +43,28 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 		describe('Show scope from "data-scope" attribute value', () => {
 			it('Public', () => {
-				const element = insertElement(ELEMENT, new Map([['data-scope', 'public']]))
+				const element = insertElement(
+					ELEMENT,
+					new Map([['data-scope', 'public']])
+				)
 				const scope = element.shadowRoot.querySelector('span.scope')
 				expect(scope.classList.toString()).to.contain('public')
 			})
 
 			it('Private', () => {
-				const element = insertElement(ELEMENT, new Map([['data-scope', 'private']]))
+				const element = insertElement(
+					ELEMENT,
+					new Map([['data-scope', 'private']])
+				)
 				const scope = element.shadowRoot.querySelector('span.scope')
 				expect(scope.classList.toString()).to.contain('private')
 			})
 
 			it('Display the cost when scope is private', () => {
-				const element = insertElement(ELEMENT, new Map([['data-scope', 'private']]))
+				const element = insertElement(
+					ELEMENT,
+					new Map([['data-scope', 'private']])
+				)
 				const cost = element.shadowRoot.querySelector('small')
 				expect(cost.textContent).to.be('Pay USD $5 later')
 			})
@@ -73,10 +82,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
 			const input = element.shadowRoot.querySelector('input')
 			input.value = 'xxx'
-			event(input, 'change', {bubbles: true})
+			event(input, 'change', { bubbles: true })
 			const textarea = element.shadowRoot.querySelector('textarea')
 			textarea.value = 'yyy'
-			event(textarea, 'change', {bubbles: true})
+			event(textarea, 'change', { bubbles: true })
 			expect(session.previousAsk).to.eql({
 				iam: 'test',
 				title: 'xxx',
@@ -88,20 +97,29 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	describe('Declarative initialization', () => {
 		it('Set "data-title" attribute value to title', () => {
 			session.clear()
-			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test'], ['data-title', 'xxx']]))
+			const element: any = insertElement(
+				ELEMENT,
+				new Map([['data-iam', 'test'], ['data-title', 'xxx']])
+			)
 			const input = element.shadowRoot.querySelector('input[name=title]')
 			expect(input.value).to.be('xxx')
 		})
 
 		it('Set "data-tags" attribute value to tags', () => {
-			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test'], ['data-tags', '1 2 3']]))
+			const element: any = insertElement(
+				ELEMENT,
+				new Map([['data-iam', 'test'], ['data-tags', '1 2 3']])
+			)
 			const input = element.shadowRoot.querySelector('input[name=tags]')
 			expect(input.value).to.be('1,2,3')
 			expect(element.tags).to.be.eql([1, 2, 3])
 		})
 
 		it('Set self textContent to body', () => {
-			document.body.insertAdjacentHTML('afterbegin', `<${ELEMENT}>The Content</${ELEMENT}>`)
+			document.body.insertAdjacentHTML(
+				'afterbegin',
+				`<${ELEMENT}>The Content</${ELEMENT}>`
+			)
 			const element: any = getElement(ELEMENT)[0]
 			const textarea = element.shadowRoot.querySelector('textarea')
 			expect(textarea.value).to.be('The Content')
@@ -116,13 +134,16 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const textarea = element.shadowRoot.querySelector('textarea')
 			input.value = 'xxx'
 			textarea.value = 'yyy'
-			event(input, 'change', {bubbles: true})
-			event(textarea, 'change', {bubbles: true})
+			event(input, 'change', { bubbles: true })
+			event(textarea, 'change', { bubbles: true })
 		})
 
 		it('Restore message', done => {
 			removeElement(ELEMENT)
-			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
+			const element: any = insertElement(
+				ELEMENT,
+				new Map([['data-iam', 'test']])
+			)
 			element.addEventListener('changed', e => {
 				expect(e.detail).to.be.eql({
 					title: 'xxx',
@@ -138,7 +159,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 		it('If IAM does not match, it will not restore', done => {
 			removeElement(ELEMENT)
-			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'xxx']]))
+			const element: any = insertElement(
+				ELEMENT,
+				new Map([['data-iam', 'xxx']])
+			)
 			element.addEventListener('changed', e => {
 				expect(e.detail).to.be.eql({
 					title: '',

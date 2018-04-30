@@ -1,5 +1,5 @@
-import {Scope} from '../type/scope'
-import {SignInFlow} from '../type/sign-in-flow'
+import { Scope } from '../type/scope'
+import { SignInFlow } from '../type/sign-in-flow'
 
 export const asScope = (d: string): Scope => {
 	if (d === 'public' || d === 'private') {
@@ -15,7 +15,7 @@ export const asSignInFlow = (d: string): SignInFlow => {
 	return 'popup'
 }
 
-export const asTags = (d: string): Array<string> => {
+export const asTags = (d: string): string[] => {
 	if (typeof d === 'string') {
 		const tags = (d || '').split(/\s|,/) || []
 		const tagsSet = Array.from(new Set(tags))

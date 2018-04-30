@@ -1,15 +1,20 @@
-import {OOElement} from '../oo-element'
-import {html} from '../../lib/html'
+import { OOElement } from '../oo-element'
+import { html } from '../../lib/html'
 import define from '../../lib/define'
 import userName from '../_atoms/oo-atoms-user-name'
 import datetime from '../_atoms/oo-atoms-datetime'
 import button from '../_atoms/oo-atoms-button'
-import {OOExtensionsLikeObject} from '../../type/oo-extension'
+import { OOExtensionsLikeObject } from '../../type/oo-extension'
 import createMessage from '../../lib/oo-api-create-message'
-import {MessageVariationError, MessageVariationErrorDetail, MessageSentDetail, MessageSent} from '../../type/event'
-import {MessageOptionsPost} from '../../type/oo-options-message'
+import {
+	MessageVariationError,
+	MessageVariationErrorDetail,
+	MessageSentDetail,
+	MessageSent
+} from '../../type/event'
+import { MessageOptionsPost } from '../../type/oo-options-message'
 import parseMessage from '../../lib/parse-message-body'
-import {attach, dispatch} from '../../lib/notification'
+import { attach, dispatch } from '../../lib/notification'
 import weakMap from '../../lib/weak-map'
 import customEvent from '../../lib/custom-event'
 
@@ -26,9 +31,13 @@ const ATTR = {
 	DATA_EXTENSIONS: 'data-extensions'
 }
 const EVENT = {
-	MESSAGE_VARIATION_ERROR: (detail: MessageVariationErrorDetail): MessageVariationError => customEvent('messagevariationerror', detail),
-	MESSAGE_SENT: (detail: MessageSentDetail): MessageSent => customEvent('messagesent', detail),
-	MESSAGE_CREATION_FAILED: detail => customEvent('messagecreationfailed', detail)
+	MESSAGE_VARIATION_ERROR: (
+		detail: MessageVariationErrorDetail
+	): MessageVariationError => customEvent('messagevariationerror', detail),
+	MESSAGE_SENT: (detail: MessageSentDetail): MessageSent =>
+		customEvent('messagesent', detail),
+	MESSAGE_CREATION_FAILED: detail =>
+		customEvent('messagecreationfailed', detail)
 }
 
 const messageAuthor = weakMap<string>()
@@ -44,7 +53,7 @@ const asExtensions = (data: string): OOExtensionsLikeObject => {
 	try {
 		const json: OOExtensionsLikeObject = JSON.parse(data)
 		return json
-	} catch(err) {
+	} catch (err) {
 		console.log(err)
 	}
 	return []
@@ -68,7 +77,7 @@ export default class extends OOElement {
 		if (prev === next || !next) {
 			return
 		}
-		switch(attr) {
+		switch (attr) {
 			case ATTR.DATA_IAM:
 				messageAuthor.set(this, next)
 				break
@@ -85,7 +94,7 @@ export default class extends OOElement {
 	}
 
 	render() {
-		const {isFetching, isSuccess, open} = {
+		const { isFetching, isSuccess, open } = {
 			isFetching: fetching.get(this),
 			isSuccess: success.get(this),
 			open: tipsOpen.get(this)
@@ -138,7 +147,9 @@ export default class extends OOElement {
 		<form on-submit='${() => this.sendMessage()}'>
 			<textarea on-change='${e => this.onMessageChange(e)}'></textarea>
 			<div class=tip>
-				<button on-click='${e => this.toggleTips(e)}'>tips: ${open ? '📕' : '📖'}</button>
+				<button on-click='${e => this.toggleTips(e)}'>tips: ${
+			open ? '📕' : '📖'
+		}</button>
 				<article class$='${open ? 'open' : 'close'}'>
 					# Create a payment message by writing TOML format between "+++" and "+++".<br/>
 					e.g.<br/>
@@ -149,7 +160,8 @@ export default class extends OOElement {
 					+++
 				</article>
 			</div>
-			<oo-atoms-button on-clicked='${() => this.sendMessage()}' data-state$='${state}'>Send a message</oo-atoms-button>
+			<oo-atoms-button on-clicked='${() =>
+				this.sendMessage()}' data-state$='${state}'>Send a message</oo-atoms-button>
 		</form>
 		`
 	}
@@ -167,12 +179,12 @@ export default class extends OOElement {
 			author: messageAuthor.get(this),
 			body: messageBody.get(this)
 		}
-		message.set(this, {...extensions, ...bodyExtensions, ...data})
+		message.set(this, { ...extensions, ...bodyExtensions, ...data })
 	}
 
 	onMessageChange(e: HTMLElementEvent<HTMLTextAreaElement>) {
-		const {target} = e
-		const {value} = target
+		const { target } = e
+		const { value } = target
 		try {
 			const parsed = parseMessage(value)
 			if (parsed) {
@@ -180,15 +192,17 @@ export default class extends OOElement {
 				messageBodyExtensions.set(this, parsed)
 				this.setMessage()
 			}
-		} catch(err) {
-			dispatch({message: `Invalid body: ${err.message}`, type: 'error'})
+		} catch (err) {
+			dispatch({ message: `Invalid body: ${err.message}`, type: 'error' })
 		}
 	}
 
 	sendMessage() {
 		if (!this.message.body || this.message.body.length === 0) {
-			dispatch({message: 'Empty text can not be sent.', type: 'error'})
-			return this.dispatchEvent(EVENT.MESSAGE_VARIATION_ERROR({message: 'body required'}))
+			dispatch({ message: 'Empty text can not be sent.', type: 'error' })
+			return this.dispatchEvent(
+				EVENT.MESSAGE_VARIATION_ERROR({ message: 'body required' })
+			)
 		}
 		fetching.set(this, true)
 		success.delete(this)
@@ -198,7 +212,7 @@ export default class extends OOElement {
 
 	async messageSend(test?: boolean) {
 		const api = await createMessage(this.message, test)
-		const {response} = api
+		const { response } = api
 		if (Array.isArray(response)) {
 			const [item] = response
 			success.set(this, true)

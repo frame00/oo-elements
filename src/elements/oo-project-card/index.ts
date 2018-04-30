@@ -1,8 +1,8 @@
-import {OOElement} from '../oo-element'
-import {html} from '../../lib/html'
+import { OOElement } from '../oo-element'
+import { html } from '../../lib/html'
 import define from '../../lib/define'
 import projectStatus from '../oo-project-status'
-import {OOProject} from '../../type/oo-project'
+import { OOProject } from '../../type/oo-project'
 import getProject from '../../lib/oo-api-get-project'
 import weakMap from '../../lib/weak-map'
 import markdown from '../oo-markdown'
@@ -11,8 +11,8 @@ import button from '../_atoms/oo-atoms-button'
 import users from '../_molecules/oo-molecules-project-users'
 import empty from '../oo-empty'
 import toMap from '../../lib/extensions-to-map'
-import {template as tagsTemplate} from '../../lib/tags'
-import {href} from '../../lib/href'
+import { template as tagsTemplate } from '../../lib/tags'
+import { href } from '../../lib/href'
 
 define('oo-markdown', markdown)
 define('oo-atoms-message', message)
@@ -62,7 +62,7 @@ export default class extends OOElement {
 			`
 		}
 
-		const {uid} = project
+		const { uid } = project
 		const exts = toMap(project)
 		const title = exts.has('title') ? exts.get('title') : ''
 		const body = exts.has('body') ? exts.get('body') : ''
@@ -186,7 +186,7 @@ export default class extends OOElement {
 
 	async fetchProjects(uid: string) {
 		const api = await getProject(uid)
-		const {response} = api
+		const { response } = api
 		if (Array.isArray(response)) {
 			const [project] = response
 			stateProject.set(this, project)

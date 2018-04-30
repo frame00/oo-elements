@@ -1,10 +1,12 @@
 import getPermalink from '../../../lib/oo-api-get-permalink'
 import putPermalink from '../../../lib/oo-api-put-permalink'
-import {OOPermalink} from '../../../type/oo-permalink'
+import { OOPermalink } from '../../../type/oo-permalink'
 
-export const permalinks = async (path: string): Promise<boolean | OOPermalink> => {
+export const permalinks = async (
+	path: string
+): Promise<boolean | OOPermalink> => {
 	const res = await getPermalink(path)
-	const {response} = res
+	const { response } = res
 	if (Array.isArray(response)) {
 		const [item] = response
 		return item
@@ -14,7 +16,7 @@ export const permalinks = async (path: string): Promise<boolean | OOPermalink> =
 
 export const usable = async (path: string): Promise<boolean> => {
 	const res = await getPermalink(path)
-	const {status} = res
+	const { status } = res
 	if (status === 404) {
 		return true
 	}
@@ -23,7 +25,7 @@ export const usable = async (path: string): Promise<boolean> => {
 
 export const put = async (path: string): Promise<boolean | OOPermalink> => {
 	const res = await putPermalink(path)
-	const {response} = res
+	const { response } = res
 	if (Array.isArray(response)) {
 		const [item] = response
 		return item

@@ -1,8 +1,8 @@
-import {OOElement} from '../oo-element'
-import {html} from '../../lib/html'
+import { OOElement } from '../oo-element'
+import { html } from '../../lib/html'
 import define from '../../lib/define'
 import button from '../_atoms/oo-atoms-button'
-import {attach, dispatch} from '../../lib/notification'
+import { attach, dispatch } from '../../lib/notification'
 import store from '../../lib/local-storage'
 import deleteUser from '../../lib/oo-api-delete-user'
 import customEvent from '../../lib/custom-event'
@@ -20,7 +20,7 @@ export default class extends OOElement {
 	constructor() {
 		super()
 		attach()
-		const {uid} = store
+		const { uid } = store
 		if (typeof uid === 'string' && uid !== '') {
 			this.update()
 		}
@@ -44,9 +44,9 @@ export default class extends OOElement {
 	async deleteAccount() {
 		stateProgress.set(this, true)
 		this.update()
-		const {uid} = store
+		const { uid } = store
 		const del = await deleteUser(uid)
-		const {response} = del
+		const { response } = del
 		if (Array.isArray(response)) {
 			store.clear()
 			dispatch({

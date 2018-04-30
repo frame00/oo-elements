@@ -20,7 +20,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Pass project information to "oo-ask-form"', () => {
 		it('Fetch a project using value of "data-uid" attribute', async () => {
-			const element = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
+			const element = insertElement(
+				ELEMENT,
+				new Map([['data-uid', '79zGMA1b6q']])
+			)
 			await sleep(300)
 			const form = element.shadowRoot.querySelector('oo-ask-form')
 			expect(form.getAttribute('data-title')).to.be('The Title')
@@ -31,15 +34,16 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Update project information', () => {
 		it('When "oo-ask-form" dispatches a "changed" event, it updates project information', async () => {
-			const element: any = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
+			const element: any = insertElement(
+				ELEMENT,
+				new Map([['data-uid', '79zGMA1b6q']])
+			)
 			await sleep(300)
 			const form = element.shadowRoot.querySelector('oo-ask-form')
 			const detail = {
 				title: 'TITLE',
 				message: 'BODY',
-				tags: [
-					'TAG'
-				]
+				tags: ['TAG']
 			}
 			event(form, 'changed', detail)
 			expect(element.project.title).to.be(detail.title)
@@ -50,7 +54,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Patch project', () => {
 		it('Patch the project when clicking "Save" button', async () => {
-			const element: any = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
+			const element: any = insertElement(
+				ELEMENT,
+				new Map([['data-uid', '79zGMA1b6q']])
+			)
 			await sleep(300)
 			const button = element.shadowRoot.querySelector('button')
 			event(button, 'click')
@@ -60,7 +67,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 
 		it('When the patch succeeds it dispatches "updated" event', done => {
-			const element = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
+			const element = insertElement(
+				ELEMENT,
+				new Map([['data-uid', '79zGMA1b6q']])
+			)
 			element.addEventListener('updated', () => {
 				done()
 			})

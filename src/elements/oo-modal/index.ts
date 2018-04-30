@@ -1,5 +1,5 @@
-import {OOElement} from '../oo-element'
-import {html} from '../../lib/html'
+import { OOElement } from '../oo-element'
+import { html } from '../../lib/html'
 import customEvent from '../../lib/custom-event'
 
 const ATTR = {
@@ -10,7 +10,7 @@ const EVENT = {
 }
 
 const asBoolean = (data: string): boolean => {
-	switch(data) {
+	switch (data) {
 		case 'enabled':
 			return true
 		case 'disabled':

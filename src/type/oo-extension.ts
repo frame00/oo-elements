@@ -1,10 +1,10 @@
 export interface OOExtension {
-	key: string,
+	key: string
 	value: any
 }
 
-export type OOExtensions = Array<OOExtension>
-export type OOExtensionsLikeObject = {
+export type OOExtensions = OOExtension[]
+export interface OOExtensionsLikeObject {
 	[key: string]: any
 }
 

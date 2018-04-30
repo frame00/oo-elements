@@ -1,15 +1,15 @@
-import {OOExtensions, OOExtensionMap} from './oo-extension'
+import { OOExtensions, OOExtensionMap } from './oo-extension'
 
 export type OOUserUID = string
 
 export interface OOUser {
-	uid: OOUserUID,
-	created: number,
+	uid: OOUserUID
+	created: number
 	Extensions: OOExtensions
 }
 
 export interface OOUserConnectStripe {
-	user: OOUserUID,
+	user: OOUserUID
 	stripe: string
 }
 

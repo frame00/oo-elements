@@ -1,5 +1,5 @@
 import signInWithFirebaseToken from '../../lib/sign-in-with-firebase-token'
-import {dispatch} from '../../lib/notification'
+import { dispatch } from '../../lib/notification'
 import SignIn from '../../lib/classes/sign-in'
 import firebaseAuthRedirect from '../../lib/firebase-auth-redirect'
 import firebaseGetRedirect from '../../lib/firebase-get-redirect'

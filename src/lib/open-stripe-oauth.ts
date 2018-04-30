@@ -1,9 +1,9 @@
-import {oAuthUrl} from '../conf/stripe'
+import { oAuthUrl } from '../conf/stripe'
 import store from '../lib/local-storage'
-const {open} = window
+const { open } = window
 
 export default (): Window => {
-	const {uid} = store
+	const { uid } = store
 	const url = `${oAuthUrl}&state=${uid}`
 	return open(url, '_blank')
 }

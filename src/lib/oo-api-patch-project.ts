@@ -1,19 +1,21 @@
 import api from '../lib/oo-api'
-import {OOAPIResult} from '../type/oo-api'
-import {OOExtension} from '../type/oo-extension'
-import {OOProject} from '../type/oo-project'
+import { OOAPIResult } from '../type/oo-api'
+import { OOExtension } from '../type/oo-extension'
+import { OOProject } from '../type/oo-project'
 
 interface ProjectOptionsPost {
-	uid: string,
-	approve?: boolean,
-	title?: string,
-	body?: string,
-	tags?: Array<string>
+	uid: string
+	approve?: boolean
+	title?: string
+	body?: string
+	tags?: string[]
 }
 
-export default async (options: ProjectOptionsPost): Promise<OOAPIResult<OOProject>> => {
-	const {uid, approve, title, body, tags} = options
-	const extensions: Array<OOExtension> = []
+export default async (
+	options: ProjectOptionsPost
+): Promise<OOAPIResult<OOProject>> => {
+	const { uid, approve, title, body, tags } = options
+	const extensions: OOExtension[] = []
 	if (approve !== undefined) {
 		extensions.push({
 			key: 'approve',

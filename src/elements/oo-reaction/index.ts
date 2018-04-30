@@ -1,5 +1,5 @@
-import {OOElement} from '../oo-element'
-import {html} from '../../lib/html'
+import { OOElement } from '../oo-element'
+import { html } from '../../lib/html'
 
 export default class extends OOElement {
 	render() {

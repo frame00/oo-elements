@@ -1,9 +1,9 @@
 import getCurrency from './get-currency'
-import {Currency, CurrencySign, LocaledCurrency} from '../type/currency'
-import {ExtensionPricePerHour} from '../type/extension-price-per-hour'
+import { Currency, CurrencySign, LocaledCurrency } from '../type/currency'
+import { ExtensionPricePerHour } from '../type/extension-price-per-hour'
 
 export const currencyToSign = (cur: Currency): CurrencySign => {
-	switch(cur) {
+	switch (cur) {
 		case 'usd':
 			return '$'
 		case 'jpy':

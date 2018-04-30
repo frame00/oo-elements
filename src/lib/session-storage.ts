@@ -1,11 +1,10 @@
-
-const {sessionStorage} = window
+const { sessionStorage } = window
 
 type Key = 'oo:signing-in' | 'oo:previous-ask'
 
 interface PreviousAsk {
-	iam: string,
-	title: string,
+	iam: string
+	title: string
 	body: string
 }
 
@@ -33,7 +32,7 @@ export default class {
 		const value = get('oo:previous-ask')
 		try {
 			return JSON.parse(value)
-		} catch(err) {
+		} catch (err) {
 			return
 		}
 	}

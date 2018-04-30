@@ -1,32 +1,32 @@
-import {OOElement} from '../oo-element'
-import {html} from '../../lib/html'
+import { OOElement } from '../oo-element'
+import { html } from '../../lib/html'
 import weakMap from '../../lib/weak-map'
-import {Currency} from '../../type/currency'
+import { Currency } from '../../type/currency'
 import ooMessage from '../_atoms/oo-atoms-message'
 import ooUserName from '../_atoms/oo-atoms-user-name'
 import button from '../_atoms/oo-atoms-button'
 import define from '../../lib/define'
-import {currencyToSign} from '../../lib/get-price-per-hour'
+import { currencyToSign } from '../../lib/get-price-per-hour'
 import stripeCheckout from '../../lib/payment-handler-by-stripe'
 import getPayment from '../../lib/oo-api-get-payment'
 import toMap from '../../lib/extensions-to-map'
 import asStripeAmount from './lib/as-stripe-amount'
 import stripeCallback from './lib/stripe-callback'
-import {attach, dispatch} from '../../lib/notification'
+import { attach, dispatch } from '../../lib/notification'
 import clientGetUser from '../../lib/oo-client-get-user'
-import {OOUserWithMapedExtensions} from '../../type/oo-user'
+import { OOUserWithMapedExtensions } from '../../type/oo-user'
 
 define('oo-atoms-message', ooMessage)
 define('oo-atoms-user-name', ooUserName)
 define('oo-atoms-button', button)
 
 interface Options {
-	iam: string,
-	uid: string,
-	dest: string,
-	amount: string,
-	currency: Currency,
-	paymentUid?: string,
+	iam: string
+	uid: string
+	dest: string
+	amount: string
+	currency: Currency
+	paymentUid?: string
 	paymentPaid?: boolean
 	chargeSuccessed?: boolean
 }
@@ -63,7 +63,7 @@ const testData = {
 }
 
 const isFullFilledRequiredStates = (opts: Options): boolean => {
-	const {iam, uid, dest, amount, currency} = opts
+	const { iam, uid, dest, amount, currency } = opts
 	if (iam && uid && dest && amount && currency) {
 		return true
 	}
@@ -76,7 +76,12 @@ const asCurrency = (data: string): Currency => {
 	return 'usd'
 }
 const validUid = (data: string): boolean => {
-	if (typeof data === 'string' && data !== 'undefined' && data !== 'null' && data !== '') {
+	if (
+		typeof data === 'string' &&
+		data !== 'undefined' &&
+		data !== 'null' &&
+		data !== ''
+	) {
 		return true
 	}
 	return false
@@ -89,7 +94,14 @@ const onBeforeunloadCallback = e => {
 
 export default class extends OOElement {
 	static get observedAttributes() {
-		return [ATTR.DATA_IAM, ATTR.DATA_UID, ATTR.DATA_DEST, ATTR.DATA_AMOUNT, ATTR.DATA_CURRENCY, ATTR.DATA_PAYMENT_UID]
+		return [
+			ATTR.DATA_IAM,
+			ATTR.DATA_UID,
+			ATTR.DATA_DEST,
+			ATTR.DATA_AMOUNT,
+			ATTR.DATA_CURRENCY,
+			ATTR.DATA_PAYMENT_UID
+		]
 	}
 
 	get paid() {
@@ -109,7 +121,7 @@ export default class extends OOElement {
 		if (prev === next && !next) {
 			return
 		}
-		switch(attr) {
+		switch (attr) {
 			case ATTR.DATA_IAM:
 				stateIam.set(this, next)
 				this.fetchUser(next)
@@ -154,17 +166,27 @@ export default class extends OOElement {
 			chargeSuccessed: stateChargeSuccessed.get(this)
 		}
 		const progress = stateProgress.get(this)
-		if(isFullFilledRequiredStates(opts) === false) {
+		if (isFullFilledRequiredStates(opts) === false) {
 			return html``
 		}
-		const {iam, currency, amount, paymentPaid, chargeSuccessed} = opts
+		const { iam, currency, amount, paymentPaid, chargeSuccessed } = opts
 		const sign = currencyToSign(currency)
 		const done = paymentPaid === true
-		const paymentButton = done ? html`` : (() => {
-			const state = chargeSuccessed === true ? 'resolved' : chargeSuccessed === false ? 'rejected' : progress ? 'progress' : ''
-			return html`
-			<oo-atoms-button on-clicked='${() => this.stripeCheckout()}' data-state$='${state}' data-block=enabled>Pay</oo-atoms-button>`
-		})()
+		const paymentButton = done
+			? html``
+			: (() => {
+					const state =
+						chargeSuccessed === true
+							? 'resolved'
+							: chargeSuccessed === false
+								? 'rejected'
+								: progress
+									? 'progress'
+									: ''
+					return html`
+			<oo-atoms-button on-clicked='${() =>
+				this.stripeCheckout()}' data-state$='${state}' data-block=enabled>Pay</oo-atoms-button>`
+			  })()
 
 		return html`
 		<style>
@@ -249,16 +271,16 @@ export default class extends OOElement {
 			if (err) {
 				stateChargeSuccessed.set(this, false)
 			} else {
-				const {response} = results
+				const { response } = results
 				if (Array.isArray(response)) {
 					const [data] = response
 					statePaymentUid.set(this, data.uid)
 					statePaymentPaid.set(this, true)
 					stateChargeSuccessed.set(this, true)
-					dispatch({message: 'Payment has been completed.', type: 'success'})
+					dispatch({ message: 'Payment has been completed.', type: 'success' })
 				} else {
 					stateChargeSuccessed.set(this, false)
-					dispatch({message: response.message, type: 'error'})
+					dispatch({ message: response.message, type: 'error' })
 				}
 			}
 			stateProgress.delete(this)
@@ -266,7 +288,12 @@ export default class extends OOElement {
 			statePaymentFetching.set(this, false)
 			this.onBeforeunload(true)
 		}
-		const callback = stripeCallback(this, options, beforeCallback, afterCallback)
+		const callback = stripeCallback(
+			this,
+			options,
+			beforeCallback,
+			afterCallback
+		)
 		try {
 			const user = stateUser.get(this)
 			const currency = stateCurrency.get(this)
@@ -286,7 +313,7 @@ export default class extends OOElement {
 					}
 				}
 			})
-		} catch(err) {
+		} catch (err) {
 			console.error(err)
 		}
 		if (test === true) {
@@ -311,7 +338,7 @@ export default class extends OOElement {
 		}
 		try {
 			const payment = await getPayment(uid)
-			const {response} = payment
+			const { response } = payment
 			if (Array.isArray(response)) {
 				const [pay] = response
 				const exts = toMap(pay)
@@ -321,7 +348,7 @@ export default class extends OOElement {
 					statePaymentPaid.set(this, paid)
 				}
 			}
-		} catch(err) {
+		} catch (err) {
 			console.error(err)
 		}
 		this.update()

@@ -1,12 +1,12 @@
-import {OOElement} from '../oo-element'
-import {repeat} from 'lit-html/lib/repeat'
-import {TemplateResult} from 'lit-html'
-import {html} from '../../lib/html'
+import { OOElement } from '../oo-element'
+import { repeat } from 'lit-html/lib/repeat'
+import { TemplateResult } from 'lit-html'
+import { html } from '../../lib/html'
 import getProject from '../../lib/oo-api-get-project'
 import toMap from '../../lib/extensions-to-map'
 import weakMap from '../../lib/weak-map'
-import {Scope} from '../../type/scope'
-import {href} from '../../lib/href'
+import { Scope } from '../../type/scope'
+import { href } from '../../lib/href'
 
 const ATTR = {
 	DATA_UID: 'data-uid'
@@ -35,7 +35,7 @@ export default class extends OOElement {
 	}
 
 	render() {
-		const {found, scope, fork} = {
+		const { found, scope, fork } = {
 			found: projectFound.get(this),
 			scope: projectScope.get(this),
 			fork: projectForked.get(this)
@@ -43,9 +43,11 @@ export default class extends OOElement {
 		if (found === false) {
 			return html``
 		}
-		const labels: Array<TemplateResult> = []
+		const labels: TemplateResult[] = []
 		if (fork) {
-			labels.push(html`<a class=forked href$='${href(`/project/${fork}`)}'>↩ fork</a>`)
+			labels.push(
+				html`<a class=forked href$='${href(`/project/${fork}`)}'>↩ fork</a>`
+			)
 		}
 		if (scope) {
 			labels.push(html`<span class$='${scope}'>${scope}</span>`)
@@ -89,7 +91,7 @@ export default class extends OOElement {
 
 	async fetchProject(uid: string) {
 		const api = await getProject(uid)
-		const {response} = api
+		const { response } = api
 		if (Array.isArray(response)) {
 			const [item] = response
 			const mapedExtensions = toMap(item)

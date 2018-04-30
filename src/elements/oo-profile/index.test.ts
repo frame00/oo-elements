@@ -20,7 +20,11 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	it('Pass "data-iam" attribute to <oo-atoms-user-name>', async () => {
 		const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
 		await sleep(300)
-		expect(element.shadowRoot.querySelector('oo-atoms-user-name').getAttribute('data-iam')).to.be('test')
+		expect(
+			element.shadowRoot
+				.querySelector('oo-atoms-user-name')
+				.getAttribute('data-iam')
+		).to.be('test')
 	})
 
 	it('Display OO user bio specified by "data-iam" attribute', async () => {

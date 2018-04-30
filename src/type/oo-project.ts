@@ -1,8 +1,8 @@
-import {OOExtensions} from './oo-extension'
+import { OOExtensions } from './oo-extension'
 
 export interface OOProject {
-	uid: string,
-	created: number,
+	uid: string
+	created: number
 	Extensions?: OOExtensions
 }
 

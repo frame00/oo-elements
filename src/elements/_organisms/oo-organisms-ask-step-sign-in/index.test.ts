@@ -29,8 +29,13 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 
 		it('Use "oo-sign-in-with-redirect" elements', () => {
-			const element = insertElement(ELEMENT, new Map([['data-flow', 'redirect']]))
-			const buttons = element.shadowRoot.querySelectorAll('oo-sign-in-with-redirect')
+			const element = insertElement(
+				ELEMENT,
+				new Map([['data-flow', 'redirect']])
+			)
+			const buttons = element.shadowRoot.querySelectorAll(
+				'oo-sign-in-with-redirect'
+			)
 			expect(buttons).to.have.length(3)
 		})
 
@@ -43,20 +48,32 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	it('Forward "signedin" event of <oo-sign-in>', done => {
 		const element = insertElement(ELEMENT)
-		element.addEventListener('signedin', (e: CustomEvent) => {
-			expect(e.detail.test).to.be(1)
-			done()
-		}, {once: true})
-		event(element.shadowRoot.querySelector('oo-sign-in'), 'signedin', {test: 1})
+		element.addEventListener(
+			'signedin',
+			(e: CustomEvent) => {
+				expect(e.detail.test).to.be(1)
+				done()
+			},
+			{ once: true }
+		)
+		event(element.shadowRoot.querySelector('oo-sign-in'), 'signedin', {
+			test: 1
+		})
 	})
 
 	it('Forward "signedinerror" event of <oo-sign-in>', done => {
 		const element = insertElement(ELEMENT)
-		element.addEventListener('signedinerror', (e: CustomEvent) => {
-			expect(e.detail.test).to.be(1)
-			done()
-		}, {once: true})
-		event(element.shadowRoot.querySelector('oo-sign-in'), 'signedinerror', {test: 1})
+		element.addEventListener(
+			'signedinerror',
+			(e: CustomEvent) => {
+				expect(e.detail.test).to.be(1)
+				done()
+			},
+			{ once: true }
+		)
+		event(element.shadowRoot.querySelector('oo-sign-in'), 'signedinerror', {
+			test: 1
+		})
 	})
 
 	after(() => {

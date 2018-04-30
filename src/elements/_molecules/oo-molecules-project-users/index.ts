@@ -1,5 +1,5 @@
-import {OOElement} from '../../oo-element'
-import {html} from '../../../lib/html'
+import { OOElement } from '../../oo-element'
+import { html } from '../../../lib/html'
 import weakMap from '../../../lib/weak-map'
 import userName from '../../_atoms/oo-atoms-user-name'
 import define from '../../../lib/define'
@@ -14,7 +14,10 @@ const ATTR = {
 const stateAuthor = weakMap<string>()
 const stateAssignee = weakMap<string>()
 
-const content = (uid?: string) => uid ? html`<oo-atoms-user-name data-iam$='${uid}' data-size=small></oo-atoms-user-name>` : html``
+const content = (uid?: string) =>
+	uid
+		? html`<oo-atoms-user-name data-iam$='${uid}' data-size=small></oo-atoms-user-name>`
+		: html``
 
 export default class extends OOElement {
 	static get observedAttributes() {

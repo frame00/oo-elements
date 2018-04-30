@@ -21,19 +21,25 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	})
 
 	it('Show "body" slot', () => {
-		document.body.insertAdjacentHTML('afterbegin', `
+		document.body.insertAdjacentHTML(
+			'afterbegin',
+			`
 		<oo-notification>
 			<div slot="body">The Content</div>
-		</oo-notification>`)
+		</oo-notification>`
+		)
 		const element = getElement(ELEMENT)[0]
-		const slotHeader: HTMLSlotElement = element.shadowRoot.querySelector('slot[name=body]')
+		const slotHeader = element.shadowRoot.querySelector('slot[name=body]')
 		const assigned = slotHeader.assignedNodes()
 		expect(assigned[0].textContent).to.be('The Content')
 	})
 
 	describe('Styling by "data-type" attribute', () => {
 		it('"data-type" is "success"', () => {
-			const element = insertElement(ELEMENT, new Map([['data-type', 'success']]))
+			const element = insertElement(
+				ELEMENT,
+				new Map([['data-type', 'success']])
+			)
 			const main = element.shadowRoot.querySelector('main')
 			expect(main.classList.toString()).to.contain('success')
 		})

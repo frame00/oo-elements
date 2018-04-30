@@ -24,13 +24,19 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 
 		it('"not-found"', () => {
-			const element = insertElement(ELEMENT, new Map([['data-type', 'not-found']]))
+			const element = insertElement(
+				ELEMENT,
+				new Map([['data-type', 'not-found']])
+			)
 			const svg = element.shadowRoot.querySelector('svg')
 			expect(svg.id).to.be('not-found')
 		})
 
 		it('"will-be-find"', () => {
-			const element = insertElement(ELEMENT, new Map([['data-type', 'will-be-find']]))
+			const element = insertElement(
+				ELEMENT,
+				new Map([['data-type', 'will-be-find']])
+			)
 			const svg = element.shadowRoot.querySelector('svg')
 			expect(svg.id).to.be('will-be-find')
 		})

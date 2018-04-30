@@ -26,8 +26,14 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		it('Fetch user', async () => {
 			const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
 			await sleep(300)
-			expect(element.shadowRoot.querySelector('oo-profile').getAttribute('data-iam')).to.be('test')
-			expect(element.shadowRoot.querySelector('oo-ask-with-sign-in').getAttribute('data-iam')).to.be('test')
+			expect(
+				element.shadowRoot.querySelector('oo-profile').getAttribute('data-iam')
+			).to.be('test')
+			expect(
+				element.shadowRoot
+					.querySelector('oo-ask-with-sign-in')
+					.getAttribute('data-iam')
+			).to.be('test')
 		})
 
 		it('Show <oo-empty> when user not found', async () => {
@@ -40,36 +46,66 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	it('Pass "data-iam" attribute to <oo-profile> and <oo-ask-with-sign-in>', async () => {
 		const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
 		await sleep(300)
-		expect(element.shadowRoot.querySelector('oo-profile').getAttribute('data-iam')).to.be('test')
-		expect(element.shadowRoot.querySelector('oo-ask-with-sign-in').getAttribute('data-iam')).to.be('test')
+		expect(
+			element.shadowRoot.querySelector('oo-profile').getAttribute('data-iam')
+		).to.be('test')
+		expect(
+			element.shadowRoot
+				.querySelector('oo-ask-with-sign-in')
+				.getAttribute('data-iam')
+		).to.be('test')
 	})
 
 	it('Pass "data-scope" attribute to <oo-ask-with-sign-in>', async () => {
 		const element = insertElement(ELEMENT, new Map([['data-scope', 'public']]))
 		await sleep(300)
-		expect(element.shadowRoot.querySelector('oo-ask-with-sign-in').getAttribute('data-scope')).to.be('public')
+		expect(
+			element.shadowRoot
+				.querySelector('oo-ask-with-sign-in')
+				.getAttribute('data-scope')
+		).to.be('public')
 	})
 
 	it('Pass "data-tags" attribute to <oo-ask-with-sign-in>', async () => {
-		const element = insertElement(ELEMENT, new Map([['data-tags', 'tag1 tag2 tag3']]))
+		const element = insertElement(
+			ELEMENT,
+			new Map([['data-tags', 'tag1 tag2 tag3']])
+		)
 		await sleep(300)
-		expect(element.shadowRoot.querySelector('oo-ask-with-sign-in').getAttribute('data-tags')).to.be('tag1 tag2 tag3')
+		expect(
+			element.shadowRoot
+				.querySelector('oo-ask-with-sign-in')
+				.getAttribute('data-tags')
+		).to.be('tag1 tag2 tag3')
 	})
 
 	it('Pass "data-sign-in-flow" attribute to <oo-ask-with-sign-in>', async () => {
-		const element = insertElement(ELEMENT, new Map([['data-iam', 'test'], ['data-sign-in-flow', 'redirect']]))
+		const element = insertElement(
+			ELEMENT,
+			new Map([['data-iam', 'test'], ['data-sign-in-flow', 'redirect']])
+		)
 		await sleep(300)
-		expect(element.shadowRoot.querySelector('oo-ask-with-sign-in').getAttribute('data-sign-in-flow')).to.be('redirect')
+		expect(
+			element.shadowRoot
+				.querySelector('oo-ask-with-sign-in')
+				.getAttribute('data-sign-in-flow')
+		).to.be('redirect')
 	})
 
 	it('Show <oo-organisms-ask-created> when dispatched "projectcreated" event on <oo-ask-with-sign-in>', async () => {
 		const element = insertElement(ELEMENT, new Map([['data-iam', 'test']]))
 		await sleep(300)
-		const askWithSignIn = element.shadowRoot.querySelector('oo-ask-with-sign-in')
-		event(askWithSignIn, 'projectcreated', {response: [{uid: 'test'}]})
+		const askWithSignIn = element.shadowRoot.querySelector(
+			'oo-ask-with-sign-in'
+		)
+		event(askWithSignIn, 'projectcreated', { response: [{ uid: 'test' }] })
 		const created = element.shadowRoot.querySelector('oo-organisms-ask-created')
 		expect(created).to.be.ok()
-		expect(element.shadowRoot.querySelector('*:not(style):not(oo-organisms-ask-created)')).to.not.be.ok()
+		expect(
+			element.shadowRoot.querySelector(
+				'*:not(style):not(oo-organisms-ask-created)'
+			)
+		).to.not.be.ok()
 	})
 
 	after(() => {

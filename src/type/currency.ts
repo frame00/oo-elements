@@ -7,7 +7,7 @@ export type Currency = Usd | Jpy
 export type CurrencySign = DollarSign | YenSign
 
 export interface LocaledCurrency {
-	currency: Currency,
-	price: number,
+	currency: Currency
+	price: number
 	sign: CurrencySign
 }

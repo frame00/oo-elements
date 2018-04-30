@@ -4,7 +4,7 @@ import insertElement from '../../lib/test/insert-element'
 import removeElement from '../../lib/test/remove-element'
 
 const ELEMENT = 'oo-version'
-const {PACKAGE_VERSION} = process.env
+const { PACKAGE_VERSION } = process.env
 
 describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	before(() => {

@@ -1,5 +1,5 @@
-import {html, TemplateResult} from 'lit-html'
-import {MapedOOMessage} from '../../../../type/oo-message'
+import { html, TemplateResult } from 'lit-html'
+import { MapedOOMessage } from '../../../../type/oo-message'
 import define from '../../../../lib/define'
 import markdown from '../../../oo-markdown'
 
@@ -9,8 +9,10 @@ export default (user: string, mes: MapedOOMessage): TemplateResult => {
 	const body = mes.ext.get('body')
 	const author = mes.ext.get('author')
 	const position = author === user ? 'right' : 'left'
-	const footer = author === user ? html`` :
-		html`
+	const footer =
+		author === user
+			? html``
+			: html`
 		<footer slot=footer>
 			<oo-atoms-user-name data-iam$='${author}' data-size=small></oo-atoms-user-name>
 		</footer>`

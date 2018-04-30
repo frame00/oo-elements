@@ -1,9 +1,9 @@
-import {AuthResult} from '../../type/auth-result'
+import { AuthResult } from '../../type/auth-result'
 import signInWithFirebaseToken from '../../lib/sign-in-with-firebase-token'
-import {dispatch} from '../../lib/notification'
+import { dispatch } from '../../lib/notification'
 import weakMap from '../../lib/weak-map'
 import SignIn from '../../lib/classes/sign-in'
-const {document} = window
+const { document } = window
 
 const stateIframe = weakMap<HTMLIFrameElement>()
 
@@ -11,9 +11,11 @@ export default class extends SignIn {
 	connectedCallback() {
 		super.connectedCallback()
 		const div = document.createElement('div')
-		const shadow = div.attachShadow({mode: 'open'})
+		const shadow = div.attachShadow({ mode: 'open' })
 		this.appendChild(div)
-		shadow.innerHTML = `<iframe src='./dist/assets/iframe.firebase.authenticate.html?${this.provider}'></iframe>`
+		shadow.innerHTML = `<iframe src='./dist/assets/iframe.firebase.authenticate.html?${
+			this.provider
+		}'></iframe>`
 		const iframe = shadow.querySelector('iframe')
 		stateIframe.set(this, iframe)
 	}
@@ -24,14 +26,14 @@ export default class extends SignIn {
 		const token = await new Promise<AuthResult>((resolve, reject) => {
 			iframe.contentWindow.postMessage('run', '*')
 			const listener = e => {
-				const {source, data} = e
+				const { source, data } = e
 				if (source !== iframe.contentWindow) {
 					return
 				}
 				let json: any
 				try {
 					json = JSON.parse(data)
-				} catch(err) {
+				} catch (err) {
 					return
 				}
 				try {
@@ -41,7 +43,7 @@ export default class extends SignIn {
 					const result = json as AuthResult
 					resolve(result)
 					window.removeEventListener('message', listener)
-				} catch(err) {
+				} catch (err) {
 					reject(err)
 				}
 			}

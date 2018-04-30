@@ -1,8 +1,8 @@
-import {Currency} from '../type/currency'
+import { Currency } from '../type/currency'
 import getCurrency from './get-currency'
 
 interface InitPrice {
-	amount: 5 | 500,
+	amount: 5 | 500
 	currency: Currency
 }
 

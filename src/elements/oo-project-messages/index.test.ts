@@ -19,21 +19,30 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Fetch messages', () => {
 		it('Fetch the message of the project specified by "data-uid" attribute', async () => {
-			const element: any = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
+			const element: any = insertElement(
+				ELEMENT,
+				new Map([['data-uid', '79zGMA1b6q']])
+			)
 			await sleep(300)
 			expect(element.messages).to.have.length(1)
 			expect(element.messages[0].uid).to.be('jX0hnUC2dR')
 		})
 
 		it('Fetch messages up to the value of "data-limit"', async () => {
-			const element: any = insertElement(ELEMENT, new Map([['data-uid', 's8F8NzGjxH'], ['data-limit', '2']]))
+			const element: any = insertElement(
+				ELEMENT,
+				new Map([['data-uid', 's8F8NzGjxH'], ['data-limit', '2']])
+			)
 			await sleep(300)
 			expect(element.messages).to.have.length(2)
 			expect(element.messages[0].uid).to.be('k7hzALUGea')
 		})
 
 		it('injectMessages method', async () => {
-			const element: any = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
+			const element: any = insertElement(
+				ELEMENT,
+				new Map([['data-uid', '79zGMA1b6q']])
+			)
 			await sleep(300)
 			element.injectMessages(['0mZD241zKT'])
 			await sleep(200)
@@ -45,13 +54,19 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	describe('Display elements', () => {
 		describe('Message fetched', () => {
 			it('When the fetched content is partial, display the button', async () => {
-				const element = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
+				const element = insertElement(
+					ELEMENT,
+					new Map([['data-uid', '79zGMA1b6q']])
+				)
 				await sleep(300)
 				expect(element.shadowRoot.querySelector('.paging')).to.be.ok()
 			})
 
 			it('When the fetched content is all, not display the button', async () => {
-				const element = insertElement(ELEMENT, new Map([['data-uid', 'kY8FF7AT2W']]))
+				const element = insertElement(
+					ELEMENT,
+					new Map([['data-uid', 'kY8FF7AT2W']])
+				)
 				await sleep(300)
 				expect(element.shadowRoot.querySelector('.paging')).to.not.be.ok()
 			})
@@ -59,7 +74,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 		describe('When the value of the "data-iam" attribute not matches "author" of one message', () => {
 			it('Mount <footer>', async () => {
-				const element = insertElement(ELEMENT, new Map([['data-iam', 'xxx'], ['data-uid', '79zGMA1b6q']]))
+				const element = insertElement(
+					ELEMENT,
+					new Map([['data-iam', 'xxx'], ['data-uid', '79zGMA1b6q']])
+				)
 				await sleep(300)
 				expect(element.shadowRoot.querySelector('footer')).to.be.ok()
 			})
@@ -67,7 +85,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 		describe('When the value of the "data-iam" attribute matches "author" of one message', () => {
 			it('Do not mount <footer>', async () => {
-				const element = insertElement(ELEMENT, new Map([['data-iam', 'test'], ['data-uid', '79zGMA1b6q']]))
+				const element = insertElement(
+					ELEMENT,
+					new Map([['data-iam', 'test'], ['data-uid', '79zGMA1b6q']])
+				)
 				await sleep(300)
 				expect(element.shadowRoot.querySelector('footer')).to.not.be.ok()
 			})
@@ -76,10 +97,15 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Load paging', () => {
 		it('Fetch the old message when click paging button', async () => {
-			const element: any = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
+			const element: any = insertElement(
+				ELEMENT,
+				new Map([['data-uid', '79zGMA1b6q']])
+			)
 			await sleep(300)
 			expect(element.messages).to.have.length(1)
-			element.shadowRoot.querySelector('oo-atoms-button').dispatchEvent(new Event('clicked'))
+			element.shadowRoot
+				.querySelector('oo-atoms-button')
+				.dispatchEvent(new Event('clicked'))
 			await sleep(300)
 			expect(element.messages).to.have.length(2)
 		})

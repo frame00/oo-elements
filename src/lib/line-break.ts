@@ -1,4 +1,4 @@
-export default (text?: string): Array<string> => {
+export default (text?: string): string[] => {
 	if (text === undefined) {
 		return []
 	}

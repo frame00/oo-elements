@@ -1,16 +1,20 @@
-import {OOElement} from '../oo-element'
-import {html} from '../../lib/html'
+import { OOElement } from '../oo-element'
+import { html } from '../../lib/html'
 import stepSignIn from '../_organisms/oo-organisms-ask-step-sign-in'
 import askForm from '../oo-ask-form'
 import define from '../../lib/define'
 import createProject from '../../lib/oo-api-create-project'
 import weakMap from '../../lib/weak-map'
-import {HTMLElementEventChangeAsk, ProjectCreatedDetail, ProjectCreated} from '../../type/event'
-import {Scope} from '../../type/scope'
+import {
+	HTMLElementEventChangeAsk,
+	ProjectCreatedDetail,
+	ProjectCreated
+} from '../../type/event'
+import { Scope } from '../../type/scope'
 import customEvent from '../../lib/custom-event'
-import {asTags, asScope, asSignInFlow} from '../../lib/as'
-import {SignInFlow} from '../../type/sign-in-flow'
-import {Currency} from '../../type/currency'
+import { asTags, asScope, asSignInFlow } from '../../lib/as'
+import { SignInFlow } from '../../type/sign-in-flow'
+import { Currency } from '../../type/currency'
 
 define('oo-organisms-ask-step-sign-in', stepSignIn)
 define('oo-ask-form', askForm)
@@ -22,8 +26,10 @@ const ATTR = {
 	DATA_SIGN_IN_FLOW: 'data-sign-in-flow'
 }
 const EVENT = {
-	PROJECT_CREATED: (detail: ProjectCreatedDetail): ProjectCreated => customEvent('projectcreated', detail),
-	PROJECT_CREATION_FAILED: detail => customEvent('projectcreationfailed', detail)
+	PROJECT_CREATED: (detail: ProjectCreatedDetail): ProjectCreated =>
+		customEvent('projectcreated', detail),
+	PROJECT_CREATION_FAILED: detail =>
+		customEvent('projectcreationfailed', detail)
 }
 
 const stateIam = weakMap<string>()
@@ -32,7 +38,7 @@ const stateMessage = weakMap<string>()
 const stateOfferer = weakMap<string>()
 const stateScope = weakMap<Scope>()
 const stateCurrency = weakMap<Currency>()
-const stateTags = weakMap<Array<string>>()
+const stateTags = weakMap<string[]>()
 const stateAuthorized = weakMap<boolean>()
 const stateSignInFlow = weakMap<SignInFlow>()
 const statePrevActiveStep = weakMap<Element>()
@@ -60,7 +66,12 @@ const fitHeight = (el: HTMLElement, target: HTMLElement): boolean => {
 
 export default class extends OOElement {
 	static get observedAttributes() {
-		return [ATTR.DATA_IAM, ATTR.DATA_SCOPE, ATTR.DATA_TAGS, ATTR.DATA_SIGN_IN_FLOW]
+		return [
+			ATTR.DATA_IAM,
+			ATTR.DATA_SCOPE,
+			ATTR.DATA_TAGS,
+			ATTR.DATA_SIGN_IN_FLOW
+		]
 	}
 
 	constructor() {
@@ -72,7 +83,7 @@ export default class extends OOElement {
 		if (prev === next) {
 			return
 		}
-		switch(attr) {
+		switch (attr) {
 			case ATTR.DATA_IAM:
 				stateIam.set(this, next)
 				break
@@ -193,18 +204,24 @@ export default class extends OOElement {
 				font-family: var(--font-family);
 			}
 		</style>
-		<oo-ask-form data-iam$='${uid ? uid : ''}' data-tags$='${tags.join(' ')}' data-scope$='${scope}' on-changed='${e => this.onAskChanged(e)}'></oo-ask-form>
+		<oo-ask-form data-iam$='${uid ? uid : ''}' data-tags$='${tags.join(
+			' '
+		)}' data-scope$='${scope}' on-changed='${e =>
+			this.onAskChanged(e)}'></oo-ask-form>
 		<div class$='steps ${doOverflowHidden ? 'hidden' : ''}'>
 			<ul class$='${step}'>
 				<li class=step active?='${step === 'ask'}'>
-					<button class=authorization on-click='${() => this.onAuthorization()}'>Authenticate</button>
+					<button class=authorization on-click='${() =>
+						this.onAuthorization()}'>Authenticate</button>
 					<p class=description>Next step: Authenticate account with Google, Facebook or GitHub.</p>
 				</li>
 				<li class=step active?='${step === 'signin'}'>
-					<oo-organisms-ask-step-sign-in class=signin data-flow$='${flow}' on-signedin='${e => this.onSignedIn(e)}'></oo-organisms-ask-step-sign-in>
+					<oo-organisms-ask-step-sign-in class=signin data-flow$='${flow}' on-signedin='${e =>
+			this.onSignedIn(e)}'></oo-organisms-ask-step-sign-in>
 				</li>
 				<li class=step active?='${step === 'submit'}'>
-					<button class=submit disabled?='${progress}' on-click='${() => this.createProject()}'>${uid ? 'Ask' : 'Post'}</button>
+					<button class=submit disabled?='${progress}' on-click='${() =>
+			this.createProject()}'>${uid ? 'Ask' : 'Post'}</button>
 				</li>
 			</ul>
 		</div>
@@ -219,7 +236,7 @@ export default class extends OOElement {
 				statePrevActiveStep.set(this, item)
 				let fit = false
 				let count = 100
-				while(!fit && count > 0) {
+				while (!fit && count > 0) {
 					fit = fitHeight(item as HTMLElement, items as HTMLElement)
 					count -= 1
 					await new Promise(resolve => setTimeout(resolve, 10))
@@ -229,8 +246,8 @@ export default class extends OOElement {
 	}
 
 	onAskChanged(e: HTMLElementEventChangeAsk<HTMLElement>) {
-		const {detail} = e
-		const {title, message: m, tags, scope, currency} = detail
+		const { detail } = e
+		const { title, message: m, tags, scope, currency } = detail
 		stateTitle.set(this, title)
 		stateMessage.set(this, m)
 		stateTags.set(this, tags)
@@ -244,8 +261,8 @@ export default class extends OOElement {
 	}
 
 	onSignedIn(e: CustomEvent) {
-		const {detail} = e
-		const {uid} = detail
+		const { detail } = e
+		const { uid } = detail
 		stateOfferer.set(this, uid)
 		this.update()
 	}
@@ -265,13 +282,13 @@ export default class extends OOElement {
 		const author = stateOfferer.get(this)
 		const scope = stateScope.get(this)
 		const opts: {
-			body: string,
-			author: string,
-			scope: Scope,
-			title?: string,
-			users?: Array<string>,
-			tags?: Array<string>,
-			assignee?: string,
+			body: string
+			author: string
+			scope: Scope
+			title?: string
+			users?: string[]
+			tags?: string[]
+			assignee?: string
 			currency?: Currency
 		} = {
 			body,
@@ -294,7 +311,7 @@ export default class extends OOElement {
 			opts.currency = currency
 		}
 		const project = await createProject(opts)
-		const {response} = project
+		const { response } = project
 		if (Array.isArray(response)) {
 			this.dispatchEvent(EVENT.PROJECT_CREATED(project))
 		} else {

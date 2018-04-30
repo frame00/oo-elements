@@ -1,17 +1,17 @@
-import {OOElement} from '../oo-element'
-import {html, render} from '../../lib/html'
+import { OOElement } from '../oo-element'
+import { html, render } from '../../lib/html'
 import weakMap from '../../lib/weak-map'
-import {Scope} from '../../type/scope'
-import {ChangeAskDetail, ChangeAsk} from '../../type/event'
+import { Scope } from '../../type/scope'
+import { ChangeAskDetail, ChangeAsk } from '../../type/event'
 import session from '../../lib/session-storage'
 import customEvent from '../../lib/custom-event'
 import autosize from 'autosize'
 import taboverride from 'taboverride'
-import {asTags, asScope} from '../../lib/as'
+import { asTags, asScope } from '../../lib/as'
 import tagsInput from 'tags-input'
-import {currencyToSign} from '../../lib/get-price-per-hour'
+import { currencyToSign } from '../../lib/get-price-per-hour'
 import getInitPrice from '../../lib/get-init-price'
-import {Currency} from '../../type/currency'
+import { Currency } from '../../type/currency'
 import getCurrency from '../../lib/get-currency'
 
 interface HTMLElementEvent<T extends HTMLElement> extends Event {
@@ -25,21 +25,22 @@ const ATTR = {
 	DATA_SCOPE: 'data-scope'
 }
 const EVENT = {
-	CHANGED: (detail: ChangeAskDetail): ChangeAsk => customEvent('changed', detail)
+	CHANGED: (detail: ChangeAskDetail): ChangeAsk =>
+		customEvent('changed', detail)
 }
 
 const iam = weakMap<string>()
 const message = weakMap<string>()
 const stateTitle = weakMap<string>()
 const stateScope = weakMap<Scope>()
-const stateTags = weakMap<Array<string>>()
+const stateTags = weakMap<string[]>()
 const stateCurrency = weakMap<Currency>()
 const stateTextareaElement = weakMap<HTMLTextAreaElement>()
 const stateInitialData = weakMap<{
-	iam?: string,
-	title?: string,
-	body?: string,
-	tags?: Array<string>,
+	iam?: string
+	title?: string
+	body?: string
+	tags?: string[]
 	scope?: Scope
 }>()
 const initialization = (el: OOElement) => {
@@ -62,7 +63,7 @@ const removeVendorElements = (el: OOElement): boolean => {
 	try {
 		removeTagsInput(el)
 		return true
-	} catch(err) {
+	} catch (err) {
 		return false
 	}
 }
@@ -71,7 +72,7 @@ const cleanUp = (el: OOElement): boolean => {
 		removeVendorElements(el)
 		render(html``, el)
 		return true
-	} catch(err) {
+	} catch (err) {
 		return false
 	}
 }
@@ -153,14 +154,11 @@ export default class extends OOElement {
 
 	render() {
 		const init = stateInitialData.get(this)
-		const {
-			title = '',
-			body = ''
-		} = init || {}
-		const {tags, scope} = this
+		const { title = '', body = '' } = init || {}
+		const { tags, scope } = this
 		const currency = stateCurrency.get(this)
 		const price = getInitPrice(currency)
-		const {amount} = price
+		const { amount } = price
 		const sign = currencyToSign(currency)
 		const cost = `${currency.toUpperCase()} ${sign}${amount}`
 		const showCost = (s: Scope) => {
@@ -283,9 +281,14 @@ export default class extends OOElement {
 		<span class$='scope ${scope}'></span>
 		${showCost(scope)}
 		<main>
-			<input name=title type=text value$='${title}' placeholder='Title (optional)' on-change='${e => this.onTitleChange(e)}'></input>
-			<textarea name=body placeholder='Your text here' on-change='${e => this.onMessageChange(e)}'>${body}</textarea>
-			<input name=tags type=tags value$='${tags.join(',')}' placeholder='#Tags (optional/comma separated)' on-change='${e => this.onTagsChange(e)}'></input>
+			<input name=title type=text value$='${title}' placeholder='Title (optional)' on-change='${e =>
+			this.onTitleChange(e)}'></input>
+			<textarea name=body placeholder='Your text here' on-change='${e =>
+				this.onMessageChange(e)}'>${body}</textarea>
+			<input name=tags type=tags value$='${tags.join(
+				','
+			)}' placeholder='#Tags (optional/comma separated)' on-change='${e =>
+			this.onTagsChange(e)}'></input>
 		</main>
 		`
 	}
@@ -318,22 +321,22 @@ export default class extends OOElement {
 	}
 
 	onTitleChange(e: HTMLElementEvent<HTMLInputElement>) {
-		const {target} = e
-		const {value} = target
+		const { target } = e
+		const { value } = target
 		stateTitle.set(this, value || '')
 		this.dispatchChanged()
 	}
 
 	onMessageChange(e: HTMLElementEvent<HTMLTextAreaElement>) {
-		const {target} = e
-		const {value} = target
+		const { target } = e
+		const { value } = target
 		message.set(this, value || '')
 		this.dispatchChanged()
 	}
 
 	onTagsChange(e: HTMLElementEvent<HTMLInputElement>) {
-		const {target} = e
-		const {value} = target
+		const { target } = e
+		const { value } = target
 		stateTags.set(this, asTags(value))
 		this.dispatchChanged()
 	}

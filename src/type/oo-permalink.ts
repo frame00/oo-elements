@@ -1,6 +1,6 @@
-import {OOExtensions, OOExtensionMap} from './oo-extension'
+import { OOExtensions, OOExtensionMap } from './oo-extension'
 
 export interface OOPermalink {
-	slug: string,
+	slug: string
 	user: string
 }

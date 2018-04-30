@@ -1,5 +1,5 @@
-import {OOElement} from '../../oo-element'
-import {html} from '../../../lib/html'
+import { OOElement } from '../../oo-element'
+import { html } from '../../../lib/html'
 import wm from '../../../lib/weak-map'
 import customEvent from '../../../lib/custom-event'
 
@@ -17,7 +17,7 @@ const state = wm<State>()
 const block = wm<boolean>()
 
 const asValidState = (s: string): State => {
-	if(s === 'progress' || s === 'resolved' || s === 'rejected' || s === '') {
+	if (s === 'progress' || s === 'resolved' || s === 'rejected' || s === '') {
 		return s
 	}
 	return ''
@@ -38,7 +38,7 @@ export default class extends OOElement {
 		if (prev === next) {
 			return
 		}
-		switch(attr) {
+		switch (attr) {
 			case ATTR.DATA_STATE:
 				state.set(this, asValidState(next))
 				break
@@ -66,7 +66,8 @@ export default class extends OOElement {
 				@mixin button;
 			}
 		</style>
-		<button class$='${st} ${blk ? 'block' : ''}' on-click='${() => this.onClicked()}'>
+		<button class$='${st} ${blk ? 'block' : ''}' on-click='${() =>
+			this.onClicked()}'>
 			<slot></slot>
 		</button>
 		`

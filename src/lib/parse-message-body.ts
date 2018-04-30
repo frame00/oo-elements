@@ -1,6 +1,6 @@
-import {OOExtensionsLikeObject} from '../type/oo-extension'
-import {AllowedParametersInBody} from '../type/oo-message'
-import {parse} from 'toml'
+import { OOExtensionsLikeObject } from '../type/oo-extension'
+import { AllowedParametersInBody } from '../type/oo-message'
+import { parse } from 'toml'
 
 interface Response extends AllowedParametersInBody {
 	body: string
@@ -27,8 +27,10 @@ const validater = {
 	}
 }
 
-const asAllowdParams = (exts: OOExtensionsLikeObject): AllowedParametersInBody => {
-	const {type, amount, currency} = exts
+const asAllowdParams = (
+	exts: OOExtensionsLikeObject
+): AllowedParametersInBody => {
+	const { type, amount, currency } = exts
 	const res: AllowedParametersInBody = {}
 	if (type !== undefined) {
 		if (validater.type(type)) {
@@ -36,7 +38,10 @@ const asAllowdParams = (exts: OOExtensionsLikeObject): AllowedParametersInBody =
 		} else {
 			throw new Error('invalid message extension/type')
 		}
-		if (validater.type(type) && (!validater.amount(amount) || !validater.currency(currency))) {
+		if (
+			validater.type(type) &&
+			(!validater.amount(amount) || !validater.currency(currency))
+		) {
 			throw new Error('incorrect "amount" or "currency"')
 		}
 	}
@@ -61,5 +66,5 @@ export default (row: string): Response => {
 	const [area = '', tml = ''] = /\+\+\+([\W\w]*)\+\+\+/.exec(row) || []
 	const body = row.replace(area, '').trim()
 	const extensions: OOExtensionsLikeObject = asAllowdParams(parse(tml))
-	return {...extensions, ...{body}}
+	return { ...extensions, ...{ body } }
 }

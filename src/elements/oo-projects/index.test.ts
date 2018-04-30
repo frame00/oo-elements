@@ -20,7 +20,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Fetch projects', () => {
 		it('Fetch the related projects from "data-iam" attribute value', async () => {
-			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'JEr9hsMH5m']]))
+			const element: any = insertElement(
+				ELEMENT,
+				new Map([['data-iam', 'JEr9hsMH5m']])
+			)
 			await sleep(300)
 			const items = element.shadowRoot.querySelectorAll('oo-project-card')
 			expect(items).to.have.length(2)
@@ -50,7 +53,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 
 		it('Show <oo-empty> when no projects exists', async () => {
-			const element: any = insertElement(ELEMENT, new Map([['data-iam', 'xxx']]))
+			const element: any = insertElement(
+				ELEMENT,
+				new Map([['data-iam', 'xxx']])
+			)
 			await sleep(300)
 			expect(element.shadowRoot.querySelector('oo-empty')).to.be.ok()
 		})
@@ -58,7 +64,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Forward data', () => {
 		it('Forward project UID to "oo-project-card"', async () => {
-			const element = insertElement(ELEMENT, new Map([['data-iam', 'JEr9hsMH5m']]))
+			const element = insertElement(
+				ELEMENT,
+				new Map([['data-iam', 'JEr9hsMH5m']])
+			)
 			await sleep(300)
 			const items = element.shadowRoot.querySelectorAll('oo-project-card')
 			expect(items[0].getAttribute('data-uid')).to.be('79zGMA1b6q')
@@ -68,14 +77,19 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Load paging', () => {
 		it('Fetch the old projects when click paging button', async () => {
-			const element = insertElement(ELEMENT, new Map([['data-iam', 'JEr9hsMH5m']]))
+			const element = insertElement(
+				ELEMENT,
+				new Map([['data-iam', 'JEr9hsMH5m']])
+			)
 			await sleep(100)
 			const more = element.shadowRoot.querySelector('.paging > oo-atoms-button')
 			event(more, 'clicked')
 			await sleep(100)
 			const items = element.shadowRoot.querySelectorAll('oo-project-card')
 			expect(items).to.have.length(4)
-			expect(element.shadowRoot.querySelector('.paging > oo-atoms-button')).to.not.be.ok()
+			expect(
+				element.shadowRoot.querySelector('.paging > oo-atoms-button')
+			).to.not.be.ok()
 		})
 	})
 

@@ -1,5 +1,5 @@
-import {OOElement} from '../../oo-element'
-import {html} from '../../../lib/html'
+import { OOElement } from '../../oo-element'
+import { html } from '../../../lib/html'
 
 type Position = 'left' | 'right' | 'center'
 
@@ -22,7 +22,10 @@ export default class extends OOElement {
 
 	constructor() {
 		super()
-		tooltipPosition.set(this, asValidString(this.getAttribute(ATTR.DATA_TOOLTIP_POSITION)))
+		tooltipPosition.set(
+			this,
+			asValidString(this.getAttribute(ATTR.DATA_TOOLTIP_POSITION))
+		)
 	}
 
 	attributeChangedCallback(attr, prev, next) {

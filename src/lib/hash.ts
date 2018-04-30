@@ -1,8 +1,14 @@
-const {addEventListener, removeEventListener, location} = window
+const { addEventListener, removeEventListener, location } = window
 
-const callbacks: WeakMap<object, EventListenerOrEventListenerObject> = new WeakMap()
+const callbacks: WeakMap<
+	object,
+	EventListenerOrEventListenerObject
+> = new WeakMap()
 
-export const add = (clas: HTMLElement, callback: EventListenerOrEventListenerObject): void => {
+export const add = (
+	clas: HTMLElement,
+	callback: EventListenerOrEventListenerObject
+): void => {
 	callbacks.set(clas, callback)
 	addEventListener('hashchange', callbacks.get(clas))
 }

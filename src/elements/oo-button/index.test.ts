@@ -38,25 +38,33 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	it('Mount with "ask" type', () => {
 		const element = getElement(ELEMENT)[0]
 		element.setAttribute('data-type', 'ask')
-		expect(element.shadowRoot.querySelector('button').textContent.trim()).to.be('ask me')
+		expect(element.shadowRoot.querySelector('button').textContent.trim()).to.be(
+			'ask me'
+		)
 	})
 
 	it('Mount with "offer" type', () => {
 		const element = getElement(ELEMENT)[0]
 		element.setAttribute('data-type', 'offer')
-		expect(element.shadowRoot.querySelector('button').textContent.trim()).to.be('offer me')
+		expect(element.shadowRoot.querySelector('button').textContent.trim()).to.be(
+			'offer me'
+		)
 	})
 
 	it('Default mount type is "ask"', () => {
 		const element = getElement(ELEMENT)[0]
 		element.removeAttribute('data-type')
-		expect(element.shadowRoot.querySelector('button').textContent.trim()).to.be('ask me')
+		expect(element.shadowRoot.querySelector('button').textContent.trim()).to.be(
+			'ask me'
+		)
 	})
 
 	describe('Modal control', () => {
 		it('At first, the modal is not mounted', () => {
 			const element = getElement(ELEMENT)[0]
-			expect(element.shadowRoot.querySelector('oo-organisms-ask-modal')).to.not.be.ok()
+			expect(
+				element.shadowRoot.querySelector('oo-organisms-ask-modal')
+			).to.not.be.ok()
 		})
 
 		it('Mount modal by this element click', () => {
@@ -73,18 +81,26 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const modal = element.shadowRoot.querySelector('oo-organisms-ask-modal')
 			expect(modal.getAttribute('data-open')).to.be('enabled')
 			modal.setAttribute('data-open', 'disabled')
-			expect(element.shadowRoot.querySelector('oo-organisms-ask-modal')).to.not.be.ok()
+			expect(
+				element.shadowRoot.querySelector('oo-organisms-ask-modal')
+			).to.not.be.ok()
 		})
 
 		it('Pass "data-tags" attribute to <oo-organisms-ask-modal>', () => {
-			const element = insertElement(ELEMENT, new Map([['data-iam', 'test'], ['data-tags', 'tag1 tag2 tag3']]))
+			const element = insertElement(
+				ELEMENT,
+				new Map([['data-iam', 'test'], ['data-tags', 'tag1 tag2 tag3']])
+			)
 			event(element.shadowRoot.querySelector('button'), 'click')
 			const modal = element.shadowRoot.querySelector('oo-organisms-ask-modal')
 			expect(modal.getAttribute('data-tags')).to.be('tag1 tag2 tag3')
 		})
 
 		it('Pass "data-scope" attribute to <oo-organisms-ask-modal>', () => {
-			const element = insertElement(ELEMENT, new Map([['data-iam', 'test'], ['data-scope', 'private']]))
+			const element = insertElement(
+				ELEMENT,
+				new Map([['data-iam', 'test'], ['data-scope', 'private']])
+			)
 			event(element.shadowRoot.querySelector('button'), 'click')
 			const modal = element.shadowRoot.querySelector('oo-organisms-ask-modal')
 			expect(modal.getAttribute('data-scope')).to.be('private')

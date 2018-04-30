@@ -1,11 +1,11 @@
-import {OOElement} from '../../oo-element'
-import {html} from '../../../lib/html'
+import { OOElement } from '../../oo-element'
+import { html } from '../../../lib/html'
 import ooOffer from '../../oo-ask'
 import ooModal from '../../oo-modal'
 import define from '../../../lib/define'
 import weakMap from '../../../lib/weak-map'
-import {asTags, asScope} from '../../../lib/as'
-import {Scope} from '../../../type/scope'
+import { asTags, asScope } from '../../../lib/as'
+import { Scope } from '../../../type/scope'
 
 define('oo-ask', ooOffer)
 define('oo-modal', ooModal)
@@ -18,7 +18,7 @@ const ATTR = {
 }
 
 const asBoolean = (data: string): boolean => {
-	switch(data) {
+	switch (data) {
 		case 'enabled':
 			return true
 		case 'disabled':
@@ -30,7 +30,7 @@ const asBoolean = (data: string): boolean => {
 
 const iam = weakMap<string>()
 const open = weakMap<boolean>()
-const tags = weakMap<Array<string>>()
+const tags = weakMap<string[]>()
 const scope = weakMap<Scope>()
 
 export default class extends OOElement {
@@ -47,7 +47,7 @@ export default class extends OOElement {
 		if (prev === next) {
 			return
 		}
-		switch(attr) {
+		switch (attr) {
 			case ATTR.DATA_IAM:
 				if (!next) {
 					return
@@ -82,9 +82,12 @@ export default class extends OOElement {
 				display: block;
 			}
 		</style>
-		<oo-modal data-open$='${o ? 'enabled' : 'disabled'}' on-close='${() => this.onModalClose()}'>
+		<oo-modal data-open$='${o ? 'enabled' : 'disabled'}' on-close='${() =>
+			this.onModalClose()}'>
 			<div slot=body>
-				<oo-ask data-iam$='${i}' data-tags$='${t.join(' ')}' data-scope$='${s}'></oo-ask>
+				<oo-ask data-iam$='${i}' data-tags$='${t.join(
+			' '
+		)}' data-scope$='${s}'></oo-ask>
 			</div>
 		</oo-modal>
 		`

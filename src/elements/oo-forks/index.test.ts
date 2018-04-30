@@ -20,7 +20,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Fetch fork projects', () => {
 		it('Fetch the fork projects from "data-uid" attribute value', async () => {
-			const element = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
+			const element = insertElement(
+				ELEMENT,
+				new Map([['data-uid', '79zGMA1b6q']])
+			)
 			await sleep(300)
 			const items = element.shadowRoot.querySelectorAll('oo-project-messages')
 			expect(items).to.have.length(1)
@@ -32,14 +35,19 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Load paging', () => {
 		it('Fetch the old projects when click paging button', async () => {
-			const element = insertElement(ELEMENT, new Map([['data-uid', '79zGMA1b6q']]))
+			const element = insertElement(
+				ELEMENT,
+				new Map([['data-uid', '79zGMA1b6q']])
+			)
 			await sleep(300)
 			const more = element.shadowRoot.querySelector('.paging > oo-atoms-button')
 			event(more, 'clicked')
 			await sleep(300)
 			const items = element.shadowRoot.querySelectorAll('oo-project-messages')
 			expect(items).to.have.length(2)
-			expect(element.shadowRoot.querySelector('.paging > oo-atoms-button')).to.not.be.ok()
+			expect(
+				element.shadowRoot.querySelector('.paging > oo-atoms-button')
+			).to.not.be.ok()
 		})
 	})
 

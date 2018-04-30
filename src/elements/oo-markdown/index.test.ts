@@ -41,7 +41,9 @@ Line 2
 			element.textContent = `test 2`
 
 			setTimeout(() => {
-				expect(element.shadowRoot.querySelector('main p').textContent).to.be('test 2')
+				expect(element.shadowRoot.querySelector('main p').textContent).to.be(
+					'test 2'
+				)
 				done()
 			}, 100)
 		})

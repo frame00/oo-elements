@@ -1,6 +1,6 @@
 export interface OOAPIResponseError {
-	message: string,
+	message: string
 	[key: string]: any
 }
 
-export type OOAPIResponse<T> = Array<T> | OOAPIResponseError
+export type OOAPIResponse<T> = T[] | OOAPIResponseError

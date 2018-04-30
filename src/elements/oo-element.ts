@@ -1,5 +1,5 @@
-import {render} from 'lit-html/lib/lit-extended'
-import {TemplateResult} from 'lit-html'
+import { render } from 'lit-html/lib/lit-extended'
+import { TemplateResult } from 'lit-html'
 import weakMap from '../lib/weak-map'
 
 const connected = weakMap<boolean>()
@@ -21,12 +21,12 @@ export class OOElement extends HTMLElement {
 	}
 
 	private _render(template: TemplateResult) {
-		render(template, this.shadowRoot || this.attachShadow({mode: 'open'}))
+		render(template, this.shadowRoot || this.attachShadow({ mode: 'open' }))
 		this.renderedCallback()
 	}
 
 	protected update() {
-		const template: TemplateResult = this.render()
+		const template = this.render()
 		if (template) {
 			this._render(template)
 		}

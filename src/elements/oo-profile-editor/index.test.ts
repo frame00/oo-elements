@@ -24,12 +24,33 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			store.token = 'test'
 			const element = insertElement(ELEMENT)
 			await sleep(1000)
-			expect(element.shadowRoot.querySelector('input[name=iam]').getAttribute('value')).to.be('test')
-			expect(element.shadowRoot.querySelector('input[name=name]').getAttribute('value')).to.be('test')
-			expect(element.shadowRoot.querySelector('textarea[name=bio]').textContent).to.be('test\ntest\ntest')
-			expect((element.shadowRoot.querySelector('input[name=notifications_opt_email]') as HTMLInputElement).checked).to.be.ok()
-			expect((element.shadowRoot.querySelector('input[name=notifications_opt_email_service_information]') as HTMLInputElement).checked).to.be.ok()
-			expect(element.shadowRoot.querySelector('input[name=email]').getAttribute('value')).to.be('user@example.com')
+			expect(
+				element.shadowRoot
+					.querySelector('input[name=iam]')
+					.getAttribute('value')
+			).to.be('test')
+			expect(
+				element.shadowRoot
+					.querySelector('input[name=name]')
+					.getAttribute('value')
+			).to.be('test')
+			expect(
+				element.shadowRoot.querySelector('textarea[name=bio]').textContent
+			).to.be('test\ntest\ntest')
+			expect(
+				element.shadowRoot.querySelector('input[name=notifications_opt_email]')
+					.checked
+			).to.be.ok()
+			expect(
+				element.shadowRoot.querySelector(
+					'input[name=notifications_opt_email_service_information]'
+				).checked
+			).to.be.ok()
+			expect(
+				element.shadowRoot
+					.querySelector('input[name=email]')
+					.getAttribute('value')
+			).to.be('user@example.com')
 		})
 	})
 
@@ -60,7 +81,9 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			it('E-Mail notification', async () => {
 				const element = insertElement(ELEMENT)
 				await sleep(800)
-				const input = element.shadowRoot.querySelector('input[name=notifications_opt_email]')
+				const input = element.shadowRoot.querySelector(
+					'input[name=notifications_opt_email]'
+				)
 				event(input, 'click')
 				const button = element.shadowRoot.querySelector('button')
 				button.click()
@@ -71,7 +94,9 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			it('E-Mail notification of service information', async () => {
 				const element = insertElement(ELEMENT)
 				await sleep(800)
-				const input = element.shadowRoot.querySelector('input[name=notifications_opt_email_service_information]')
+				const input = element.shadowRoot.querySelector(
+					'input[name=notifications_opt_email_service_information]'
+				)
 				event(input, 'click')
 				const button = element.shadowRoot.querySelector('button')
 				button.click()

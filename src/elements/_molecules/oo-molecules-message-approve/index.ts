@@ -1,5 +1,5 @@
-import {OOElement} from '../../oo-element'
-import {html} from '../../../lib/html'
+import { OOElement } from '../../oo-element'
+import { html } from '../../../lib/html'
 import weakMap from '../../../lib/weak-map'
 import ooMessage from '../../_atoms/oo-atoms-message'
 import button from '../../_atoms/oo-atoms-button'
@@ -97,8 +97,14 @@ export default class extends OOElement {
 						}
 						return html`
 						<div class=buttons>
-							<oo-atoms-button on-clicked='${() => this.projectApprove(false)}' data-block=enabled data-state$='${progress === false ? 'progress' : ''}'>Reject</oo-atoms-button>
-							<oo-atoms-button on-clicked='${() => this.projectApprove(true)}' data-block=enabled data-state$='${progress === true ? 'progress' : ''}'>Accept</oo-atoms-button>
+							<oo-atoms-button on-clicked='${() =>
+								this.projectApprove(false)}' data-block=enabled data-state$='${
+							progress === false ? 'progress' : ''
+						}'>Reject</oo-atoms-button>
+							<oo-atoms-button on-clicked='${() =>
+								this.projectApprove(true)}' data-block=enabled data-state$='${
+							progress === true ? 'progress' : ''
+						}'>Accept</oo-atoms-button>
 						</div>
 						`
 					})()}
@@ -118,7 +124,7 @@ export default class extends OOElement {
 			uid: stateProjectUid.get(this),
 			approve: Boolean(ans)
 		})
-		const {status} = result
+		const { status } = result
 		if (success(status)) {
 			stateapprove.set(this, ans)
 		}
@@ -128,7 +134,7 @@ export default class extends OOElement {
 
 	async fetchProject(uid: string) {
 		const api = await getProject(uid)
-		const {response} = api
+		const { response } = api
 		if (Array.isArray(response)) {
 			const [item] = response
 			const mapedExtensions = toMap(item)

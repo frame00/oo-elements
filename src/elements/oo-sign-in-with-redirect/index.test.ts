@@ -6,9 +6,9 @@ import removeElement from '../../lib/test/remove-element'
 import store from '../../lib/local-storage'
 import session from '../../lib/session-storage'
 import event from '../../lib/test/event'
-import {Notification} from '../../type/event'
+import { Notification } from '../../type/event'
 import sleep from '../../lib/test/sleep'
-const {document} = window
+const { document } = window
 
 const ELEMENT = 'oo-sign-in-with-redirect'
 
@@ -51,11 +51,15 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		it('Dispatch "Signing in ..." notification', done => {
 			removeElement(ELEMENT)
 			session.signingIn = 'signingIn'
-			document.addEventListener('oonotification', (e: Notification) => {
-				expect(e.detail.message).to.be('Signing in ...')
-				session.clear()
-				done()
-			}, {once: true})
+			document.addEventListener(
+				'oonotification',
+				(e: Notification) => {
+					expect(e.detail.message).to.be('Signing in ...')
+					session.clear()
+					done()
+				},
+				{ once: true }
+			)
 			insertElement(ELEMENT)
 		})
 

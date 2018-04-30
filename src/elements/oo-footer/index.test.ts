@@ -3,7 +3,7 @@ import define from '../../lib/define'
 import insertElement from '../../lib/test/insert-element'
 import getElement from '../../lib/test/get-element'
 import removeElement from '../../lib/test/remove-element'
-const {document} = window
+const { document } = window
 
 const ELEMENT = 'oo-footer'
 
@@ -19,14 +19,17 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 
 	describe('Show slot', () => {
 		it('Show "item" slot as footer inner contents', () => {
-			document.body.insertAdjacentHTML('afterbegin', `
+			document.body.insertAdjacentHTML(
+				'afterbegin',
+				`
 			<oo-footer>
 				<a slot=item>1</a>
 				<a slot=item>2</a>
 				<a slot=item>3</a>
-			</oo-footer>`)
+			</oo-footer>`
+			)
 			const element = getElement(ELEMENT)[0]
-			const slotHeader: HTMLSlotElement = element.shadowRoot.querySelector('slot[name=item]')
+			const slotHeader = element.shadowRoot.querySelector('slot[name=item]')
 			const assigned = slotHeader.assignedNodes()
 			expect(assigned[0].textContent).to.be('1')
 			expect(assigned[1].textContent).to.be('2')

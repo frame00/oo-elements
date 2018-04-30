@@ -1,10 +1,10 @@
-import {OOElement} from '../oo-element'
-import {repeat} from 'lit-html/lib/repeat'
-import {html} from '../../lib/html'
+import { OOElement } from '../oo-element'
+import { repeat } from 'lit-html/lib/repeat'
+import { html } from '../../lib/html'
 import getProjectMessages from '../../lib/oo-api-get-project-messages'
 import getMessage from '../../lib/oo-api-get-message'
 import toMap from '../../lib/extensions-to-map'
-import {OOMessage, MapedOOMessages} from '../../type/oo-message'
+import { OOMessage, MapedOOMessages } from '../../type/oo-message'
 import define from '../../lib/define'
 import ooMessage from '../_atoms/oo-atoms-message'
 import ooUserName from '../_atoms/oo-atoms-user-name'
@@ -46,7 +46,7 @@ export default class extends OOElement {
 		if (prev === next || !next) {
 			return
 		}
-		switch(attr) {
+		switch (attr) {
 			case ATTR.DATA_UID:
 				projectUid.set(this, next)
 				messages.set(this, [])
@@ -74,7 +74,7 @@ export default class extends OOElement {
 	}
 
 	render() {
-		const {user, mess, project, count} = {
+		const { user, mess, project, count } = {
 			user: iam.get(this),
 			project: projectUid.get(this),
 			mess: messages.get(this),
@@ -84,11 +84,15 @@ export default class extends OOElement {
 			return html``
 		}
 		const paging = mess[0].created - 1
-		const more = count > mess.length ? html`
+		const more =
+			count > mess.length
+				? html`
 		<div class=paging>
-			<oo-atoms-button on-clicked='${() => this.fetchMessages(project, paging)}'>More</oo-atoms-button>
+			<oo-atoms-button on-clicked='${() =>
+				this.fetchMessages(project, paging)}'>More</oo-atoms-button>
 		</div>
-		` : html``
+		`
+				: html``
 
 		return html`
 		<style>
@@ -135,8 +139,8 @@ export default class extends OOElement {
 		if (limit === undefined && this.hasAttribute(ATTR.DATA_LIMIT)) {
 			return
 		}
-		const api = await getProjectMessages(uid, time, {limit})
-		const {response, headers} = api
+		const api = await getProjectMessages(uid, time, { limit })
+		const { response, headers } = api
 		itemCount.set(this, Number(headers.get('x-oo-count')))
 		if (Array.isArray(response)) {
 			const items = this.mapMessages(response)
@@ -145,18 +149,21 @@ export default class extends OOElement {
 		this.update()
 	}
 
-	mapMessages(mess: Array<OOMessage>): MapedOOMessages {
+	mapMessages(mess: OOMessage[]): MapedOOMessages {
 		const items: MapedOOMessages = []
-		for(const i of mess) {
+		for (const i of mess) {
 			const item = {
 				ext: toMap(i)
 			}
-			items.push({...i, ...item})
+			items.push({ ...i, ...item })
 		}
 		return items
 	}
 
-	mergeMessages(mess: MapedOOMessages, direction: 'before' | 'after' = 'before'): MapedOOMessages {
+	mergeMessages(
+		mess: MapedOOMessages,
+		direction: 'before' | 'after' = 'before'
+	): MapedOOMessages {
 		const origin = messages.get(this)
 		if (direction === 'before') {
 			return [...mess, ...origin]
@@ -164,11 +171,11 @@ export default class extends OOElement {
 		return [...origin, ...mess]
 	}
 
-	public async injectMessages(ids: Array<string>) {
+	public async injectMessages(ids: string[]) {
 		const mess = await Promise.all(ids.map(id => getMessage(id)))
 		let items: MapedOOMessages = []
-		for(const mes of mess) {
-			const {response} = mes
+		for (const mes of mess) {
+			const { response } = mes
 			if (Array.isArray(response)) {
 				const item = this.mapMessages(response)
 				items = [...items, ...item]

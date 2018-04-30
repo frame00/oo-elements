@@ -1,12 +1,12 @@
-import {OOElement} from '../../oo-element'
-import {repeat} from 'lit-html/lib/repeat'
-import {html} from '../../../lib/html'
+import { OOElement } from '../../oo-element'
+import { repeat } from 'lit-html/lib/repeat'
+import { html } from '../../../lib/html'
 import signIn from '../../oo-sign-in'
 import signInWithRedirect from '../../oo-sign-in-with-redirect'
 import define from '../../../lib/define'
 import weakMap from '../../../lib/weak-map'
-import {asSignInFlow} from '../../../lib/as'
-import {SignInFlow} from '../../../type/sign-in-flow'
+import { asSignInFlow } from '../../../lib/as'
+import { SignInFlow } from '../../../type/sign-in-flow'
 
 define('oo-sign-in', signIn)
 define('oo-sign-in-with-redirect', signInWithRedirect)
@@ -41,8 +41,10 @@ export default class extends OOElement {
 		const flow = stateSignInFlow.get(this)
 		const buttons = f => {
 			const provs = ['google', 'facebook', 'github']
-			const popup = prov => html`<oo-sign-in class=button data-provider$='${prov}'></oo-sign-in>`
-			const redirect = prov => html`<oo-sign-in-with-redirect class=button data-provider$='${prov}'></oo-sign-in-with-redirect>`
+			const popup = prov =>
+				html`<oo-sign-in class=button data-provider$='${prov}'></oo-sign-in>`
+			const redirect = prov =>
+				html`<oo-sign-in-with-redirect class=button data-provider$='${prov}'></oo-sign-in-with-redirect>`
 			if (f === 'popup') {
 				return repeat(provs, prov => popup(prov))
 			}
