@@ -33,7 +33,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const slotBody = element.shadowRoot
 				.querySelector('oo-atoms-message')
 				.shadowRoot.querySelector('slot[name=body]')
-			const [assigned] = slotBody.assignedNodes()
+			const [assigned] = (slotBody as HTMLSlotElement).assignedNodes()
 			Array.prototype.forEach.call(assigned.childNodes, (item: Node) => {
 				const userName = item.parentElement
 					.querySelector('oo-atoms-user-name')
@@ -49,7 +49,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const slotBody = element.shadowRoot
 				.querySelector('oo-atoms-message')
 				.shadowRoot.querySelector('slot[name=body]')
-			const [assigned] = slotBody.assignedNodes()
+			const [assigned] = (slotBody as HTMLSlotElement).assignedNodes()
 			Array.prototype.forEach.call(assigned.childNodes, (item: Node) => {
 				const label = item.parentElement.querySelector('header').textContent
 				expect(label).to.be('usd $10.00')
@@ -61,7 +61,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const slotBody = element.shadowRoot
 				.querySelector('oo-atoms-message')
 				.shadowRoot.querySelector('slot[name=body]')
-			const [assigned] = slotBody.assignedNodes()
+			const [assigned] = (slotBody as HTMLSlotElement).assignedNodes()
 			Array.prototype.forEach.call(assigned.childNodes, (item: Node) => {
 				const button = item.parentElement.querySelector('oo-atoms-button')
 				expect(button).to.be.ok()
@@ -90,7 +90,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			)
 			const element = getElement(ELEMENT)[0]
 			const slot = element.shadowRoot.querySelector('slot[name="body"]')
-			const assigned = slot.assignedNodes()
+			const assigned = (slot as HTMLSlotElement).assignedNodes()
 			expect(assigned[0].textContent).to.be('Body')
 		})
 	})
@@ -158,7 +158,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const slotBody = element.shadowRoot
 				.querySelector('oo-atoms-message')
 				.shadowRoot.querySelector('slot[name=body]')
-			const [assigned] = slotBody.assignedNodes()
+			const [assigned] = (slotBody as HTMLSlotElement).assignedNodes()
 			Array.prototype.forEach.call(assigned.childNodes, (item: Node) => {
 				const button = item.parentElement.querySelector('oo-atoms-button')
 				event(button, 'clicked')

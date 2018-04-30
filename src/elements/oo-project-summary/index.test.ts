@@ -40,7 +40,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		const slotFooter = element.shadowRoot
 			.querySelector('oo-atoms-message')
 			.shadowRoot.querySelector('slot[name=footer]')
-		const [slotFooterAssigned] = slotFooter.assignedNodes()
+		const [slotFooterAssigned] = (slotFooter as HTMLSlotElement).assignedNodes()
 
 		Array.prototype.forEach.call(slotFooterAssigned.childNodes, item => {
 			const userName = item.parentElement

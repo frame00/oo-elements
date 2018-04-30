@@ -35,7 +35,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			)
 			const element = getElement(ELEMENT)[0]
 			const slotHeader = element.shadowRoot.querySelector('nav slot[name=item]')
-			const assigned = slotHeader.assignedNodes()
+			const assigned = (slotHeader as HTMLSlotElement).assignedNodes()
 			expect(assigned[0].textContent).to.be('1')
 			expect(assigned[1].textContent).to.be('2')
 			expect(assigned[2].textContent).to.be('3')
@@ -53,7 +53,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const slotHeader = element.shadowRoot.querySelector(
 				'nav slot[name=brand]'
 			)
-			const assigned = slotHeader.assignedNodes()
+			const assigned = (slotHeader as HTMLSlotElement).assignedNodes()
 			expect(assigned[0].textContent).to.be('The Brand')
 		})
 
@@ -69,7 +69,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const slotHeader = element.shadowRoot.querySelector(
 				'nav slot[name=footer]'
 			)
-			const assigned = slotHeader.assignedNodes()
+			const assigned = (slotHeader as HTMLSlotElement).assignedNodes()
 			expect(assigned[0].textContent).to.be('Footer')
 		})
 	})

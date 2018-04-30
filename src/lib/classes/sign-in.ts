@@ -63,9 +63,8 @@ export default class extends OOElement {
 	}
 
 	render() {
-		const prov = provider.get(this)
-		let label = prov
-		switch (prov) {
+		let label = ''
+		switch (provider.get(this)) {
 			case 'google':
 				label = 'Google'
 				break
@@ -129,7 +128,7 @@ export default class extends OOElement {
 				display: none;
 			}
 		</style>
-		<button class$='${prov}' on-click='${async () =>
+		<button class$='${label.toLocaleLowerCase()}' on-click='${async () =>
 			this.signIn()
 				.then()
 				.catch()}'>

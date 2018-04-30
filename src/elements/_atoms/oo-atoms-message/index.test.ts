@@ -27,7 +27,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		)
 		const element = getElement(ELEMENT)[0]
 		const slot = element.shadowRoot.querySelector('slot[name="body"]')
-		const assigned = slot.assignedNodes()
+		const assigned = (slot as HTMLSlotElement).assignedNodes()
 		expect(assigned[0].textContent).to.be('Body')
 	})
 
@@ -42,7 +42,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		)
 		const element = getElement(ELEMENT)[0]
 		const slot = element.shadowRoot.querySelector('slot[name="footer"]')
-		const assigned = slot.assignedNodes()
+		const assigned = (slot as HTMLSlotElement).assignedNodes()
 		expect(assigned[0].textContent).to.be('Footer')
 	})
 
