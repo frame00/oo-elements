@@ -7,13 +7,12 @@ export default class extends HTMLElement {
 		this.render()
 	}
 
-	html(v: string) {
-		return html`
-		<span>${v}</span>
-		`
-	}
-
 	render() {
-		render(this.html(version), this)
+		render(
+			html`
+		<span>${version}</span>
+		`,
+			this
+		)
 	}
 }

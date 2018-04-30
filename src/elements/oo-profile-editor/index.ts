@@ -26,18 +26,16 @@ const stateNotificationEMailServiceInformation = weakMap<boolean>()
 const stateButton = weakMap<string>()
 
 export default class extends OOElement {
-	constructor() {
-		super()
-		this.fetchUserSign()
-		attach()
-	}
-
 	get iam() {
 		return stateIam.get(this)
 	}
 
 	connectedCallback() {
 		super.connectedCallback(false)
+		this.fetchUserSign()
+			.then()
+			.catch()
+		attach()
 	}
 
 	render() {
@@ -177,7 +175,10 @@ export default class extends OOElement {
 			}
 		</style>
 		<main>
-			<form on-submit='${e => this.onSubmit(e)}'>
+			<form on-submit='${async e =>
+				this.onSubmit(e)
+					.then()
+					.catch()}'>
 				<dl>
 					${repeat(options, opt => {
 						const { title, template } = opt
@@ -200,6 +201,8 @@ export default class extends OOElement {
 			const [uid] = response
 			stateIam.set(this, uid)
 			this.fetchUserData(uid)
+				.then()
+				.catch()
 		} else {
 			stateIam.delete(this)
 			this.update()
@@ -254,7 +257,6 @@ export default class extends OOElement {
 				stateNotificationEMailServiceInformation.set(this, chcd)
 				break
 			default:
-				break
 		}
 	}
 

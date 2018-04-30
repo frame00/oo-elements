@@ -1,3 +1,5 @@
+import { render } from 'lit-html'
+import { html } from '../../lib/html'
 import { AuthResult } from '../../type/auth-result'
 import signInWithFirebaseToken from '../../lib/sign-in-with-firebase-token'
 import { dispatch } from '../../lib/notification'
@@ -13,15 +15,21 @@ export default class extends SignIn {
 		const div = document.createElement('div')
 		const shadow = div.attachShadow({ mode: 'open' })
 		this.appendChild(div)
-		shadow.innerHTML = `<iframe src='./dist/assets/iframe.firebase.authenticate.html?${
-			this.provider
-		}'></iframe>`
+		render(
+			html`<iframe src='./dist/assets/iframe.firebase.authenticate.html?${
+				this.provider
+			}'></iframe>`,
+			shadow
+		)
 		const iframe = shadow.querySelector('iframe')
 		stateIframe.set(this, iframe)
 	}
 
 	async signIn() {
-		super.signIn()
+		super
+			.signIn()
+			.then()
+			.catch()
 		const iframe = stateIframe.get(this)
 		const token = await new Promise<AuthResult>((resolve, reject) => {
 			iframe.contentWindow.postMessage('run', '*')
@@ -34,6 +42,7 @@ export default class extends SignIn {
 				try {
 					json = JSON.parse(data)
 				} catch (err) {
+					console.log(err)
 					return
 				}
 				try {
@@ -51,20 +60,21 @@ export default class extends SignIn {
 		}).catch(err => {
 			this.dispatchSignedInError(err)
 		})
-		if (token) {
-			dispatch({
-				message: 'Signing in ...'
-			})
-
-			const signedIn = await signInWithFirebaseToken(token)
-			if (typeof signedIn === 'boolean') {
-				return this.dispatchSignedInError(signedIn)
-			}
-			this.dispatchSignedIn(signedIn)
-			dispatch({
-				message: 'Welcome!',
-				type: 'success'
-			})
+		if (!token) {
+			return
 		}
+		dispatch({
+			message: 'Signing in ...'
+		})
+
+		const signedIn = await signInWithFirebaseToken(token)
+		if (typeof signedIn === 'boolean') {
+			return this.dispatchSignedInError(signedIn)
+		}
+		this.dispatchSignedIn(signedIn)
+		dispatch({
+			message: 'Welcome!',
+			type: 'success'
+		})
 	}
 }

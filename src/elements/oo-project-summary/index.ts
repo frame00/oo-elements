@@ -41,12 +41,14 @@ export default class extends OOElement {
 		return [ATTR.DATA_UID]
 	}
 
-	attributeChangedCallback(attr, prev, next) {
+	attributeChangedCallback([, prev, next]) {
 		if (prev === next || !next) {
 			return
 		}
 		projectUid.set(this, next)
 		this.fetchProject(projectUid.get(this))
+			.then()
+			.catch()
 	}
 
 	connectedCallback() {
@@ -68,8 +70,10 @@ export default class extends OOElement {
 		const reloadButton = (show: boolean) => {
 			// This is a plan to delete. No need for testing.
 			if (show) {
-				return html`<button on-click='${() =>
-					this.fetchProject(uid)}'>Reload</button>`
+				return html`<button on-click='${async () =>
+					this.fetchProject(uid)
+						.then()
+						.catch()}'>Reload</button>`
 			}
 			return html``
 		}

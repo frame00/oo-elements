@@ -13,7 +13,7 @@ export default class extends OOElement {
 		return [ATTR.DATA_UNIXTIME]
 	}
 
-	attributeChangedCallback(attr, prev, next) {
+	attributeChangedCallback([, prev, next]) {
 		if (prev === next || !next) {
 			return
 		}
@@ -33,6 +33,7 @@ export default class extends OOElement {
 				timeZoneName: 'long'
 			}).resolvedOptions().timeZone
 		} catch (err) {
+			console.log(err)
 			tz = UTC
 		}
 		const unix = unixtime.get(this)

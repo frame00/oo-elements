@@ -1,4 +1,3 @@
-import { OOExtension } from '../type/oo-extension'
 import { OOUser } from '../type/oo-user'
 import { OOProject } from '../type/oo-project'
 import { OOMessage } from '../type/oo-message'

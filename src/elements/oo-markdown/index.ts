@@ -14,7 +14,7 @@ const md = markdownIt({
 					hljs.highlight(lang, str, true).value
 				}</code></pre>`
 			} catch (err) {
-				// Empty
+				console.log(err)
 			}
 		}
 		return `<pre class=hljs><code>${md.utils.escapeHtml(str)}</code></pre>`

@@ -34,13 +34,15 @@ export default class extends OOElement {
 		return [ATTR.DATA_UID]
 	}
 
-	attributeChangedCallback(attr, prev, next) {
+	attributeChangedCallback([, prev, next]) {
 		if (prev === next) {
 			return
 		}
 		stateUid.set(this, next)
 		stateProject.delete(this)
 		this.fetchProjects(stateUid.get(this))
+			.then()
+			.catch()
 	}
 
 	connectedCallback() {
@@ -176,12 +178,13 @@ export default class extends OOElement {
 		}
 		const body = this.shadowRoot.querySelector('.body')
 		const md = this.shadowRoot.querySelector('oo-markdown')
-		if (body && md) {
-			const bH = body.clientHeight
-			const mH = md.clientHeight
-			stateIsUnbeheldBody.set(this, bH < mH)
-			this.update()
+		if (!body || !md) {
+			return
 		}
+		const bH = body.clientHeight
+		const mH = md.clientHeight
+		stateIsUnbeheldBody.set(this, bH < mH)
+		this.update()
 	}
 
 	async fetchProjects(uid: string) {

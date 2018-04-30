@@ -25,7 +25,7 @@ export default class extends OOElement {
 		size.set(this, asValidString(this.getAttribute(ATTR.DATA_SIZE)))
 	}
 
-	attributeChangedCallback(attr, prev, next) {
+	attributeChangedCallback([, prev, next]) {
 		if (prev === next) {
 			return
 		}

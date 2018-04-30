@@ -25,5 +25,8 @@ export default (authProvider: AuthProvider): void => {
 		}
 	})(authProvider)
 
-	auth().signInWithRedirect(provider)
+	auth()
+		.signInWithRedirect(provider)
+		.then()
+		.catch()
 }

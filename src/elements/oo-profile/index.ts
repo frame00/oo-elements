@@ -29,13 +29,15 @@ export default class extends OOElement {
 		return [ATTR.DATA_IAM]
 	}
 
-	attributeChangedCallback(attr, prev, next) {
+	attributeChangedCallback([, prev, next]) {
 		if (prev === next || !next) {
 			return
 		}
 		iam.set(this, next)
 		this.placeholder()
 		this.fetchUserData()
+			.then()
+			.catch()
 	}
 
 	connectedCallback() {

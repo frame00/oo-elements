@@ -97,7 +97,6 @@ export default class extends OOElement {
 				stateSignInFlow.set(this, asSignInFlow(next))
 				break
 			default:
-				break
 		}
 		if (this.connected) {
 			this.update()
@@ -220,8 +219,10 @@ export default class extends OOElement {
 			this.onSignedIn(e)}'></oo-organisms-ask-step-sign-in>
 				</li>
 				<li class=step active?='${step === 'submit'}'>
-					<button class=submit disabled?='${progress}' on-click='${() =>
-			this.createProject()}'>${uid ? 'Ask' : 'Post'}</button>
+					<button class=submit disabled?='${progress}' on-click='${async () =>
+			this.createProject()
+				.then()
+				.catch()}'>${uid ? 'Ask' : 'Post'}</button>
 				</li>
 			</ul>
 		</div>
@@ -230,18 +231,20 @@ export default class extends OOElement {
 
 	async renderedCallback() {
 		const items = this.shadowRoot.querySelector('.steps ul')
-		if (items) {
-			const item = this.shadowRoot.querySelector('.step[active]')
-			if (statePrevActiveStep.get(this) !== item) {
-				statePrevActiveStep.set(this, item)
-				let fit = false
-				let count = 100
-				while (!fit && count > 0) {
-					fit = fitHeight(item as HTMLElement, items as HTMLElement)
-					count -= 1
-					await new Promise(resolve => setTimeout(resolve, 10))
-				}
-			}
+		if (!items) {
+			return
+		}
+		const item = this.shadowRoot.querySelector('.step[active]')
+		if (statePrevActiveStep.get(this) === item) {
+			return
+		}
+		statePrevActiveStep.set(this, item)
+		let fit = false
+		let count = 100
+		while (!fit && count > 0) {
+			fit = fitHeight(item as HTMLElement, items as HTMLElement)
+			count -= 1
+			await new Promise(resolve => setTimeout(resolve, 10))
 		}
 	}
 

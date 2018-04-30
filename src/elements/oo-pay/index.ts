@@ -125,6 +125,8 @@ export default class extends OOElement {
 			case ATTR.DATA_IAM:
 				stateIam.set(this, next)
 				this.fetchUser(next)
+					.then()
+					.catch()
 				break
 			case ATTR.DATA_UID:
 				stateUid.set(this, next)
@@ -141,9 +143,10 @@ export default class extends OOElement {
 			case ATTR.DATA_PAYMENT_UID:
 				statePaymentUid.set(this, next)
 				this.fetchPayment()
+					.then()
+					.catch()
 				break
 			default:
-				break
 		}
 		if (this.connected) {
 			this.update()
@@ -184,8 +187,10 @@ export default class extends OOElement {
 									? 'progress'
 									: ''
 					return html`
-			<oo-atoms-button on-clicked='${() =>
-				this.stripeCheckout()}' data-state$='${state}' data-block=enabled>Pay</oo-atoms-button>`
+			<oo-atoms-button on-clicked='${async () =>
+				this.stripeCheckout()
+					.then()
+					.catch()}' data-state$='${state}' data-block=enabled>Pay</oo-atoms-button>`
 			  })()
 
 		return html`
@@ -288,12 +293,7 @@ export default class extends OOElement {
 			statePaymentFetching.set(this, false)
 			this.onBeforeunload(true)
 		}
-		const callback = stripeCallback(
-			this,
-			options,
-			beforeCallback,
-			afterCallback
-		)
+		const callback = stripeCallback(options, beforeCallback, afterCallback)
 		try {
 			const user = stateUser.get(this)
 			const currency = stateCurrency.get(this)
@@ -316,9 +316,12 @@ export default class extends OOElement {
 		} catch (err) {
 			console.error(err)
 		}
-		if (test === true) {
-			callback(testData)
+		if (test === false) {
+			return
 		}
+		callback(testData)
+			.then()
+			.catch()
 	}
 
 	onBeforeunload(remove: boolean = false) {

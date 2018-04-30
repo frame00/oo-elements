@@ -9,7 +9,8 @@ export default async (
 	extensions: OOExtensionsLikeObject
 ): Promise<OOAPIResult<OOUser>> => {
 	const ext = createExtensions(extensions)
-	const ooapiRes = await api<OOUser>({
+
+	return api<OOUser>({
 		resource: 'users',
 		pathParameter: uid,
 		method: 'PATCH',
@@ -17,6 +18,4 @@ export default async (
 			Extensions: ext
 		}
 	})
-
-	return ooapiRes
 }

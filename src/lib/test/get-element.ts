@@ -1,6 +1,4 @@
 const { document } = window
 
-export default (name: string): NodeListOf<Element> => {
-	const el = document.body.getElementsByTagName(name)
-	return el
-}
+export default (name: string): NodeListOf<Element> =>
+	document.body.getElementsByTagName(name)

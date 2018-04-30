@@ -8,11 +8,10 @@ export default async (
 ): Promise<OOAPIResult<OOProject>> => {
 	let pathParameter = tag ? `publics/tag/${tag}` : `publics`
 	pathParameter += `/${time ? time : ''}`
-	const ooapiRes = await api<OOProject>({
+
+	return api<OOProject>({
 		resource: 'projects',
 		pathParameter,
 		method: 'GET'
 	})
-
-	return ooapiRes
 }

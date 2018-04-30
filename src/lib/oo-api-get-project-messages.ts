@@ -13,12 +13,11 @@ export default async (
 ): Promise<OOAPIResult<OOMessage>> => {
 	const query =
 		opts && typeof opts.limit === 'number' ? { limit: ~~opts.limit } : false
-	const ooapiRes = await api<OOMessage>({
+
+	return api<OOMessage>({
 		resource: 'projects',
 		pathParameter: `${uid}/messages/${time ? time : ''}`,
 		query,
 		method: 'GET'
 	})
-
-	return ooapiRes
 }

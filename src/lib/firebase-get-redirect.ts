@@ -4,7 +4,7 @@ import init from './firebase-init'
 
 export default async (): Promise<AuthResult> => {
 	init()
-	const results = new Promise<AuthResult>((resolve, reject) => {
+	return new Promise<AuthResult>((resolve, reject) => {
 		auth()
 			.getRedirectResult()
 			.then((res: AuthResult) => {
@@ -14,5 +14,4 @@ export default async (): Promise<AuthResult> => {
 				reject(err)
 			})
 	})
-	return results
 }

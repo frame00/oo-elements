@@ -51,8 +51,7 @@ const tipsOpen = weakMap<boolean>()
 
 const asExtensions = (data: string): OOExtensionsLikeObject => {
 	try {
-		const json: OOExtensionsLikeObject = JSON.parse(data)
-		return json
+		return JSON.parse(data) as OOExtensionsLikeObject
 	} catch (err) {
 		console.log(err)
 	}
@@ -85,7 +84,6 @@ export default class extends OOElement {
 				messageExtensions.set(this, asExtensions(next))
 				break
 			default:
-				break
 		}
 		this.setMessage()
 		if (this.connected) {
@@ -208,6 +206,8 @@ export default class extends OOElement {
 		success.delete(this)
 		this.update()
 		this.messageSend()
+			.then()
+			.catch()
 	}
 
 	async messageSend(test?: boolean) {

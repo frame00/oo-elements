@@ -7,13 +7,16 @@ import button from '../_atoms/oo-atoms-button'
 import empty from '../oo-empty'
 import form from '../oo-message-form'
 import store from '../../lib/local-storage'
-import { HTMLElementEventMessageSent } from '../../type/event'
+import {
+	HTMLElementEventMessageSent,
+	ProjectCreatedDetail,
+	ProjectCreated
+} from '../../type/event'
 import getProject from '../../lib/oo-api-get-project'
 import toMap from '../../lib/extensions-to-map'
 import weakMap from '../../lib/weak-map'
 import { Scope } from '../../type/scope'
 import createProjectForks from '../../lib/oo-api-create-project-forks'
-import { ProjectCreatedDetail, ProjectCreated } from '../../type/event'
 import customEvent from '../../lib/custom-event'
 
 define('oo-project-summary', summary)
@@ -45,12 +48,14 @@ export default class extends OOElement {
 		return [ATTR.DATA_UID]
 	}
 
-	attributeChangedCallback(attr, prev, next) {
+	attributeChangedCallback([, prev, next]) {
 		if (prev === next || !next) {
 			return
 		}
 		projectUid.set(this, next)
 		this.fetchProject(projectUid.get(this))
+			.then()
+			.catch()
 	}
 
 	connectedCallback() {
@@ -89,39 +94,46 @@ export default class extends OOElement {
 			user ? user : ''
 		}' data-uid$='${uid}'></oo-project-messages>
 		${(() => {
-			if (user && assignee && (scope === 'public' || accepted === true)) {
-				return html`
-				<oo-message-form data-iam$='${user}' data-extensions$='${strExts}' on-messagesent='${e =>
-					this.onMessagesent(e)}'></oo-message-form>
-				`
+			if (!user || !assignee || !(scope === 'public' || accepted === true)) {
+				return
 			}
+			return html`
+			<oo-message-form data-iam$='${user}' data-extensions$='${strExts}' on-messagesent='${e =>
+				this.onMessagesent(e)}'></oo-message-form>
+			`
 		})()}
 		${(() => {
-			if (user && !assignee) {
-				return html`
-				<oo-atoms-button class=fork on-clicked='${() =>
-					this.createFork()}'>Comment with fork</oo-atoms-button>
-				`
+			if (!user || assignee) {
+				return
 			}
+			return html`
+			<oo-atoms-button class=fork on-clicked='${async () =>
+				this.createFork()
+					.then()
+					.catch()}'>Comment with fork</oo-atoms-button>
+			`
 		})()}
 		`
 	}
 
 	renderedCallback() {
-		if (messageForm.has(this) === false) {
-			messageForm.set(
-				this,
-				this.shadowRoot.querySelector('oo-project-messages')
-			)
+		if (messageForm.has(this)) {
+			return
 		}
+		messageForm.set(this, this.shadowRoot.querySelector('oo-project-messages'))
 	}
 
 	onMessagesent(e: HTMLElementEventMessageSent<form>) {
 		const { detail } = e
 		const { uid } = detail
-		if (messageForm.has(this) !== false) {
-			messageForm.get(this).injectMessages([uid])
+		if (messageForm.has(this) === false) {
+			return
 		}
+		messageForm
+			.get(this)
+			.injectMessages([uid])
+			.then()
+			.catch()
 	}
 
 	async fetchProject(uid: string) {

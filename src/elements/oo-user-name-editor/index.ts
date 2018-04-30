@@ -24,12 +24,14 @@ export default class extends OOElement {
 		return [ATTR.DATA_IAM]
 	}
 
-	attributeChangedCallback(attr, prev, next) {
+	attributeChangedCallback([, prev, next]) {
 		if (prev === next || !next) {
 			return
 		}
 		stateIam.set(this, next)
 		this.fetchPermalink()
+			.then()
+			.catch()
 	}
 
 	connectedCallback() {
@@ -54,8 +56,10 @@ export default class extends OOElement {
 					: ''
 		const btn = html`<button class$='${cls}${sd ? ' saved' : ''}${
 			ss ? ' success' : ss === false ? ' error' : ''
-		}' disabled?='${!u || p}' on-click='${() =>
-			this.putPermalink()}'>save</button>`
+		}' disabled?='${!u || p}' on-click='${async () =>
+			this.putPermalink()
+				.then()
+				.catch()}'>save</button>`
 
 		return html`
 		<style>
@@ -168,6 +172,8 @@ export default class extends OOElement {
 			this,
 			setTimeout(() => {
 				this.validatePermalink(statePermalink.get(this))
+					.then()
+					.catch()
 			}, 300)
 		)
 	}

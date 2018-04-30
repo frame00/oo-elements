@@ -5,12 +5,9 @@ import { OOProject } from '../type/oo-project'
 export default async (
 	uid: string,
 	time?: number
-): Promise<OOAPIResult<OOProject>> => {
-	const ooapiRes = await api<OOProject>({
+): Promise<OOAPIResult<OOProject>> =>
+	api<OOProject>({
 		resource: 'users',
 		pathParameter: `${uid}/projects${time ? `/${time}` : ''}`,
 		method: 'GET'
 	})
-
-	return ooapiRes
-}

@@ -18,29 +18,29 @@ const remove = (key: Key): void => {
 	sessionStorage.removeItem(key)
 }
 
-export default class {
-	static set signingIn(v) {
+export default {
+	set signingIn(v) {
 		set('oo:signing-in', v)
-	}
-	static get signingIn() {
+	},
+	get signingIn() {
 		return get('oo:signing-in')
-	}
-	static set previousAsk(v: PreviousAsk) {
+	},
+	set previousAsk(v: PreviousAsk) {
 		set('oo:previous-ask', JSON.stringify(v))
-	}
-	static get previousAsk(): PreviousAsk {
+	},
+	get previousAsk(): PreviousAsk {
 		const value = get('oo:previous-ask')
 		try {
 			return JSON.parse(value)
 		} catch (err) {
+			console.log(err)
 			return
 		}
-	}
-
-	static remove(key: Key) {
+	},
+	remove(key: Key) {
 		remove(key)
-	}
-	static clear() {
+	},
+	clear() {
 		remove('oo:signing-in')
 		remove('oo:previous-ask')
 	}

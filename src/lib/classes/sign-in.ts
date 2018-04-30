@@ -52,7 +52,7 @@ export default class extends OOElement {
 		this.checkSignInStatus()
 	}
 
-	attributeChangedCallback(attr, prev, next) {
+	attributeChangedCallback([, prev, next]) {
 		if (prev === next) {
 			return
 		}
@@ -76,7 +76,6 @@ export default class extends OOElement {
 				label = 'GitHub'
 				break
 			default:
-				break
 		}
 		return html`
 		<style>
@@ -130,7 +129,10 @@ export default class extends OOElement {
 				display: none;
 			}
 		</style>
-		<button class$='${prov}' on-click='${() => this.signIn()}'>
+		<button class$='${prov}' on-click='${async () =>
+			this.signIn()
+				.then()
+				.catch()}'>
 			Sign in with ${label}
 		</button>
 		`
@@ -141,12 +143,13 @@ export default class extends OOElement {
 	}
 
 	checkSignInStatus() {
-		if (typeof store.uid === 'string' && typeof store.token === 'string') {
-			this.dispatchSignedIn({
-				token: store.token,
-				uid: store.uid
-			})
+		if (typeof store.uid !== 'string' || typeof store.token !== 'string') {
+			return
 		}
+		this.dispatchSignedIn({
+			token: store.token,
+			uid: store.uid
+		})
 	}
 
 	dispatchSignedIn(data: SignedInDetail) {

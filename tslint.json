@@ -9,6 +9,7 @@
   ],
   "rules": {
     "semicolon": [true, "never"],
+    "type-literal-delimiter": false,
     "prettier": [true,
       {
         "semi": false,

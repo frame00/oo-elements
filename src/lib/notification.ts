@@ -9,17 +9,19 @@ define('oo-notification-center', notificationCenter)
 const attached: WeakMap<Window, boolean> = new WeakMap()
 
 export const attach = (): void => {
-	if (!attached.get(window)) {
-		const element = document.createElement('oo-notification-center')
-		document.body.appendChild(element)
-		attached.set(window, true)
+	if (attached.get(window)) {
+		return
 	}
+	const element = document.createElement('oo-notification-center')
+	document.body.appendChild(element)
+	attached.set(window, true)
 }
 
 export const dispatch = (opts: NotificationDetail): boolean => {
 	try {
 		return document.dispatchEvent(customEvent('oonotification', opts))
 	} catch (err) {
+		console.log(err)
 		return false
 	}
 }

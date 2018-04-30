@@ -22,12 +22,14 @@ export default class extends OOElement {
 		return [ATTR.DATA_UID]
 	}
 
-	attributeChangedCallback(attr, prev, next) {
+	attributeChangedCallback([, prev, next]) {
 		if (prev === next || !next) {
 			return
 		}
 		projectUid.set(this, next)
 		this.fetchProject(projectUid.get(this))
+			.then()
+			.catch()
 	}
 
 	connectedCallback() {

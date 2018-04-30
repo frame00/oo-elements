@@ -53,16 +53,20 @@ export default class extends OOElement {
 				stateTag.set(this, next)
 				break
 			default:
-				break
 		}
-		if (this.connected) {
-			this.initialFetchProjects()
+		if (!this.connected) {
+			return
 		}
+		this.initialFetchProjects()
+			.then()
+			.catch()
 	}
 
 	connectedCallback() {
 		super.connectedCallback(false)
 		this.initialFetchProjects()
+			.then()
+			.catch()
 	}
 
 	render() {
@@ -80,8 +84,10 @@ export default class extends OOElement {
 			count > projects.length
 				? html`
 		<div class=paging>
-			<oo-atoms-button on-clicked='${() =>
-				this.fetchProjects(iam, tag, paging)}'>More</oo-atoms-button>
+			<oo-atoms-button on-clicked='${async () =>
+				this.fetchProjects(iam, tag, paging)
+					.then()
+					.catch()}'>More</oo-atoms-button>
 		</div>
 		`
 				: html``
@@ -107,10 +113,12 @@ export default class extends OOElement {
 	async initialFetchProjects() {
 		stateProjects.set(this, [])
 		this.fetchProjects(this.iam, this.tag)
+			.then()
+			.catch()
 	}
 
 	async fetchProjects(iam: string | null, tag?: string | null, time?: number) {
-		const api = await (() => {
+		const api = await (async () => {
 			if (typeof iam === 'string' && iam !== '') {
 				return getUserProjects(iam, time)
 			}

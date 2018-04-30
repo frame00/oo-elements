@@ -41,7 +41,7 @@ export default async (
 		})
 	}
 
-	const ooapiRes = await api<OOProject>({
+	return api<OOProject>({
 		resource: 'projects',
 		pathParameter: uid,
 		method: 'PATCH',
@@ -49,6 +49,4 @@ export default async (
 			Extensions: extensions
 		}
 	})
-
-	return ooapiRes
 }

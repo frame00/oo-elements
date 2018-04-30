@@ -57,6 +57,8 @@ export default class extends OOElement {
 		const params = parse(search)
 		if (URI_PARAMS.CODE in params && URI_PARAMS.STATE in params) {
 			this.onRedirected(params)
+				.then()
+				.catch()
 			stateConnection.set(this, 'connecting')
 			this.update()
 		} else {
@@ -79,11 +81,14 @@ export default class extends OOElement {
 			if (uid && connection === 'none') {
 				return html`<oo-atoms-button on-clicked='${() =>
 					this.connectStripe()}'>Connect with your Stripe</oo-atoms-button>`
-			} else if (connection === 'connecting') {
+			}
+			if (connection === 'connecting') {
 				return html`<oo-atoms-button data-state=progress>Connecting now...</oo-atoms-button>`
-			} else if (connection === 'connected') {
+			}
+			if (connection === 'connected') {
 				return html`<oo-atoms-button data-state=resolved>Connected!</oo-atoms-button>`
-			} else if (connection === 'failed') {
+			}
+			if (connection === 'failed') {
 				return html`<oo-atoms-button on-clicked='${() =>
 					this.connectStripe()}' data-state=rejected>Connection failed</oo-atoms-button>`
 			}

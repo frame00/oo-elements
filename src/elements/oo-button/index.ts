@@ -81,7 +81,6 @@ export default class extends OOElement {
 				type.set(this, asType(next))
 				break
 			default:
-				break
 		}
 		if (this.connected) {
 			this.update()

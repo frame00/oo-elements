@@ -38,7 +38,10 @@ export default class extends OOElement {
 		</style>
 		<oo-atoms-button
 			data-state$='${progress ? 'progress' : ''}'
-			on-clicked='${() => this.signOut()}'>Sign out</oo-atoms-button>
+			on-clicked='${async () =>
+				this.signOut()
+					.then()
+					.catch()}'>Sign out</oo-atoms-button>
 		`
 	}
 

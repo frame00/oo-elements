@@ -37,7 +37,10 @@ export default class extends OOElement {
 		</style>
 		<oo-atoms-button
 			data-state$='${progress ? 'progress' : ''}'
-			on-clicked='${() => this.deleteAccount()}'>Delete your account</oo-atoms-button>
+			on-clicked='${async () =>
+				this.deleteAccount()
+					.then()
+					.catch()}'>Delete your account</oo-atoms-button>
 		`
 	}
 

@@ -39,7 +39,10 @@ export default class extends SignIn {
 	}
 
 	async signIn() {
-		super.signIn()
+		super
+			.signIn()
+			.then()
+			.catch()
 		firebaseAuthRedirect(this.provider)
 		this.notifySigningIn()
 		session.signingIn = 'signingIn'

@@ -1,7 +1,6 @@
 import { StripeCheckoutToken } from '../../../type/stripe'
 import asStripeAmount from './as-stripe-amount'
 import chargePayment from '../../../lib/oo-api-charge-payment'
-import Pay from '../index'
 import { Currency } from '../../../type/currency'
 import { OOAPIResult } from '../../../type/oo-api'
 import { OOPayment } from '../../../type/oo-payment'
@@ -14,7 +13,6 @@ interface Options {
 }
 
 export default (
-	el: Pay,
 	opts: Options,
 	beforeCallback: Function,
 	callback: (err: Error, res: OOAPIResult<OOPayment>) => void

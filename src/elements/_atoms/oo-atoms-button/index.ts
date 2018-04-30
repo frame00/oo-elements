@@ -46,7 +46,6 @@ export default class extends OOElement {
 				block.set(this, next === 'enabled')
 				break
 			default:
-				break
 		}
 		if (this.connected) {
 			this.update()

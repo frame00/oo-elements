@@ -27,7 +27,7 @@ export default class extends OOElement {
 		stateSignInFlow.set(this, asSignInFlow(this.getAttribute(ATTR.DATA_FLOW)))
 	}
 
-	attributeChangedCallback(attr, prev, next) {
+	attributeChangedCallback([, prev, next]) {
 		if (prev === next || !next) {
 			return
 		}

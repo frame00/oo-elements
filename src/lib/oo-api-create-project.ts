@@ -24,13 +24,11 @@ export default async (
 	const type = calculateProjectType(extensions)
 	const typeContainedExtensions = [...extensions, ...createExtensions({ type })]
 
-	const ooapiRes = await api<OOProject>({
+	return api<OOProject>({
 		resource: 'projects',
 		method: 'POST',
 		body: {
 			Extensions: typeContainedExtensions
 		}
 	})
-
-	return ooapiRes
 }

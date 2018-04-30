@@ -28,7 +28,7 @@ export default class extends OOElement {
 		stateType.set(this, asType(this.getAttribute(ATTR.DATA_TYPE)))
 	}
 
-	attributeChangedCallback(attr, prev, next) {
+	attributeChangedCallback([, prev, next]) {
 		if (prev === next) {
 			return
 		}

@@ -52,6 +52,8 @@ export default class extends OOElement {
 				messages.set(this, [])
 				if (this.connected) {
 					this.fetchMessages(projectUid.get(this))
+						.then()
+						.catch()
 				}
 				return
 			case ATTR.DATA_IAM:
@@ -61,7 +63,6 @@ export default class extends OOElement {
 				stateLimit.set(this, ~~next)
 				break
 			default:
-				break
 		}
 		if (this.connected) {
 			this.update()
@@ -71,6 +72,8 @@ export default class extends OOElement {
 	connectedCallback() {
 		super.connectedCallback(false)
 		this.fetchMessages(projectUid.get(this))
+			.then()
+			.catch()
 	}
 
 	render() {
@@ -88,8 +91,10 @@ export default class extends OOElement {
 			count > mess.length
 				? html`
 		<div class=paging>
-			<oo-atoms-button on-clicked='${() =>
-				this.fetchMessages(project, paging)}'>More</oo-atoms-button>
+			<oo-atoms-button on-clicked='${async () =>
+				this.fetchMessages(project, paging)
+					.then()
+					.catch()}'>More</oo-atoms-button>
 		</div>
 		`
 				: html``
@@ -172,7 +177,7 @@ export default class extends OOElement {
 	}
 
 	public async injectMessages(ids: string[]) {
-		const mess = await Promise.all(ids.map(id => getMessage(id)))
+		const mess = await Promise.all(ids.map(async id => getMessage(id)))
 		let items: MapedOOMessages = []
 		for (const mes of mess) {
 			const { response } = mes

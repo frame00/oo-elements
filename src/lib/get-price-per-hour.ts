@@ -29,11 +29,12 @@ export default (ext: ExtensionPricePerHour): LocaledCurrency => {
 			sign: currencyToSign(currency)
 		}
 	}
-	if (ext.jpy !== undefined) {
-		return {
-			currency: 'jpy',
-			price: ext.jpy,
-			sign: currencyToSign(currency)
-		}
+	if (ext.jpy === undefined) {
+		return
+	}
+	return {
+		currency: 'jpy',
+		price: ext.jpy,
+		sign: currencyToSign(currency)
 	}
 }

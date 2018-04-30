@@ -33,12 +33,14 @@ export default class extends OOElement {
 		stateUid.set(this, store.uid)
 	}
 
-	attributeChangedCallback(attr, prev, next: string) {
+	attributeChangedCallback([, prev, next]) {
 		if (prev === next && !next) {
 			return
 		}
 		stateProjectUid.set(this, next)
 		this.fetchProject(next)
+			.then()
+			.catch()
 	}
 
 	connectedCallback() {
@@ -53,9 +55,11 @@ export default class extends OOElement {
 		const header = () => {
 			if (perm === true) {
 				return 'Accepted'
-			} else if (perm === false) {
+			}
+			if (perm === false) {
 				return 'Rejected'
-			} else if (uid !== offerer) {
+			}
+			if (uid !== offerer) {
 				return 'Waiting for your answer'
 			}
 			return 'You are waiting for a reply.'
@@ -97,12 +101,16 @@ export default class extends OOElement {
 						}
 						return html`
 						<div class=buttons>
-							<oo-atoms-button on-clicked='${() =>
-								this.projectApprove(false)}' data-block=enabled data-state$='${
+							<oo-atoms-button on-clicked='${async () =>
+								this.projectApprove(false)
+									.then()
+									.catch()}' data-block=enabled data-state$='${
 							progress === false ? 'progress' : ''
 						}'>Reject</oo-atoms-button>
-							<oo-atoms-button on-clicked='${() =>
-								this.projectApprove(true)}' data-block=enabled data-state$='${
+							<oo-atoms-button on-clicked='${async () =>
+								this.projectApprove(true)
+									.then()
+									.catch()}' data-block=enabled data-state$='${
 							progress === true ? 'progress' : ''
 						}'>Accept</oo-atoms-button>
 						</div>

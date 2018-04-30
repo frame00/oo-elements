@@ -12,24 +12,23 @@ const remove = (key: Key): void => {
 	localStorage.removeItem(key)
 }
 
-export default class {
-	static get token() {
+export default {
+	get token() {
 		return get('oo:token')
-	}
-	static set token(v) {
+	},
+	set token(v) {
 		set('oo:token', v)
-	}
-	static get uid() {
+	},
+	get uid() {
 		return get('oo:uid')
-	}
-	static set uid(v) {
+	},
+	set uid(v) {
 		set('oo:uid', v)
-	}
-
-	static remove(key: Key) {
+	},
+	remove(key: Key) {
 		remove(key)
-	}
-	static clear() {
+	},
+	clear() {
 		remove('oo:token')
 		remove('oo:uid')
 	}

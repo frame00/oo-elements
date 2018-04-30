@@ -51,12 +51,13 @@ export default class extends OOElement {
 				}
 				iam.set(this, next)
 				this.fetchUserData()
+					.then()
+					.catch()
 				break
 			case ATTR.DATA_SIZE:
 				size.set(this, asValidSize(next))
 				break
 			default:
-				break
 		}
 		if (this.connected) {
 			this.update()

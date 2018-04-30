@@ -36,7 +36,6 @@ export default class extends OOElement {
 				stateAssignee.set(this, next)
 				break
 			default:
-				break
 		}
 		if (this.connected) {
 			this.update()

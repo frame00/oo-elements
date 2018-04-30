@@ -41,12 +41,14 @@ export default class extends OOElement {
 		return stateProgress.get(this)
 	}
 
-	attributeChangedCallback(attr, prev, next) {
+	attributeChangedCallback([, prev, next]) {
 		if (prev === next || !next) {
 			return
 		}
 		projectUid.set(this, next)
 		this.fetchProject(projectUid.get(this))
+			.then()
+			.catch()
 	}
 
 	connectedCallback() {
@@ -84,7 +86,10 @@ export default class extends OOElement {
 		)}' on-changed='${e => this.onChanged(e)}'>${body}</oo-ask-form>
 			<button class$='${
 				progress ? 'progress' : success ? 'resolved' : ''
-			}' on-click='${() => this.patchProject()}'>Save</button>
+			}' on-click='${async () =>
+			this.patchProject()
+				.then()
+				.catch()}'>Save</button>
 		</main>
 		`
 	}

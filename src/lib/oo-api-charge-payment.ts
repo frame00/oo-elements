@@ -14,12 +14,9 @@ interface PaymentOptionsPost {
 
 export default async (
 	body: PaymentOptionsPost
-): Promise<OOAPIResult<OOPayment>> => {
-	const ooapiRes = await api<OOPayment>({
+): Promise<OOAPIResult<OOPayment>> =>
+	api<OOPayment>({
 		resource: 'payments',
 		method: 'POST',
 		body
 	})
-
-	return ooapiRes
-}

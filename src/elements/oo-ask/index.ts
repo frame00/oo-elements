@@ -54,6 +54,8 @@ export default class extends OOElement {
 			case ATTR.DATA_IAM:
 				iam.set(this, next)
 				this.fetchUserData()
+					.then()
+					.catch()
 				break
 			case ATTR.DATA_TAGS:
 				stateTags.set(this, asTags(next))
@@ -68,7 +70,6 @@ export default class extends OOElement {
 				}
 				break
 			default:
-				break
 		}
 	}
 

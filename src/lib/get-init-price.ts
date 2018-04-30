@@ -7,10 +7,10 @@ interface InitPrice {
 }
 
 export default (currency?: Currency): InitPrice => {
-	currency = currency || getCurrency()
-	const amount = currency === 'usd' ? 5 : currency === 'jpy' ? 500 : 5
+	const c = currency || getCurrency()
+	const amount = c === 'usd' ? 5 : c === 'jpy' ? 500 : 5
 	return {
-		currency,
+		currency: c,
 		amount
 	}
 }

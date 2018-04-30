@@ -28,7 +28,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const element = insertElement(ELEMENT)
 			document.addEventListener(
 				'oonotification',
-				(e: CustomEvent) => {
+				() => {
 					const notification = element.shadowRoot
 						.querySelector('oo-notification')
 						.querySelector('[slot=body]')
@@ -52,7 +52,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			const element = insertElement(ELEMENT)
 			document.addEventListener(
 				'oonotification',
-				async (e: CustomEvent) => {
+				async () => {
 					const notification = element.shadowRoot.querySelector(
 						'oo-notification'
 					)

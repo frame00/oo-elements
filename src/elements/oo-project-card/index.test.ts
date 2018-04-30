@@ -26,6 +26,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 			)
 			await sleep(300)
 			const a = element.shadowRoot.querySelector('a')
+			// tslint:disable-next-line:no-http-string
 			expect(a.href).to.be('http://ooapp.co/project/79zGMA1b6q')
 		})
 

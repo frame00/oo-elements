@@ -7,12 +7,12 @@ export default async (
 	image?: string
 ): Promise<StripeCheckoutHandler> => {
 	const stripeCheckout = await stripe()
-	const handler: StripeCheckoutHandler = stripeCheckout.configure({
+
+	return stripeCheckout.configure({
 		key: publicKey,
 		image:
 			image || 'https://stripe.com/img/documentation/checkout/marketplace.png',
 		locale: 'auto',
 		token: callback
-	})
-	return handler
+	}) as StripeCheckoutHandler
 }

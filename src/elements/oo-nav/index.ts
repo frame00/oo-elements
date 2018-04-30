@@ -30,7 +30,7 @@ export default class extends OOElement {
 		direction.set(this, asDirection(this.getAttribute(ATTR.DATA_DIRECTION)))
 	}
 
-	attributeChangedCallback(attr, prev, next) {
+	attributeChangedCallback([, prev, next]) {
 		if (prev === next) {
 			return
 		}

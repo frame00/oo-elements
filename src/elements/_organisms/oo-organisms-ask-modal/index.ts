@@ -64,7 +64,6 @@ export default class extends OOElement {
 				scope.set(this, asScope(next))
 				break
 			default:
-				break
 		}
 		if (this.connected) {
 			this.update()

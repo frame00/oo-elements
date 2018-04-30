@@ -34,13 +34,15 @@ export default class extends OOElement {
 		return stateProjects.get(this)
 	}
 
-	attributeChangedCallback(attr, prev, next) {
+	attributeChangedCallback([, prev, next]) {
 		if (prev === next || !next) {
 			return
 		}
 		stateUid.set(this, next)
 		stateProjects.set(this, [])
 		this.fetchProjects(this.uid)
+			.then()
+			.catch()
 	}
 
 	connectedCallback() {
@@ -58,8 +60,10 @@ export default class extends OOElement {
 			count > projects.length
 				? html`
 		<div class=paging>
-			<oo-atoms-button on-clicked='${() =>
-				this.fetchProjects(iam, paging)}'>More</oo-atoms-button>
+			<oo-atoms-button on-clicked='${async () =>
+				this.fetchProjects(iam, paging)
+					.then()
+					.catch()}'>More</oo-atoms-button>
 		</div>
 		`
 				: html``

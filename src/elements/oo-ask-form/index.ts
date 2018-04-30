@@ -44,14 +44,15 @@ const stateInitialData = weakMap<{
 	scope?: Scope
 }>()
 const initialization = (el: OOElement) => {
-	if (el.textContent || el.hasAttribute(ATTR.DATA_TITLE)) {
-		message.set(el, el.textContent || '')
-		stateTitle.set(el, el.getAttribute(ATTR.DATA_TITLE) || '')
-		stateInitialData.set(el, {
-			title: stateTitle.get(el),
-			body: message.get(el)
-		})
+	if (!el.textContent && !el.hasAttribute(ATTR.DATA_TITLE)) {
+		return
 	}
+	message.set(el, el.textContent || '')
+	stateTitle.set(el, el.getAttribute(ATTR.DATA_TITLE) || '')
+	stateInitialData.set(el, {
+		title: stateTitle.get(el),
+		body: message.get(el)
+	})
 }
 const removeTagsInput = (el: OOElement) => {
 	const tagsEl = el.shadowRoot && el.shadowRoot.querySelector('.tags-input')
@@ -64,6 +65,7 @@ const removeVendorElements = (el: OOElement): boolean => {
 		removeTagsInput(el)
 		return true
 	} catch (err) {
+		console.log(err)
 		return false
 	}
 }
@@ -73,6 +75,7 @@ const cleanUp = (el: OOElement): boolean => {
 		render(html``, el)
 		return true
 	} catch (err) {
+		console.log(err)
 		return false
 	}
 }
@@ -113,13 +116,15 @@ export default class extends OOElement {
 			case ATTR.DATA_IAM:
 				iam.set(this, next)
 				const prevAsk = session.previousAsk
-				if (prevAsk) {
-					if (prevAsk.iam === iam.get(this)) {
-						stateInitialData.set(this, prevAsk)
-						stateTitle.set(this, prevAsk.title)
-						message.set(this, prevAsk.body)
-					}
+				if (!prevAsk) {
+					break
 				}
+				if (prevAsk.iam !== iam.get(this)) {
+					break
+				}
+				stateInitialData.set(this, prevAsk)
+				stateTitle.set(this, prevAsk.title)
+				message.set(this, prevAsk.body)
 				break
 			case ATTR.DATA_TAGS:
 				stateTags.set(this, asTags(next))
@@ -128,7 +133,6 @@ export default class extends OOElement {
 				stateScope.set(this, asScope(next))
 				break
 			default:
-				break
 		}
 		if (this.connected) {
 			cleanUp(this)
@@ -145,17 +149,19 @@ export default class extends OOElement {
 	disconnectedCallback() {
 		super.disconnectedCallback()
 		const textarea = stateTextareaElement.get(this)
-		if (textarea) {
-			autosize.destroy(textarea)
-			taboverride.utils.removeListeners(textarea)
-			stateTextareaElement.delete(this)
+		if (!textarea) {
+			return
 		}
+		autosize.destroy(textarea)
+		taboverride.utils.removeListeners(textarea)
+		stateTextareaElement.delete(this)
 	}
 
 	render() {
 		const init = stateInitialData.get(this)
 		const { title = '', body = '' } = init || {}
-		const { tags, scope } = this
+		const tags = this.tags
+		const scope = this.scope
 		const currency = stateCurrency.get(this)
 		const price = getInitPrice(currency)
 		const { amount } = price

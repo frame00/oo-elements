@@ -35,6 +35,7 @@
   },
   "homepage": "https://github.com/frame00/oo-elements#readme",
   "dependencies": {
+    "@firebase/auth-types": "^0.2.1",
     "autosize": "^4.0.0",
     "firebase": "^4.13.1",
     "highlight.js": "^9.12.0",
