@@ -22,7 +22,7 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 	describe('Fetch user profile', () => {
 		it('Encode token to get user ID, fetch user profile', async () => {
 			store.token = 'test'
-			const element = insertElement(ELEMENT)
+			const element: any = insertElement(ELEMENT)
 			await sleep(1000)
 			expect(
 				element.shadowRoot
