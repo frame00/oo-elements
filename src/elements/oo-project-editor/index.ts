@@ -41,7 +41,7 @@ export default class extends OOElement {
 		return stateProgress.get(this)
 	}
 
-	attributeChangedCallback([, prev, next]) {
+	attributeChangedCallback(_, prev, next) {
 		if (prev === next || !next) {
 			return
 		}

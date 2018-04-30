@@ -33,7 +33,7 @@ export default class extends OOElement {
 		stateUid.set(this, store.uid)
 	}
 
-	attributeChangedCallback([, prev, next]) {
+	attributeChangedCallback(_, prev, next) {
 		if (prev === next && !next) {
 			return
 		}

@@ -24,7 +24,7 @@ export default class extends OOElement {
 		return [ATTR.DATA_IAM]
 	}
 
-	attributeChangedCallback([, prev, next]) {
+	attributeChangedCallback(_, prev, next) {
 		if (prev === next || !next) {
 			return
 		}

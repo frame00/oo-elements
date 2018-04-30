@@ -34,7 +34,7 @@ export default class extends OOElement {
 		return stateProjects.get(this)
 	}
 
-	attributeChangedCallback([, prev, next]) {
+	attributeChangedCallback(_, prev, next) {
 		if (prev === next || !next) {
 			return
 		}

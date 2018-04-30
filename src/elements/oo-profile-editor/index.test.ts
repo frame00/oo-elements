@@ -38,13 +38,13 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 				element.shadowRoot.querySelector('textarea[name=bio]').textContent
 			).to.be('test\ntest\ntest')
 			expect(
-				(element.shadowRoot.querySelector('input[name=notifications_opt_email]') as HTMLInputElement)
+				element.shadowRoot.querySelector('input[name=notifications_opt_email]')
 					.checked
 			).to.be.ok()
 			expect(
-				(element.shadowRoot.querySelector(
+				element.shadowRoot.querySelector(
 					'input[name=notifications_opt_email_service_information]'
-				) as HTMLInputElement).checked
+				).checked
 			).to.be.ok()
 			expect(
 				element.shadowRoot

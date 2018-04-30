@@ -32,7 +32,7 @@ export default class extends OOElement {
 		open.set(this, asBoolean(this.getAttribute(ATTR.DATA_OPEN)))
 	}
 
-	attributeChangedCallback([, prev, next]) {
+	attributeChangedCallback(_, prev, next) {
 		if (prev === next) {
 			return
 		}

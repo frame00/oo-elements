@@ -28,7 +28,7 @@ export default class extends OOElement {
 		)
 	}
 
-	attributeChangedCallback([, prev, next]) {
+	attributeChangedCallback(_, prev, next) {
 		if (prev === next) {
 			return
 		}

@@ -52,7 +52,7 @@ export default class extends OOElement {
 		this.checkSignInStatus()
 	}
 
-	attributeChangedCallback([, prev, next]) {
+	attributeChangedCallback(_, prev, next) {
 		if (prev === next) {
 			return
 		}
