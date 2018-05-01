@@ -1,5 +1,6 @@
 import { Scope } from '../type/scope'
 import { SignInFlow } from '../type/sign-in-flow'
+import { ReactionType } from '../type/reaction-type'
 
 export const asScope = (d: string): Scope => {
 	if (d === 'public' || d === 'private') {
@@ -21,4 +22,11 @@ export const asTags = (d: string): string[] => {
 		return Array.from(new Set(tags))
 	}
 	return []
+}
+
+export const asReactionType = (d: string): ReactionType => {
+	if (d === 'upvote' || d === 'join') {
+		return d
+	}
+	return 'upvote'
 }
