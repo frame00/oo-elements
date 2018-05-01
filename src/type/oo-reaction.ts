@@ -1,1 +1,1 @@
-export type OOReaction = string[]
+export type OOReaction = string
