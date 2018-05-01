@@ -77,6 +77,7 @@ export default class extends OOElement {
 		const uid = this.uid
 		const type = this.type
 		const reacted = this.reacted
+		const count = this.count
 		const loggedIn = Boolean(store.uid)
 		if (!uid) {
 			return html``
@@ -93,7 +94,7 @@ export default class extends OOElement {
 				clickHandler()
 					.then()
 					.catch()}'
-					disabled?='${!loggedIn}'>upvote</button>
+					disabled?='${!loggedIn}'>${count}</button>
 		</div>
 		`
 	}
