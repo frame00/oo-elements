@@ -1,1 +1,4 @@
-export type OOReaction = string
+export type OOReaction = {
+	user: string
+	created: number
+}[]

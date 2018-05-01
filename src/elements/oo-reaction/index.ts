@@ -14,16 +14,30 @@ const ATTR = {
 	DATA_TYPE: 'data-type'
 }
 
-const reaction = async (method: Method, uid: string, type: ReactionType) => {
-	return reactionClient({ method, uid, reaction: type })
-}
-
 const stateUid = weakMap<string>()
 const stateType = weakMap<ReactionType>()
 const stateCount = weakMap<number>()
 const stateReacted = weakMap<boolean>()
 
-export default class extends OOElement {
+const reaction = async (method: Method, uid: string, type: ReactionType) => {
+	return reactionClient({ method, uid, reaction: type })
+}
+const changeReaction = async (el: OOReaction, add: boolean) => {
+	const results = await reaction(add ? 'POST' : 'DELETE', el.uid, el.type)
+	console.log(results)
+	const { response } = results
+	if (!Array.isArray(response)) {
+		return
+	}
+	const [succeed] = response
+	if (!succeed) {
+		return
+	}
+	stateReacted.set(el, add)
+	stateCount.set(el, el.count + (add ? 1 : -1))
+}
+
+class OOReaction extends OOElement {
 	static get observedAttributes() {
 		return [ATTR.DATA_UID, ATTR.DATA_TYPE]
 	}
@@ -89,13 +103,12 @@ export default class extends OOElement {
 		return html`
 		<style>
 		</style>
-		<div class$='${type}'>
-			<button on-click='${async () =>
-				clickHandler()
-					.then()
-					.catch()}'
-					disabled?='${!loggedIn}'>${count}</button>
-		</div>
+		<button class$='${type}'
+				on-click='${async () =>
+					clickHandler()
+						.then()
+						.catch()}'
+				disabled?='${!loggedIn}'>${count}</button>
 		`
 	}
 
@@ -115,12 +128,14 @@ export default class extends OOElement {
 	}
 
 	async postReaction() {
-		const results = await reaction('POST', this.uid, this.type)
-		console.log(results)
+		await changeReaction(this, true)
+		this.update()
 	}
 
 	async deleteReaction() {
-		const results = await reaction('DELETE', this.uid, this.type)
-		console.log(results)
+		await changeReaction(this, false)
+		this.update()
 	}
 }
+
+export default OOReaction
