@@ -3,6 +3,7 @@ import { html } from '../../../lib/html'
 export default () => html`
 	<style>
 		@import '../../../style/_mixin-button.css';
+		@import '../../../style/_vars-font-family.css';
 		:host {
 			display: inline-flex;
 		}
@@ -12,6 +13,7 @@ export default () => html`
 			font-size: 1rem;
 			text-align: center;
 			cursor: pointer;
+			font-family: var(--font-family);
 		}
 		button {
 			@mixin button;

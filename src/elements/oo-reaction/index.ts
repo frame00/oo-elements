@@ -135,7 +135,7 @@ class OOReaction extends OOElement {
 						this.update()
 						await clickHandler()
 					}}'
-					disabled?='${!loggedIn}'>${count}</button>
+					disabled?='${!loggedIn || progress}'>${count}</button>
 		${type}
 		</label>
 		`
