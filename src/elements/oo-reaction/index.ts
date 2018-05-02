@@ -113,15 +113,11 @@ class OOReaction extends OOElement {
 	}
 
 	render() {
-		const uid = this.uid
 		const type = this.type
 		const reacted = this.reacted
 		const count = this.count
 		const progress = this.isInProgress
 		const loggedIn = Boolean(store.uid)
-		if (!uid) {
-			return html``
-		}
 		const clickHandler = reacted
 			? async () => this.deleteReaction()
 			: async () => this.postReaction()
