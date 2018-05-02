@@ -44,6 +44,10 @@ describe(`<${ELEMENT}></${ELEMENT}>`, () => {
 		})
 	})
 
+	describe('Dummy feature by Lean', () => {
+		it('When "mock-feature" attribute value is "sponsor", display sponsor mock')
+	})
+
 	after(() => {
 		removeElement(ELEMENT)
 	})

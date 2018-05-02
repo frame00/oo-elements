@@ -6,18 +6,22 @@ import reactionClient from '../../lib/oo-api-client-reaction'
 import getUserReaction from '../../lib/oo-api-get-user-projects-reactions'
 import weakMap from '../../lib/weak-map'
 import store from '../../lib/local-storage'
+import templateForSponsor from './lib/template-sponsor'
 
 type Method = 'GET' | 'POST' | 'DELETE'
 
 const ATTR = {
 	DATA_UID: 'data-uid',
-	DATA_TYPE: 'data-type'
+	DATA_TYPE: 'data-type',
+	MOCK_FEATURE: 'mock-feature'
 }
+const MOCK_FEATURE = 'sponsor'
 
 const stateUid = weakMap<string>()
 const stateType = weakMap<ReactionType>()
 const stateCount = weakMap<number>()
 const stateReacted = weakMap<boolean>()
+const stateMockFeature = weakMap<'sponsor'>()
 
 const reaction = async (method: Method, uid: string, type: ReactionType) => {
 	return reactionClient({ method, uid, reaction: type })
@@ -39,7 +43,7 @@ const changeReaction = async (el: OOReaction, add: boolean) => {
 
 class OOReaction extends OOElement {
 	static get observedAttributes() {
-		return [ATTR.DATA_UID, ATTR.DATA_TYPE]
+		return [ATTR.DATA_UID, ATTR.DATA_TYPE, ATTR.MOCK_FEATURE]
 	}
 
 	get uid() {
@@ -58,6 +62,10 @@ class OOReaction extends OOElement {
 		return stateReacted.get(this)
 	}
 
+	get isMock() {
+		return Boolean(stateMockFeature.get(this))
+	}
+
 	attributeChangedCallback(attr, prev, next) {
 		if (prev === next) {
 			return
@@ -69,10 +77,18 @@ class OOReaction extends OOElement {
 			case ATTR.DATA_TYPE:
 				stateType.set(this, asReactionType(next))
 				break
+			case ATTR.MOCK_FEATURE:
+				if (next === MOCK_FEATURE) {
+					stateMockFeature.set(this, MOCK_FEATURE)
+				}
+				break
 			default:
 		}
 		if (!this.connected) {
 			return
+		}
+		if (this.isMock) {
+			return templateForSponsor(this)
 		}
 		this.getReaction()
 			.then()
@@ -81,7 +97,7 @@ class OOReaction extends OOElement {
 
 	connectedCallback() {
 		super.connectedCallback(false)
-		if (!this.uid || !this.type) {
+		if (!this.uid || !this.type || this.isMock) {
 			return
 		}
 		this.getReaction()
