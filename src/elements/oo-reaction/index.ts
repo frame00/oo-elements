@@ -6,7 +6,8 @@ import reactionClient from '../../lib/oo-api-client-reaction'
 import getUserReaction from '../../lib/oo-api-get-user-projects-reactions'
 import weakMap from '../../lib/weak-map'
 import store from '../../lib/local-storage'
-import templateForSponsor from './lib/template-sponsor'
+import renderSponsor from './lib/render-sponsor'
+import renderPlaceholder from './lib/render-placeholder'
 import style from './lib/style'
 
 type Method = 'GET' | 'POST' | 'DELETE'
@@ -91,7 +92,7 @@ class OOReaction extends OOElement {
 			default:
 		}
 		if (this.isMock) {
-			return templateForSponsor(this)
+			return renderSponsor(this)
 		}
 		if (!this.connected) {
 			return
@@ -127,7 +128,7 @@ class OOReaction extends OOElement {
 
 		return html`
 		${style()}
-		<label>
+		<label aria-busy=false>
 			<button class$='${type} ${progress ? 'progress' : ''}'
 					on-click='${async () => {
 						stateInProgress.set(this, true)
@@ -141,6 +142,7 @@ class OOReaction extends OOElement {
 	}
 
 	async getReaction() {
+		renderPlaceholder(this)
 		const results = await Promise.all([
 			reaction('GET', this.uid, this.type),
 			getUserReaction(this.uid, this.type)

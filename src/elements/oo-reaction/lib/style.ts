@@ -4,7 +4,7 @@ export default () => html`
 	<style>
 		@import '../../../style/_mixin-button.css';
 		:host {
-			display: inline-block;
+			display: inline-flex;
 		}
 		label {
 			display: inline-block;

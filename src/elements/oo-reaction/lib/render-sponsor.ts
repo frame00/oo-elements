@@ -10,7 +10,7 @@ export default (el: OOReaction) => {
 	const template = (open: boolean, handler: Function) => {
 		return html`
 		${style()}
-		<label>
+		<label aria-busy=false>
 			<button class=sponsor on-click='${handler}'>-</button>
 			sponsor
 		</label>
