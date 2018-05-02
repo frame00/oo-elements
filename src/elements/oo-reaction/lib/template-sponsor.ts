@@ -10,7 +10,10 @@ export default (el: OOReaction) => {
 	const template = (open: boolean, handler: Function) => {
 		return html`
 		${style()}
-		<button on-click='${handler}'>sponsor</button>
+		<label>
+			<button class=sponsor on-click='${handler}'>-</button>
+			sponsor
+		</label>
 		<oo-modal data-open$='${open ? 'enabled' : 'disabled'}' on-close='${handler}'>
 			<div slot=body>hello</div>
 		</oo-modal>

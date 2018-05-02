@@ -90,11 +90,11 @@ class OOReaction extends OOElement {
 				break
 			default:
 		}
-		if (!this.connected) {
-			return
-		}
 		if (this.isMock) {
 			return templateForSponsor(this)
+		}
+		if (!this.connected) {
+			return
 		}
 		this.getReaction()
 			.then()
@@ -127,13 +127,16 @@ class OOReaction extends OOElement {
 
 		return html`
 		${style()}
-		<button class$='${type} ${progress ? 'progress' : ''}'
-				on-click='${async () => {
-					stateInProgress.set(this, true)
-					this.update()
-					await clickHandler()
-				}}'
-				disabled?='${!loggedIn}'>${count}</button>
+		<label>
+			<button class$='${type} ${progress ? 'progress' : ''}'
+					on-click='${async () => {
+						stateInProgress.set(this, true)
+						this.update()
+						await clickHandler()
+					}}'
+					disabled?='${!loggedIn}'>${count}</button>
+		${type}
+		</label>
 		`
 	}
 
