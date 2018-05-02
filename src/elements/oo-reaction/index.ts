@@ -74,7 +74,9 @@ class OOReaction extends OOElement {
 		if (!this.connected) {
 			return
 		}
-		this.update()
+		this.getReaction()
+			.then()
+			.catch()
 	}
 
 	connectedCallback() {
