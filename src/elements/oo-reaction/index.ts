@@ -7,6 +7,7 @@ import getUserReaction from '../../lib/oo-api-get-user-projects-reactions'
 import weakMap from '../../lib/weak-map'
 import store from '../../lib/local-storage'
 import templateForSponsor from './lib/template-sponsor'
+import style from './lib/style'
 
 type Method = 'GET' | 'POST' | 'DELETE'
 
@@ -21,6 +22,7 @@ const stateUid = weakMap<string>()
 const stateType = weakMap<ReactionType>()
 const stateCount = weakMap<number>()
 const stateReacted = weakMap<boolean>()
+const stateInProgress = weakMap<boolean>()
 const stateMockFeature = weakMap<'sponsor'>()
 
 const reaction = async (method: Method, uid: string, type: ReactionType) => {
@@ -28,7 +30,7 @@ const reaction = async (method: Method, uid: string, type: ReactionType) => {
 }
 const changeReaction = async (el: OOReaction, add: boolean) => {
 	const results = await reaction(add ? 'POST' : 'DELETE', el.uid, el.type)
-	console.log(results)
+	stateInProgress.delete(el)
 	const { response } = results
 	if (!Array.isArray(response)) {
 		return
@@ -64,6 +66,10 @@ class OOReaction extends OOElement {
 
 	get isMock() {
 		return Boolean(stateMockFeature.get(this))
+	}
+
+	get isInProgress() {
+		return stateInProgress.get(this)
 	}
 
 	attributeChangedCallback(attr, prev, next) {
@@ -110,6 +116,7 @@ class OOReaction extends OOElement {
 		const type = this.type
 		const reacted = this.reacted
 		const count = this.count
+		const progress = this.isInProgress
 		const loggedIn = Boolean(store.uid)
 		if (!uid) {
 			return html``
@@ -119,13 +126,13 @@ class OOReaction extends OOElement {
 			: async () => this.postReaction()
 
 		return html`
-		<style>
-		</style>
-		<button class$='${type}'
-				on-click='${async () =>
-					clickHandler()
-						.then()
-						.catch()}'
+		${style()}
+		<button class$='${type} ${progress ? 'progress' : ''}'
+				on-click='${async () => {
+					stateInProgress.set(this, true)
+					this.update()
+					await clickHandler()
+				}}'
 				disabled?='${!loggedIn}'>${count}</button>
 		`
 	}
