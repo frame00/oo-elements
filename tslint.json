@@ -1,21 +1,10 @@
 {
-  "defaultSeverity": "error",
-  "extends": [
-    "tslint-xo",
-    "tslint-config-prettier"
-  ],
-  "rulesDirectory": [
-    "tslint-plugin-prettier"
-  ],
-  "rules": {
-    "semicolon": [true, "never"],
-    "type-literal-delimiter": false,
-    "prettier": [true,
-      {
-        "semi": false,
-        "singleQuote": true,
-        "useTabs": true
-      }
-    ]
-  }
+	"defaultSeverity": "error",
+	"extends": ["tslint-xo", "tslint-config-prettier"],
+	"rulesDirectory": ["tslint-plugin-prettier"],
+	"rules": {
+		"semicolon": [true, "never"],
+		"type-literal-delimiter": false,
+		"prettier": true
+	}
 }
