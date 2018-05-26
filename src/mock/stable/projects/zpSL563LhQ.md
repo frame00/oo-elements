@@ -6,27 +6,27 @@ access-control-allow-methods = "GET, PATCH"
 
 ```json
 [
-  {
-    "uid": "zpSL563LhQ",
-    "created": 1516380671346,
-    "Extensions": [
-      {
-        "key": "author",
-        "value": "xxx"
-      },
-      {
-        "key": "users",
-        "value": ["test", "xxx"]
-      },
-      {
-        "key": "body",
-        "value": "test"
+	{
+		"uid": "zpSL563LhQ",
+		"created": 1516380671346,
+		"Extensions": [
+			{
+				"key": "author",
+				"value": "xxx"
 			},
-      {
-        "key": "assignee",
-        "value": "test"
-      }
-    ]
-  }
+			{
+				"key": "users",
+				"value": ["test", "xxx"]
+			},
+			{
+				"key": "body",
+				"value": "test"
+			},
+			{
+				"key": "assignee",
+				"value": "test"
+			}
+		]
+	}
 ]
 ```

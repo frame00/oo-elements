@@ -7,9 +7,9 @@ x-oo-count = 2
 
 ```json
 [
-  {
-    "uid": "Wt6kH6JqXy",
-    "created": 1516380671346
-  }
+	{
+		"uid": "Wt6kH6JqXy",
+		"created": 1516380671346
+	}
 ]
 ```

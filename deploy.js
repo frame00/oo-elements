@@ -1,12 +1,14 @@
 require('dotenv').config()
 
-let [, ,
+let [
+	,
+	,
 	S3_PATH, // e.g. Bucket/Dir/Src/
 	S3_IAM_KEY,
 	S3_IAM_SECRET,
 	HOST,
 	HOST_STAGE,
-	S3_CACHE_CONTROL_MAX_AGE = 86400,
+	S3_CACHE_CONTROL_MAX_AGE = 86400
 ] = process.argv
 
 S3_PATH = S3_PATH || process.env.S3_PATH
@@ -37,6 +39,9 @@ const config = {
 	}
 }
 
-gulp.src('dist/**')
-.pipe(replace(new RegExp('./dist/assets/', 'g'), `${HOST}/${HOST_STAGE}/assets/`))
-.pipe(s3(config))
+gulp
+	.src('dist/**')
+	.pipe(
+		replace(new RegExp('./dist/assets/', 'g'), `${HOST}/${HOST_STAGE}/assets/`)
+	)
+	.pipe(s3(config))

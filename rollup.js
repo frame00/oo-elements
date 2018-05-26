@@ -15,13 +15,20 @@ const mixins = require('postcss-mixins')
 const entries = require('./entries.json')
 const pkg = require('./package.json')
 
-const {BUILD_MODE, TRAVIS_BRANCH} = process.env
+const { BUILD_MODE, TRAVIS_BRANCH } = process.env
 const [, , name] = process.argv
 const postcssOptions = {
 	exclude: ['node_modules/**'],
-	plugins: [cssimport, cssnested, mixins, cssnext({features: {
-		rem: {replace: true}
-	}})]
+	plugins: [
+		cssimport,
+		cssnested,
+		mixins,
+		cssnext({
+			features: {
+				rem: { replace: true }
+			}
+		})
+	]
 }
 const resolveOptions = {
 	browser: true,
@@ -32,7 +39,13 @@ const commonjsOptions = {
 	include: 'node_modules/**',
 	namedExports: {
 		'node_modules/firebase/index.js': [
-			'app', 'apps', 'auth', 'database', 'initializeApp', 'messaging', 'storage'
+			'app',
+			'apps',
+			'auth',
+			'database',
+			'initializeApp',
+			'messaging',
+			'storage'
 		]
 	}
 }
@@ -42,7 +55,11 @@ const typescriptOptions = {
 	}
 }
 const replaceOptions = {
-	'process.env': JSON.stringify({BUILD_MODE, TRAVIS_BRANCH, PACKAGE_VERSION: pkg.version})
+	'process.env': JSON.stringify({
+		BUILD_MODE,
+		TRAVIS_BRANCH,
+		PACKAGE_VERSION: pkg.version
+	})
 }
 const uglifyOptions = {
 	output: {
@@ -66,28 +83,39 @@ const plugins = [
 ]
 
 const build = async (rollupOptions, writeOptions) => {
-	const bundle = await rollup.rollup({...rollupOptions, ...{
-		onwarn: e => {
-			if (e.message === `The 'this' keyword is equivalent to 'undefined' at the top level of an ES module, and has been rewritten`) {
-				return
+	const bundle = await rollup.rollup({
+		...rollupOptions,
+		...{
+			onwarn: e => {
+				if (
+					e.message ===
+					`The 'this' keyword is equivalent to 'undefined' at the top level of an ES module, and has been rewritten`
+				) {
+					return
+				}
+				console.error(e)
 			}
-			console.error(e)
 		}
-	}})
+	})
 	await bundle.write(writeOptions)
 }
 
 if (BUILD_MODE === 'TEST') {
-	return build({
-		input: 'src/**/*.test.ts',
-		plugins: [multiEntry()].concat(plugins)
-	}, {
-		format: 'umd',
-		name: 'test',
-		file: 'dist/test.js'
-	})
+	return build(
+		{
+			input: 'src/**/*.test.ts',
+			plugins: [multiEntry()].concat(plugins)
+		},
+		{
+			format: 'umd',
+			name: 'test',
+			file: 'dist/test.js'
+		}
+	)
 }
-const filteredEntries = name ? entries.filter(entry => entry.name === name) : entries
+const filteredEntries = name
+	? entries.filter(entry => entry.name === name)
+	: entries
 if (!TRAVIS_BRANCH) {
 	// In this case it is local
 	plugins.push(progress())
@@ -95,18 +123,23 @@ if (!TRAVIS_BRANCH) {
 	plugins.push(uglify(uglifyOptions))
 }
 
-(async () => {
-	for(const entry of filteredEntries) {
-		await Promise.all(entry.build.map(bld => {
-			console.log(`Building ${bld.file}`)
-			return build({
-				input: bld.file,
-				plugins
-			}, {
-				name: entry.name,
-				format: bld.format,
-				file: bld.dest
+;(async () => {
+	for (const entry of filteredEntries) {
+		await Promise.all(
+			entry.build.map(bld => {
+				console.log(`Building ${bld.file}`)
+				return build(
+					{
+						input: bld.file,
+						plugins
+					},
+					{
+						name: entry.name,
+						format: bld.format,
+						file: bld.dest
+					}
+				)
 			})
-		}))
+		)
 	}
 })()

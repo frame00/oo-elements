@@ -1,452 +1,452 @@
 [
-  {
-    "name": "oo-elements",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/define.ts",
-        "dest": "dist/oo-elements.js"
-      },
-      {
-        "format": "es",
-        "file": "src/index.ts",
-        "dest": "dist/oo-elements.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-button",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-button/define.ts",
-        "dest": "dist/oo-button.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-button/index.ts",
-        "dest": "dist/oo-button.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-modal",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-modal/define.ts",
-        "dest": "dist/oo-modal.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-modal/index.ts",
-        "dest": "dist/oo-modal.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-ask",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-ask/define.ts",
-        "dest": "dist/oo-ask.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-ask/index.ts",
-        "dest": "dist/oo-ask.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-ask-form",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-ask-form/define.ts",
-        "dest": "dist/oo-ask-form.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-ask-form/index.ts",
-        "dest": "dist/oo-ask-form.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-ask-with-sign-in",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-ask-with-sign-in/define.ts",
-        "dest": "dist/oo-ask-with-sign-in.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-ask-with-sign-in/index.ts",
-        "dest": "dist/oo-ask-with-sign-in.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-sign-in",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-sign-in/define.ts",
-        "dest": "dist/oo-sign-in.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-sign-in/index.ts",
-        "dest": "dist/oo-sign-in.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-sign-in-with-redirect",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-sign-in-with-redirect/define.ts",
-        "dest": "dist/oo-sign-in-with-redirect.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-sign-in-with-redirect/index.ts",
-        "dest": "dist/oo-sign-in-with-redirect.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-sign-out",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-sign-out/define.ts",
-        "dest": "dist/oo-sign-out.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-sign-out/index.ts",
-        "dest": "dist/oo-sign-out.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-profile",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-profile/define.ts",
-        "dest": "dist/oo-profile.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-profile/index.ts",
-        "dest": "dist/oo-profile.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-project",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-project/define.ts",
-        "dest": "dist/oo-project.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-project/index.ts",
-        "dest": "dist/oo-project.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-project-summary",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-project-summary/define.ts",
-        "dest": "dist/oo-project-summary.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-project-summary/index.ts",
-        "dest": "dist/oo-project-summary.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-project-status",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-project-status/define.ts",
-        "dest": "dist/oo-project-status.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-project-status/index.ts",
-        "dest": "dist/oo-project-status.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-project-card",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-project-card/define.ts",
-        "dest": "dist/oo-project-card.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-project-card/index.ts",
-        "dest": "dist/oo-project-card.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-project-messages",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-project-messages/define.ts",
-        "dest": "dist/oo-project-messages.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-project-messages/index.ts",
-        "dest": "dist/oo-project-messages.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-forks",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-forks/define.ts",
-        "dest": "dist/oo-forks.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-forks/index.ts",
-        "dest": "dist/oo-forks.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-message-form",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-message-form/define.ts",
-        "dest": "dist/oo-message-form.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-message-form/index.ts",
-        "dest": "dist/oo-message-form.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-connect-stripe",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-connect-stripe/define.ts",
-        "dest": "dist/oo-connect-stripe.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-connect-stripe/index.ts",
-        "dest": "dist/oo-connect-stripe.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-pay",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-pay/define.ts",
-        "dest": "dist/oo-pay.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-pay/index.ts",
-        "dest": "dist/oo-pay.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-projects",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-projects/define.ts",
-        "dest": "dist/oo-projects.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-projects/index.ts",
-        "dest": "dist/oo-projects.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-profile-editor",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-profile-editor/define.ts",
-        "dest": "dist/oo-profile-editor.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-profile-editor/index.ts",
-        "dest": "dist/oo-profile-editor.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-user-name-editor",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-user-name-editor/define.ts",
-        "dest": "dist/oo-user-name-editor.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-user-name-editor/index.ts",
-        "dest": "dist/oo-user-name-editor.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-notification",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-notification/define.ts",
-        "dest": "dist/oo-notification.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-notification/index.ts",
-        "dest": "dist/oo-notification.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-notification-center",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-notification-center/define.ts",
-        "dest": "dist/oo-notification-center.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-notification-center/index.ts",
-        "dest": "dist/oo-notification-center.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-nav",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-nav/define.ts",
-        "dest": "dist/oo-nav.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-nav/index.ts",
-        "dest": "dist/oo-nav.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-footer",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-footer/define.ts",
-        "dest": "dist/oo-footer.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-footer/index.ts",
-        "dest": "dist/oo-footer.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-version",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-version/define.ts",
-        "dest": "dist/oo-version.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-version/index.ts",
-        "dest": "dist/oo-version.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-delete-account",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-delete-account/define.ts",
-        "dest": "dist/oo-delete-account.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-delete-account/index.ts",
-        "dest": "dist/oo-delete-account.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-markdown",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-markdown/define.ts",
-        "dest": "dist/oo-markdown.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-markdown/index.ts",
-        "dest": "dist/oo-markdown.mjs"
-      }
-    ]
-  },
-  {
-    "name": "oo-reaction",
-    "build": [
-      {
-        "format": "umd",
-        "file": "src/elements/oo-reaction/define.ts",
-        "dest": "dist/oo-reaction.js"
-      },
-      {
-        "format": "es",
-        "file": "src/elements/oo-reaction/index.ts",
-        "dest": "dist/oo-reaction.mjs"
-      }
-    ]
-  }
+	{
+		"name": "oo-elements",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/define.ts",
+				"dest": "dist/oo-elements.js"
+			},
+			{
+				"format": "es",
+				"file": "src/index.ts",
+				"dest": "dist/oo-elements.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-button",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-button/define.ts",
+				"dest": "dist/oo-button.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-button/index.ts",
+				"dest": "dist/oo-button.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-modal",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-modal/define.ts",
+				"dest": "dist/oo-modal.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-modal/index.ts",
+				"dest": "dist/oo-modal.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-ask",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-ask/define.ts",
+				"dest": "dist/oo-ask.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-ask/index.ts",
+				"dest": "dist/oo-ask.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-ask-form",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-ask-form/define.ts",
+				"dest": "dist/oo-ask-form.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-ask-form/index.ts",
+				"dest": "dist/oo-ask-form.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-ask-with-sign-in",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-ask-with-sign-in/define.ts",
+				"dest": "dist/oo-ask-with-sign-in.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-ask-with-sign-in/index.ts",
+				"dest": "dist/oo-ask-with-sign-in.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-sign-in",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-sign-in/define.ts",
+				"dest": "dist/oo-sign-in.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-sign-in/index.ts",
+				"dest": "dist/oo-sign-in.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-sign-in-with-redirect",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-sign-in-with-redirect/define.ts",
+				"dest": "dist/oo-sign-in-with-redirect.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-sign-in-with-redirect/index.ts",
+				"dest": "dist/oo-sign-in-with-redirect.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-sign-out",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-sign-out/define.ts",
+				"dest": "dist/oo-sign-out.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-sign-out/index.ts",
+				"dest": "dist/oo-sign-out.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-profile",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-profile/define.ts",
+				"dest": "dist/oo-profile.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-profile/index.ts",
+				"dest": "dist/oo-profile.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-project",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-project/define.ts",
+				"dest": "dist/oo-project.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-project/index.ts",
+				"dest": "dist/oo-project.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-project-summary",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-project-summary/define.ts",
+				"dest": "dist/oo-project-summary.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-project-summary/index.ts",
+				"dest": "dist/oo-project-summary.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-project-status",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-project-status/define.ts",
+				"dest": "dist/oo-project-status.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-project-status/index.ts",
+				"dest": "dist/oo-project-status.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-project-card",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-project-card/define.ts",
+				"dest": "dist/oo-project-card.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-project-card/index.ts",
+				"dest": "dist/oo-project-card.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-project-messages",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-project-messages/define.ts",
+				"dest": "dist/oo-project-messages.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-project-messages/index.ts",
+				"dest": "dist/oo-project-messages.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-forks",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-forks/define.ts",
+				"dest": "dist/oo-forks.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-forks/index.ts",
+				"dest": "dist/oo-forks.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-message-form",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-message-form/define.ts",
+				"dest": "dist/oo-message-form.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-message-form/index.ts",
+				"dest": "dist/oo-message-form.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-connect-stripe",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-connect-stripe/define.ts",
+				"dest": "dist/oo-connect-stripe.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-connect-stripe/index.ts",
+				"dest": "dist/oo-connect-stripe.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-pay",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-pay/define.ts",
+				"dest": "dist/oo-pay.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-pay/index.ts",
+				"dest": "dist/oo-pay.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-projects",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-projects/define.ts",
+				"dest": "dist/oo-projects.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-projects/index.ts",
+				"dest": "dist/oo-projects.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-profile-editor",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-profile-editor/define.ts",
+				"dest": "dist/oo-profile-editor.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-profile-editor/index.ts",
+				"dest": "dist/oo-profile-editor.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-user-name-editor",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-user-name-editor/define.ts",
+				"dest": "dist/oo-user-name-editor.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-user-name-editor/index.ts",
+				"dest": "dist/oo-user-name-editor.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-notification",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-notification/define.ts",
+				"dest": "dist/oo-notification.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-notification/index.ts",
+				"dest": "dist/oo-notification.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-notification-center",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-notification-center/define.ts",
+				"dest": "dist/oo-notification-center.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-notification-center/index.ts",
+				"dest": "dist/oo-notification-center.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-nav",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-nav/define.ts",
+				"dest": "dist/oo-nav.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-nav/index.ts",
+				"dest": "dist/oo-nav.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-footer",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-footer/define.ts",
+				"dest": "dist/oo-footer.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-footer/index.ts",
+				"dest": "dist/oo-footer.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-version",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-version/define.ts",
+				"dest": "dist/oo-version.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-version/index.ts",
+				"dest": "dist/oo-version.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-delete-account",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-delete-account/define.ts",
+				"dest": "dist/oo-delete-account.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-delete-account/index.ts",
+				"dest": "dist/oo-delete-account.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-markdown",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-markdown/define.ts",
+				"dest": "dist/oo-markdown.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-markdown/index.ts",
+				"dest": "dist/oo-markdown.mjs"
+			}
+		]
+	},
+	{
+		"name": "oo-reaction",
+		"build": [
+			{
+				"format": "umd",
+				"file": "src/elements/oo-reaction/define.ts",
+				"dest": "dist/oo-reaction.js"
+			},
+			{
+				"format": "es",
+				"file": "src/elements/oo-reaction/index.ts",
+				"dest": "dist/oo-reaction.mjs"
+			}
+		]
+	}
 ]

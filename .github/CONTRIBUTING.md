@@ -6,11 +6,11 @@ You can find problems from [Issues](https://github.com/frame00/oo-elements/issue
 
 Basic Pull Request steps:
 
-1. Fork this repository
-2. Create your feature branch: `git checkout -b awesome-feature`
-3. Commit your changes: `git commit -am "Add awesome feature"`
-4. Push to the branch: `git push origin awesome-feature`
-5. Submit a pull-request
+1.  Fork this repository
+2.  Create your feature branch: `git checkout -b awesome-feature`
+3.  Commit your changes: `git commit -am "Add awesome feature"`
+4.  Push to the branch: `git push origin awesome-feature`
+5.  Submit a pull-request
 
 ## How to start development?
 
@@ -24,7 +24,8 @@ npm install
 
 Preview with your browser:
 
-1. Add `.html` directory and create HTML file for preview. ( e.g. `.html/index.html` )
+1.  Add `.html` directory and create HTML file for preview. ( e.g. `.html/index.html` )
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -41,12 +42,14 @@ Preview with your browser:
 </html>
 ```
 
-2. Start up the server and browse `.html`
+2.  Start up the server and browse `.html`
+
 ```bash
 npm start
 ```
 
 If you change something:
+
 ```bash
 npm run build
 ```

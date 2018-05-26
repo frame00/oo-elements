@@ -6,43 +6,43 @@ access-control-allow-methods = "GET, PATCH"
 
 ```json
 [
-  {
-    "uid": "79zGMA1b6q",
-    "created": 1516380671346,
-    "Extensions": [
-      {
-        "key": "author",
-        "value": "test"
-      },
-      {
-        "key": "approve",
-        "value": true
-      },
-      {
-        "key": "scope",
-        "value": "private"
-      },
-      {
-        "key": "users",
-        "value": ["test"]
-      },
-      {
-        "key": "title",
-        "value": "The Title"
-      },
-      {
-        "key": "tags",
-        "value": ["tag1", "tag2", "tag3"]
-      },
-      {
-        "key": "body",
-        "value": "test"
-      },
-      {
-        "key": "assignee",
-        "value": "test"
-      }
-    ]
-  }
+	{
+		"uid": "79zGMA1b6q",
+		"created": 1516380671346,
+		"Extensions": [
+			{
+				"key": "author",
+				"value": "test"
+			},
+			{
+				"key": "approve",
+				"value": true
+			},
+			{
+				"key": "scope",
+				"value": "private"
+			},
+			{
+				"key": "users",
+				"value": ["test"]
+			},
+			{
+				"key": "title",
+				"value": "The Title"
+			},
+			{
+				"key": "tags",
+				"value": ["tag1", "tag2", "tag3"]
+			},
+			{
+				"key": "body",
+				"value": "test"
+			},
+			{
+				"key": "assignee",
+				"value": "test"
+			}
+		]
+	}
 ]
 ```

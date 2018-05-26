@@ -8,13 +8,13 @@ x-oo-count = 2
 
 ```json
 [
-  {
-    "user": "test1",
-    "created": 1516380671340
-  },
-  {
-    "user": "test2",
-    "created": 1516380671340
-  }
+	{
+		"user": "test1",
+		"created": 1516380671340
+	},
+	{
+		"user": "test2",
+		"created": 1516380671340
+	}
 ]
 ```

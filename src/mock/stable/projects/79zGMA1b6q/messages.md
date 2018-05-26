@@ -7,23 +7,23 @@ x-oo-count = 2
 
 ```json
 [
-  {
-    "uid": "jX0hnUC2dR",
-    "created": 1516380671346,
-    "Extensions": [
-      {
-        "key": "author",
-        "value": "test"
-      },
-      {
-        "key": "users",
-        "value": ["test"]
-      },
-      {
-        "key": "body",
-        "value": "test"
-      }
-    ]
-  }
+	{
+		"uid": "jX0hnUC2dR",
+		"created": 1516380671346,
+		"Extensions": [
+			{
+				"key": "author",
+				"value": "test"
+			},
+			{
+				"key": "users",
+				"value": ["test"]
+			},
+			{
+				"key": "body",
+				"value": "test"
+			}
+		]
+	}
 ]
 ```

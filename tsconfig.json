@@ -1,16 +1,13 @@
 {
-  "compilerOptions": {
-    "target": "es2015",
-    "lib": [
-      "es2017",
-      "dom"
-    ],
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "plugins": [
-      {
-        "name": "typescript-lit-html-plugin"
-      }
-    ]
-  }
+	"compilerOptions": {
+		"target": "es2015",
+		"lib": ["es2017", "dom"],
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"plugins": [
+			{
+				"name": "typescript-lit-html-plugin"
+			}
+		]
+	}
 }

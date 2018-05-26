@@ -3,7 +3,14 @@
 }
 @define-mixin progress {
 	pointer-events: none;
-	background: linear-gradient(90deg, var(--light-gray) 0%, var(--light-gray) 30%, whitesmoke 50%, var(--light-gray) 70%, var(--light-gray) 100%);
+	background: linear-gradient(
+		90deg,
+		var(--light-gray) 0%,
+		var(--light-gray) 30%,
+		whitesmoke 50%,
+		var(--light-gray) 70%,
+		var(--light-gray) 100%
+	);
 	background-size: 400%;
 	background-position: 100%;
 	animation-name: animatedGradient;

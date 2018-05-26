@@ -7,9 +7,9 @@ access-control-allow-methods = "PUT"
 
 ```json
 [
-  {
-    "slug": "slug_",
-    "user": "xxx"
-  }
+	{
+		"slug": "slug_",
+		"user": "xxx"
+	}
 ]
 ```

@@ -6,7 +6,5 @@ access-control-allow-methods = "GET, DELETE"
 +++
 
 ```json
-[
-  "test"
-]
+["test"]
 ```

@@ -7,35 +7,35 @@ access-control-allow-methods = "GET, PATCH, DELETE"
 
 ```json
 [
-  {
-    "uid": "test",
-    "created": 1516380671346,
-    "Extensions": [
-      {
-        "key": "name",
-        "value": "test"
-      },
-      {
-        "key": "picture",
-        "value": "https://example.com/img.jpg"
-      },
-      {
-        "key": "bio",
-        "value": "test\ntest\ntest"
-      },
-      {
-        "key": "notifications_opt_email",
-        "value": true
-      },
-      {
-        "key": "notifications_opt_email_service_information",
-        "value": true
-      },
-      {
-        "key": "email",
-        "value": "user@example.com"
-      }
-    ]
-  }
+	{
+		"uid": "test",
+		"created": 1516380671346,
+		"Extensions": [
+			{
+				"key": "name",
+				"value": "test"
+			},
+			{
+				"key": "picture",
+				"value": "https://example.com/img.jpg"
+			},
+			{
+				"key": "bio",
+				"value": "test\ntest\ntest"
+			},
+			{
+				"key": "notifications_opt_email",
+				"value": true
+			},
+			{
+				"key": "notifications_opt_email_service_information",
+				"value": true
+			},
+			{
+				"key": "email",
+				"value": "user@example.com"
+			}
+		]
+	}
 ]
 ```

@@ -1,4 +1,5 @@
 # oo-elements
+
 Web Components for [Double O](https://ooapp.co)
 
 <a href="https://travis-ci.org/frame00/oo-elements">
@@ -8,13 +9,15 @@ Web Components for [Double O](https://ooapp.co)
 ## Browsers support <sub><sup><sub><sub>made by <a href="https://godban.github.io">godban</a></sub></sub></sup></sub>
 
 | [<img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/chrome.png" alt="Chrome" width="16px" height="16px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/safari.png" alt="Safari" width="16px" height="16px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
-| --------- | --------- |
-| last version| last version
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| last version                                                                                                                                                                                                       | last version                                                                                                                                                                                                       |
 
 # Usage
+
 `oo-elements` is a set of classes that define some Custom Elements.
 
 ## Use from HTML
+
 `oo-elements` is serving from CDN.
 
 e.g. Use stable script
@@ -36,8 +39,11 @@ e.g. Use stable mjs
 ```
 
 ### Tips
+
 #### Use a small script that defines one Custom Element
+
 e.g. Only `<oo-button>`
+
 ```
 elements.ooapp.co/stable/oo-elements.js
                          ^^^^^^^^^^^
@@ -46,7 +52,9 @@ elements.ooapp.co/stable/oo-elements.js
 ```
 
 #### Use an unstable but up-to-date source
+
 e.g.
+
 ```
 elements.ooapp.co/stable/oo-elements.js
                   ^^^^^^
@@ -55,6 +63,7 @@ elements.ooapp.co/stable/oo-elements.js
 ```
 
 ## Use from JavaScript
+
 Install `oo-elements` from npm.
 
 ```bash
@@ -70,10 +79,10 @@ import 'oo-elements'
 Import ES Module
 
 ```js
-import {OOButton} from 'oo-elements/dist/oo-elements.mjs'
+import { OOButton } from 'oo-elements/dist/oo-elements.mjs'
 ```
 
 # Development
 
-- [Contributing Guide](https://github.com/frame00/oo-elements/blob/master/.github/CONTRIBUTING.md)
-- [日本語] とくに英語の間違いを直したいです :_ (
+* [Contributing Guide](https://github.com/frame00/oo-elements/blob/master/.github/CONTRIBUTING.md)
+* [日本語] とくに英語の間違いを直したいです :\_ (
